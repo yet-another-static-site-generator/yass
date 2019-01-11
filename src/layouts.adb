@@ -22,7 +22,8 @@ package body Layouts is
    procedure CreateLayout(DirectoryName: String) is
       LayoutFile: File_Type;
    begin
-      Create(LayoutFile, Append_File, DirectoryName & "/_layouts/default.html");
+      Create
+        (LayoutFile, Append_File, DirectoryName & "/_layouts/default.html");
       Put_Line(LayoutFile, "<!DOCTYPE html>");
       Put_Line(LayoutFile, "<html>");
       Put_Line(LayoutFile, "<head>");

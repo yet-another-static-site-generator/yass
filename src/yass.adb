@@ -59,6 +59,49 @@ begin
       Put_Line
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
          Argument(2) & "/site.cfg"" file to set data for your new site.");
+   elsif Argument(1) = "build" then
+      if Argument_Count < 2 then
+         Put_Line
+           ("Please specify directory name from where page will be created.");
+         return;
+      end if;
+      if not Exists(Argument(2)) then
+         Put_Line
+           ("Directory with that name not exists, please specify existing directory.");
+         return;
+      end if;
+      if not Exists(Argument(2) & "/site.cfg") then
+         Put_Line
+           ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
+         return;
+      end if;
+      ParseConfig(Argument(2));
+      declare
+         Entries: Search_Type;
+         FoundEntry: Directory_Entry_Type;
+         InvalidNames: constant array(Positive range <>) of Unbounded_String :=
+           (To_Unbounded_String("."), To_Unbounded_String(".."),
+            YassConfig.LayoutsDirectory, YassConfig.OutputDirectory,
+            To_Unbounded_String("site.cfg"));
+         ValidEntry: Boolean;
+      begin
+         Start_Search(Entries, Argument(2), "");
+         while More_Entries(Entries) loop
+            Get_Next_Entry(Entries, FoundEntry);
+            ValidEntry := True;
+            for I in InvalidNames'Range loop
+               if InvalidNames(I) =
+                 To_Unbounded_String(Simple_Name(FoundEntry)) then
+                  ValidEntry := False;
+                  exit;
+               end if;
+            end loop;
+            if ValidEntry then
+               Put_Line(Simple_Name(FoundEntry));
+            end if;
+         end loop;
+         End_Search(Entries);
+      end;
    end if;
 exception
    when An_Exception : others =>

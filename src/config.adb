@@ -30,4 +30,29 @@ package body Config is
       Close(ConfigFile);
    end CreateConfig;
 
+   procedure ParseConfig(DirectoryName: String) is
+      ConfigFile: File_Type;
+      RawData, FieldName, Value: Unbounded_String;
+      EqualIndex: Natural;
+   begin
+      Open(ConfigFile, In_File, DirectoryName & "/site.cfg");
+      while not End_Of_File(ConfigFile) loop
+         RawData := To_Unbounded_String(Get_Line(ConfigFile));
+         if Length(RawData) > 0 and Element(RawData, 1) /= '#' then
+            EqualIndex := Index(RawData, "=");
+            FieldName := Head(RawData, EqualIndex - 2);
+            Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
+            if FieldName = To_Unbounded_String("LayoutsDirectory") then
+               YassConfig.LayoutsDirectory := Value;
+            elsif FieldName = To_Unbounded_String("OutputDirectory") then
+               YassConfig.OutputDirectory := Value;
+            else
+               Tags_Container.Include
+                 (SiteTags, To_String(FieldName), To_String(Value));
+            end if;
+         end if;
+      end loop;
+      Close(ConfigFile);
+   end ParseConfig;
+
 end Config;
