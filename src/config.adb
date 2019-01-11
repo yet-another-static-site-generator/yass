@@ -28,9 +28,6 @@ package body Config is
       Put_Line(ConfigFile, "# Site tags");
       Put_Line(ConfigFile, "Name = New Site");
       Close(ConfigFile);
-      YassConfig :=
-        (LayoutsDirectory => To_Unbounded_String("_layouts"),
-         OutputDirectory => To_Unbounded_String("_output"));
    end CreateConfig;
 
 end Config;
