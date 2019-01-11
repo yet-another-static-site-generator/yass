@@ -25,6 +25,7 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Exceptions; use Ada.Exceptions;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with Config; use Config;
+with Layouts; use Layouts;
 
 procedure YASS is
    Version: constant String := "0.1";
@@ -54,6 +55,7 @@ begin
       Create_Path(Argument(2) & "/_layouts");
       Create_Path(Argument(2) & "/_output");
       CreateConfig(Argument(2));
+      CreateLayout(Argument(2));
       Put_Line
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
          Argument(2) & "/site.cfg"" file to set data for your new site.");
