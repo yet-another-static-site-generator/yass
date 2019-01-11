@@ -33,5 +33,7 @@ package Config is
 
    procedure CreateConfig
      (DirectoryName: String); -- Create default config in selected directory
+   procedure ParseConfig
+     (DirectoryName: String); -- Parse config file and set all settings and tags for site
 
 end Config;
