@@ -53,6 +53,7 @@ package body Config is
          end if;
       end loop;
       Close(ConfigFile);
+      SiteDirectory := To_Unbounded_String(DirectoryName);
    end ParseConfig;
 
 end Config;

@@ -19,5 +19,8 @@ package Pages is
 
    procedure CreatePage
      (FileName, Directory: String); -- Create page from selected file
+   procedure CopyFile
+     (FileName,
+      Directory: String); -- Copy file to proper location in site output directory
 
 end Pages;

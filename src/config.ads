@@ -30,6 +30,7 @@ package Config is
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,
       String, Ada.Strings.Hash, "=");
    SiteTags: Tags_Container.Map; -- Site tags (like title, author, etc)
+   SiteDirectory: Unbounded_String; -- Directory where site files are
 
    procedure CreateConfig
      (DirectoryName: String); -- Create default config in selected directory
