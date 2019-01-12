@@ -26,6 +26,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with Config; use Config;
 with Layouts; use Layouts;
+with Pages; use Pages;
 
 procedure YASS is
    Version: constant String := "0.1";
@@ -97,7 +98,9 @@ begin
                end if;
             end loop;
             if ValidEntry then
-               Put_Line(Simple_Name(FoundEntry));
+               if Extension(Simple_Name(FoundEntry)) = "md" then
+                  CreatePage(Full_Name(FoundEntry), Argument(2));
+               end if;
             end if;
          end loop;
          End_Search(Entries);
