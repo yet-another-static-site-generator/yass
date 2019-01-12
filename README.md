@@ -1,7 +1,7 @@
 YASS - Yet Another Static Site (Generator)
 
 As name says, it is static site generator written in Ada. At this moment
-project is under organization, don't expect too much here.
+available is only almost working prototype.
 
 ## Build from sources
 
@@ -13,6 +13,11 @@ To build you need:
 
 * gprbuild - it is included in GNAT and should be available in most Linux
   distributions too.
+
+* libcmark - should be available in every Linux distribution, if not, you
+  can download source code from:
+
+  https://github.com/commonmark/cmark
 
 Navigate to the main directory(where this file is) to compile:
 
@@ -29,5 +34,18 @@ Navigate to the main directory(where this file is) to compile:
 
 To see all available options, type in console `./yass help` in directory where
 binary file is.
+
+## Roadmap
+
+### 0.1
+
+- Support for Windows
+- Replace templates system with AWS templates
+
+### Later
+
+- Scripting with Lua
+- TUI
+- GUI
 
 Bartek thindil Jasicki
