@@ -51,7 +51,9 @@ package body Pages is
                        To_String(YassConfig.LayoutsDirectory) & "/" &
                        To_String(Data) & ".html");
                end if;
+               -- TODO: More tags
             else
+               -- TODO: Support for non-latin characters
                Append(Contents, Data);
                Append(Contents, LF);
             end if;
