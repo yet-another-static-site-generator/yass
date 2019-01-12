@@ -40,7 +40,8 @@ begin
       Put_Line("Possible actions:");
       Put_Line("help - show this screen and exit");
       Put_Line("version - show program version and exit");
-      Put_Line("create [name] - create new page in name directory");
+      Put_Line("create [name] - create new site in ""name"" directory");
+      Put_Line("build [name] - build site in ""name"" directory");
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
    elsif Argument(1) = "create" then
@@ -76,34 +77,53 @@ begin
            ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
          return;
       end if;
-      ParseConfig(Argument(2));
+      ParseConfig(Current_Directory & "/" & Argument(2));
       declare
-         Entries: Search_Type;
-         FoundEntry: Directory_Entry_Type;
-         InvalidNames: constant array(Positive range <>) of Unbounded_String :=
-           (To_Unbounded_String("."), To_Unbounded_String(".."),
-            YassConfig.LayoutsDirectory, YassConfig.OutputDirectory,
-            To_Unbounded_String("site.cfg"));
-         ValidEntry: Boolean;
+         procedure Build(Name: String) is
+            function ValidEntry(Name: String) return Boolean is
+               InvalidNames: constant array
+                 (Positive range <>) of Unbounded_String :=
+                 (To_Unbounded_String("."), To_Unbounded_String(".."),
+                  YassConfig.LayoutsDirectory, YassConfig.OutputDirectory,
+                  To_Unbounded_String("site.cfg"));
+            begin
+               for I in InvalidNames'Range loop
+                  if InvalidNames(I) = To_Unbounded_String(Name) then
+                     return False;
+                  end if;
+               end loop;
+               return True;
+            end ValidEntry;
+            procedure ProcessFiles(Item: Directory_Entry_Type) is
+            begin
+               if not ValidEntry(Simple_Name(Item)) then
+                  return;
+               end if;
+               if Extension(Simple_Name(Item)) = "md" then
+                  CreatePage(Full_Name(Item), Name);
+               else
+                  CopyFile(Full_Name(Item), Name);
+               end if;
+            end ProcessFiles;
+            procedure ProcessDirectories(Item: Directory_Entry_Type) is
+            begin
+               if ValidEntry(Simple_Name(Item)) then
+                  Build(Full_Name(Item));
+               end if;
+            exception
+               when Ada.Directories.Name_Error =>
+                  null;
+            end ProcessDirectories;
+         begin
+            Search
+              (Name, "", (Directory => False, others => True),
+               ProcessFiles'Access);
+            Search
+              (Name, "", (Directory => True, others => False),
+               ProcessDirectories'Access);
+         end Build;
       begin
-         Start_Search(Entries, Argument(2), "");
-         while More_Entries(Entries) loop
-            Get_Next_Entry(Entries, FoundEntry);
-            ValidEntry := True;
-            for I in InvalidNames'Range loop
-               if InvalidNames(I) =
-                 To_Unbounded_String(Simple_Name(FoundEntry)) then
-                  ValidEntry := False;
-                  exit;
-               end if;
-            end loop;
-            if ValidEntry then
-               if Extension(Simple_Name(FoundEntry)) = "md" then
-                  CreatePage(Full_Name(FoundEntry), Argument(2));
-               end if;
-            end if;
-         end loop;
-         End_Search(Entries);
+         Build(Current_Directory & "/" & Argument(2));
       end;
    end if;
 exception

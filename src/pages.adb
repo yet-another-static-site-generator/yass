@@ -47,7 +47,7 @@ package body Pages is
                   Data := Unbounded_Slice(Data, 12, Length(Data));
                   Layout :=
                     LoadLayout
-                      (Directory & "/" &
+                      (To_String(SiteDirectory) & "/" &
                        To_String(YassConfig.LayoutsDirectory) & "/" &
                        To_String(Data) & ".html");
                end if;
@@ -55,6 +55,8 @@ package body Pages is
                Append(Contents, Data);
                Append(Contents, LF);
             end if;
+         else
+            Append(Contents, LF);
          end if;
       end loop;
       Close(PageFile);
@@ -75,12 +77,28 @@ package body Pages is
                StartIndex + 3 + Tags_Container.Key(I)'Length, SiteTags(I));
          end loop;
       end loop;
-      Create
-        (PageFile, Append_File,
-         Directory & "/" & To_String(YassConfig.OutputDirectory) & "/" &
-         Base_Name(FileName) & ".html");
-      Put(PageFile, To_String(Layout));
-      Close(PageFile);
+      declare
+         OutputDirectory: constant Unbounded_String :=
+           SiteDirectory & "/" & YassConfig.OutputDirectory &
+           Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
+      begin
+         Create_Path(To_String(OutputDirectory));
+         Create
+           (PageFile, Append_File,
+            To_String(OutputDirectory) & "/" & Base_Name(FileName) & ".html");
+         Put(PageFile, To_String(Layout));
+         Close(PageFile);
+      end;
    end CreatePage;
+
+   procedure CopyFile(FileName, Directory: String) is
+      OutputDirectory: constant Unbounded_String :=
+        SiteDirectory & "/" & YassConfig.OutputDirectory &
+        Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
+   begin
+      Create_Path(To_String(OutputDirectory));
+      Copy_File
+        (FileName, To_String(OutputDirectory) & "/" & Simple_Name(FileName));
+   end CopyFile;
 
 end Pages;
