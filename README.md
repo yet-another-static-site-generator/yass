@@ -5,14 +5,14 @@ application (no UI at this moment).
 
 ## Features
 
-* Support almost infinite amount of custom tags in HTML templates (depends)
-  on available RAM
+* Support almost infinite amount of custom tags in HTML templates (depends
+  on available RAM)
 
 * Separated tags for whole site and each page
 
 * Very fast
 
-* Freshly created, unpolished, probably have a lots of bugs :D
+* Freshly created, unpolished, have a lots of bugs :D
 
 ## Build from sources
 
@@ -29,6 +29,15 @@ To build you need:
   can download source code from:
 
   https://github.com/commonmark/cmark
+
+* Ada Web Service (AWS) - if you use GNAT from AdaCore it is included in
+  package. In other situations, you may need to download it from:
+
+  https://www.adacore.com/download/more
+
+  or
+
+  https://github.com/AdaCore/aws
 
 Navigate to the main directory(where this file is) to compile:
 
@@ -51,6 +60,7 @@ binary file is.
 ### 0.1
 
 - Support for Windows
+- Empty index.md
 
 ### 0.2
 
