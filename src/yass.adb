@@ -24,12 +24,127 @@ with Ada.Calendar.Formatting;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Exceptions; use Ada.Exceptions;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with AWS.Server;
+with AWS.Services.Page_Server;
 with Config; use Config;
 with Layouts; use Layouts;
 with Pages; use Pages;
 
 procedure YASS is
    Version: constant String := "0.1";
+   ProjectDirectory: Unbounded_String;
+
+   function ValidEntry(Name: String) return Boolean is
+      InvalidNames: constant array(Positive range <>) of Unbounded_String :=
+        (To_Unbounded_String("."), To_Unbounded_String(".."),
+         YassConfig.LayoutsDirectory, YassConfig.OutputDirectory,
+         To_Unbounded_String("site.cfg"));
+   begin
+      for I in InvalidNames'Range loop
+         if InvalidNames(I) = To_Unbounded_String(Name) then
+            return False;
+         end if;
+      end loop;
+      return True;
+   end ValidEntry;
+
+   procedure BuildSite(DirectoryName: String) is
+      procedure Build(Name: String) is
+         procedure ProcessFiles(Item: Directory_Entry_Type) is
+         begin
+            if not ValidEntry(Simple_Name(Item)) then
+               return;
+            end if;
+            if Extension(Simple_Name(Item)) = "md" then
+               CreatePage(Full_Name(Item), Name);
+            else
+               CopyFile(Full_Name(Item), Name);
+            end if;
+         end ProcessFiles;
+         procedure ProcessDirectories(Item: Directory_Entry_Type) is
+         begin
+            if ValidEntry(Simple_Name(Item)) then
+               Build(Full_Name(Item));
+            end if;
+         exception
+            when Ada.Directories.Name_Error =>
+               null;
+         end ProcessDirectories;
+      begin
+         Search
+           (Name, "", (Directory => False, others => True),
+            ProcessFiles'Access);
+         Search
+           (Name, "", (Directory => True, others => False),
+            ProcessDirectories'Access);
+      end Build;
+   begin
+      Build(DirectoryName);
+   end BuildSite;
+
+   task MonitorSite is
+      entry Start;
+   end MonitorSite;
+
+   task body MonitorSite is
+      NeedRebuildSite: Boolean;
+      procedure MonitorDirectory(Name: String) is
+         procedure ProcessFiles(Item: Directory_Entry_Type) is
+            SiteFileName: Unbounded_String :=
+              To_Unbounded_String(Full_Name(Item));
+         begin
+            if not ValidEntry(Simple_Name(Item)) then
+               return;
+            end if;
+            Insert
+              (SiteFileName, Length(ProjectDirectory) + 1,
+               "/" & To_String(YassConfig.OutputDirectory));
+            if Extension(Simple_Name(Item)) = "md" then
+               SiteFileName :=
+                 To_Unbounded_String
+                   (Compose
+                      (Containing_Directory(To_String(SiteFileName)),
+                       Base_Name(To_String(SiteFileName)), "html"));
+            end if;
+            if Modification_Time(Full_Name(Item)) >
+              Modification_Time(To_String(SiteFileName)) then
+               NeedRebuildSite := True;
+            end if;
+         end ProcessFiles;
+         procedure ProcessDirectories(Item: Directory_Entry_Type) is
+         begin
+            if ValidEntry(Simple_Name(Item)) then
+               MonitorDirectory(Full_Name(Item));
+            end if;
+         exception
+            when Ada.Directories.Name_Error =>
+               null;
+         end ProcessDirectories;
+      begin
+         Search
+           (Name, "", (Directory => False, others => True),
+            ProcessFiles'Access);
+         Search
+           (Name, "", (Directory => True, others => False),
+            ProcessDirectories'Access);
+      end MonitorDirectory;
+   begin
+      select
+         accept Start;
+         loop
+            NeedRebuildSite := False;
+            MonitorDirectory(To_String(ProjectDirectory));
+            if NeedRebuildSite then
+               BuildSite(To_String(ProjectDirectory));
+               Put_Line("Site was rebuild.");
+            end if;
+            delay 5.0;
+         end loop;
+      or
+         terminate;
+      end select;
+   end MonitorSite;
+
 begin
    if Argument_Count < 1 then
       Put_Line
@@ -42,6 +157,8 @@ begin
       Put_Line("version - show program version and exit");
       Put_Line("create [name] - create new site in ""name"" directory");
       Put_Line("build [name] - build site in ""name"" directory");
+      Put_Line
+        ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
    elsif Argument(1) = "create" then
@@ -78,52 +195,42 @@ begin
          return;
       end if;
       ParseConfig(Current_Directory & "/" & Argument(2));
+      BuildSite(Current_Directory & "/" & Argument(2));
+      Put_Line("Site was build.");
+   elsif Argument(1) = "server" then
+      if Argument_Count < 2 then
+         Put_Line
+           ("Please specify directory name from where site will be served.");
+         return;
+      end if;
+      if not Exists(Current_Directory & "/" & Argument(2)) then
+         Put_Line
+           ("Directory with that name not exists, please specify existing directory.");
+         return;
+      end if;
+      if not Exists(Current_Directory & "/" & Argument(2) & "/site.cfg") then
+         Put_Line
+           ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
+         return;
+      end if;
       declare
-         procedure Build(Name: String) is
-            function ValidEntry(Name: String) return Boolean is
-               InvalidNames: constant array
-                 (Positive range <>) of Unbounded_String :=
-                 (To_Unbounded_String("."), To_Unbounded_String(".."),
-                  YassConfig.LayoutsDirectory, YassConfig.OutputDirectory,
-                  To_Unbounded_String("site.cfg"));
-            begin
-               for I in InvalidNames'Range loop
-                  if InvalidNames(I) = To_Unbounded_String(Name) then
-                     return False;
-                  end if;
-               end loop;
-               return True;
-            end ValidEntry;
-            procedure ProcessFiles(Item: Directory_Entry_Type) is
-            begin
-               if not ValidEntry(Simple_Name(Item)) then
-                  return;
-               end if;
-               if Extension(Simple_Name(Item)) = "md" then
-                  CreatePage(Full_Name(Item), Name);
-               else
-                  CopyFile(Full_Name(Item), Name);
-               end if;
-            end ProcessFiles;
-            procedure ProcessDirectories(Item: Directory_Entry_Type) is
-            begin
-               if ValidEntry(Simple_Name(Item)) then
-                  Build(Full_Name(Item));
-               end if;
-            exception
-               when Ada.Directories.Name_Error =>
-                  null;
-            end ProcessDirectories;
-         begin
-            Search
-              (Name, "", (Directory => False, others => True),
-               ProcessFiles'Access);
-            Search
-              (Name, "", (Directory => True, others => False),
-               ProcessDirectories'Access);
-         end Build;
+         HTTPServer: AWS.Server.HTTP;
       begin
-         Build(Current_Directory & "/" & Argument(2));
+         ParseConfig(Current_Directory & "/" & Argument(2));
+         ProjectDirectory :=
+           To_Unbounded_String(Current_Directory & "/" & Argument(2));
+         Set_Directory
+           (Current_Directory & "/" & Argument(2) & "/" &
+            To_String(YassConfig.OutputDirectory));
+         AWS.Server.Start
+           (HTTPServer, "YASS static page server", Port => 8888,
+            Callback => AWS.Services.Page_Server.Callback'Access,
+            Max_Connection => 5);
+         Put_Line
+           ("Server was started. Web address: http://localhost:8888/index.html Press ""CTRL+C"" for quit.");
+         MonitorSite.Start;
+         AWS.Server.Wait(AWS.Server.Forever);
+         AWS.Server.Shutdown(HTTPServer);
       end;
    end if;
 exception
