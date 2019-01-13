@@ -1,7 +1,18 @@
 YASS - Yet Another Static Site (Generator)
 
-As name says, it is static site generator written in Ada. At this moment
-available is only almost working prototype.
+As name says, it is static site generator written in Ada. It is *headless*
+application (no UI at this moment).
+
+## Features
+
+* Support almost infinite amount of custom tags in HTML templates (depends)
+  on available RAM
+
+* Separated tags for whole site and each page
+
+* Very fast
+
+* Freshly created, unpolished, probably have a lots of bugs :D
 
 ## Build from sources
 
@@ -30,7 +41,7 @@ Navigate to the main directory(where this file is) to compile:
 
 ## Running program
 
-### Linux
+### Linux (probably MacOS too)
 
 To see all available options, type in console `./yass help` in directory where
 binary file is.
@@ -40,6 +51,9 @@ binary file is.
 ### 0.1
 
 - Support for Windows
+
+### 0.2
+
 - Replace templates system with AWS templates
 
 ### Later
@@ -47,5 +61,6 @@ binary file is.
 - Scripting with Lua
 - TUI
 - GUI
+- Your proposition(s)
 
 Bartek thindil Jasicki
