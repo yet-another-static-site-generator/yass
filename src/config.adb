@@ -15,7 +15,9 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
+with Ada.Strings.UTF_Encoding.Wide_Strings;
+use Ada.Strings.UTF_Encoding.Wide_Strings;
 
 package body Config is
 
@@ -37,7 +39,7 @@ package body Config is
    begin
       Open(ConfigFile, In_File, DirectoryName & "/site.cfg");
       while not End_Of_File(ConfigFile) loop
-         RawData := To_Unbounded_String(Get_Line(ConfigFile));
+         RawData := To_Unbounded_String(Encode(Get_Line(ConfigFile)));
          if Length(RawData) > 0 and Element(RawData, 1) /= '#' then
             EqualIndex := Index(RawData, "=");
             FieldName := Head(RawData, EqualIndex - 2);

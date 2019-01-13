@@ -15,8 +15,10 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Strings.UTF_Encoding.Wide_Strings;
+use Ada.Strings.UTF_Encoding.Wide_Strings;
 
 package body Layouts is
 
@@ -43,7 +45,7 @@ package body Layouts is
    begin
       Open(LayoutFile, In_File, FileName);
       while not End_Of_File(LayoutFile) loop
-         Append(Layout, Get_Line(LayoutFile));
+         Append(Layout, Encode(Get_Line(LayoutFile)));
          Append(Layout, LF);
       end loop;
       Close(LayoutFile);
