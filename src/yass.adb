@@ -50,14 +50,14 @@ begin
            ("Please specify directory name where new page will be created.");
          return;
       end if;
-      if Exists(Argument(2)) then
+      if Exists(Current_Directory & "/" & Argument(2)) then
          Put_Line("Directory with that name exists, please specify another.");
          return;
       end if;
-      Create_Path(Argument(2) & "/_layouts");
-      Create_Path(Argument(2) & "/_output");
-      CreateConfig(Argument(2));
-      CreateLayout(Argument(2));
+      Create_Path(Current_Directory & "/" & Argument(2) & "/_layouts");
+      Create_Path(Current_Directory & "/" & Argument(2) & "/_output");
+      CreateConfig(Current_Directory & "/" & Argument(2));
+      CreateLayout(Current_Directory & "/" & Argument(2));
       Put_Line
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
          Argument(2) & "/site.cfg"" file to set data for your new site.");
@@ -67,12 +67,12 @@ begin
            ("Please specify directory name from where page will be created.");
          return;
       end if;
-      if not Exists(Argument(2)) then
+      if not Exists(Current_Directory & "/" & Argument(2)) then
          Put_Line
            ("Directory with that name not exists, please specify existing directory.");
          return;
       end if;
-      if not Exists(Argument(2) & "/site.cfg") then
+      if not Exists(Current_Directory & "/" & Argument(2) & "/site.cfg") then
          Put_Line
            ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
          return;
