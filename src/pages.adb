@@ -15,11 +15,11 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
+with Ada.Wide_Wide_Text_IO; use Ada.Wide_Wide_Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Strings.UTF_Encoding.Wide_Strings;
-use Ada.Strings.UTF_Encoding.Wide_Strings;
+with Ada.Strings.UTF_Encoding.Wide_Wide_Strings;
+use Ada.Strings.UTF_Encoding.Wide_Wide_Strings;
 with Ada.Directories; use Ada.Directories;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -44,7 +44,7 @@ package body Pages is
       while not End_Of_File(PageFile) loop
          -- FIXME: Crash on links
          Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
-         if Length(Data) > 0 then
+         if Length(Data) > 2 then
             if Slice(Data, 1, 3) = "-- " then
                if Index(Data, "layout:", 1) > 0 then
                   Data := Unbounded_Slice(Data, 12, Length(Data));
@@ -64,6 +64,7 @@ package body Pages is
                Append(Contents, LF);
             end if;
          else
+            Append(Contents, Data);
             Append(Contents, LF);
          end if;
       end loop;
