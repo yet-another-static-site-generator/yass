@@ -42,6 +42,7 @@ package body Pages is
    begin
       Open(PageFile, In_File, FileName);
       while not End_Of_File(PageFile) loop
+         -- FIXME: Crash on links
          Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
          if Length(Data) > 0 then
             if Slice(Data, 1, 3) = "-- " then
