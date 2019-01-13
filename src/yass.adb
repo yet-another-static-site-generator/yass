@@ -32,7 +32,6 @@ with Pages; use Pages;
 
 procedure YASS is
    Version: constant String := "0.1";
-   ProjectDirectory: Unbounded_String;
 
    function ValidEntry(Name: String) return Boolean is
       InvalidNames: constant array(Positive range <>) of Unbounded_String :=
@@ -97,7 +96,7 @@ procedure YASS is
                return;
             end if;
             Insert
-              (SiteFileName, Length(ProjectDirectory) + 1,
+              (SiteFileName, Length(SiteDirectory) + 1,
                "/" & To_String(YassConfig.OutputDirectory));
             if Extension(Simple_Name(Item)) = "md" then
                SiteFileName :=
@@ -133,9 +132,9 @@ procedure YASS is
          accept Start;
          loop
             NeedRebuildSite := False;
-            MonitorDirectory(To_String(ProjectDirectory));
+            MonitorDirectory(To_String(SiteDirectory));
             if NeedRebuildSite then
-               BuildSite(To_String(ProjectDirectory));
+               BuildSite(To_String(SiteDirectory));
                Put_Line("Site was rebuild.");
             end if;
             delay 5.0;
@@ -217,8 +216,6 @@ begin
          HTTPServer: AWS.Server.HTTP;
       begin
          ParseConfig(Current_Directory & "/" & Argument(2));
-         ProjectDirectory :=
-           To_Unbounded_String(Current_Directory & "/" & Argument(2));
          Set_Directory
            (Current_Directory & "/" & Argument(2) & "/" &
             To_String(YassConfig.OutputDirectory));
