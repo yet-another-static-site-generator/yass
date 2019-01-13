@@ -38,6 +38,7 @@ package body Pages is
       Layout, Data, Contents: Unbounded_String;
       PageFile: File_Type;
       StartIndex: Natural;
+      PageTags: Tags_Container.Map;
    begin
       Open(PageFile, In_File, FileName);
       while not End_Of_File(PageFile) loop
@@ -51,8 +52,12 @@ package body Pages is
                       (To_String(SiteDirectory) & "/" &
                        To_String(YassConfig.LayoutsDirectory) & "/" &
                        To_String(Data) & ".html");
+               else
+                  StartIndex := Index(Data, ":", 1);
+                  Tags_Container.Include
+                    (PageTags, Slice(Data, 4, StartIndex - 1),
+                     Slice(Data, StartIndex + 2, Length(Data)));
                end if;
-               -- TODO: More tags
             else
                Append(Contents, Data);
                Append(Contents, LF);
@@ -77,6 +82,15 @@ package body Pages is
             Replace_Slice
               (Layout, StartIndex,
                StartIndex + 3 + Tags_Container.Key(I)'Length, SiteTags(I));
+         end loop;
+      end loop;
+      for I in PageTags.Iterate loop
+         loop
+            StartIndex := Index(Layout, "{%" & Tags_Container.Key(I) & "%}");
+            exit when StartIndex = 0;
+            Replace_Slice
+              (Layout, StartIndex,
+               StartIndex + 3 + Tags_Container.Key(I)'Length, PageTags(I));
          end loop;
       end loop;
       declare
