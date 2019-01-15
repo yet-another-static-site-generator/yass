@@ -18,13 +18,15 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with GNAT.String_Split; use GNAT.String_Split;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 package body Config is
 
    procedure CreateConfig(DirectoryName: String) is
       ConfigFile: File_Type;
    begin
-      Create(ConfigFile, Append_File, DirectoryName & "/site.cfg");
+      Create
+        (ConfigFile, Append_File, DirectoryName & Dir_Separator & "site.cfg");
       Put_Line(ConfigFile, "LayoutsDirectory = _layouts");
       Put_Line(ConfigFile, "OutputDirectory = _output");
       Put_Line(ConfigFile, "# Site tags");
