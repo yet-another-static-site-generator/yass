@@ -1,7 +1,10 @@
 YASS - Yet Another Static Site (Generator)
 
 As name says, it is static site generator written in Ada. It is *headless*
-application (no UI at this moment).
+application (no UI at this moment). At this moment here no documentation,
+only example:
+
+https://github.com/thindil/steamsky-site
 
 ## Features
 
@@ -10,7 +13,7 @@ application (no UI at this moment).
 
 * Separated tags for whole site and each page
 
-* Very fast
+* Fast
 
 * Freshly created, unpolished, have a lots of bugs :D
 
@@ -65,6 +68,9 @@ binary file is.
 ### 0.2
 
 - Replace templates system with AWS templates
+- Case-insensitive tags
+- Auto add "id" to HTML headers
+- Documentation
 
 ### Later
 
