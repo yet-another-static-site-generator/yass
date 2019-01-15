@@ -17,14 +17,19 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Containers.Indefinite_Vectors;
 with Ada.Strings.Hash;
 
 package Config is
 
+   package Excluded_Container is new Ada.Containers.Indefinite_Vectors
+     (Positive, String);
    type ParserConfig is -- Data structure for setting for parser
    record
       OutputDirectory: Unbounded_String; -- Path to directory with generated site
       LayoutsDirectory: Unbounded_String; -- Path to directory where site layouts are
+      ExcludedFiles: Excluded_Container
+        .Vector; -- List of excluded files (and directories) from site
    end record;
    YassConfig: ParserConfig; -- Settings for parser
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,
