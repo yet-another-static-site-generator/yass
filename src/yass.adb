@@ -33,25 +33,12 @@ with Pages; use Pages;
 procedure YASS is
    Version: constant String := "0.1";
 
-   function ValidEntry(Name: String) return Boolean is
-      InvalidNames: constant array(Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String("."), To_Unbounded_String(".."),
-         YassConfig.LayoutsDirectory, YassConfig.OutputDirectory,
-         To_Unbounded_String("site.cfg"));
-   begin
-      for I in InvalidNames'Range loop
-         if InvalidNames(I) = To_Unbounded_String(Name) then
-            return False;
-         end if;
-      end loop;
-      return True;
-   end ValidEntry;
-
    procedure BuildSite(DirectoryName: String) is
       procedure Build(Name: String) is
          procedure ProcessFiles(Item: Directory_Entry_Type) is
          begin
-            if not ValidEntry(Simple_Name(Item)) then
+            if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) /=
+              Excluded_Container.No_Index then
                return;
             end if;
             if Extension(Simple_Name(Item)) = "md" then
@@ -62,7 +49,8 @@ procedure YASS is
          end ProcessFiles;
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin
-            if ValidEntry(Simple_Name(Item)) then
+            if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) =
+              Excluded_Container.No_Index then
                Build(Full_Name(Item));
             end if;
          exception
@@ -92,7 +80,8 @@ procedure YASS is
             SiteFileName: Unbounded_String :=
               To_Unbounded_String(Full_Name(Item));
          begin
-            if not ValidEntry(Simple_Name(Item)) then
+            if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) /=
+              Excluded_Container.No_Index then
                return;
             end if;
             Insert
@@ -112,7 +101,8 @@ procedure YASS is
          end ProcessFiles;
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin
-            if ValidEntry(Simple_Name(Item)) then
+            if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) =
+              Excluded_Container.No_Index then
                MonitorDirectory(Full_Name(Item));
             end if;
          exception

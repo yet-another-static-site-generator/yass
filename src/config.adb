@@ -15,9 +15,9 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
-with Ada.Strings.UTF_Encoding.Wide_Strings;
-use Ada.Strings.UTF_Encoding.Wide_Strings;
+with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
+with GNAT.String_Split; use GNAT.String_Split;
 
 package body Config is
 
@@ -36,6 +36,7 @@ package body Config is
       ConfigFile: File_Type;
       RawData, FieldName, Value: Unbounded_String;
       EqualIndex: Natural;
+      Tokens: Slice_Set;
    begin
       Open(ConfigFile, In_File, DirectoryName & "/site.cfg");
       while not End_Of_File(ConfigFile) loop
@@ -48,6 +49,11 @@ package body Config is
                YassConfig.LayoutsDirectory := Value;
             elsif FieldName = To_Unbounded_String("OutputDirectory") then
                YassConfig.OutputDirectory := Value;
+            elsif FieldName = To_Unbounded_String("ExcludedFiles") then
+               Create(Tokens, To_String(Value), ",");
+               for I in 1 .. Slice_Count(Tokens) loop
+                  YassConfig.ExcludedFiles.Append(Slice(Tokens, I));
+               end loop;
             else
                Tags_Container.Include
                  (SiteTags, To_String(FieldName), To_String(Value));
@@ -55,6 +61,11 @@ package body Config is
          end if;
       end loop;
       Close(ConfigFile);
+      YassConfig.ExcludedFiles.Append(".");
+      YassConfig.ExcludedFiles.Append("..");
+      YassConfig.ExcludedFiles.Append("site.cfg");
+      YassConfig.ExcludedFiles.Append(To_String(YassConfig.LayoutsDirectory));
+      YassConfig.ExcludedFiles.Append(To_String(YassConfig.OutputDirectory));
       SiteDirectory := To_Unbounded_String(DirectoryName);
    end ParseConfig;
 
