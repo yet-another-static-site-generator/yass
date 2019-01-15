@@ -62,7 +62,6 @@ binary file is.
 
 ### 0.1
 
-- Support for Windows
 - Empty index.md
 
 ### 0.2
