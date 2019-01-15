@@ -22,6 +22,7 @@ with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Directories; use Ada.Directories;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Layouts; use Layouts;
 with Config; use Config;
 
@@ -48,8 +49,8 @@ package body Pages is
                   Data := Unbounded_Slice(Data, 12, Length(Data));
                   Layout :=
                     LoadLayout
-                      (To_String(SiteDirectory) & "/" &
-                       To_String(YassConfig.LayoutsDirectory) & "/" &
+                      (To_String(SiteDirectory) & Dir_Separator &
+                       To_String(YassConfig.LayoutsDirectory) & Dir_Separator &
                        To_String(Data) & ".html");
                else
                   StartIndex := Index(Data, ":", 1);
@@ -95,13 +96,14 @@ package body Pages is
       end loop;
       declare
          OutputDirectory: constant Unbounded_String :=
-           SiteDirectory & "/" & YassConfig.OutputDirectory &
+           SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
            Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
       begin
          Create_Path(To_String(OutputDirectory));
          Create
            (PageFile, Append_File,
-            To_String(OutputDirectory) & "/" & Base_Name(FileName) & ".html");
+            To_String(OutputDirectory) & Dir_Separator &
+            Ada.Directories.Base_Name(FileName) & ".html");
          Put(PageFile, Decode(To_String(Layout)));
          Close(PageFile);
       end;
@@ -109,12 +111,13 @@ package body Pages is
 
    procedure CopyFile(FileName, Directory: String) is
       OutputDirectory: constant Unbounded_String :=
-        SiteDirectory & "/" & YassConfig.OutputDirectory &
+        SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
         Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
    begin
       Create_Path(To_String(OutputDirectory));
       Copy_File
-        (FileName, To_String(OutputDirectory) & "/" & Simple_Name(FileName));
+        (FileName,
+         To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
    end CopyFile;
 
 end Pages;

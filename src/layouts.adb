@@ -19,6 +19,7 @@ with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Strings.UTF_Encoding.Wide_Strings;
 use Ada.Strings.UTF_Encoding.Wide_Strings;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 package body Layouts is
 
@@ -26,7 +27,9 @@ package body Layouts is
       LayoutFile: File_Type;
    begin
       Create
-        (LayoutFile, Append_File, DirectoryName & "/_layouts/default.html");
+        (LayoutFile, Append_File,
+         DirectoryName & Dir_Separator & "_layouts" & Dir_Separator &
+         "default.html");
       Put_Line(LayoutFile, "<!DOCTYPE html>");
       Put_Line(LayoutFile, "<html>");
       Put_Line(LayoutFile, "<head>");

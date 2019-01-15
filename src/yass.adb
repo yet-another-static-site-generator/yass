@@ -24,6 +24,7 @@ with Ada.Calendar.Formatting;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Exceptions; use Ada.Exceptions;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with AWS.Server;
 with AWS.Services.Page_Server;
 with Config; use Config;
@@ -86,13 +87,14 @@ procedure YASS is
             end if;
             Insert
               (SiteFileName, Length(SiteDirectory) + 1,
-               "/" & To_String(YassConfig.OutputDirectory));
+               Dir_Separator & To_String(YassConfig.OutputDirectory));
             if Extension(Simple_Name(Item)) = "md" then
                SiteFileName :=
                  To_Unbounded_String
                    (Compose
                       (Containing_Directory(To_String(SiteFileName)),
-                       Base_Name(To_String(SiteFileName)), "html"));
+                       Ada.Directories.Base_Name(To_String(SiteFileName)),
+                       "html"));
             end if;
             if Modification_Time(Full_Name(Item)) >
               Modification_Time(To_String(SiteFileName)) then
@@ -156,35 +158,42 @@ begin
            ("Please specify directory name where new page will be created.");
          return;
       end if;
-      if Exists(Current_Directory & "/" & Argument(2)) then
+      if Exists(Current_Directory & Dir_Separator & Argument(2)) then
          Put_Line("Directory with that name exists, please specify another.");
          return;
       end if;
-      Create_Path(Current_Directory & "/" & Argument(2) & "/_layouts");
-      Create_Path(Current_Directory & "/" & Argument(2) & "/_output");
-      CreateConfig(Current_Directory & "/" & Argument(2));
-      CreateLayout(Current_Directory & "/" & Argument(2));
+      Create_Path
+        (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
+         "_layouts");
+      Create_Path
+        (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
+         "_output");
+      CreateConfig(Current_Directory & Dir_Separator & Argument(2));
+      CreateLayout(Current_Directory & Dir_Separator & Argument(2));
       Put_Line
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
-         Argument(2) & "/site.cfg"" file to set data for your new site.");
+         Argument(2) & Dir_Separator &
+         "site.cfg"" file to set data for your new site.");
    elsif Argument(1) = "build" then
       if Argument_Count < 2 then
          Put_Line
            ("Please specify directory name from where page will be created.");
          return;
       end if;
-      if not Exists(Current_Directory & "/" & Argument(2)) then
+      if not Exists(Current_Directory & Dir_Separator & Argument(2)) then
          Put_Line
            ("Directory with that name not exists, please specify existing directory.");
          return;
       end if;
-      if not Exists(Current_Directory & "/" & Argument(2) & "/site.cfg") then
+      if not Exists
+          (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
+           "site.cfg") then
          Put_Line
            ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
          return;
       end if;
-      ParseConfig(Current_Directory & "/" & Argument(2));
-      BuildSite(Current_Directory & "/" & Argument(2));
+      ParseConfig(Current_Directory & Dir_Separator & Argument(2));
+      BuildSite(Current_Directory & Dir_Separator & Argument(2));
       Put_Line("Site was build.");
    elsif Argument(1) = "server" then
       if Argument_Count < 2 then
@@ -192,12 +201,14 @@ begin
            ("Please specify directory name from where site will be served.");
          return;
       end if;
-      if not Exists(Current_Directory & "/" & Argument(2)) then
+      if not Exists(Current_Directory & Dir_Separator & Argument(2)) then
          Put_Line
            ("Directory with that name not exists, please specify existing directory.");
          return;
       end if;
-      if not Exists(Current_Directory & "/" & Argument(2) & "/site.cfg") then
+      if not Exists
+          (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
+           "site.cfg") then
          Put_Line
            ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
          return;
@@ -205,9 +216,9 @@ begin
       declare
          HTTPServer: AWS.Server.HTTP;
       begin
-         ParseConfig(Current_Directory & "/" & Argument(2));
+         ParseConfig(Current_Directory & Dir_Separator & Argument(2));
          Set_Directory
-           (Current_Directory & "/" & Argument(2) & "/" &
+           (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
             To_String(YassConfig.OutputDirectory));
          AWS.Server.Start
            (HTTPServer, "YASS static page server", Port => 8888,
