@@ -60,20 +60,19 @@ binary file is.
 
 ## Roadmap
 
-### 0.1
-
-- Empty index.md
-
 ### 0.2
 
 - Replace templates system with AWS templates
 - Case-insensitive tags
-- Auto add "id" to HTML headers
 - Documentation
+
+### 0.3
+
+- Stability
+- Scripting with Lua
 
 ### Later
 
-- Scripting with Lua
 - TUI
 - GUI
 - Your proposition(s)
