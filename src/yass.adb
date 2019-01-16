@@ -170,6 +170,7 @@ begin
          "_output");
       CreateConfig(Current_Directory & Dir_Separator & Argument(2));
       CreateLayout(Current_Directory & Dir_Separator & Argument(2));
+      CreateEmptyIndexFile(Current_Directory & Dir_Separator & Argument(2));
       Put_Line
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
          Argument(2) & Dir_Separator &

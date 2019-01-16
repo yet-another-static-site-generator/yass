@@ -120,4 +120,13 @@ package body Pages is
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
    end CopyFile;
 
+   procedure CreateEmptyIndexFile(DirectoryName: String) is
+      IndexFile: File_Type;
+   begin
+      Create
+        (IndexFile, Append_File, DirectoryName & Dir_Separator & "index.md");
+      Put_Line(IndexFile, "-- layout: default");
+      Close(IndexFile);
+   end CreateEmptyIndexFile;
+
 end Pages;
