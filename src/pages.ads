@@ -22,5 +22,7 @@ package Pages is
    procedure CopyFile
      (FileName,
       Directory: String); -- Copy file to proper location in site output directory
+   procedure CreateEmptyIndexFile
+     (DirectoryName: String); -- Create empty index file with default tags
 
 end Pages;
