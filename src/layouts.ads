@@ -15,14 +15,9 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
 package Layouts is
 
    procedure CreateLayout
      (DirectoryName: String); -- Create default site layouts in selected directory
-   function LoadLayout
-     (FileName: String)
-     return Unbounded_String; -- Load site layout from selected file
 
 end Layouts;

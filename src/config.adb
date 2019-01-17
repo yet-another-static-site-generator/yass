@@ -19,6 +19,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with GNAT.String_Split; use GNAT.String_Split;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with AWS.Templates; use AWS.Templates;
 
 package body Config is
 
@@ -69,6 +70,7 @@ package body Config is
       YassConfig.ExcludedFiles.Append(To_String(YassConfig.LayoutsDirectory));
       YassConfig.ExcludedFiles.Append(To_String(YassConfig.OutputDirectory));
       SiteDirectory := To_Unbounded_String(DirectoryName);
+      Set_Tag_Separators("{%", "%}");
    end ParseConfig;
 
 end Config;

@@ -20,10 +20,10 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Directories; use Ada.Directories;
+with AWS.Templates; use AWS.Templates;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with Layouts; use Layouts;
 with Config; use Config;
 
 package body Pages is
@@ -38,7 +38,7 @@ package body Pages is
       Layout, Data, Contents: Unbounded_String;
       PageFile: File_Type;
       StartIndex: Natural;
-      PageTags: Tags_Container.Map;
+      Tags: Translate_Set;
    begin
       Open(PageFile, In_File, FileName);
       while not End_Of_File(PageFile) loop
@@ -48,15 +48,16 @@ package body Pages is
                if Index(Data, "layout:", 1) > 0 then
                   Data := Unbounded_Slice(Data, 12, Length(Data));
                   Layout :=
-                    LoadLayout
-                      (To_String(SiteDirectory) & Dir_Separator &
-                       To_String(YassConfig.LayoutsDirectory) & Dir_Separator &
-                       To_String(Data) & ".html");
+                    SiteDirectory & Dir_Separator &
+                    YassConfig.LayoutsDirectory & Dir_Separator & Data &
+                    To_Unbounded_String(".html");
                else
                   StartIndex := Index(Data, ":", 1);
-                  Tags_Container.Include
-                    (PageTags, Slice(Data, 4, StartIndex - 1),
-                     Slice(Data, StartIndex + 2, Length(Data)));
+                  Insert
+                    (Tags,
+                     Assoc
+                       (Slice(Data, 4, StartIndex - 1),
+                        Slice(Data, StartIndex + 2, Length(Data))));
                end if;
             else
                Append(Contents, Data);
@@ -68,31 +69,16 @@ package body Pages is
          end if;
       end loop;
       Close(PageFile);
-      Contents :=
-        To_Unbounded_String
-          (Value
-             (cmark_markdown_to_html
-                (New_String(To_String(Contents)), size_t(Length(Contents)),
-                 0)));
-      StartIndex := Index(Layout, "{%Contents%}", 1);
-      Replace_Slice(Layout, StartIndex, StartIndex + 12, To_String(Contents));
+      Insert
+        (Tags,
+         Assoc
+           ("Contents",
+            Value
+              (cmark_markdown_to_html
+                 (New_String(To_String(Contents)), size_t(Length(Contents)),
+                  0))));
       for I in SiteTags.Iterate loop
-         loop
-            StartIndex := Index(Layout, "{%" & Tags_Container.Key(I) & "%}");
-            exit when StartIndex = 0;
-            Replace_Slice
-              (Layout, StartIndex,
-               StartIndex + 3 + Tags_Container.Key(I)'Length, SiteTags(I));
-         end loop;
-      end loop;
-      for I in PageTags.Iterate loop
-         loop
-            StartIndex := Index(Layout, "{%" & Tags_Container.Key(I) & "%}");
-            exit when StartIndex = 0;
-            Replace_Slice
-              (Layout, StartIndex,
-               StartIndex + 3 + Tags_Container.Key(I)'Length, PageTags(I));
-         end loop;
+         Insert(Tags, Assoc(Tags_Container.Key(I), SiteTags(I)));
       end loop;
       declare
          OutputDirectory: constant Unbounded_String :=
@@ -104,7 +90,7 @@ package body Pages is
            (PageFile, Append_File,
             To_String(OutputDirectory) & Dir_Separator &
             Ada.Directories.Base_Name(FileName) & ".html");
-         Put(PageFile, Decode(To_String(Layout)));
+         Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
          Close(PageFile);
       end;
    end CreatePage;

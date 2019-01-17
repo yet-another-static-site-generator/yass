@@ -16,9 +16,6 @@
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Strings.UTF_Encoding.Wide_Strings;
-use Ada.Strings.UTF_Encoding.Wide_Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 package body Layouts is
@@ -42,18 +39,5 @@ package body Layouts is
       Put_Line(LayoutFile, "</html>");
       Close(LayoutFile);
    end CreateLayout;
-
-   function LoadLayout(FileName: String) return Unbounded_String is
-      Layout: Unbounded_String;
-      LayoutFile: File_Type;
-   begin
-      Open(LayoutFile, In_File, FileName);
-      while not End_Of_File(LayoutFile) loop
-         Append(Layout, Encode(Get_Line(LayoutFile)));
-         Append(Layout, LF);
-      end loop;
-      Close(LayoutFile);
-      return Layout;
-   end LoadLayout;
 
 end Layouts;
