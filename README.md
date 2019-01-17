@@ -62,7 +62,6 @@ binary file is.
 
 ### 0.2
 
-- Replace templates system with AWS templates
 - Documentation
 
 ### 0.3
