@@ -72,7 +72,7 @@ package body Pages is
       Insert
         (Tags,
          Assoc
-           ("Contents",
+           ("Content",
             Value
               (cmark_markdown_to_html
                  (New_String(To_String(Contents)), size_t(Length(Contents)),
