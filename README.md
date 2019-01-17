@@ -63,18 +63,18 @@ binary file is.
 ### 0.2
 
 - Replace templates system with AWS templates
-- Case-insensitive tags
 - Documentation
 
 ### 0.3
 
 - Stability
-- Scripting with Lua
+- Optimize site regeneration
+- Scripting with Lua (or Python)
 
 ### Later
 
-- TUI
 - GUI
+- Server setting (port, file check interval)
 - Your proposition(s)
 
 Bartek thindil Jasicki
