@@ -34,7 +34,7 @@ package body Layouts is
       Put_Line(LayoutFile, "<title>{%Name%}</title>");
       Put_Line(LayoutFile, "</head>");
       Put_Line(LayoutFile, "<body>");
-      Put_Line(LayoutFile, "{%Contents%}");
+      Put_Line(LayoutFile, "{%Content%}");
       Put_Line(LayoutFile, "</body>");
       Put_Line(LayoutFile, "</html>");
       Close(LayoutFile);
