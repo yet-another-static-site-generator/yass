@@ -32,7 +32,7 @@ with Layouts; use Layouts;
 with Pages; use Pages;
 
 procedure YASS is
-   Version: constant String := "0.1";
+   Version: constant String := "0.2";
 
    procedure BuildSite(DirectoryName: String) is
       procedure Build(Name: String) is
