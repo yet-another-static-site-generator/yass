@@ -1,10 +1,8 @@
 YASS - Yet Another Static Site (Generator)
 
 As name says, it is static site generator written in Ada. It is *headless*
-application (no UI at this moment). At this moment here no documentation,
-only example:
-
-https://github.com/thindil/steamsky-site
+application (no UI yet). At this moment documentation is under
+construction.
 
 ## Features
 
@@ -33,7 +31,7 @@ To build you need:
 
   https://github.com/commonmark/cmark
 
-* Ada Web Service (AWS) - if you use GNAT from AdaCore it is included in
+* Ada Web Server (AWS) - if you use GNAT from AdaCore it is included in
   package. In other situations, you may need to download it from:
 
   https://www.adacore.com/download/more
