@@ -226,10 +226,13 @@ begin
             Callback => AWS.Services.Page_Server.Callback'Access,
             Max_Connection => 5);
          Put_Line
-           ("Server was started. Web address: http://localhost:8888/index.html Press ""CTRL+C"" for quit.");
+           ("Server was started. Web address: http://localhost:8888/index.html Press ""Q"" for quit.");
          MonitorSite.Start;
-         AWS.Server.Wait(AWS.Server.Forever);
+         AWS.Server.Wait(AWS.Server.Q_Key_Pressed);
+         Put("Shutting down server...");
          AWS.Server.Shutdown(HTTPServer);
+         abort MonitorSite;
+         Put_Line("done.");
       end;
    end if;
 exception
