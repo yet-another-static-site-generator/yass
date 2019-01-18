@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width">
+      <link href="assets/css/style.css" rel="stylesheet" />
+      <title>
+            Installation |
+         Yet Another Static Site (Generator) Documentation
+      </title>
+   </head>
+   <body>
+      <h2>Requirements</h2>
+<p>To run program or build from sources you need <em>libcmark</em> which should be
+available in most Linux distributions. If not, you can download it source
+code from <a href="https://github.com/commonmark/cmark">GitHub</a>. Please refer to
+it documentation on how to compile it.</p>
+<h2>Build from sources</h2>
+<h3>Preparations</h3>
+<p>To build YASS from source you will need few things:</p>
+<ul>
+<li>
+<p>Ada compiler - GCC with enabled Ada support or (best option) GNAT from:
+<a href="https://www.adacore.com/download/">AdaCore</a></p>
+</li>
+<li>
+<p>gprbuild - it is included in GNAT and should be available in most Linux
+distributions too.</p>
+</li>
+<li>
+<p>Ada Web Server (AWS) - if you use GNAT from AdaCore it is included in
+package. In other situations, you may need to download it from:
+[]AdaCore](https://www.adacore.com/download/more) or
+<a href="https://github.com/AdaCore/aws">GitHub</a></p>
+</li>
+</ul>
+<h3>Build program</h3>
+<p>Navigate to the main directory to compile:</p>
+<ul>
+<li>
+<p>Easiest way to compile game is use Gnat Programming Studio included in GNAT.
+Just run GPS, select <em>yass.gpr</em> as a project file and select option
+<code>Build All</code>.</p>
+</li>
+<li>
+<p>If you prefer using console: in main source code directory type <code>gprbuild</code>
+for debug mode build or for release mode: <code>gprbuild -XMode=release</code>.</p>
+</li>
+</ul>
+<p><a href="index.html">&lt;&lt; Back</a></p>
+
+   </body>
+</html>
