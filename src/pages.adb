@@ -18,6 +18,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Directories; use Ada.Directories;
 with AWS.Templates; use AWS.Templates;
@@ -35,50 +36,65 @@ package body Pages is
    pragma Import(C, cmark_markdown_to_html, "cmark_markdown_to_html");
 
    procedure CreatePage(FileName, Directory: String) is
-      Layout, Data, Contents: Unbounded_String;
+      Layout, Content: Unbounded_String;
       PageFile: File_Type;
-      StartIndex: Natural;
       Tags: Translate_Set;
+      procedure AddTag(Name, Value: String) is
+      begin
+         if To_Lower(Value) = "true" then
+            Insert(Tags, Assoc(Name, True));
+         elsif To_Lower(Value) = "false" then
+            Insert(Tags, Assoc(Name, False));
+         else
+            Insert(Tags, Assoc(Name, Integer'Value(Value)));
+         end if;
+      exception
+         when Constraint_Error =>
+            Insert(Tags, Assoc(Name, Value));
+      end AddTag;
    begin
-      Open(PageFile, In_File, FileName);
-      while not End_Of_File(PageFile) loop
-         Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
-         if Length(Data) > 2 then
-            if Slice(Data, 1, 3) = "-- " then
-               if Index(Data, "layout:", 1) > 0 then
-                  Data := Unbounded_Slice(Data, 12, Length(Data));
-                  Layout :=
-                    SiteDirectory & Dir_Separator &
-                    YassConfig.LayoutsDirectory & Dir_Separator & Data &
-                    To_Unbounded_String(".html");
-               else
-                  StartIndex := Index(Data, ":", 1);
-                  Insert
-                    (Tags,
-                     Assoc
+      declare
+         Data: Unbounded_String;
+         StartIndex: Natural;
+      begin
+         Open(PageFile, In_File, FileName);
+         while not End_Of_File(PageFile) loop
+            Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
+            if Length(Data) > 2 then
+               if Slice(Data, 1, 3) = "-- " then
+                  if Index(Data, "layout:", 1) > 0 then
+                     Data := Unbounded_Slice(Data, 12, Length(Data));
+                     Layout :=
+                       SiteDirectory & Dir_Separator &
+                       YassConfig.LayoutsDirectory & Dir_Separator & Data &
+                       To_Unbounded_String(".html");
+                  else
+                     StartIndex := Index(Data, ":", 1);
+                     AddTag
                        (Slice(Data, 4, StartIndex - 1),
-                        Slice(Data, StartIndex + 2, Length(Data))));
+                        Slice(Data, StartIndex + 2, Length(Data)));
+                  end if;
+               else
+                  Append(Content, Data);
+                  Append(Content, LF);
                end if;
             else
-               Append(Contents, Data);
-               Append(Contents, LF);
+               Append(Content, Data);
+               Append(Content, LF);
             end if;
-         else
-            Append(Contents, Data);
-            Append(Contents, LF);
-         end if;
-      end loop;
-      Close(PageFile);
+         end loop;
+         Close(PageFile);
+      end;
       Insert
         (Tags,
          Assoc
            ("Content",
             Value
               (cmark_markdown_to_html
-                 (New_String(To_String(Contents)), size_t(Length(Contents)),
+                 (New_String(To_String(Content)), size_t(Length(Content)),
                   0))));
       for I in SiteTags.Iterate loop
-         Insert(Tags, Assoc(Tags_Container.Key(I), SiteTags(I)));
+         AddTag(Tags_Container.Key(I), SiteTags(I));
       end loop;
       declare
          OutputDirectory: constant Unbounded_String :=
