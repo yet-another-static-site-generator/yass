@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width">
+      <link href="assets/css/style.css" rel="stylesheet" />
+      <title>
+            Detailed Information about Program Options |
+         Yet Another Static Site (Generator) Documentation
+      </title>
+   </head>
+   <body>
+      <h2>Creating new site project</h2>
+<p>To create new site project type in directory where file <code>yass</code> is
+<code>./yass create [ProjectName]</code> where <code>[ProjectName]</code> is name of your site
+project. It will be name of directory too. This command creating directory
+with content:</p>
+<pre><code>[ProjectName]
+  |-layouts
+     |-default.html
+  |-output
+  |-index.md
+  |-site.cfg
+</code></pre>
+<ul>
+<li>Directory <em>layouts</em> contains Ada Web Server templates used to generate page.</li>
+<li>Directory <em>output</em> is directory where generated site will be stored.</li>
+<li>File <em>index.md</em> is empty Markdown file which will be later main page of site.</li>
+<li>File <em>site.cfg</em> is configuration file of project.</li>
+</ul>
+<h2>Building existing project</h2>
+<p>To build any existing site project, type in directory where file <code>yass</code> is
+<code>./yass build [ProjectName]</code> where <code>[ProjectName]</code> is name of your site
+project. It will convert any not excluded file with extension <code>.md</code> to
+HTML file, apply layout to it and move with all others, not excluded files
+to output directory (by default it is <em>output</em> directory in <code>[ProjectName]</code>
+directory). This command preserve structure of directories and files in
+your project. Thus if you create directory structure like this:</p>
+<pre><code>[ProjectName]
+  |-layouts
+     |-default.html
+  |-output
+  |-index.md
+  |-site.cfg
+  |-images
+     |-newimage.png
+</code></pre>
+<p>Your new site will be have that directory structure (inside output directory):</p>
+<pre><code>index.html
+images
+  |-newimage.png
+</code></pre>
+<h2>Server mode</h2>
+<p>TODO</p>
+<h2>Help command</h2>
+<p>TODO</p>
+<p><a href="index.html">&lt;&lt; Back</a></p>
+
+   </body>
+</html>

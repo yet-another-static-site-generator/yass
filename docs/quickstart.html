@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width">
+      <link href="assets/css/style.css" rel="stylesheet" />
+      <title>
+            Quick Start Guide |
+         Yet Another Static Site (Generator) Documentation
+      </title>
+   </head>
+   <body>
+      <h3>Notes</h3>
+<ul>
+<li>All commands should be executed in this same directory where file <code>yass</code> is.</li>
+<li>We assume that you have installed all program requirements which you can
+find in <a href="installation.html">installation</a> chapter.</li>
+</ul>
+<h2>Quick start guide</h2>
+<ol>
+<li>To create NewSite project type in console <code>./yass create NewSite</code>. This
+will create skeletal project in directory <code>NewSite</code>.</li>
+<li>Inside newly created directory <code>NewSite</code> you can find file <em>index.md</em> which
+later will be main page of site and <em>site.cfg</em> which contains all basic
+settings of site. Add some markdown text to <em>index.md</em> file or some new
+files to directory <code>NewSite</code>.</li>
+<li>When you finish editing project, type in console <code>./yass build NewSite</code>
+to build your new site. Effect of this command will be stored (by default)
+in directory <code>output</code>.</li>
+<li>If you want, you can run program in server mode by typing in console
+<code>./yass server NewSite</code>. It will start simple web server which allow you
+to preview site in browser. Additionally, it will be monitoring any changes
+to files inside project. If any file will be modified, whole site will be
+regenerated.</li>
+</ol>
+<p><a href="index.html">&lt;&lt; Back</a></p>
+
+   </body>
+</html>
