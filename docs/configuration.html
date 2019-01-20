@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width">
+      <link href="assets/css/style.css" rel="stylesheet" />
+      <title>
+            Configuring Project |
+         Yet Another Static Site (Generator) Documentation
+      </title>
+   </head>
+   <body>
+      <h2>General Informations</h2>
+<p>Whole project configuration is stored in file <em>site.cfg</em> in main site project
+directory. This file have standard configuration syntax <code>[Key] = [Value]</code>. Each
+pair must be in one line, neither <code>Key</code> nor <code>Value</code> can't contains new line.
+Each line which starts with <code>#</code> is comment, ignored by program. All settings
+are case-sensitive.</p>
+<h2>Project configuration</h2>
+<p>At this moment here are 2 possible settings for project:</p>
+<ul>
+<li>LayoutDirectory - path (absolute or related to project directory path) where
+are stored files with pages layouts. Standard value for this is <code>_layouts</code>.</li>
+<li>OutputDirectory - path (absolute or related to project directory path) where
+generated site will be stored. Standard values for this is <code>_output</code>.</li>
+</ul>
+<h2>Project wide (global) tags</h2>
+<p>Project configuration file can contains project wide (global) tags, which can
+be used on each page. For more informations about global tags, please see
+section <a href="tags.html">Templates Tags</a>.</p>
+<p><a href="index.html">&lt;&lt; Back</a></p>
+
+   </body>
+</html>
