@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - ChangeLog file
 - Support for boolean and numeric values in tags
+- Documentation
 
 ### Changed
 - Replaced templates system with Ada Web Server templates
