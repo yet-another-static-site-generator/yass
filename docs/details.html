@@ -51,9 +51,25 @@ images
   |-newimage.png
 </code></pre>
 <h2>Server mode</h2>
-<p>TODO</p>
+<p>To run program in server mode, type in directory where file <code>yass</code> is
+<code>./yass server [ProjectName]</code> where <code>[ProjectName]</code> is name of your site
+project. This will start simple web server at <em>http://localhost:8888/</em> to
+which you can point your web browser to preview site. Additionally, program
+will be monitoring every 5 seconds your site project directory for changes to
+files. If any file will be changed during server work, it will regenerate
+whole site.</p>
+<h3>Limitations</h3>
+<ul>
+<li>At this moment, when you browsing your project, you must enter valid address
+to file. Going just to <em>http://localhost:8888/</em> will not works, you must
+enter <em>http://localhost:8888/index.html</em></li>
+<li>Monitoring works only with existing files. If you add new file or delete
+one, program will not detect it. You must stop, build site manually (if you
+adding new file) or remove old file manually, then restart server.</li>
+</ul>
 <h2>Help command</h2>
-<p>TODO</p>
+<p>This command gives only short information about all available programs
+commands. To run it, type in directory where file <code>yass</code> is <code>./yass help</code>.</p>
 <p><a href="index.html">&lt;&lt; Back</a></p>
 
    </body>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width">
+      <link href="assets/css/style.css" rel="stylesheet" />
+      <title>
+         Yet Another Static Site (Generator) Documentation
+      </title>
+   </head>
+   <body>
+      <h2>Types of tags</h2>
+<p>Here are two types of tags:</p>
+<h3>Global tags</h3>
+<p>They are defined for whole site in <em>site.cfg</em> file. This file have standard
+config file syntax: <code>[Key] = [Value]</code>. For example:</p>
+<pre><code>Name = Yet Another Static Site (Generator) Documentation
+</code></pre>
+<ul>
+<li>Each pair must be in one line. Either <code>Key</code> nor <code>Value</code> can't contains new
+line.</li>
+<li>You can add as many as you want tags to project.</li>
+</ul>
+<h3>Local (page) tags</h3>
+<p>They are defined directly in pages content files (markdown files with <code>.md</code>
+extension). They have syntax: <code>-- [Key]: [Value]</code>. For example:</p>
+<pre><code>-- layout: default
+</code></pre>
+<ul>
+<li>Same as global tags, each pair must be in one line. Either <code>Key</code> nor <code>Value</code>
+can't contains new line.</li>
+<li>Tag <code>layout</code> is only mandatory tag. Each markdown file (which later will be
+converted to HTML) must have this tag. This tag must have as <code>Value</code> name of
+existing file in <em>layouts</em> directory (without <code>.html</code> file extension).</li>
+<li>Same as global tags, you can add as many as you want tags to project.</li>
+<li>Tags can be added in any place of file (at beginning, between text, at end,
+etc) just they must start with new line. Program can't detect tags inside
+text.</li>
+<li>Whole text from markdown file is stored in tag <code>Content</code>.</li>
+</ul>
+<p>Both type of tags can have string, numeric or boolean values. For string and
+numeric value just enter value. String value example:</p>
+<pre><code>-- title: title of page
+</code></pre>
+<p>Numeric value example:</p>
+<pre><code>-- paragraphnumber: 12
+</code></pre>
+<p>For boolean values, enter as value <em>true</em> or <em>false</em> (both case-insensitive).
+Example:</p>
+<pre><code>-- havetitle: true
+</code></pre>
+<h2>Using tags inside templates files</h2>
+<p>To use any tags inside template file you must surround selected tag with <code>{%</code>
+and <code>%}</code>. For example, to get value of tag <code>Content</code> add to template file:</p>
+<pre><code>{%Content%}
+</code></pre>
+<p><strong>Note:</strong> All tags names are case-sensitive.</p>
+<p>For complete documentation on how to use tags and what is available, please
+refer to Ada Web Server Templates documentation. Especially:</p>
+<ul>
+<li><a href="http://docs.adacore.com/aws-docs/templates_parser/tags.html">Tags</a>:
+part about Filters, Attributes and Predefined Tags.</li>
+<li><a href="http://docs.adacore.com/aws-docs/templates_parser/template_statements.html">Template statements</a>:
+whole section.</li>
+<li><a href="http://docs.adacore.com/aws-docs/templates_parser/macros.html">Macros</a>:
+whole section.</li>
+</ul>
+<p><strong>Note:</strong> In YASS you will use <code>{%</code> to start a tag (instead of <code>@_</code>) and <code>%}</code>
+to end a tag (instead of <code>_@</code>).</p>
+<p><a href="index.html">&lt;&lt; Back</a></p>
+
+   </body>
+</html>
