@@ -5,6 +5,7 @@
       <meta name="viewport" content="width=device-width">
       <link href="assets/css/style.css" rel="stylesheet" />
       <title>
+            Template Tags |
          Yet Another Static Site (Generator) Documentation
       </title>
    </head>
@@ -24,20 +25,18 @@ line.</li>
 <h3>Local (page) tags</h3>
 <p>They are defined directly in pages content files (markdown files with <code>.md</code>
 extension). They have syntax: <code>-- [Key]: [Value]</code>. For example:</p>
-<pre><code>-- layout: default
+<pre><code>-- title: Template Tags
 </code></pre>
 <ul>
 <li>Same as global tags, each pair must be in one line. Either <code>Key</code> nor <code>Value</code>
 can't contains new line.</li>
-<li>Tag <code>layout</code> is only mandatory tag. Each markdown file (which later will be
-converted to HTML) must have this tag. This tag must have as <code>Value</code> name of
-existing file in <em>layouts</em> directory (without <code>.html</code> file extension).</li>
 <li>Same as global tags, you can add as many as you want tags to project.</li>
 <li>Tags can be added in any place of file (at beginning, between text, at end,
 etc) just they must start with new line. Program can't detect tags inside
 text.</li>
 <li>Whole text from markdown file is stored in tag <code>Content</code>.</li>
 </ul>
+<h3>Values of tags</h3>
 <p>Both type of tags can have string, numeric or boolean values. For string and
 numeric value just enter value. String value example:</p>
 <pre><code>-- title: title of page
