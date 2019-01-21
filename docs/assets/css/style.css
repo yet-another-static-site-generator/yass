@@ -1,11 +1,49 @@
 * {
-   background: #EEEEEE;
-}
-
-h2 {
-   text-align: center;
+   background: #bbbbbb;
+   margin: auto;
+   width: 95%;
+   font-family: Verdana, serif;
+	line-height: 1.5;
 }
 
 a {
-   color: #8F14e4;
+   color: #073642;
+}
+
+a:hover {
+   color: red;
+}
+
+header {
+   text-align: center;
+   border-bottom: 1px dashed;
+   background: #00bcd4;
+   border-radius: 10px;
+}
+
+header * {
+   background: #00bcd4;
+}
+
+h2 {
+   text-align: center
+}
+
+footer {
+   text-align: center;
+   font-size: small;
+   border-top: 1px dashed;
+}
+
+code {
+   font: 0.95em Monaco, Courier, Monospace;
+   background: #333333;
+   color: white;
+   border-radius: 5px;
+   font-weight: bold;
+}
+
+pre {
+   background: #333333;
+   border-radius: 5px;
 }
