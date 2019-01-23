@@ -14,19 +14,28 @@ a:hover {
    color: red;
 }
 
+h2 {
+   text-align: center;
+}
+
 header {
    text-align: center;
    border-bottom: 1px dashed;
    background: #00bcd4;
    border-radius: 10px;
+   box-shadow:inset 0px 1px 0px 0px #97c4fe;
+   background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);
+   background-color:#3d94f6;
+   border:1px solid #337fed;
+   display:inline-block;
+   color:#ffffff;
+   padding:6px 24px;
+   text-decoration:none;
+   text-shadow:0px 1px 0px #1570cd;
 }
 
 header * {
-   background: #00bcd4;
-}
-
-h2 {
-   text-align: center
+   background: transparent;
 }
 
 footer {
@@ -38,14 +47,14 @@ footer {
 
 code {
    font: 0.95em Monaco, Courier, Monospace;
-   background: #333333;
+   background: #222222;
    color: white;
    border-radius: 5px;
    font-weight: bold;
 }
 
 pre {
-   background: #333333;
+   background: #222222;
    border-radius: 5px;
 }
 
