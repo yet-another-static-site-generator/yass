@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.2] - 2019-01-24
 
 ### Added
 - ChangeLog file
