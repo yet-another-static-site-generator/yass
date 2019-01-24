@@ -42,8 +42,8 @@ To build you need:
 
 Navigate to the main directory(where this file is) to compile:
 
-* Easiest way to compile game is use Gnat Programming Studio included in GNAT.
-  Just run GPS, select *yass.gpr* as a project file and select option
+* Easiest way to compile program is use Gnat Programming Studio included in
+  GNAT. Just run GPS, select *yass.gpr* as a project file and select option
   `Build All`.
 
 * If you prefer using console: in main source code directory type `gprbuild`
@@ -58,20 +58,20 @@ binary file is.
 
 ## Roadmap
 
-### 0.2
-
-- Documentation
-
 ### 0.3
 
 - Stability
 - Optimize site regeneration
+- Arrays of tags
+
+### 0.4
+
+- Server setting (port, file check interval)
 - Scripting with Lua (or Python)
 
 ### Later
 
 - GUI
-- Server setting (port, file check interval)
 - Your proposition(s)
 
 Bartek thindil Jasicki
