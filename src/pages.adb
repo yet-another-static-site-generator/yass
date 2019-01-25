@@ -68,6 +68,12 @@ package body Pages is
                        SiteDirectory & Dir_Separator &
                        YassConfig.LayoutsDirectory & Dir_Separator & Data &
                        To_Unbounded_String(".html");
+                     if not Exists(To_String(Layout)) then
+                        Close(PageFile);
+                        raise LayoutNotFound
+                          with Filename & """. Selected layout file """ &
+                          To_String(Layout);
+                     end if;
                   else
                      StartIndex := Index(Data, ":", 1);
                      AddTag

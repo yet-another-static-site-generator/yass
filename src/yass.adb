@@ -236,6 +236,10 @@ begin
       end;
    end if;
 exception
+   when An_Exception : LayoutNotFound =>
+      Put_Line
+        ("Can't parse """ & Exception_Message(An_Exception) &
+         """ does not exists. Site building has been interrupted.");
    when An_Exception : others =>
       declare
          ErrorFile: File_Type;
