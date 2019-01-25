@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+- Better info about lack of layout file
+
 ## [0.2] - 2019-01-24
 
 ### Added
