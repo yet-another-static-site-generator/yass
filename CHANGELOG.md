@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+### Added
 - Better info about lack of layout file
 - Better info about errors in templates files
 
