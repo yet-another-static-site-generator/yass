@@ -27,6 +27,7 @@ with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with AWS.Server;
 with AWS.Services.Page_Server;
+with AWS.Templates; use AWS.Templates;
 with Config; use Config;
 with Layouts; use Layouts;
 with Pages; use Pages;
@@ -240,6 +241,8 @@ exception
       Put_Line
         ("Can't parse """ & Exception_Message(An_Exception) &
          """ does not exists. Site building has been interrupted.");
+   when An_Exception : Template_Error =>
+      Put_Line(Exception_Message(An_Exception));
    when An_Exception : others =>
       declare
          ErrorFile: File_Type;
