@@ -17,6 +17,8 @@
 
 package Pages is
 
+   LayoutNotFound: exception; -- Raised when selected layout file not exists
+
    procedure CreatePage
      (FileName, Directory: String); -- Create page from selected file
    procedure CopyFile
