@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 - Better info about lack of layout file
 - Better info about errors in templates files
 
+### Fixed
+- Server crash on missing file during site generation
+
 ## [0.2] - 2019-01-24
 
 ### Added
