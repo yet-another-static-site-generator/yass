@@ -17,7 +17,7 @@
 
 package Pages is
 
-   LayoutNotFound: exception; -- Raised when selected layout file not exists
+   GenerateSiteException: exception; -- Raised when generating site was interrupted
 
    procedure CreatePage
      (FileName, Directory: String); -- Create page from selected file

@@ -21,6 +21,7 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Directories; use Ada.Directories;
+with Ada.Exceptions; use Ada.Exceptions;
 with AWS.Templates; use AWS.Templates;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -30,6 +31,7 @@ with Config; use Config;
 package body Pages is
 
    subtype size_t is unsigned_long;
+   LayoutNotFound: exception;
 
    function cmark_markdown_to_html(text: Interfaces.C.Strings.chars_ptr;
       len: size_t; options: int) return Interfaces.C.Strings.chars_ptr;
@@ -39,6 +41,12 @@ package body Pages is
       Layout, Content: Unbounded_String;
       PageFile: File_Type;
       Tags: Translate_Set;
+      OutputDirectory: constant Unbounded_String :=
+        SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
+        Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
+      NewFileName: constant String :=
+        To_String(OutputDirectory) & Dir_Separator &
+        Ada.Directories.Base_Name(FileName) & ".html";
       procedure AddTag(Name, Value: String) is
       begin
          if To_Lower(Value) = "true" then
@@ -102,19 +110,22 @@ package body Pages is
       for I in SiteTags.Iterate loop
          AddTag(Tags_Container.Key(I), SiteTags(I));
       end loop;
-      declare
-         OutputDirectory: constant Unbounded_String :=
-           SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
-           Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
-      begin
-         Create_Path(To_String(OutputDirectory));
-         Create
-           (PageFile, Append_File,
-            To_String(OutputDirectory) & Dir_Separator &
-            Ada.Directories.Base_Name(FileName) & ".html");
-         Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
-         Close(PageFile);
-      end;
+      Create_Path(To_String(OutputDirectory));
+      Create(PageFile, Append_File, NewFileName);
+      Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
+      Close(PageFile);
+   exception
+      when An_Exception : LayoutNotFound =>
+         Put_Line
+           ("Can't parse """ & Exception_Message(An_Exception) &
+            """ does not exists.");
+         raise GenerateSiteException;
+      when An_Exception : Template_Error =>
+         Put_Line(Exception_Message(An_Exception));
+         if Exists(NewFileName) then
+            Delete_File(NewFileName);
+         end if;
+         raise GenerateSiteException;
    end CreatePage;
 
    procedure CopyFile(FileName, Directory: String) is
