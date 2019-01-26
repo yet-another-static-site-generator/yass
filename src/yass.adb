@@ -96,6 +96,10 @@ procedure YASS is
                        Ada.Directories.Base_Name(To_String(SiteFileName)),
                        "html"));
             end if;
+            if not Exists(To_String(SiteFileName)) then
+               NeedRebuildSite := True;
+               return;
+            end if;
             if Modification_Time(Full_Name(Item)) >
               Modification_Time(To_String(SiteFileName)) then
                NeedRebuildSite := True;
