@@ -13,7 +13,7 @@ construction.
 
 * Fast
 
-* Freshly created, unpolished, have a lots of bugs :D
+* Freshly created, unpolished, have a few bugs :D
 
 ## Build from sources
 
@@ -60,14 +60,13 @@ binary file is.
 
 ### 0.3
 
-- Stability
 - Optimize site regeneration
 - Arrays of tags
 
 ### 0.4
 
 - Server setting (port, file check interval)
-- Scripting with Lua (or Python)
+- Scripting with Lua (or Python, or Common Lisp)
 
 ### Later
 
