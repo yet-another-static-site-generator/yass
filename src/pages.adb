@@ -123,6 +123,7 @@ package body Pages is
       when An_Exception : Template_Error =>
          Put_Line(Exception_Message(An_Exception));
          if Exists(NewFileName) then
+            Close(PageFile);
             Delete_File(NewFileName);
          end if;
          raise GenerateSiteException;
