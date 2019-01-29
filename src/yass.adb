@@ -34,7 +34,7 @@ with Pages; use Pages;
 procedure YASS is
    Version: constant String := "0.3";
 
-   procedure BuildSite(DirectoryName: String) is
+   function BuildSite(DirectoryName: String) return Boolean is
       procedure Build(Name: String) is
          procedure ProcessFiles(Item: Directory_Entry_Type) is
          begin
@@ -68,6 +68,10 @@ procedure YASS is
       end Build;
    begin
       Build(DirectoryName);
+      return True;
+   exception
+      when GenerateSiteException =>
+         return False;
    end BuildSite;
 
    task MonitorSite is
@@ -130,8 +134,9 @@ procedure YASS is
             NeedRebuildSite := False;
             MonitorDirectory(To_String(SiteDirectory));
             if NeedRebuildSite then
-               BuildSite(To_String(SiteDirectory));
-               Put_Line("Site was rebuild.");
+               if BuildSite(To_String(SiteDirectory)) then
+                  Put_Line("Site was rebuild.");
+               end if;
             end if;
             delay 5.0;
          end loop;
@@ -198,8 +203,9 @@ begin
          return;
       end if;
       ParseConfig(Current_Directory & Dir_Separator & Argument(2));
-      BuildSite(Current_Directory & Dir_Separator & Argument(2));
-      Put_Line("Site was build.");
+      if BuildSite(Current_Directory & Dir_Separator & Argument(2)) then
+         Put_Line("Site was build.");
+      end if;
    elsif Argument(1) = "server" then
       if Argument_Count < 2 then
          Put_Line
