@@ -1,8 +1,8 @@
 YASS - Yet Another Static Site (Generator)
 
 As name says, it is static site generator written in Ada. It is *headless*
-application (no UI yet). At this moment documentation is under
-construction.
+application (no user interface). The program documentation is included in
+distribution and available [online](https://thindil.github.io/yass/).
 
 ## Features
 
@@ -49,12 +49,19 @@ Navigate to the main directory(where this file is) to compile:
 * If you prefer using console: in main source code directory type `gprbuild`
   for debug mode build or for release mode: `gprbuild -XMode=release`.
 
+**Note:** If you want to move the program around, compile it in release mode. In
+debug mode the program may have problems with finding all dependencies.
+
 ## Running program
 
-### Linux (probably MacOS too)
+### Linux
 
 To see all available options, type in console `./yass help` in directory where
 binary file is.
+
+If you use downloaded and compiled version of program and you don't have
+installed *libcmark* in your system, run program by script `yass.sh` instead
+of `yass`.
 
 ## Roadmap
 
@@ -70,7 +77,6 @@ binary file is.
 
 ### Later
 
-- GUI
 - Your proposition(s)
 
 Bartek thindil Jasicki
