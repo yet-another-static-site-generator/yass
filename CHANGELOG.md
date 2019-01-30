@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 - Better info about lack of layout file
 - Better info about errors in templates files
 
+### Changed
+- Updated README.md
+
 ### Fixed
 - Server crash on missing file during site generation
 - Server crash on error in template file
