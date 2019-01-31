@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Updated README.md
+- Regenerate only needed files not whole site
 
 ### Fixed
 - Server crash on missing file during site generation
