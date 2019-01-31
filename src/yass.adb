@@ -79,7 +79,7 @@ procedure YASS is
    end MonitorSite;
 
    task body MonitorSite is
-      NeedRebuildSite: Boolean;
+      SiteRebuild: Boolean;
       procedure MonitorDirectory(Name: String) is
          procedure ProcessFiles(Item: Directory_Entry_Type) is
             SiteFileName: Unbounded_String :=
@@ -101,12 +101,23 @@ procedure YASS is
                        "html"));
             end if;
             if not Exists(To_String(SiteFileName)) then
-               NeedRebuildSite := True;
-               return;
+               if Extension(Simple_Name(Item)) = "md" then
+                  CreatePage(Full_Name(Item), Name);
+               else
+                  CopyFile(Full_Name(Item), Name);
+               end if;
+               Put_Line("File: " & To_String(SiteFileName) & " was added.");
+               SiteRebuild := True;
             end if;
             if Modification_Time(Full_Name(Item)) >
               Modification_Time(To_String(SiteFileName)) then
-               NeedRebuildSite := True;
+               if Extension(Simple_Name(Item)) = "md" then
+                  CreatePage(Full_Name(Item), Name);
+               else
+                  CopyFile(Full_Name(Item), Name);
+               end if;
+               Put_Line("File: " & To_String(SiteFileName) & " was updated.");
+               SiteRebuild := True;
             end if;
          end ProcessFiles;
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
@@ -126,19 +137,18 @@ procedure YASS is
          Search
            (Name, "", (Directory => True, others => False),
             ProcessDirectories'Access);
+      exception
+         when GenerateSiteException =>
+            Put_Line("Site rebuilding has been interrupted.");
       end MonitorDirectory;
    begin
       select
          accept Start;
          loop
-            NeedRebuildSite := False;
+            SiteRebuild := False;
             MonitorDirectory(To_String(SiteDirectory));
-            if NeedRebuildSite then
-               if BuildSite(To_String(SiteDirectory)) then
-                  Put_Line("Site was rebuild.");
-               else
-                  Put_Line("Site rebuilding has been interrupted.");
-               end if;
+            if SiteRebuild then
+               Put_Line("Site was rebuild.");
             end if;
             delay 5.0;
          end loop;
@@ -155,13 +165,16 @@ procedure YASS is
       end if;
       if Exists(Current_Directory & Dir_Separator & Argument(2)) = Exist then
          if not Exist then
-            Put_Line("Directory with that name not exists, please specify existing site directory.");
+            Put_Line
+              ("Directory with that name not exists, please specify existing site directory.");
          else
-            Put_Line("Directory with that name exists, please specify another.");
+            Put_Line
+              ("Directory with that name exists, please specify another.");
          end if;
          return False;
       end if;
-      if not Exist and not Exists
+      if not Exist and
+        not Exists
           (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
            "site.cfg") then
          Put_Line
