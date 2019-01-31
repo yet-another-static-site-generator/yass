@@ -145,13 +145,32 @@ procedure YASS is
       end select;
    end MonitorSite;
 
+   function ValidArguments(Message: String; Exist: Boolean) return Boolean is
+   begin
+      if Argument_Count < 2 then
+         Put_Line("Please specify directory name " & Message);
+         return False;
+      end if;
+      if Exists(Current_Directory & Dir_Separator & Argument(2)) = Exist then
+         if not Exist then
+            Put_Line("Directory with that name not exists, please specify existing site directory.");
+         else
+            Put_Line("Directory with that name exists, please specify another.");
+         end if;
+         return False;
+      end if;
+      if not Exist and not Exists
+          (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
+           "site.cfg") then
+         Put_Line
+           ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
+         return False;
+      end if;
+      return True;
+   end ValidArguments;
+
 begin
-   if Argument_Count < 1 then
-      Put_Line
-        ("Please specify what you want to do. To see possible actions, type ""yass help""");
-      return;
-   end if;
-   if Argument(1) = "help" then
+   if Argument_Count < 1 or else Argument(1) = "help" then
       Put_Line("Possible actions:");
       Put_Line("help - show this screen and exit");
       Put_Line("version - show program version and exit");
@@ -162,13 +181,7 @@ begin
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
    elsif Argument(1) = "create" then
-      if Argument_Count < 2 then
-         Put_Line
-           ("Please specify directory name where new page will be created.");
-         return;
-      end if;
-      if Exists(Current_Directory & Dir_Separator & Argument(2)) then
-         Put_Line("Directory with that name exists, please specify another.");
+      if not ValidArguments("where new page will be created.", True) then
          return;
       end if;
       Create_Path
@@ -185,21 +198,7 @@ begin
          Argument(2) & Dir_Separator &
          "site.cfg"" file to set data for your new site.");
    elsif Argument(1) = "build" then
-      if Argument_Count < 2 then
-         Put_Line
-           ("Please specify directory name from where page will be created.");
-         return;
-      end if;
-      if not Exists(Current_Directory & Dir_Separator & Argument(2)) then
-         Put_Line
-           ("Directory with that name not exists, please specify existing directory.");
-         return;
-      end if;
-      if not Exists
-          (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
-           "site.cfg") then
-         Put_Line
-           ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
+      if not ValidArguments("from where page will be created.", False) then
          return;
       end if;
       ParseConfig(Current_Directory & Dir_Separator & Argument(2));
@@ -207,21 +206,7 @@ begin
          Put_Line("Site was build.");
       end if;
    elsif Argument(1) = "server" then
-      if Argument_Count < 2 then
-         Put_Line
-           ("Please specify directory name from where site will be served.");
-         return;
-      end if;
-      if not Exists(Current_Directory & Dir_Separator & Argument(2)) then
-         Put_Line
-           ("Directory with that name not exists, please specify existing directory.");
-         return;
-      end if;
-      if not Exists
-          (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
-           "site.cfg") then
-         Put_Line
-           ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
+      if not ValidArguments("from where site will be served.", False) then
          return;
       end if;
       declare
@@ -276,6 +261,6 @@ exception
          Put_Line(ErrorFile, To_String(ErrorText));
          Close(ErrorFile);
          Put_Line
-           ("Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://github.com/thindil/yass/issues (or if you prefer, on mail thindil@laeran.pl) and attach (if possible) file 'error.log' (should be in this same directory where this file is).");
+           ("Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://github.com/thindil/yass/issues (or if you prefer, on mail thindil@laeran.pl) and attach (if possible) file 'error.log' (should be in this same directory).");
       end;
 end YASS;
