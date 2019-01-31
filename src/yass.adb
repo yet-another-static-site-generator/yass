@@ -136,6 +136,8 @@ procedure YASS is
             if NeedRebuildSite then
                if BuildSite(To_String(SiteDirectory)) then
                   Put_Line("Site was rebuild.");
+               else
+                  Put_Line("Site rebuilding has been interrupted.");
                end if;
             end if;
             delay 5.0;
@@ -204,6 +206,8 @@ begin
       ParseConfig(Current_Directory & Dir_Separator & Argument(2));
       if BuildSite(Current_Directory & Dir_Separator & Argument(2)) then
          Put_Line("Site was build.");
+      else
+         Put_Line("Site building has been interrupted.");
       end if;
    elsif Argument(1) = "server" then
       if not ValidArguments("from where site will be served.", False) then
@@ -231,8 +235,6 @@ begin
       end;
    end if;
 exception
-   when GenerateSiteException =>
-      Put_Line("Site building has been interrupted.");
    when An_Exception : others =>
       declare
          ErrorFile: File_Type;
