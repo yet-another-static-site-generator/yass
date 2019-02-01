@@ -67,7 +67,6 @@ of `yass`.
 
 ### 0.3
 
-- Optimize site regeneration
 - Arrays of tags
 
 ### 0.4
