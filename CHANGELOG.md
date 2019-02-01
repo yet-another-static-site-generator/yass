@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Server crash on missing file during site generation
 - Server crash on error in template file
+- Crash on comment in markdown file
 
 ## [0.2] - 2019-01-24
 
