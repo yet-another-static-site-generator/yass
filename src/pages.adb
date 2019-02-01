@@ -84,9 +84,11 @@ package body Pages is
                      end if;
                   else
                      StartIndex := Index(Data, ":", 1);
-                     AddTag
-                       (Slice(Data, 4, StartIndex - 1),
-                        Slice(Data, StartIndex + 2, Length(Data)));
+                     if StartIndex > 0 then
+                        AddTag
+                          (Slice(Data, 4, StartIndex - 1),
+                           Slice(Data, StartIndex + 2, Length(Data)));
+                     end if;
                   end if;
                else
                   Append(Content, Data);
