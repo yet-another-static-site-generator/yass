@@ -151,4 +151,35 @@ package body Pages is
       Close(IndexFile);
    end CreateEmptyIndexFile;
 
+   function GetLayoutName(FileName: String) return String is
+      PageFile: File_Type;
+      Data, Layout: Unbounded_String;
+   begin
+      Open(PageFile, In_File, FileName);
+      while not End_Of_File(PageFile) loop
+         Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
+         if Length(Data) > 2 then
+            if Slice(Data, 1, 3) = "-- " then
+               if Index(Data, "layout:", 1) > 0 then
+                  Data := Unbounded_Slice(Data, 12, Length(Data));
+                  Layout :=
+                    SiteDirectory & Dir_Separator &
+                    YassConfig.LayoutsDirectory & Dir_Separator & Data &
+                    To_Unbounded_String(".html");
+                  if not Exists(To_String(Layout)) then
+                     Close(PageFile);
+                     raise LayoutNotFound
+                       with Filename & """. Selected layout file """ &
+                       To_String(Layout);
+                  end if;
+                  Close(PageFile);
+                  return To_String(Layout);
+               end if;
+            end if;
+         end if;
+      end loop;
+      Close(PageFile);
+      return "";
+   end GetLayoutName;
+
 end Pages;
