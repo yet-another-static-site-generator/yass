@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Better info about lack of layout file
 - Better info about errors in templates files
+- Server monitor changes in layout files too
 
 ### Changed
 - Updated README.md
