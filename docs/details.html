@@ -21,16 +21,16 @@
 project. It will be the name of directory too. This command create the
 directory with the content:</p>
 <pre><code>[ProjectName]
-  |-layouts
+  |-_layouts
      |-default.html
-  |-output
+  |-_output
   |-index.md
   |-site.cfg
 </code></pre>
 <ul>
-<li>Directory <em>layouts</em> contains Ada Web Server templates used to generate the
+<li>Directory <em>_layouts</em> contains Ada Web Server templates used to generate the
 site.</li>
-<li>Directory <em>output</em> is the directory where generated site will be stored.</li>
+<li>Directory <em>_output</em> is the directory where generated site will be stored.</li>
 <li>File <em>index.md</em> is empty Markdown file which will be later main page of the
 site.</li>
 <li>File <em>site.cfg</em> is configuration file of project.</li>
@@ -40,19 +40,19 @@ site.</li>
 is <code>./yass build [ProjectName]</code> where <code>[ProjectName]</code> is name of your site
 project. It will convert any not excluded file with extension <code>.md</code> to
 HTML file, apply layout to it and move with all others, not excluded files
-to the output directory (by default it is <em>output</em> directory in <code>[ProjectName]</code>
+to the output directory (by default it is <em>_output</em> directory in <code>[ProjectName]</code>
 directory). This command preserve structure of directories and files in
 your project. Thus if you create the directory structure like this:</p>
 <pre><code>[ProjectName]
-  |-layouts
+  |-_layouts
      |-default.html
-  |-output
+  |-_output
   |-index.md
   |-site.cfg
   |-images
      |-newimage.png
 </code></pre>
-<p>Your new site will be have that directory structure (inside the output
+<p>Your new site will be have that directory structure (inside the <em>_output</em>
 directory):</p>
 <pre><code>index.html
 images
@@ -65,7 +65,9 @@ project. This will start simple web server at <em>http://localhost:8888/</em> to
 which you can point your web browser to preview the site. Additionally, the
 program will be monitoring every 5 seconds your site project directory for
 changes to files. If any file will be changed during server work, it will
-regenerate it.</p>
+regenerate it. If you add any new file, it will be added to the site output
+directory. If you change any layout file from layouts directory all HTML
+files which use this layout (directly, not as included) will be updated too.</p>
 <h3>Limitations</h3>
 <ul>
 <li>At this moment, when you browsing your project, you must enter valid address
@@ -85,7 +87,7 @@ commands. To run it, type in directory where the file <code>yass</code> is <code
             <div id="center"><a href="index.html" class="button">Index</a></div>
       </div>
       <footer>
-         <p>&copy; 2019 Bartek thindil Jasicki. Generated: 2019-02-01 10:02:15 with <a href="https://github.com/thindil/yass">Yass</a></p>
+         <p>&copy; 2019 Bartek thindil Jasicki. Generated: 2019-02-02 13:51:39 with <a href="https://github.com/thindil/yass">Yass</a></p>
       </footer>
    </body>
 </html>
