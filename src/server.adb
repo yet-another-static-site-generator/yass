@@ -55,14 +55,19 @@ package body Server is
                end if;
                Put_Line("File: " & To_String(SiteFileName) & " was added.");
                SiteRebuild := True;
-            end if;
-            if Modification_Time(Full_Name(Item)) >
-              Modification_Time(To_String(SiteFileName)) then
-               if Extension(Simple_Name(Item)) = "md" then
+            elsif Extension(Simple_Name(Item)) = "md" then
+               if Modification_Time(Full_Name(Item)) >
+                 Modification_Time(To_String(SiteFileName)) or
+                 Modification_Time(GetLayoutName(Full_Name(Item))) >
+                   Modification_Time(To_String(SiteFileName)) then
                   CreatePage(Full_Name(Item), Name);
-               else
-                  CopyFile(Full_Name(Item), Name);
+                  Put_Line
+                    ("File: " & To_String(SiteFileName) & " was updated.");
+                  SiteRebuild := True;
                end if;
+            elsif Modification_Time(Full_Name(Item)) >
+              Modification_Time(To_String(SiteFileName)) then
+               CopyFile(Full_Name(Item), Name);
                Put_Line("File: " & To_String(SiteFileName) & " was updated.");
                SiteRebuild := True;
             end if;

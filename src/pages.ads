@@ -26,5 +26,8 @@ package Pages is
       Directory: String); -- Copy file to proper location in site output directory
    procedure CreateEmptyIndexFile
      (DirectoryName: String); -- Create empty index file with default tags
+   function GetLayoutName
+     (FileName: String)
+     return String; -- Get name of layout used in selected page
 
 end Pages;
