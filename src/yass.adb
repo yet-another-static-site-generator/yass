@@ -164,6 +164,9 @@ begin
          abort MonitorSite;
          Put_Line("done.");
       end;
+   else
+      Put_Line
+        ("Unknown command. Please enter ""help"" as argument for program to get full list of available commands.");
    end if;
 exception
    when An_Exception : others =>
