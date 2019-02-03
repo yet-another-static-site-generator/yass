@@ -19,7 +19,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with GNAT.String_Split; use GNAT.String_Split;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with AWS.Templates; use AWS.Templates;
 
 package body Config is
 
@@ -57,6 +56,14 @@ package body Config is
                for I in 1 .. Slice_Count(Tokens) loop
                   YassConfig.ExcludedFiles.Append(Slice(Tokens, I));
                end loop;
+            elsif Value = To_Unbounded_String("[]") then
+               TableTags_Container.Include
+                 (GlobalTableTags, To_String(FieldName), +"");
+               Clear(GlobalTableTags(To_String(FieldName)));
+            elsif TableTags_Container.Contains
+                (GlobalTableTags, To_String(FieldName)) then
+               GlobalTableTags(To_String(FieldName)) :=
+                 GlobalTableTags(To_String(FieldName)) & Value;
             else
                Tags_Container.Include
                  (SiteTags, To_String(FieldName), To_String(Value));
