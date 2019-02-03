@@ -65,14 +65,15 @@ of `yass`.
 
 ## Roadmap
 
-### 0.3
-
-- Arrays of tags
-
 ### 0.4
 
 - Server setting (port, file check interval)
 - Scripting with Lua (or Python, or Common Lisp)
+
+### 0.5
+
+- Generating sitemaps
+- Unit tests
 
 ### Later
 
