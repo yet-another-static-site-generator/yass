@@ -1,12 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.3] - 2019-02-03
 
 ### Added
 - Better info about lack of layout file
 - Better info about errors in templates files
 - Server monitor changes in layout files too
+- Composite tags
 
 ### Changed
 - Updated README.md
