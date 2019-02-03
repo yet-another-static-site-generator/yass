@@ -19,6 +19,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Containers.Indefinite_Vectors;
 with Ada.Strings.Hash;
+with AWS.Templates; use AWS.Templates;
 
 package Config is
 
@@ -36,6 +37,10 @@ package Config is
       String, Ada.Strings.Hash, "=");
    SiteTags: Tags_Container.Map; -- Site tags (like title, author, etc)
    SiteDirectory: Unbounded_String; -- Directory where site files are
+   package TableTags_Container is new Ada.Containers.Indefinite_Hashed_Maps
+     (String, Vector_Tag, Ada.Strings.Hash, "=");
+   GlobalTableTags: TableTags_Container
+     .Map; -- Global table tags, used in @@TABLE@@ statement
 
    procedure CreateConfig
      (DirectoryName: String); -- Create default config in selected directory

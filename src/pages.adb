@@ -47,12 +47,18 @@ package body Pages is
       NewFileName: constant String :=
         To_String(OutputDirectory) & Dir_Separator &
         Ada.Directories.Base_Name(FileName) & ".html";
+      PageTableTags: TableTags_Container.Map;
       procedure AddTag(Name, Value: String) is
       begin
          if To_Lower(Value) = "true" then
             Insert(Tags, Assoc(Name, True));
          elsif To_Lower(Value) = "false" then
             Insert(Tags, Assoc(Name, False));
+         elsif Value = "[]" then
+            TableTags_Container.Include(PageTableTags, Name, +"");
+            Clear(PageTableTags(Name));
+         elsif TableTags_Container.Contains(PageTableTags, Name) then
+            PageTableTags(Name) := PageTableTags(Name) & Value;
          else
             Insert(Tags, Assoc(Name, Integer'Value(Value)));
          end if;
@@ -111,6 +117,12 @@ package body Pages is
                   0))));
       for I in SiteTags.Iterate loop
          AddTag(Tags_Container.Key(I), SiteTags(I));
+      end loop;
+      for I in PageTableTags.Iterate loop
+         Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
+      end loop;
+      for I in GlobalTableTags.Iterate loop
+         Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
       end loop;
       Create_Path(To_String(OutputDirectory));
       Create(PageFile, Append_File, NewFileName);
