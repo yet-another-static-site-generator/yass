@@ -53,6 +53,28 @@ numeric value just enter value. String value example:</p>
 Example:</p>
 <pre><code>-- havetitle: true
 </code></pre>
+<h3>Composite tags</h3>
+<p>Composite tags are tags with a few values (like arrays, tuples or vectors in
+programming). They can be declared as global or per page. At this moment they
+can have only string values. Before they can be set, they must be initialized
+by giving them value <code>[]</code>. For example, global composite tags in <em>site.cfg</em>
+file:</p>
+<pre><code>summary = []
+</code></pre>
+<p>For selected page, like normal local (page) tags:</p>
+<pre><code>-- paragraphs: []
+</code></pre>
+<p>Then, like proper tags, add values to it. Example for global tag above:</p>
+<pre><code>summary = some summary
+summary = and another summary
+</code></pre>
+<p>And for local (page) tags:</p>
+<pre><code>-- paragraphs: some short text
+-- paragraphs: another short text
+</code></pre>
+<p>Main usage of composite tags is <a href="http://docs.adacore.com/aws-docs/templates_parser/template_statements.html#table-statement">TABLE statement</a>
+inside templates. All rules which applies to the normal template tags also
+apply to composite tags</p>
 <h2>Using tags inside templates files</h2>
 <p>To use any tags inside template file you must surround selected tag with <code>{%</code>
 and <code>%}</code>. For example, to get value of tag <code>Content</code> add to template file:</p>
@@ -80,7 +102,7 @@ to end a tag (instead of <code>_@</code>).</p>
             <div id="center"><a href="index.html" class="button">Index</a></div>
       </div>
       <footer>
-         <p>&copy; 2019 Bartek thindil Jasicki. Generated: 2019-01-23 22:57:51 with <a href="https://github.com/thindil/yass">Yass</a></p>
+         <p>&copy; 2019 Bartek thindil Jasicki. Generated: 2019-02-03 13:15:19 with <a href="https://github.com/thindil/yass">Yass</a></p>
       </footer>
    </body>
 </html>
