@@ -27,9 +27,26 @@ package body Config is
    begin
       Create
         (ConfigFile, Append_File, DirectoryName & Dir_Separator & "site.cfg");
+      Put_Line
+        (ConfigFile,
+         "# Directory in which will be placed HTML files with site layout (templates). Must be relative to project directory. Required.");
       Put_Line(ConfigFile, "LayoutsDirectory = _layouts");
+      Put_Line
+        (ConfigFile,
+         " Directory in which will be placed generated site. Must be relative to project directory. Required.");
       Put_Line(ConfigFile, "OutputDirectory = _output");
-      Put_Line(ConfigFile, "# Site tags");
+      Put_Line
+        (ConfigFile,
+         "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
+      Put_Line
+        (ConfigFile,
+         "# First 3 types of tags are in Name = Value scheme. For strings it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always fall back to string value.");
+      Put_Line
+        (ConfigFile,
+         "# Composite tags first must be initialized with Name = [] then just add as many as you want values to it by Name = Value scheme.");
+      Put_Line
+        (ConfigFile,
+         "# For more informations about site.cfg file please check program documentation.");
       Put_Line(ConfigFile, "Name = New Site");
       Close(ConfigFile);
    end CreateConfig;
