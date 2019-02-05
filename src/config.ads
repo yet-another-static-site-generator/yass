@@ -41,6 +41,7 @@ package Config is
      (String, Vector_Tag, Ada.Strings.Hash, "=");
    GlobalTableTags: TableTags_Container
      .Map; -- Global table tags, used in @@TABLE@@ statement
+   InvalidConfigData: exception; -- Raised when invalid data found in site config file
 
    procedure CreateConfig
      (DirectoryName: String); -- Create default config in selected directory
