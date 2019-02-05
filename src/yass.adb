@@ -169,6 +169,10 @@ begin
         ("Unknown command. Please enter ""help"" as argument for program to get full list of available commands.");
    end if;
 exception
+   when An_Exception : InvalidConfigData =>
+      Put_Line
+        ("Invalid data in site config file ""site.cfg"". Invalid line:""" &
+         Exception_Message(An_Exception) & """");
    when An_Exception : others =>
       declare
          ErrorFile: File_Type;

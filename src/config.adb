@@ -33,7 +33,7 @@ package body Config is
       Put_Line(ConfigFile, "LayoutsDirectory = _layouts");
       Put_Line
         (ConfigFile,
-         " Directory in which will be placed generated site. Must be relative to project directory. Required.");
+         "# Directory in which will be placed generated site. Must be relative to project directory. Required.");
       Put_Line(ConfigFile, "OutputDirectory = _output");
       Put_Line
         (ConfigFile,
@@ -62,6 +62,9 @@ package body Config is
          RawData := To_Unbounded_String(Encode(Get_Line(ConfigFile)));
          if Length(RawData) > 0 and Element(RawData, 1) /= '#' then
             EqualIndex := Index(RawData, "=");
+            if EqualIndex = 0 then
+               raise InvalidConfigData with To_String(RawData);
+            end if;
             FieldName := Head(RawData, EqualIndex - 2);
             Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
             if FieldName = To_Unbounded_String("LayoutsDirectory") then
