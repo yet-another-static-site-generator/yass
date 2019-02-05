@@ -33,7 +33,7 @@ with Pages; use Pages;
 with Server; use Server;
 
 procedure YASS is
-   Version: constant String := "0.3";
+   Version: constant String := "0.4";
 
    function BuildSite(DirectoryName: String) return Boolean is
       procedure Build(Name: String) is
