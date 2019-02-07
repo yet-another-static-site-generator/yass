@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Help/info to site configuration files
+- Help/info to default empty index.md files
 
 ### Changed
 - Updated README.md
