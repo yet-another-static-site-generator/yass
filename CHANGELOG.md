@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Help/info to site configuration files
 
+### Changed
+- Updated README.md
+
 ### Fixed
 - Crash on invalid data in site config files
 
