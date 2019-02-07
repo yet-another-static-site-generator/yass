@@ -73,7 +73,7 @@ of `yass`.
 ### 0.5
 
 - Generating sitemaps
-- Unit tests
+- Generatig RSS feed
 
 ### Later
 
