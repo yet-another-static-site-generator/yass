@@ -159,7 +159,23 @@ package body Pages is
    begin
       Create
         (IndexFile, Append_File, DirectoryName & Dir_Separator & "index.md");
+      Put_Line
+        (IndexFile,
+         "-- All lines which starts with double minus sign are comments and ignored by program. Unless they have colon sign. Then they are tags definition.");
+      Put_Line
+        (IndexFile,
+         "-- Ada Web Server template which will be used as HTML template for this file. Required for each file");
       Put_Line(IndexFile, "-- layout: default");
+      Put_Line
+        (IndexFile,
+         "-- You may add as many tags as you want and they can be in any place in file, not only at beginning. Tags can be 4 types: strings, boolean, numeric or composite.");
+      Put_Line
+        (IndexFile,
+         "-- First 3 types of tags are in Name: Value scheme. For strings it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always fall back to string value.");
+      Put_Line
+        (IndexFile,
+         "-- Composite tags first must be initialized with Name: [] then just add as many as you want values to it by Name: Value scheme.");
+      Put_Line(IndexFile, "-- For more informations about tags please check program documentation.");
       Close(IndexFile);
    end CreateEmptyIndexFile;
 
