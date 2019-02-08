@@ -62,6 +62,10 @@ program. More informations about using AppImage files you can find here:
 
 https://docs.appimage.org/user-guide/run-appimages.html
 
+If you want to run the program from other directory, you should set the
+environment variable `YASSDIR` to your current directory. Example:
+`export YASSDIR=$(pwd)`.
+
 ## Roadmap
 
 ### 0.4
