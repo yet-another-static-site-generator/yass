@@ -23,6 +23,7 @@ with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with AWS.Server;
@@ -81,7 +82,7 @@ procedure YASS is
          Put_Line("Please specify directory name " & Message);
          return False;
       end if;
-      if Exists(Current_Directory & Dir_Separator & Argument(2)) = Exist then
+      if Ada.Directories.Exists(Current_Directory & Dir_Separator & Argument(2)) = Exist then
          if not Exist then
             Put_Line
               ("Directory with that name not exists, please specify existing site directory.");
@@ -92,7 +93,7 @@ procedure YASS is
          return False;
       end if;
       if not Exist and
-        not Exists
+        not Ada.Directories.Exists
           (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
            "site.cfg") then
          Put_Line
@@ -103,6 +104,9 @@ procedure YASS is
    end ValidArguments;
 
 begin
+   if Ada.Environment_Variables.Exists("YASSDIR") then
+      Set_Directory(Value("YASSDIR"));
+   end if;
    if Argument_Count < 1 or else Argument(1) = "help" then
       Put_Line("Possible actions:");
       Put_Line("help - show this screen and exit");
@@ -178,7 +182,7 @@ exception
          ErrorFile: File_Type;
          ErrorText: Unbounded_String;
       begin
-         if Exists("error.log") then
+         if Ada.Directories.Exists("error.log") then
             Open(ErrorFile, Append_File, "error.log");
          else
             Create(ErrorFile, Append_File, "error.log");
