@@ -57,11 +57,10 @@ debug mode the program may have problems with finding all dependencies.
 ### Linux
 
 To see all available options, type in console `./yass help` in directory where
-binary file is.
+binary file is. It work that same way for downloaded AppImage version of
+program. More informations about using AppImage files you can find here:
 
-If you use downloaded and compiled version of program and you don't have
-installed *libcmark* in your system, run program by script `yass.sh` instead
-of `yass`.
+https://docs.appimage.org/user-guide/run-appimages.html
 
 ## Roadmap
 
