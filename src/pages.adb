@@ -175,7 +175,9 @@ package body Pages is
       Put_Line
         (IndexFile,
          "-- Composite tags first must be initialized with Name: [] then just add as many as you want values to it by Name: Value scheme.");
-      Put_Line(IndexFile, "-- For more informations about tags please check program documentation.");
+      Put_Line
+        (IndexFile,
+         "-- For more informations about tags please check program documentation.");
       Close(IndexFile);
    end CreateEmptyIndexFile;
 
