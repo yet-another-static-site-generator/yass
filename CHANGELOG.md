@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Help/info to site configuration files
 - Help/info to default empty index.md files
+- Option to print license and README.md in terminal
 
 ### Changed
 - Updated README.md
