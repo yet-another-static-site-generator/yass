@@ -111,12 +111,28 @@ begin
       Put_Line("Possible actions:");
       Put_Line("help - show this screen and exit");
       Put_Line("version - show program version and exit");
+      Put_Line("license - show short info about program license");
       Put_Line("create [name] - create new site in ""name"" directory");
       Put_Line("build [name] - build site in ""name"" directory");
       Put_Line
         ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
+   elsif Argument(1) = "license" then
+      Put_Line("Copyright (C) 2019 Bartek thindil Jasicki");
+      New_Line;
+      Put_Line("This program is free software: you can redistribute it and/or modify");
+      Put_Line("it under the terms of the GNU General Public License as published by");
+      Put_Line("the Free Software Foundation, either version 3 of the License, or");
+      Put_Line("(at your option) any later version.");
+      New_Line;
+      Put_Line("This program is distributed in the hope that it will be useful,");
+      Put_Line("but WITHOUT ANY WARRANTY; without even the implied warranty of");
+      Put_Line("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
+      Put_Line("GNU General Public License for more details.");
+      New_Line;
+      Put_Line("You should have received a copy of the GNU General Public License");
+      Put_Line("along with this program.  If not, see <https://www.gnu.org/licenses/>.");
    elsif Argument(1) = "create" then
       if not ValidArguments("where new page will be created.", True) then
          return;
