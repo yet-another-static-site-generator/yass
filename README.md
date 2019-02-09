@@ -49,6 +49,9 @@ Navigate to the main directory(where this file is) to compile:
 * If you prefer using console: in main source code directory type `gprbuild`
   for debug mode build or for release mode: `gprbuild -XMode=release`.
 
+If you want to be able to print content of README.md file to terminal (by
+`readme` program command), copy file README.md to `bin` directory.
+
 **Note:** If you want to move the program around, compile it in release mode. In
 debug mode the program may have problems with finding all dependencies.
 
