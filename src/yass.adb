@@ -35,6 +35,7 @@ with Server; use Server;
 
 procedure YASS is
    Version: constant String := "0.4";
+   BaseDirectory: Unbounded_String;
 
    function BuildSite(DirectoryName: String) return Boolean is
       procedure Build(Name: String) is
@@ -82,7 +83,9 @@ procedure YASS is
          Put_Line("Please specify directory name " & Message);
          return False;
       end if;
-      if Ada.Directories.Exists(Current_Directory & Dir_Separator & Argument(2)) = Exist then
+      if Ada.Directories.Exists
+          (Current_Directory & Dir_Separator & Argument(2)) =
+        Exist then
          if not Exist then
             Put_Line
               ("Directory with that name not exists, please specify existing site directory.");
@@ -104,14 +107,16 @@ procedure YASS is
    end ValidArguments;
 
 begin
+   BaseDirectory := To_Unbounded_String(Current_Directory);
    if Ada.Environment_Variables.Exists("YASSDIR") then
       Set_Directory(Value("YASSDIR"));
    end if;
    if Argument_Count < 1 or else Argument(1) = "help" then
       Put_Line("Possible actions:");
       Put_Line("help - show this screen and exit");
-      Put_Line("version - show program version and exit");
-      Put_Line("license - show short info about program license");
+      Put_Line("version - show the program version and exit");
+      Put_Line("license - show short info about the program license");
+      Put_Line("readme - show content of README file");
       Put_Line("create [name] - create new site in ""name"" directory");
       Put_Line("build [name] - build site in ""name"" directory");
       Put_Line
@@ -121,18 +126,48 @@ begin
    elsif Argument(1) = "license" then
       Put_Line("Copyright (C) 2019 Bartek thindil Jasicki");
       New_Line;
-      Put_Line("This program is free software: you can redistribute it and/or modify");
-      Put_Line("it under the terms of the GNU General Public License as published by");
-      Put_Line("the Free Software Foundation, either version 3 of the License, or");
+      Put_Line
+        ("This program is free software: you can redistribute it and/or modify");
+      Put_Line
+        ("it under the terms of the GNU General Public License as published by");
+      Put_Line
+        ("the Free Software Foundation, either version 3 of the License, or");
       Put_Line("(at your option) any later version.");
       New_Line;
-      Put_Line("This program is distributed in the hope that it will be useful,");
-      Put_Line("but WITHOUT ANY WARRANTY; without even the implied warranty of");
-      Put_Line("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
+      Put_Line
+        ("This program is distributed in the hope that it will be useful,");
+      Put_Line
+        ("but WITHOUT ANY WARRANTY; without even the implied warranty of");
+      Put_Line
+        ("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
       Put_Line("GNU General Public License for more details.");
       New_Line;
-      Put_Line("You should have received a copy of the GNU General Public License");
-      Put_Line("along with this program.  If not, see <https://www.gnu.org/licenses/>.");
+      Put_Line
+        ("You should have received a copy of the GNU General Public License");
+      Put_Line
+        ("along with this program.  If not, see <https://www.gnu.org/licenses/>.");
+   elsif Argument(1) = "readme" then
+      declare
+         ReadmeName: Unbounded_String;
+         ReadmeFile: File_Type;
+      begin
+         if Ada.Environment_Variables.Exists(("APPDIR")) then
+            ReadmeName :=
+              To_Unbounded_String(Value("APPDIR") & "/usr/share/README.md");
+         else
+            ReadmeName :=
+              BaseDirectory & To_Unbounded_String(Dir_Separator & "README.md");
+         end if;
+         if not Ada.Directories.Exists(To_String(ReadmeName)) then
+            Put_Line("Can't find file " & To_String(ReadmeName));
+            return;
+         end if;
+         Open(ReadmeFile, In_File, To_String(ReadmeName));
+         while not End_Of_File(ReadmeFile) loop
+            Put_Line(Get_Line(ReadmeFile));
+         end loop;
+         Close(ReadmeFile);
+      end;
    elsif Argument(1) = "create" then
       if not ValidArguments("where new page will be created.", True) then
          return;
