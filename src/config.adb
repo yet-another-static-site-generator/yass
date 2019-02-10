@@ -17,6 +17,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
+with Ada.Characters.Handling; use Ada.Characters.Handling;
 with GNAT.String_Split; use GNAT.String_Split;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
@@ -35,6 +36,18 @@ package body Config is
         (ConfigFile,
          "# Directory in which will be placed generated site. Must be relative to project directory. Required.");
       Put_Line(ConfigFile, "OutputDirectory = _output");
+      Put_Line
+        (ConfigFile,
+         "# Did program should start web server when monitoring for changes in site. Possible values are true or false (case-insensitive). Required.");
+      Put_Line(ConfigFile, "ServerEnabled = true");
+      Put_Line
+        (ConfigFile,
+         "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work. Required.");
+      Put_Line(ConfigFile, "ServerPort = 8888");
+      Put_Line
+        (ConfigFile,
+         "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :) Required.");
+      Put_Line(ConfigFile, "MonitorInverval = 5");
       Put_Line
         (ConfigFile,
          "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
@@ -76,6 +89,19 @@ package body Config is
                for I in 1 .. Slice_Count(Tokens) loop
                   YassConfig.ExcludedFiles.Append(Slice(Tokens, I));
                end loop;
+            elsif FieldName = To_Unbounded_String("ServerEnabled") then
+               if To_Lower(To_String(Value)) = "true" then
+                  YassConfig.ServerEnabled := True;
+               else
+                  YassConfig.ServerEnabled := False;
+               end if;
+            elsif FieldName = To_Unbounded_String("ServerPort") then
+               YassConfig.ServerPort := Positive'Value(To_String(Value));
+               if YassConfig.ServerPort > 65535 then
+                  raise InvalidConfigData with To_String(RawData);
+               end if;
+            elsif FieldName = To_Unbounded_String("MonitorInterval") then
+               YassConfig.MonitorInterval := Duration'Value(To_String(Value));
             elsif Value = To_Unbounded_String("[]") then
                TableTags_Container.Include
                  (GlobalTableTags, To_String(FieldName), +"");
@@ -98,6 +124,9 @@ package body Config is
       YassConfig.ExcludedFiles.Append(To_String(YassConfig.OutputDirectory));
       SiteDirectory := To_Unbounded_String(DirectoryName);
       Set_Tag_Separators("{%", "%}");
+   exception
+      when others =>
+         raise InvalidConfigData with To_String(RawData);
    end ParseConfig;
 
 end Config;

@@ -31,6 +31,10 @@ package Config is
       LayoutsDirectory: Unbounded_String; -- Path to directory where site layouts are
       ExcludedFiles: Excluded_Container
         .Vector; -- List of excluded files (and directories) from site
+      ServerEnabled: Boolean := True; -- Did web server is enabled
+      ServerPort: Positive := 8888; -- Port on which web server listen
+      MonitorInterval: Duration :=
+        5.0; -- Interval (in seconds) how often program should check for changes in site to regenerate it
    end record;
    YassConfig: ParserConfig; -- Settings for parser
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,

@@ -102,7 +102,7 @@ package body Server is
             if SiteRebuild then
                Put_Line("Site was rebuild.");
             end if;
-            delay 5.0;
+            delay YassConfig.MonitorInterval;
          end loop;
       or
          terminate;

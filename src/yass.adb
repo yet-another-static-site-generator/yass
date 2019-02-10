@@ -206,16 +206,25 @@ begin
          Set_Directory
            (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
             To_String(YassConfig.OutputDirectory));
-         AWS.Server.Start
-           (HTTPServer, "YASS static page server", Port => 8888,
-            Callback => AWS.Services.Page_Server.Callback'Access,
-            Max_Connection => 5);
-         Put_Line
-           ("Server was started. Web address: http://localhost:8888/index.html Press ""Q"" for quit.");
+         if YassConfig.ServerEnabled then
+            AWS.Server.Start
+              (HTTPServer, "YASS static page server",
+               Port => YassConfig.ServerPort,
+               Callback => AWS.Services.Page_Server.Callback'Access,
+               Max_Connection => 5);
+            Put_Line
+              ("Server was started. Web address: http://localhost:8888/index.html Press ""Q"" for quit.");
+         else
+            Put_Line("Started monitoring site changes. Press ""Q"" for quit.");
+         end if;
          MonitorSite.Start;
          AWS.Server.Wait(AWS.Server.Q_Key_Pressed);
-         Put("Shutting down server...");
-         AWS.Server.Shutdown(HTTPServer);
+         if YassConfig.ServerEnabled then
+            Put("Shutting down server...");
+            AWS.Server.Shutdown(HTTPServer);
+         else
+            Put("Stopping monitoring site changes...");
+         end if;
          abort MonitorSite;
          Put_Line("done.");
       end;
