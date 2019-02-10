@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 - Help/info to site configuration files
 - Help/info to default empty index.md files
 - Option to print license and README.md in terminal
+- Option to enable or disable web server
+- Option to set web server port
+- Option to set interval for the program to monitor changes in site
 
 ### Changed
 - Updated README.md
