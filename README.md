@@ -79,7 +79,6 @@ environment variable `YASSDIR` to your current directory. Example:
 
 ### Current
 
-- Server setting (port, file check interval)
 - Scripting with Lua (or Python, or Common Lisp)
 
 ### 0.5
