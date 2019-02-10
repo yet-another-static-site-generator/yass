@@ -69,18 +69,21 @@ images
 <h2>Server mode</h2>
 <p>To run the program in server mode, type in the directory where file <code>yass</code>
 is <code>./yass server [ProjectName]</code> where <code>[ProjectName]</code> is name of your site
-project. This will start simple web server at <em>http://localhost:8888/</em> to
-which you can point your web browser to preview the site. Additionally, the
-program will be monitoring every 5 seconds your site project directory for
-changes to files. If any file will be changed during server work, it will
-regenerate it. If you add any new file, it will be added to the site output
-directory. If you change any layout file from layouts directory all HTML
-files which use this layout (directly, not as included) will be updated too.</p>
+project. If you enabled the web server in <code>site.cfg</code> this will start it
+at <em>http://localhost:[port]/</em> (where <em>[port]</em> is port number set in <code>site.cfg</code>,
+by default it is <em>8888</em>) to which you can point your web browser to preview
+the site. Additionally, the program will be monitoring every <em>X</em> seconds (this
+is set in <code>site.cfg</code> file too, default every 5 seconds) your site project
+directory for changes to files. If any file will be changed during server work,
+it will regenerate it. If you add any new file, it will be added to the site
+output directory. If you change any layout file from layouts directory all
+HTML files which use this layout (directly, not as included) will be updated
+too.</p>
 <h3>Limitations</h3>
 <ul>
 <li>At this moment, when you browsing your project, you must enter valid address
-to the file. Going just to <em>http://localhost:8888/</em> will not works, you must
-enter <em>http://localhost:8888/index.html</em></li>
+to the file. Going just to <em>http://localhost:[port]/</em> will not works, you must
+enter <em>http://localhost:[port]/index.html</em></li>
 <li>Monitoring does not delete files. If you delete one, the program will not
 detect it. You must stop, remove old file manually, then restart the server.</li>
 </ul>
@@ -104,7 +107,7 @@ directory where the file <code>yass</code> is <code>./yass readme</code>.</p>
             <div id="center"><a href="index.html" class="button">Index</a></div>
       </div>
       <footer>
-         <p>&copy; 2019 Bartek thindil Jasicki. Generated: 2019-02-09 07:53:44 with <a href="https://github.com/thindil/yass">Yass</a></p>
+         <p>&copy; 2019 Bartek thindil Jasicki. Generated: 2019-02-10 08:06:06 with <a href="https://github.com/thindil/yass">Yass</a></p>
       </footer>
    </body>
 </html>

@@ -22,7 +22,7 @@ pair must be in one line, neither <code>Key</code> nor <code>Value</code> can't 
 Each line which starts with <code>#</code> is comment, ignored by the program. All
 settings are case-sensitive.</p>
 <h2>Project configuration</h2>
-<p>At this moment here are 2 possible settings for project:</p>
+<p>At this moment here are 5 possible settings for project:</p>
 <ul>
 <li>LayoutDirectory - the path (related to project directory path) where are
 stored files with pages layouts. Standard value for this is setting is
@@ -30,6 +30,15 @@ stored files with pages layouts. Standard value for this is setting is
 <li>OutputDirectory - the path (related to project directory path) where
 generated site will be stored. Standard values for this setting is
 <code>_output</code>.</li>
+<li>ServerEnabled - can have true of false value, case-insensitive. Did command
+<code>server</code> should start web server too or not. Default value is <code>true</code> (start
+the web server).</li>
+<li>ServerPort - any number from 1 to 65535. Port on which the web server will
+be listening. Please remember that using ports below 1025 number require
+root privileges. Default value is <code>8888</code></li>
+<li>MonitorInterval - any positive number. How often (in seconds) the program
+should check for this site changes when working in server mode and
+regenerate the site if needed. Default value is <code>5.0</code>.</li>
 </ul>
 <h2>Project wide (global) tags</h2>
 <p>Project configuration file can contains project wide (global) tags, which can
@@ -43,7 +52,7 @@ section <a href="tags.html">Templates Tags</a>.</p>
             <div id="center"><a href="index.html" class="button">Index</a></div>
       </div>
       <footer>
-         <p>&copy; 2019 Bartek thindil Jasicki. Generated: 2019-02-07 09:53:50 with <a href="https://github.com/thindil/yass">Yass</a></p>
+         <p>&copy; 2019 Bartek thindil Jasicki. Generated: 2019-02-10 08:07:26 with <a href="https://github.com/thindil/yass">Yass</a></p>
       </footer>
    </body>
 </html>
