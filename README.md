@@ -4,6 +4,12 @@ As name says, it is static site generator written in Ada. It is *headless*
 application (no user interface). The program documentation is included in
 distribution and available [online](https://thindil.github.io/yass/).
 
+**Note:** This version of README.md (same as online documentation) is for the
+development version of the program. It may (and probably will be,
+especially now, on beginning of the development) differ from the released
+versions. For documentation for the released version please refer to files
+included in distributed packages.
+
 ## Features
 
 * Support almost infinite amount of custom tags in HTML templates (depends
@@ -71,7 +77,7 @@ environment variable `YASSDIR` to your current directory. Example:
 
 ## Roadmap
 
-### 0.4
+### Current
 
 - Server setting (port, file check interval)
 - Scripting with Lua (or Python, or Common Lisp)
