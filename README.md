@@ -77,14 +77,15 @@ environment variable `YASSDIR` to your current directory. Example:
 
 ## Roadmap
 
-### Current
-
-- Scripting with Lua (or Python, or Common Lisp)
-
 ### 0.5
 
 - Generating sitemaps
 - Generatig RSS feed
+
+### 0.6
+
+- Better web server
+- More configuration options
 
 ### Later
 
