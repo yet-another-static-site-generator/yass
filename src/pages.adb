@@ -22,6 +22,7 @@ with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with AWS.Templates; use AWS.Templates;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -82,7 +83,7 @@ package body Pages is
                        SiteDirectory & Dir_Separator &
                        YassConfig.LayoutsDirectory & Dir_Separator & Data &
                        To_Unbounded_String(".html");
-                     if not Exists(To_String(Layout)) then
+                     if not Ada.Directories.Exists(To_String(Layout)) then
                         Close(PageFile);
                         raise LayoutNotFound
                           with Filename & """. Selected layout file """ &
@@ -128,6 +129,7 @@ package body Pages is
       Create(PageFile, Append_File, NewFileName);
       Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
       Close(PageFile);
+      Set("YASSFILE", NewFileName);
    exception
       when An_Exception : LayoutNotFound =>
          Put_Line
@@ -136,7 +138,7 @@ package body Pages is
          raise GenerateSiteException;
       when An_Exception : Template_Error =>
          Put_Line(Exception_Message(An_Exception));
-         if Exists(NewFileName) then
+         if Ada.Directories.Exists(NewFileName) then
             Close(PageFile);
             Delete_File(NewFileName);
          end if;
@@ -151,6 +153,9 @@ package body Pages is
       Create_Path(To_String(OutputDirectory));
       Copy_File
         (FileName,
+         To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
+      Set
+        ("YASSFILE",
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
    end CopyFile;
 
@@ -199,7 +204,7 @@ package body Pages is
                     SiteDirectory & Dir_Separator &
                     YassConfig.LayoutsDirectory & Dir_Separator & Data &
                     To_Unbounded_String(".html");
-                  if not Exists(To_String(Layout)) then
+                  if not Ada.Directories.Exists(To_String(Layout)) then
                      Close(PageFile);
                      raise LayoutNotFound
                        with Filename & """. Selected layout file """ &
