@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Option to enable or disable web server
 - Option to set web server port
 - Option to set interval for the program to monitor changes in site
+- Ability to extend the program with modules per site
 
 ### Changed
 - Updated README.md
