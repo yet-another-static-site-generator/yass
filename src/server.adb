@@ -107,10 +107,12 @@ package body Server is
    begin
       select
          accept Start;
+         LoadModules("start");
          loop
             SiteRebuild := False;
             MonitorDirectory(To_String(SiteDirectory));
             if SiteRebuild then
+               LoadModules("end");
                Put_Line("Site was rebuild.");
             end if;
             delay YassConfig.MonitorInterval;
