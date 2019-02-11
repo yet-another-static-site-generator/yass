@@ -27,8 +27,12 @@ package Config is
      (Positive, String);
    type ParserConfig is -- Data structure for setting for parser
    record
-      OutputDirectory: Unbounded_String; -- Path to directory with generated site
-      LayoutsDirectory: Unbounded_String; -- Path to directory where site layouts are
+      OutputDirectory: Unbounded_String :=
+        To_Unbounded_String
+          ("_output"); -- Path to directory with generated site
+      LayoutsDirectory: Unbounded_String :=
+        To_Unbounded_String
+          ("_layout"); -- Path to directory where site layouts are
       ExcludedFiles: Excluded_Container
         .Vector; -- List of excluded files (and directories) from site
       ServerEnabled: Boolean := True; -- Did web server is enabled
