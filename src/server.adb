@@ -51,13 +51,13 @@ package body Server is
             end if;
             if not Ada.Directories.Exists(To_String(SiteFileName)) then
                Set("YASSFILE", Full_Name(Item));
-               LoadModules(Name, "pre");
+               LoadModules("pre");
                if Extension(Simple_Name(Item)) = "md" then
                   CreatePage(Full_Name(Item), Name);
                else
                   CopyFile(Full_Name(Item), Name);
                end if;
-               LoadModules(Name, "post");
+               LoadModules("post");
                Put_Line("File: " & To_String(SiteFileName) & " was added.");
                SiteRebuild := True;
             elsif Extension(Simple_Name(Item)) = "md" then
@@ -66,9 +66,9 @@ package body Server is
                  Modification_Time(GetLayoutName(Full_Name(Item))) >
                    Modification_Time(To_String(SiteFileName)) then
                   Set("YASSFILE", Full_Name(Item));
-                  LoadModules(Name, "pre");
+                  LoadModules("pre");
                   CreatePage(Full_Name(Item), Name);
-                  LoadModules(Name, "post");
+                  LoadModules("post");
                   Put_Line
                     ("File: " & To_String(SiteFileName) & " was updated.");
                   SiteRebuild := True;
@@ -76,9 +76,9 @@ package body Server is
             elsif Modification_Time(Full_Name(Item)) >
               Modification_Time(To_String(SiteFileName)) then
                Set("YASSFILE", Full_Name(Item));
-               LoadModules(Name, "pre");
+               LoadModules("pre");
                CopyFile(Full_Name(Item), Name);
-               LoadModules(Name, "post");
+               LoadModules("post");
                Put_Line("File: " & To_String(SiteFileName) & " was updated.");
                SiteRebuild := True;
             end if;

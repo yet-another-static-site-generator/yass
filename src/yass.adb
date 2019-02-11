@@ -47,13 +47,13 @@ procedure YASS is
                return;
             end if;
             Set("YASSFILE", Full_Name(Item));
-            LoadModules(DirectoryName, "pre");
+            LoadModules("pre");
             if Extension(Simple_Name(Item)) = "md" then
                CreatePage(Full_Name(Item), Name);
             else
                CopyFile(Full_Name(Item), Name);
             end if;
-            LoadModules(DirectoryName, "post");
+            LoadModules("post");
          end ProcessFiles;
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin
@@ -74,9 +74,9 @@ procedure YASS is
             ProcessDirectories'Access);
       end Build;
    begin
-      LoadModules(DirectoryName, "start");
+      LoadModules("start");
       Build(DirectoryName);
-      LoadModules(DirectoryName, "end");
+      LoadModules("end");
       return True;
    exception
       when GenerateSiteException =>
