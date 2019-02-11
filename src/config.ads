@@ -32,7 +32,10 @@ package Config is
           ("_output"); -- Path to directory with generated site
       LayoutsDirectory: Unbounded_String :=
         To_Unbounded_String
-          ("_layout"); -- Path to directory where site layouts are
+          ("_layouts"); -- Path to directory where site layouts are
+      ModulesDirectory: Unbounded_String :=
+        To_Unbounded_String
+          ("_modules"); -- Path to directory where program modules for this site are
       ExcludedFiles: Excluded_Container
         .Vector; -- List of excluded files (and directories) from site
       ServerEnabled: Boolean := True; -- Did web server is enabled
