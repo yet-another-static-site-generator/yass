@@ -24,7 +24,7 @@ with Config; use Config;
 
 package body Modules is
 
-   procedure LoadModules(DirectoryName, State: String) is
+   procedure LoadModules(State: String) is
       procedure RunModule(Item: Directory_Entry_Type) is
          Success: Boolean;
       begin
@@ -38,7 +38,7 @@ package body Modules is
       end RunModule;
    begin
       Search
-        (DirectoryName & Dir_Separator &
+        (To_String(SiteDirectory) & Dir_Separator &
          To_String(YassConfig.ModulesDirectory) & Dir_Separator & State,
          "", (Directory => False, others => True), RunModule'Access);
    end LoadModules;

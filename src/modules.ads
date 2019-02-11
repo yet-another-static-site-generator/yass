@@ -18,7 +18,6 @@
 package Modules is
 
    procedure LoadModules
-     (DirectoryName,
-      State: String); -- Load all modules for selected state: start, pre, post, end
+     (State: String); -- Load all modules for selected state: start, pre, post, end
 
 end Modules;
