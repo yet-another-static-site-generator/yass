@@ -32,6 +32,7 @@ with Config; use Config;
 with Layouts; use Layouts;
 with Pages; use Pages;
 with Server; use Server;
+with Modules; use Modules;
 
 procedure YASS is
    Version: constant String := "0.4";
@@ -45,11 +46,14 @@ procedure YASS is
               Excluded_Container.No_Index then
                return;
             end if;
+            Set("YASSFILE", Full_Name(Item));
+            LoadModules(DirectoryName, "pre");
             if Extension(Simple_Name(Item)) = "md" then
                CreatePage(Full_Name(Item), Name);
             else
                CopyFile(Full_Name(Item), Name);
             end if;
+            LoadModules(DirectoryName, "post");
          end ProcessFiles;
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin
@@ -70,7 +74,9 @@ procedure YASS is
             ProcessDirectories'Access);
       end Build;
    begin
+      LoadModules(DirectoryName, "start");
       Build(DirectoryName);
+      LoadModules(DirectoryName, "end");
       return True;
    exception
       when GenerateSiteException =>
@@ -172,12 +178,20 @@ begin
       if not ValidArguments("where new page will be created.", True) then
          return;
       end if;
-      Create_Path
-        (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
-         "_layouts");
-      Create_Path
-        (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
-         "_output");
+      declare
+         Paths: constant array(Positive range <>) of Unbounded_String :=
+           (To_Unbounded_String("_layouts"), To_Unbounded_String("_output"),
+            To_Unbounded_String("_modules" & Dir_Separator & "start"),
+            To_Unbounded_String("_modules" & Dir_Separator & "pre"),
+            To_Unbounded_String("_modules" & Dir_Separator & "post"),
+            To_Unbounded_String("_modules" & Dir_Separator & "end"));
+      begin
+         for I in Paths'Range loop
+            Create_Path
+              (Current_Directory & Dir_Separator & Argument(2) &
+               Dir_Separator & To_String(Paths(I)));
+         end loop;
+      end;
       CreateConfig(Current_Directory & Dir_Separator & Argument(2));
       CreateLayout(Current_Directory & Dir_Separator & Argument(2));
       CreateEmptyIndexFile(Current_Directory & Dir_Separator & Argument(2));

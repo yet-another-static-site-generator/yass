@@ -38,6 +38,10 @@ package body Config is
       Put_Line(ConfigFile, "OutputDirectory = _output");
       Put_Line
         (ConfigFile,
+         "# Directory in which will be placed program modules used to generate the site. Must be relative to project directory.");
+      Put_Line(ConfigFile, "ModulesDirectory = _modules");
+      Put_Line
+        (ConfigFile,
          "# Did program should start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
       Put_Line(ConfigFile, "ServerEnabled = true");
       Put_Line
@@ -122,6 +126,7 @@ package body Config is
       YassConfig.ExcludedFiles.Append("site.cfg");
       YassConfig.ExcludedFiles.Append(To_String(YassConfig.LayoutsDirectory));
       YassConfig.ExcludedFiles.Append(To_String(YassConfig.OutputDirectory));
+      YassConfig.ExcludedFiles.Append(To_String(YassConfig.ModulesDirectory));
       SiteDirectory := To_Unbounded_String(DirectoryName);
       Set_Tag_Separators("{%", "%}");
    exception

@@ -19,9 +19,11 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Calendar; use Ada.Calendar;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Config; use Config;
 with Pages; use Pages;
+with Modules; use Modules;
 
 package body Server is
 
@@ -47,12 +49,15 @@ package body Server is
                        Ada.Directories.Base_Name(To_String(SiteFileName)),
                        "html"));
             end if;
-            if not Exists(To_String(SiteFileName)) then
+            if not Ada.Directories.Exists(To_String(SiteFileName)) then
+               Set("YASSFILE", Full_Name(Item));
+               LoadModules(Name, "pre");
                if Extension(Simple_Name(Item)) = "md" then
                   CreatePage(Full_Name(Item), Name);
                else
                   CopyFile(Full_Name(Item), Name);
                end if;
+               LoadModules(Name, "post");
                Put_Line("File: " & To_String(SiteFileName) & " was added.");
                SiteRebuild := True;
             elsif Extension(Simple_Name(Item)) = "md" then
@@ -60,14 +65,20 @@ package body Server is
                  Modification_Time(To_String(SiteFileName)) or
                  Modification_Time(GetLayoutName(Full_Name(Item))) >
                    Modification_Time(To_String(SiteFileName)) then
+                  Set("YASSFILE", Full_Name(Item));
+                  LoadModules(Name, "pre");
                   CreatePage(Full_Name(Item), Name);
+                  LoadModules(Name, "post");
                   Put_Line
                     ("File: " & To_String(SiteFileName) & " was updated.");
                   SiteRebuild := True;
                end if;
             elsif Modification_Time(Full_Name(Item)) >
               Modification_Time(To_String(SiteFileName)) then
+               Set("YASSFILE", Full_Name(Item));
+               LoadModules(Name, "pre");
                CopyFile(Full_Name(Item), Name);
+               LoadModules(Name, "post");
                Put_Line("File: " & To_String(SiteFileName) & " was updated.");
                SiteRebuild := True;
             end if;
