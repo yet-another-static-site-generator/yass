@@ -178,6 +178,9 @@ package body Pages is
       Put_Line
         (IndexFile,
          "-- For more informations about tags please check program documentation.");
+      Put_Line
+        (IndexFile,
+         "-- You can without problem delete all this comments from this file.");
       Close(IndexFile);
    end CreateEmptyIndexFile;
 
