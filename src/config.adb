@@ -30,23 +30,23 @@ package body Config is
         (ConfigFile, Append_File, DirectoryName & Dir_Separator & "site.cfg");
       Put_Line
         (ConfigFile,
-         "# Directory in which will be placed HTML files with site layout (templates). Must be relative to project directory. Required.");
+         "# Directory in which will be placed HTML files with site layout (templates). Must be relative to project directory.");
       Put_Line(ConfigFile, "LayoutsDirectory = _layouts");
       Put_Line
         (ConfigFile,
-         "# Directory in which will be placed generated site. Must be relative to project directory. Required.");
+         "# Directory in which will be placed generated site. Must be relative to project directory.");
       Put_Line(ConfigFile, "OutputDirectory = _output");
       Put_Line
         (ConfigFile,
-         "# Did program should start web server when monitoring for changes in site. Possible values are true or false (case-insensitive). Required.");
+         "# Did program should start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
       Put_Line(ConfigFile, "ServerEnabled = true");
       Put_Line
         (ConfigFile,
-         "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work. Required.");
+         "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
       Put_Line(ConfigFile, "ServerPort = 8888");
       Put_Line
         (ConfigFile,
-         "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :) Required.");
+         "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
       Put_Line(ConfigFile, "MonitorInverval = 5");
       Put_Line
         (ConfigFile,
