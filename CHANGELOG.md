@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.4] - 2019-02-12
 
 ### Added
 - Help/info to site configuration files
