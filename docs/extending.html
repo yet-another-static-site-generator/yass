@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width">
+      <link href="assets/css/style.css" rel="stylesheet" />
+      <title>
+            Extending Program |
+         Yet Another Static Site (Generator) Documentation
+      </title>
+   </head>
+   <body>
+      <header>
+         <h1>Yet Another Static Site (Generator) Documentation</h1>
+            <h2>Extending Program</h2>
+      </header>
+      <div id="content">
+      <h2>General informations</h2>
+<p>YASS can be extended with any script or other program which can be run on your
+machine. This mean, for example Bash, Perl, Python scripts or any compiled
+program, anything what can be run from terminal. Second requirement is that
+extension (called <em>module</em>) must have ability to read environment variables,
+because at this moment, this is only one way to communicate between YASS and
+module. Modules are per site not assigned to the program, thus every site can
+have own set of modules to run.</p>
+<h2>Adding modules to the site project</h2>
+<p>After creating a site project, you will have directory <code>_modules</code> (with default
+setting) inside site project directory. This directory have structure:</p>
+<pre><code>[ProjectName]
+  |-_modules
+     |-end
+     |-post
+     |-pre
+     |-start
+</code></pre>
+<p>Subdirectories inside <code>_modules</code> directory are places where all modules should
+be put. They names are that same like the program <em>hooks</em> for running modules
+thus you should not change names for this subdirectories.</p>
+<ul>
+<li>start: put here modules which will be run at beginning of work for commands
+<code>build</code> and <code>server</code>. This modules will be executed only once during build or
+regenerate the site. For command <code>server</code> this happens only after start the
+server.</li>
+<li>pre: put here modules which will be run every time when the program will be
+preparing to manipulate any file, like copying or generating HTML page from
+markdown file.</li>
+<li>post: put here modules which will be run every time when the program will end
+manipulating any file, like copying or generating HTML page from markdown
+file.</li>
+<li>end: put here modules which will be run after finishing files manipulation.
+For command <code>server</code> it will be run after every site regeneration.</li>
+</ul>
+<p>Thus, if you have module <code>test.sh</code> and you want to run it every time when the
+program finish manipulating file, you must put it in path <code>modules/post</code>:</p>
+<pre><code>[ProjectName]
+  |-_modules
+     |-end
+     |-post
+        |-test.sh
+     |-pre
+     |-start
+</code></pre>
+<p>YASS checking for modules only this four subdirectories, don't go recursively
+deeper. Thus, modules can be not only one executable file, but even whole
+directories. In that situation, you will need to provide any &quot;entry point&quot;: one
+executable to run that complicated module.</p>
+<h2>Communication between YASS and modules</h2>
+<p>At this moment here is only one way communication between the program and
+modules, by environment variables. Before running modules in <em>pre</em> hook YASS
+is setting environment variable <code>YASSFILE</code> with full path to currently
+modified file. Before running module in <em>post</em> hook YASS is setting environment
+variable <code>YASSFILE</code> with full path to result file. Additionally, modules have
+access to all other environment variables currently set. For example to
+<code>YASSDIR</code> or <code>APPDIR</code> if you use AppImage version of the program.</p>
+<h2>Example module</h2>
+<p>This is very small example of module, which show name of currently processed
+file.</p>
+<pre><code>#!/bin/sh
+
+echo &quot;Now processing: $YASSFILE&quot;
+</code></pre>
+<p>Save it as <code>showname.sh</code> file, give it permissions to run <code>chmod 744 showname.sh</code> and put it in <code>modules/pre</code> directory in selected site project.</p>
+
+      </div>
+      <div id="container">
+            <div id="left"><a href="pages.html" class="button">&lt;&lt; Page Config</a></div>
+            <div id="right"><a href="changes.html" class="button">Changelog &gt;&gt;</a></div>
+            <div id="center"><a href="index.html" class="button">Index</a></div>
+      </div>
+      <footer>
+         <p>&copy; 2019 Bartek thindil Jasicki. Generated: 2019-02-12 07:52:45 with <a href="https://github.com/yet-another-static-site-generator/yass">Yass</a></p>
+      </footer>
+   </body>
+</html>
