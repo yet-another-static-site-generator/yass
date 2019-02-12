@@ -37,6 +37,11 @@ package body Modules is
          end if;
       end RunModule;
    begin
+      if not Exists
+          (To_String(SiteDirectory) & Dir_Separator &
+           To_String(YassConfig.ModulesDirectory) & Dir_Separator & State) then
+         return;
+      end if;
       Search
         (To_String(SiteDirectory) & Dir_Separator &
          To_String(YassConfig.ModulesDirectory) & Dir_Separator & State,
