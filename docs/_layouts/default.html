@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width">
+      <link href="assets/css/style.css" rel="stylesheet" />
+      <title> 
+         @@IF@@ {%EXIST:title%}
+            {%title%} |
+         @@END_IF@@
+         {%Name%}
+      </title>
+   </head>
+   <body>
+      <header>
+         <h1>{%Name%}</h1>
+         @@IF@@ {%EXIST:title%}
+            <h2>{%title%}</h2>
+         @@END_IF@@
+      </header>
+      <div id="content">
+      {%Content%}
+      </div>
+      <div id="container">
+         @@IF@@ {%EXIST:backlink%}
+            <div id="left"><a href="{%backlink%}" class="button">&lt;&lt; {%backtext%}</a></div>
+         @@END_IF@@
+         @@IF@@ {%EXIST:nextlink%}
+            <div id="right"><a href="{%nextlink%}" class="button">{%nexttext%} &gt;&gt;</a></div>
+         @@END_IF@@
+         @@IF@@ {%indexlink%}
+            <div id="center"><a href="index.html" class="button">Index</a></div>
+         @@ELSE@@
+            <div id="center">&nbsp;</div>
+         @@END_IF@@
+      </div>
+      <footer>
+         <p>&copy; 2019 Bartek thindil Jasicki. Generated: {%NOW%} with <a href="https://github.com/yet-another-static-site-generator/yass">Yass</a></p>
+      </footer>
+   </body>
+</html>
