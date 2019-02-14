@@ -5,7 +5,7 @@
 -- nextlink: details.html
 -- nexttext: Details
 -- indexlink: true
-### Notes
+## Notes
 * All commands should be executed in this same directory where file `yass` is.
 * If you want to run the program from other directory, you should set the
   environment variable `YASSDIR` to your current directory. Example:
