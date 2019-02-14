@@ -35,7 +35,7 @@ with Server; use Server;
 with Modules; use Modules;
 
 procedure YASS is
-   Version: constant String := "0.4";
+   Version: constant String := "0.5";
    BaseDirectory: Unbounded_String;
 
    function BuildSite(DirectoryName: String) return Boolean is
