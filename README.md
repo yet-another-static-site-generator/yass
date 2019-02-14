@@ -97,10 +97,19 @@ AppImage version of the program.
 - Better web server
 - More configuration options
 
-### Later
+### Always
 
 - Your proposition(s)
 
+## Licenses
+
+- Libcmark library distributed with AppImage version of the program is released
+under [few Open Sources licenses](https://github.com/commonmark/cmark/blob/master/COPYING)
+
+https://github.com/commonmark/cmark
+
 ----
+
+As usual, I probably forgot about something important here :)
 
 Bartek thindil Jasicki
