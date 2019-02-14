@@ -3,6 +3,11 @@
 -- backlink: extending.html
 -- backtext: Extending
 -- indexlink: true
+## [Unreleased]
+
+### Changed
+- New documentation look
+
 ## [0.4] - 2019-02-12
 
 ### Added
