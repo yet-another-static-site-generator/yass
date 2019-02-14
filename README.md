@@ -4,15 +4,18 @@ As name says, it is static site generator written in Ada. It is *headless*
 application (no user interface). The program documentation is included in
 distribution.
 
-* Stable (released) version of documentation is available online:
+* Stable (released) version of documentation is available at:
 
 https://yet-another-static-site-generator.github.io/docs/
 
-**Note:** This version of README.md (same as online documentation) is for the
-development version of the program. It may (and probably will be,
-especially now, on beginning of the development) differ from the released
-versions. For documentation for the released version please refer to files
-included in distributed packages.
+* Development (from *master* branch) version of documentation is available at:
+
+https://yet-another-static-site-generator.github.io/docs-dev/
+
+**Note:** This version of README.md is for the development version of the program.
+It may (and probably will be, especially now, on beginning of the development)
+differ from the released versions. For the released version please refer to
+files included in distributed packages.
 
 ## Features
 
@@ -22,6 +25,8 @@ included in distributed packages.
 * Separated tags for whole site and each page
 
 * Fast
+
+* Can be extended with modules written in any script/programming language
 
 * Freshly created, unpolished, have a few bugs :D
 
@@ -60,7 +65,7 @@ Navigate to the main directory(where this file is) to compile:
   for debug mode build or for release mode: `gprbuild -XMode=release`.
 
 If you want to be able to print content of README.md file to terminal (by
-`readme` program command), copy file README.md to `bin` directory.
+`readme` program command), copy file *README.md* to `bin` directory.
 
 **Note:** If you want to move the program around, compile it in release mode. In
 debug mode the program may have problems with finding all dependencies.
@@ -77,11 +82,12 @@ https://docs.appimage.org/user-guide/run-appimages.html
 
 If you want to run the program from other directory, you should set the
 environment variable `YASSDIR` to your current directory. Example:
-`export YASSDIR=$(pwd)`.
+`export YASSDIR=$(pwd)`. You don't need to set it manually when you use
+AppImage version of the program.
 
 ## Roadmap
 
-### 0.5
+### Current
 
 - Generating sitemaps
 - Generatig RSS feed
@@ -94,5 +100,7 @@ environment variable `YASSDIR` to your current directory. Example:
 ### Later
 
 - Your proposition(s)
+
+----
 
 Bartek thindil Jasicki
