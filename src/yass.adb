@@ -279,6 +279,6 @@ exception
          Put_Line(ErrorFile, To_String(ErrorText));
          Close(ErrorFile);
          Put_Line
-           ("Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://github.com/thindil/yass/issues (or if you prefer, on mail thindil@laeran.pl) and attach (if possible) file 'error.log' (should be in this same directory).");
+           ("Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://github.com/yet-another-static-site-generator/yass/issues (or if you prefer, on mail thindil@laeran.pl) and attach (if possible) file 'error.log' (should be in this same directory).");
       end;
 end YASS;
