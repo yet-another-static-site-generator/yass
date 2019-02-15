@@ -5,7 +5,13 @@
 -- nextlink: configuration.html
 -- nexttext: Site Config
 -- indexlink: true
-## Types of tags
+-- details: []
+-- details: Types of tags
+-- details: Using tags inside templates files
+-- detailslink: []
+-- detailslink: types
+-- detailslink: using
+## <a name="types"></a>Types of tags
 
 Here are two types of tags:
 
@@ -79,7 +85,7 @@ Main usage of composite tags is [TABLE statement](http://docs.adacore.com/aws-do
 inside templates. All rules which applies to the normal template tags also
 apply to composite tags
 
-## Using tags inside templates files
+## <a name="using"></a>Using tags inside templates files
 
 To use any tags inside template file you must surround selected tag with `{%`
 and `%}`. For example, to get value of tag `Content` add to template file:

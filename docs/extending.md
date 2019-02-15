@@ -5,7 +5,17 @@
 -- nextlink: changes.html
 -- nexttext: Changelog
 -- indexlink: true
-## General informations
+-- details: []
+-- details: General Informations
+-- details: Adding modules to the site project
+-- details: Communication between YASS and modules
+-- details: Example module
+-- detailslink: []
+-- detailslink: general
+-- detailslink: adding
+-- detailslink: communication
+-- detailslink: example
+## <a name="general"></a>General informations
 
 YASS can be extended with any script or other program which can be run on your
 machine. This mean, for example Bash, Perl, Python scripts or any compiled
@@ -15,7 +25,7 @@ because at this moment, this is only one way to communicate between YASS and
 module. Modules are per site not assigned to the program, thus every site can
 have own set of modules to run.
 
-## Adding modules to the site project
+## <a name="adding"></a>Adding modules to the site project
 
 After creating a site project, you will have directory `_modules` (with default
 setting) inside site project directory. This directory have structure:
@@ -60,7 +70,7 @@ deeper. Thus, modules can be not only one executable file, but even whole
 directories. In that situation, you will need to provide any "entry point": one
 executable to run that complicated module.
 
-## Communication between YASS and modules
+## <a name="communication"></a>Communication between YASS and modules
 
 At this moment here is only one way communication between the program and
 modules, by environment variables. Before running modules in *pre* hook YASS
@@ -70,7 +80,7 @@ variable `YASSFILE` with full path to result file. Additionally, modules have
 access to all other environment variables currently set. For example to
 `YASSDIR` or `APPDIR` if you use AppImage version of the program.
 
-## Example module
+## <a name="example"></a>Example module
 
 This is very small example of module, which show name of currently processed
 file.

@@ -5,14 +5,32 @@
 -- nextlink: tags.html
 -- nexttext: Tags
 -- indexlink: true
-## Notes
+-- details: []
+-- details: Notes
+-- details: Creating new site project
+-- details: Building existing project
+-- details: Server mode
+-- details: Help command
+-- details: Version command
+-- details: License command
+-- details: Readme command
+-- detailslink: []
+-- detailslink: notes
+-- detailslink: create
+-- detailslink: build
+-- detailslink: server
+-- detailslink: help
+-- detailslink: version
+-- detailslink: license
+-- detailslink: readme
+## <a name="notes"></a>Notes
 * If you want to run the program from other directory, you should set the
   environment variable `YASSDIR` to your current directory. Example:
   `export YASSDIR=$(pwd)`.
 * If you use AppImage version of program, replace `yass` in examples with
   name of AppImage file (if not changed, this will be `yass-x86_64.AppImage`).
 
-## Creating new site project
+## <a name="create"></a>Creating new site project
 
 To create new site project type in the directory where the file `yass` is
 `./yass create [ProjectName]` where `[ProjectName]` is the name of your site
@@ -40,7 +58,7 @@ directory with the content:
   site.
 * File *site.cfg* is configuration file of project.
 
-## Building existing project
+## <a name="build"></a>Building existing project
 
 To build any existing site project, type in directory where the file `yass`
 is `./yass build [ProjectName]` where `[ProjectName]` is name of your site
@@ -71,7 +89,7 @@ directory):
     images
       |-newimage.png
 
-## Server mode
+## <a name="server"></a>Server mode
 
 To run the program in server mode, type in the directory where file `yass`
 is `./yass server [ProjectName]` where `[ProjectName]` is name of your site
@@ -93,22 +111,22 @@ too.
 - Monitoring does not delete files. If you delete one, the program will not
   detect it. You must stop, remove old file manually, then restart the server.
 
-## Help command
+## <a name="help"></a>Help command
 
 This command gives only short information about all available program's
 commands. To run it, type in directory where the file `yass` is `./yass help`.
 
-## Version command
+## <a name="version"></a>Version command
 
 This command gives only short information about the program version. To run
 it, type in directory where the file `yass` is `./yass version`.
 
-## License command
+## <a name="license"></a>License command
 
 This command gives only short information about the program license. To run
 it, type in directory where the file `yass` is `./yass license`.
 
-## Readme command
+## <a name="readme"></a>Readme command
 
 This command prints in terminal content of README.md file. To run it, type in
 directory where the file `yass` is `./yass readme`.

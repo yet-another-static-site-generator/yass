@@ -3,12 +3,24 @@
 -- backlink: extending.html
 -- backtext: Extending
 -- indexlink: true
-## [Unreleased]
+-- details: []
+-- details: Unreleased
+-- details: 0.4
+-- details: 0.3
+-- details: 0.2
+-- details: 0.1
+-- detailslink: []
+-- detailslink: unreleased
+-- detailslink: 0.4
+-- detailslink: 0.3
+-- detailslink: 0.2
+-- detailslink: 0.1
+## <a name="unreleased"></a>[Unreleased]
 
 ### Changed
 - New documentation look
 
-## [0.4] - 2019-02-12
+## <a name="0.4"></a>[0.4] - 2019-02-12
 
 ### Added
 - Help/info to site configuration files
@@ -25,7 +37,7 @@
 ### Fixed
 - Crash on invalid data in site config files
 
-## [0.3] -  2019-02-03
+## <a name="0.3"></a>[0.3] -  2019-02-03
 
 ### Added
 - Better info about lack of layout file
@@ -41,7 +53,7 @@
 - Server crash on error in template file
 - Crash on comment in markdown file
 
-## [0.2] - 2019-01-24
+## <a name="0.2"></a>[0.2] - 2019-01-24
 
 ### Added
 - ChangeLog file
@@ -54,5 +66,5 @@
 - Updated README.md
 - Name of content variable from `Contents` to `Content`
 
-## [0.1] - 2019-01-16
+## <a name="0.1"></a>[0.1] - 2019-01-16
 Initial release
