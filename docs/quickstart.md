@@ -21,6 +21,8 @@
 * We assume that you have installed all program requirements, which you can
   find in [installation](installation.html) chapter.
 
+<a href="#top">^ Top</a>
+
 ## <a name="quickstart"></a>Quick start
 
 1. To create NewSite project, type in console `./yass create NewSite`. This
@@ -37,3 +39,5 @@
    to preview site in browser. Additionally, it will be monitoring any changes
    to files inside project. If any file will be modified, it will be
    regenerated.
+
+<a href="#top">^ Top</a>

@@ -21,6 +21,8 @@ pair must be in one line, neither `Key` nor `Value` can't contains new line.
 Each line which starts with `#` is comment, ignored by the program. All
 settings are case-sensitive.
 
+<a href="#top">^ Top</a>
+
 ## <a name="configuration"></a>Project configuration
 
 At this moment here are 5 possible settings for project:
@@ -44,8 +46,12 @@ At this moment here are 5 possible settings for project:
   should check for this site changes when working in server mode and
   regenerate the site if needed. Default value is `5.0`.
 
+<a href="#top">^ Top</a>
+
 ## <a name="tags"></a>Project wide (global) tags
 
 Project configuration file can contains project wide (global) tags, which can
 be used on each page. For more informations about global tags, please see
 section [Templates Tags](tags.html).
+
+<a href="#top">^ Top</a>

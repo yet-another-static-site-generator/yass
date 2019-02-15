@@ -85,6 +85,8 @@ Main usage of composite tags is [TABLE statement](http://docs.adacore.com/aws-do
 inside templates. All rules which applies to the normal template tags also
 apply to composite tags
 
+<a href="#top">^ Top</a>
+
 ## <a name="using"></a>Using tags inside templates files
 
 To use any tags inside template file you must surround selected tag with `{%`
@@ -107,3 +109,5 @@ Especially:
 
 **Note:** In YASS you will use `{%` to start a tag (instead of `@_`) and `%}`
 to end a tag (instead of `_@`).
+
+<a href="#top">^ Top</a>
