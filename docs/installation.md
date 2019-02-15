@@ -20,6 +20,8 @@ If you use downloaded AppImage version of the program, you don't need any
 other dependencies. More informations about using AppImage files you can find
 in [AppImage documentation](https://docs.appimage.org/user-guide/run-appimages.html)
 
+<a href="#top">^ Top</a>
+
 ## <a name="buildprogram"></a>Build from sources
 
 ### Preparations
@@ -53,3 +55,5 @@ If you want to be able to print content of README.md file to terminal (by
 
 **Note:** If you want to move the program around, compile it in release mode. In
 debug mode the program may have problems with finding all dependencies.
+
+<a href="#top">^ Top</a>

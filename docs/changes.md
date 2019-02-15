@@ -20,6 +20,8 @@
 ### Changed
 - New documentation look
 
+<a href="#top">^ Top</a>
+
 ## <a name="0.4"></a>[0.4] - 2019-02-12
 
 ### Added
@@ -37,6 +39,8 @@
 ### Fixed
 - Crash on invalid data in site config files
 
+<a href="#top">^ Top</a>
+
 ## <a name="0.3"></a>[0.3] -  2019-02-03
 
 ### Added
@@ -53,6 +57,8 @@
 - Server crash on error in template file
 - Crash on comment in markdown file
 
+<a href="#top">^ Top</a>
+
 ## <a name="0.2"></a>[0.2] - 2019-01-24
 
 ### Added
@@ -66,5 +72,9 @@
 - Updated README.md
 - Name of content variable from `Contents` to `Content`
 
+<a href="#top">^ Top</a>
+
 ## <a name="0.1"></a>[0.1] - 2019-01-16
 Initial release
+
+<a href="#top">^ Top</a>

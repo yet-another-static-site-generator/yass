@@ -21,9 +21,13 @@ content. They have syntax: `-- [Key]: [Value]`.
   end, etc) just they must start with new line.
 - All settings are case-sensitive.
 
-## <a name="configuration">Page configuration
+<a href="#top">^ Top</a>
+
+## <a name="configuration"></a>Page configuration
 
 At this moment is available only one setting for each page:
 
 - layout - the name of file (without extension) which will be used as template
   for the page. This must be existing file from the project layouts directory.
+
+<a href="#top">^ Top</a>

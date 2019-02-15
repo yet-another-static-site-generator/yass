@@ -30,6 +30,8 @@
 * If you use AppImage version of program, replace `yass` in examples with
   name of AppImage file (if not changed, this will be `yass-x86_64.AppImage`).
 
+<a href="#top">^ Top</a>
+
 ## <a name="create"></a>Creating new site project
 
 To create new site project type in the directory where the file `yass` is
@@ -57,6 +59,8 @@ directory with the content:
 * File *index.md* is empty Markdown file which will be later main page of the
   site.
 * File *site.cfg* is configuration file of project.
+
+<a href="#top">^ Top</a>
 
 ## <a name="build"></a>Building existing project
 
@@ -89,6 +93,8 @@ directory):
     images
       |-newimage.png
 
+<a href="#top">^ Top</a>
+
 ## <a name="server"></a>Server mode
 
 To run the program in server mode, type in the directory where file `yass`
@@ -116,17 +122,25 @@ too.
 This command gives only short information about all available program's
 commands. To run it, type in directory where the file `yass` is `./yass help`.
 
+<a href="#top">^ Top</a>
+
 ## <a name="version"></a>Version command
 
 This command gives only short information about the program version. To run
 it, type in directory where the file `yass` is `./yass version`.
+
+<a href="#top">^ Top</a>
 
 ## <a name="license"></a>License command
 
 This command gives only short information about the program license. To run
 it, type in directory where the file `yass` is `./yass license`.
 
+<a href="#top">^ Top</a>
+
 ## <a name="readme"></a>Readme command
 
 This command prints in terminal content of README.md file. To run it, type in
 directory where the file `yass` is `./yass readme`.
+
+<a href="#top">^ Top</a>

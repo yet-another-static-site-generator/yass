@@ -25,6 +25,8 @@ because at this moment, this is only one way to communicate between YASS and
 module. Modules are per site not assigned to the program, thus every site can
 have own set of modules to run.
 
+<a href="#top">^ Top</a>
+
 ## <a name="adding"></a>Adding modules to the site project
 
 After creating a site project, you will have directory `_modules` (with default
@@ -70,6 +72,8 @@ deeper. Thus, modules can be not only one executable file, but even whole
 directories. In that situation, you will need to provide any "entry point": one
 executable to run that complicated module.
 
+<a href="#top">^ Top</a>
+
 ## <a name="communication"></a>Communication between YASS and modules
 
 At this moment here is only one way communication between the program and
@@ -79,6 +83,8 @@ modified file. Before running module in *post* hook YASS is setting environment
 variable `YASSFILE` with full path to result file. Additionally, modules have
 access to all other environment variables currently set. For example to
 `YASSDIR` or `APPDIR` if you use AppImage version of the program.
+
+<a href="#top">^ Top</a>
 
 ## <a name="example"></a>Example module
 
@@ -91,3 +97,5 @@ file.
 
 Save it as `showname.sh` file, give it permissions to run `chmod 744
 showname.sh` and put it in `modules/pre` directory in selected site project.
+
+<a href="#top">^ Top</a>
