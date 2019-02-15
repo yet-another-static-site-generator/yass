@@ -3,7 +3,13 @@
 -- nextlink: quickstart.html
 -- nexttext: Quick Start
 -- indexlink: true
-## Requirements
+-- details: []
+-- details: Requirements
+-- details: Build from sources
+-- detailslink: []
+-- detailslink: requirements
+-- detailslink: buildprogram
+## <a name="requirements"></a>Requirements
 
 To run the program or build it from the sources you need *libcmark* library
 which should be available in most Linux distributions. If not, you can
@@ -14,7 +20,7 @@ If you use downloaded AppImage version of the program, you don't need any
 other dependencies. More informations about using AppImage files you can find
 in [AppImage documentation](https://docs.appimage.org/user-guide/run-appimages.html)
 
-## Build from sources
+## <a name="buildprogram"></a>Build from sources
 
 ### Preparations
 

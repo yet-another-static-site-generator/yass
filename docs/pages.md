@@ -5,7 +5,13 @@
 -- nextlink: extending.html
 -- nexttext: Extending
 -- indexlink: true
-## General informations
+-- details: []
+-- details: General Informations
+-- details: Page configuration
+-- detailslink: []
+-- detailslink: general
+-- detailslink: configuration
+## <a name="general"></a>General informations
 At this moment, all configuration for each page is inside files with page
 content. They have syntax: `-- [Key]: [Value]`.
 
@@ -15,7 +21,7 @@ content. They have syntax: `-- [Key]: [Value]`.
   end, etc) just they must start with new line.
 - All settings are case-sensitive.
 
-## Page configuration
+## <a name="configuration">Page configuration
 
 At this moment is available only one setting for each page:
 

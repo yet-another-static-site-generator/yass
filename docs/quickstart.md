@@ -5,7 +5,13 @@
 -- nextlink: details.html
 -- nexttext: Details
 -- indexlink: true
-## Notes
+-- details: []
+-- details: Notes
+-- details: Quick start
+-- detailslink: []
+-- detailslink: notes
+-- detailslink: quickstart
+## <a name="notes"></a>Notes
 * All commands should be executed in this same directory where file `yass` is.
 * If you want to run the program from other directory, you should set the
   environment variable `YASSDIR` to your current directory. Example:
@@ -15,7 +21,7 @@
 * We assume that you have installed all program requirements, which you can
   find in [installation](installation.html) chapter.
 
-## Quick start
+## <a name="quickstart"></a>Quick start
 
 1. To create NewSite project, type in console `./yass create NewSite`. This
    will create skeletal project in directory `NewSite`.

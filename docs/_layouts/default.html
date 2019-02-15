@@ -19,6 +19,16 @@
          @@END_IF@@
       </header>
       <div id="content">
+         @@IF@@ {%EXIST:details%}
+            <details>
+               <summary>Table of Contents</summary>
+               <ul>
+               @@TABLE@@
+                  <li><a href="#{%detailslink%}">{%details%}</a></li>
+               @@END_TABLE@@
+               </ul>
+            </details>
+         @@END_IF@@
       {%Content%}
       </div>
       <div id="container">
