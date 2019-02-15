@@ -2,7 +2,6 @@
    background: #ebdbb2;
    color: #282828;
    margin: 0 auto;
-   width: 95%;
    font-family: Verdana, serif;
    line-height: 1.5;
 }
@@ -23,7 +22,7 @@ h2 {
 header {
    text-align: center;
    background: #d65d0e;
-   display:inline-block;
+   /*display:inline-block;*/
    padding:6px 24px;
 }
 
@@ -47,6 +46,8 @@ code {
 
 pre {
    background: #282828;
+   margin:0 auto;
+   width: 50%;
 }
 
 a.button {
@@ -90,3 +91,6 @@ a.button:active {
    width:150px;
 }
 
+body {
+   width: 95%;
+}
