@@ -42,6 +42,10 @@ package body Config is
       Put_Line(ConfigFile, "ModulesDirectory = _modules");
       Put_Line
         (ConfigFile,
+         "# List of excluded files and directories from list of sources used to generating the site. All paths must be relative to the project directory. If you exclude directory, it whole content will be excluded too. Layouts, modules and output directories are excluded by default.");
+      Put_Line(ConfigFile, "ExcludedFiles = .git,.gitignore,tags");
+      Put_Line
+        (ConfigFile,
          "# Did program should start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
       Put_Line(ConfigFile, "ServerEnabled = true");
       Put_Line
