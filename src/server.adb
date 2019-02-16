@@ -19,6 +19,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Calendar; use Ada.Calendar;
+with Ada.Calendar.Formatting;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Config; use Config;
@@ -58,7 +59,9 @@ package body Server is
                   CopyFile(Full_Name(Item), Name);
                end if;
                LoadModules("post");
-               Put_Line("File: " & To_String(SiteFileName) & " was added.");
+               Put_Line
+                 ("[" & Ada.Calendar.Formatting.Image(Clock) & "] " &
+                  "File: " & To_String(SiteFileName) & " was added.");
                SiteRebuild := True;
             elsif Extension(Simple_Name(Item)) = "md" then
                if Modification_Time(Full_Name(Item)) >
@@ -70,7 +73,8 @@ package body Server is
                   CreatePage(Full_Name(Item), Name);
                   LoadModules("post");
                   Put_Line
-                    ("File: " & To_String(SiteFileName) & " was updated.");
+                    ("[" & Ada.Calendar.Formatting.Image(Clock) & "] " &
+                     "File: " & To_String(SiteFileName) & " was updated.");
                   SiteRebuild := True;
                end if;
             elsif Modification_Time(Full_Name(Item)) >
@@ -79,7 +83,9 @@ package body Server is
                LoadModules("pre");
                CopyFile(Full_Name(Item), Name);
                LoadModules("post");
-               Put_Line("File: " & To_String(SiteFileName) & " was updated.");
+               Put_Line
+                 ("[" & Ada.Calendar.Formatting.Image(Clock) & "] " &
+                  "File: " & To_String(SiteFileName) & " was updated.");
                SiteRebuild := True;
             end if;
          end ProcessFiles;
@@ -102,7 +108,9 @@ package body Server is
             ProcessDirectories'Access);
       exception
          when GenerateSiteException =>
-            Put_Line("Site rebuilding has been interrupted.");
+            Put_Line
+              ("[" & Ada.Calendar.Formatting.Image(Clock) & "] " &
+               "Site rebuilding has been interrupted.");
       end MonitorDirectory;
    begin
       select
@@ -113,7 +121,9 @@ package body Server is
             MonitorDirectory(To_String(SiteDirectory));
             if SiteRebuild then
                LoadModules("end");
-               Put_Line("Site was rebuild.");
+               Put_Line
+                 ("[" & Ada.Calendar.Formatting.Image(Clock) & "] " &
+                  "Site was rebuild.");
             end if;
             delay YassConfig.MonitorInterval;
          end loop;
