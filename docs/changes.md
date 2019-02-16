@@ -19,6 +19,8 @@
 
 ### Added
 - Time stamp to server messages
+- Default setting for excluded files and directories in site configuration
+  files
 
 ### Changed
 - New documentation look
