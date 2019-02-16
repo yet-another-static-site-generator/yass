@@ -17,6 +17,9 @@
 -- detailslink: 0.1
 ## <a name="unreleased"></a>[Unreleased]
 
+### Added
+- Time stamp to server messages
+
 ### Changed
 - New documentation look
 
