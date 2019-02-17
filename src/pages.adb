@@ -34,9 +34,11 @@ package body Pages is
    subtype size_t is unsigned_long;
    LayoutNotFound: exception;
 
-   function cmark_markdown_to_html(text: Interfaces.C.Strings.chars_ptr;
-      len: size_t; options: int) return Interfaces.C.Strings.chars_ptr;
-   pragma Import(C, cmark_markdown_to_html, "cmark_markdown_to_html");
+   function cmark_markdown_to_html(text: chars_ptr; len: size_t;
+      options: int) return chars_ptr with
+      Import => True,
+      Convention => C,
+      External_Name => "cmark_markdown_to_html";
 
    procedure CreatePage(FileName, Directory: String) is
       Layout, Content: Unbounded_String;
