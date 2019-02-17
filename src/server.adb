@@ -20,6 +20,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Config; use Config;
@@ -60,8 +61,10 @@ package body Server is
                end if;
                LoadModules("post");
                Put_Line
-                 ("[" & Ada.Calendar.Formatting.Image(Clock) & "] " &
-                  "File: " & To_String(SiteFileName) & " was added.");
+                 ("[" &
+                  Ada.Calendar.Formatting.Image
+                    (Date => Clock, Time_Zone => UTC_Time_Offset) &
+                  "] " & "File: " & To_String(SiteFileName) & " was added.");
                SiteRebuild := True;
             elsif Extension(Simple_Name(Item)) = "md" then
                if Modification_Time(Full_Name(Item)) >
@@ -73,8 +76,11 @@ package body Server is
                   CreatePage(Full_Name(Item), Name);
                   LoadModules("post");
                   Put_Line
-                    ("[" & Ada.Calendar.Formatting.Image(Clock) & "] " &
-                     "File: " & To_String(SiteFileName) & " was updated.");
+                    ("[" &
+                     Ada.Calendar.Formatting.Image
+                       (Date => Clock, Time_Zone => UTC_Time_Offset) &
+                     "] " & "File: " & To_String(SiteFileName) &
+                     " was updated.");
                   SiteRebuild := True;
                end if;
             elsif Modification_Time(Full_Name(Item)) >
@@ -84,8 +90,10 @@ package body Server is
                CopyFile(Full_Name(Item), Name);
                LoadModules("post");
                Put_Line
-                 ("[" & Ada.Calendar.Formatting.Image(Clock) & "] " &
-                  "File: " & To_String(SiteFileName) & " was updated.");
+                 ("[" &
+                  Ada.Calendar.Formatting.Image
+                    (Date => Clock, Time_Zone => UTC_Time_Offset) &
+                  "] " & "File: " & To_String(SiteFileName) & " was updated.");
                SiteRebuild := True;
             end if;
          end ProcessFiles;
@@ -109,8 +117,10 @@ package body Server is
       exception
          when GenerateSiteException =>
             Put_Line
-              ("[" & Ada.Calendar.Formatting.Image(Clock) & "] " &
-               "Site rebuilding has been interrupted.");
+              ("[" &
+               Ada.Calendar.Formatting.Image
+                 (Date => Clock, Time_Zone => UTC_Time_Offset) &
+               "] " & "Site rebuilding has been interrupted.");
       end MonitorDirectory;
    begin
       select
@@ -122,8 +132,10 @@ package body Server is
             if SiteRebuild then
                LoadModules("end");
                Put_Line
-                 ("[" & Ada.Calendar.Formatting.Image(Clock) & "] " &
-                  "Site was rebuild.");
+                 ("[" &
+                  Ada.Calendar.Formatting.Image
+                    (Date => Clock, Time_Zone => UTC_Time_Offset) &
+                  "] " & "Site was rebuild.");
             end if;
             delay YassConfig.MonitorInterval;
          end loop;
