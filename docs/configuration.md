@@ -36,6 +36,11 @@ At this moment here are 5 possible settings for project:
 - ModulesDirectory - the path (related to project directory path) where
   the program modules will be stored. Standard values for this setting is
   `_modules`.
+- ExcludedFiles - the list of excluded files and directories from the list
+  of sources used to generating the site. All paths must be relative to the
+  project directory. If you exclude directory, it whole content will be
+  excluded too. Layouts, modules and output directories are excluded by
+  default. Default value for this is empty list.
 - ServerEnabled - can have true of false value, case-insensitive. Did command
   `server` should start web server too or not. Default value is `true` (start
   the web server).
