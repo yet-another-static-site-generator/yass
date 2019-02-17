@@ -42,6 +42,10 @@ package Config is
       ServerPort: Positive := 8888; -- Port on which web server listen
       MonitorInterval: Duration :=
         5.0; -- Interval (in seconds) how often program should check for changes in site to regenerate it
+      BaseURL: Unbounded_String :=
+        To_Unbounded_String
+          ("http://localhost:8888"); -- Base URL for site, needed mostly for creating sitemap
+      SitemapEnabled: Boolean := True; -- Did creating sitemap is enabled
    end record;
    YassConfig: ParserConfig; -- Settings for parser
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,
