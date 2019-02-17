@@ -33,6 +33,7 @@ with Layouts; use Layouts;
 with Pages; use Pages;
 with Server; use Server;
 with Modules; use Modules;
+with Sitemaps; use Sitemaps;
 
 procedure YASS is
    Version: constant String := "0.5";
@@ -75,7 +76,9 @@ procedure YASS is
       end Build;
    begin
       LoadModules("start");
+      StartSitemap;
       Build(DirectoryName);
+      SaveSitemap;
       LoadModules("end");
       return True;
    exception

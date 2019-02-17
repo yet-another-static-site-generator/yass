@@ -28,6 +28,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Config; use Config;
+with Sitemaps; use Sitemaps;
 
 package body Pages is
 
@@ -131,6 +132,7 @@ package body Pages is
       Create(PageFile, Append_File, NewFileName);
       Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
       Close(PageFile);
+      AddPage(NewFileName);
       Set("YASSFILE", NewFileName);
    exception
       when An_Exception : LayoutNotFound =>
@@ -156,6 +158,11 @@ package body Pages is
       Copy_File
         (FileName,
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
+      if Extension(FileName) = ".html" then
+         AddPage
+           (To_String(OutputDirectory) & Dir_Separator &
+            Simple_Name(FileName));
+      end if;
       Set
         ("YASSFILE",
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));

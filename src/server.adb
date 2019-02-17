@@ -26,6 +26,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Config; use Config;
 with Pages; use Pages;
 with Modules; use Modules;
+with Sitemaps; use Sitemaps;
 
 package body Server is
 
@@ -126,10 +127,12 @@ package body Server is
       select
          accept Start;
          LoadModules("start");
+         StartSitemap;
          loop
             SiteRebuild := False;
             MonitorDirectory(To_String(SiteDirectory));
             if SiteRebuild then
+               SaveSitemap;
                LoadModules("end");
                Put_Line
                  ("[" &

@@ -58,6 +58,14 @@ package body Config is
       Put_Line(ConfigFile, "MonitorInverval = 5");
       Put_Line
         (ConfigFile,
+         "# Base URL of the site. It is needed mostly for creating sitemap, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
+      Put_Line(ConfigFile, "BaseURL = http://localhost:8888");
+      Put_Line
+        (ConfigFile,
+         "# Did the program should create sitemap when creating the site. Possible values are true or false (case-insensitive).");
+      Put_Line(ConfigFile, "SitemapEnabled = true");
+      Put_Line
+        (ConfigFile,
          "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
         (ConfigFile,
@@ -110,6 +118,14 @@ package body Config is
                end if;
             elsif FieldName = To_Unbounded_String("MonitorInterval") then
                YassConfig.MonitorInterval := Duration'Value(To_String(Value));
+            elsif FieldName = To_Unbounded_String("BaseURL") then
+               YassConfig.BaseURL := Value;
+            elsif FieldName = To_Unbounded_String("SitemapEnabled") then
+               if To_Lower(To_String(Value)) = "true" then
+                  YassConfig.SitemapEnabled := True;
+               else
+                  YassConfig.SitemapEnabled := False;
+               end if;
             elsif Value = To_Unbounded_String("[]") then
                TableTags_Container.Include
                  (GlobalTableTags, To_String(FieldName), +"");
