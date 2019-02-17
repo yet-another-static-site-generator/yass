@@ -55,6 +55,15 @@ To build you need:
 
   https://github.com/AdaCore/aws
 
+* XmlAda - if you use GNAT from AdaCore it is included in package. In other
+  situation, you may need to download it from:
+
+  https://www.adacore.com/download/more
+
+  or
+
+  https://github.com/AdaCore/xmlad://github.com/AdaCore/xmlada 
+
 Navigate to the main directory(where this file is) to compile:
 
 * Easiest way to compile program is use Gnat Programming Studio included in
