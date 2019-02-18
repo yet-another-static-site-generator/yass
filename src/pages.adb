@@ -158,7 +158,7 @@ package body Pages is
       Copy_File
         (FileName,
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
-      if Extension(FileName) = ".html" then
+      if Extension(FileName) = "html" then
          AddPageToSitemap
            (To_String(OutputDirectory) & Dir_Separator &
             Simple_Name(FileName));
