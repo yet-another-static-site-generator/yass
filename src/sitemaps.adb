@@ -32,12 +32,13 @@ package body Sitemaps is
 
    Sitemap: Document;
    FileName: Unbounded_String;
+   MainNode: DOM.Core.Element;
 
    procedure StartSitemap is
       SitemapFile: File_Input;
       Reader: Tree_Reader;
       NewSitemap: DOM_Implementation;
-      MainNode: DOM.Core.Element;
+      NodesList: Node_List;
    begin
       if not YassConfig.SitemapEnabled then
          return;
@@ -50,6 +51,9 @@ package body Sitemaps is
          Parse(Reader, SitemapFile);
          Close(SitemapFile);
          Sitemap := Get_Tree(Reader);
+         NodesList :=
+           DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "urlset");
+         MainNode := Item(NodesList, 0);
       else
          Sitemap := Create_Document(NewSitemap);
          MainNode := Create_Element(Sitemap, "urlset");
@@ -69,11 +73,31 @@ package body Sitemaps is
               Dir_Separator) +
            1,
            FileName'Length);
+      URLsList: Node_List;
+      Added: Boolean := False;
+      URLNode, URLData, OldMainNode: DOM.Core.Element;
+      URLText: Text;
    begin
       if not YassConfig.SitemapEnabled then
          return;
       end if;
-      Put_Line(Url);
+      UrlsList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "loc");
+      for I in 0 .. Length(URLsList) - 1 loop
+         if Node_Value(First_Child(Item(URLsList, I))) = Url then
+            Added := True;
+            exit;
+         end if;
+      end loop;
+      if not Added then
+         URLNode := Create_Element(Sitemap, "url");
+         OldMainNode := MainNode;
+         MainNode := Append_Child(MainNode, URLNode);
+         MainNode := OldMainNode;
+         URLData := Create_Element(Sitemap, "loc");
+         URLData := Append_Child(URLNode, URLData);
+         URLText := Create_Text_Node(Sitemap, Url);
+         URLText := Append_Child(URLData, URLText);
+      end if;
    end AddPageToSitemap;
 
    procedure SaveSitemap is
