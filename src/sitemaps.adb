@@ -66,7 +66,8 @@ package body Sitemaps is
       end if;
    end StartSitemap;
 
-   procedure AddPageToSitemap(FileName: String) is
+   procedure AddPageToSitemap
+     (FileName, ChangeFrequency, PagePriority: String) is
       Url: constant String :=
         To_String(YassConfig.BaseURL) & "/" &
         Slice
@@ -77,8 +78,9 @@ package body Sitemaps is
            1,
            FileName'Length);
       URLsList, ChildrenList: Node_List;
-      Added: Boolean := False;
-      URLNode, URLData, OldMainNode: DOM.Core.Element;
+      Added, FrequencyUpdated, PriorityUpdated: Boolean := False;
+      URLNode, URLData, OldMainNode, RemoveFrequency,
+      RemovePriority: DOM.Core.Element;
       URLText: Text;
       LastModified: constant String :=
         Ada.Calendar.Formatting.Image
@@ -97,8 +99,42 @@ package body Sitemaps is
                if Node_Name(Item(ChildrenList, J)) = "lastmod" then
                   URLText := First_Child(Item(ChildrenList, J));
                   Set_Node_Value(URLText, LastModified);
+               elsif Node_Name(Item(ChildrenList, J)) = "changefreq" then
+                  if ChangeFrequency /= "" then
+                     URLText := First_Child(Item(ChildrenList, J));
+                     Set_Node_Value(URLText, ChangeFrequency);
+                  else
+                     RemoveFrequency := Item(ChildrenList, J);
+                  end if;
+                  FrequencyUpdated := True;
+               elsif Node_Name(Item(ChildrenList, J)) = "priority" then
+                  if PagePriority /= "" then
+                     URLText := First_Child(Item(ChildrenList, J));
+                     Set_Node_Value(URLText, PagePriority);
+                  else
+                     RemovePriority := Item(ChildrenList, J);
+                  end if;
+                  PriorityUpdated := True;
                end if;
             end loop;
+            if ChangeFrequency /= "" and not FrequencyUpdated then
+               URLData := Create_Element(Sitemap, "changefreq");
+               URLData := Append_Child(URLNode, URLData);
+               URLText := Create_Text_Node(Sitemap, ChangeFrequency);
+               URLText := Append_Child(URLData, URLText);
+            end if;
+            if PagePriority /= "" and not PriorityUpdated then
+               URLData := Create_Element(Sitemap, "priority");
+               URLData := Append_Child(URLNode, URLData);
+               URLText := Create_Text_Node(Sitemap, PagePriority);
+               URLText := Append_Child(URLData, URLText);
+            end if;
+            if RemoveFrequency /= null then
+               URLNode := Remove_Child(URLNode, RemoveFrequency);
+            end if;
+            if RemovePriority /= null then
+               URLNode := Remove_Child(URLNode, RemovePriority);
+            end if;
             Added := True;
             exit;
          end if;
@@ -116,6 +152,18 @@ package body Sitemaps is
          URLData := Append_Child(URLNode, URLData);
          URLText := Create_Text_Node(Sitemap, LastModified);
          URLText := Append_Child(URLData, URLText);
+         if ChangeFrequency /= "" then
+            URLData := Create_Element(Sitemap, "changefreq");
+            URLData := Append_Child(URLNode, URLData);
+            URLText := Create_Text_Node(Sitemap, ChangeFrequency);
+            URLText := Append_Child(URLData, URLText);
+         end if;
+         if PagePriority /= "" then
+            URLData := Create_Element(Sitemap, "priority");
+            URLData := Append_Child(URLNode, URLData);
+            URLText := Create_Text_Node(Sitemap, PagePriority);
+            URLText := Append_Child(URLData, URLText);
+         end if;
       end if;
    end AddPageToSitemap;
 

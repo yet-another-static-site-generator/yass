@@ -42,7 +42,7 @@ package body Pages is
       External_Name => "cmark_markdown_to_html";
 
    procedure CreatePage(FileName, Directory: String) is
-      Layout, Content: Unbounded_String;
+      Layout, Content, ChangeFrequency, PagePriority: Unbounded_String;
       PageFile: File_Type;
       Tags: Translate_Set;
       OutputDirectory: constant Unbounded_String :=
@@ -92,6 +92,11 @@ package body Pages is
                           with Filename & """. Selected layout file """ &
                           To_String(Layout);
                      end if;
+                  elsif Index(Data, "changefreq:", 1) > 0 then
+                     ChangeFrequency :=
+                       Unbounded_Slice(Data, 16, Length(Data));
+                  elsif Index(Data, "priority:", 1) > 0 then
+                     PagePriority := Unbounded_Slice(Data, 13, Length(Data));
                   else
                      StartIndex := Index(Data, ":", 1);
                      if StartIndex > 0 then
@@ -132,7 +137,8 @@ package body Pages is
       Create(PageFile, Append_File, NewFileName);
       Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
       Close(PageFile);
-      AddPageToSitemap(NewFileName);
+      AddPageToSitemap
+        (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
       Set("YASSFILE", NewFileName);
    exception
       when An_Exception : LayoutNotFound =>
@@ -160,8 +166,8 @@ package body Pages is
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
       if Extension(FileName) = "html" then
          AddPageToSitemap
-           (To_String(OutputDirectory) & Dir_Separator &
-            Simple_Name(FileName));
+           (To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName),
+            "", "");
       end if;
       Set
         ("YASSFILE",
