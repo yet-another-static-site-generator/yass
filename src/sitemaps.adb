@@ -59,7 +59,7 @@ package body Sitemaps is
       end if;
    end StartSitemap;
 
-   procedure AddPage(FileName: String) is
+   procedure AddPageToSitemap(FileName: String) is
       Url: constant String :=
         To_String(YassConfig.BaseURL) & "/" &
         Slice
@@ -74,7 +74,7 @@ package body Sitemaps is
          return;
       end if;
       Put_Line(Url);
-   end AddPage;
+   end AddPageToSitemap;
 
    procedure SaveSitemap is
       SitemapFile: File_Type;

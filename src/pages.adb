@@ -132,7 +132,7 @@ package body Pages is
       Create(PageFile, Append_File, NewFileName);
       Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
       Close(PageFile);
-      AddPage(NewFileName);
+      AddPageToSitemap(NewFileName);
       Set("YASSFILE", NewFileName);
    exception
       when An_Exception : LayoutNotFound =>
@@ -159,7 +159,7 @@ package body Pages is
         (FileName,
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
       if Extension(FileName) = ".html" then
-         AddPage
+         AddPageToSitemap
            (To_String(OutputDirectory) & Dir_Separator &
             Simple_Name(FileName));
       end if;

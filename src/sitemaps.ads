@@ -18,7 +18,8 @@
 package Sitemaps is
 
    procedure StartSitemap; -- Create new or load existing sitemap for the site
-   procedure AddPage(FileName: String); -- Add selected page to sitemap
+   procedure AddPageToSitemap
+     (FileName: String); -- Add selected page to sitemap
    procedure SaveSitemap; -- Save site map to file
 
 end Sitemaps;
