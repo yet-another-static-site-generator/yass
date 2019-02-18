@@ -19,6 +19,9 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Calendar; use Ada.Calendar;
+with Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with DOM.Core; use DOM.Core;
 with DOM.Core.Documents; use DOM.Core.Documents;
@@ -73,10 +76,14 @@ package body Sitemaps is
               Dir_Separator) +
            1,
            FileName'Length);
-      URLsList: Node_List;
+      URLsList, ChildrenList: Node_List;
       Added: Boolean := False;
       URLNode, URLData, OldMainNode: DOM.Core.Element;
       URLText: Text;
+      LastModified: constant String :=
+        Ada.Calendar.Formatting.Image
+          (Date => Clock, Time_Zone => UTC_Time_Offset)
+          (1 .. 10);
    begin
       if not YassConfig.SitemapEnabled then
          return;
@@ -84,6 +91,14 @@ package body Sitemaps is
       UrlsList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "loc");
       for I in 0 .. Length(URLsList) - 1 loop
          if Node_Value(First_Child(Item(URLsList, I))) = Url then
+            URLNode := Parent_Node(Item(URLsList, I));
+            ChildrenList := Child_Nodes(URLNode);
+            for J in 0 .. Length(ChildrenList) - 1 loop
+               if Node_Name(Item(ChildrenList, J)) = "lastmod" then
+                  URLText := First_Child(Item(ChildrenList, J));
+                  Set_Node_Value(URLText, LastModified);
+               end if;
+            end loop;
             Added := True;
             exit;
          end if;
@@ -96,6 +111,10 @@ package body Sitemaps is
          URLData := Create_Element(Sitemap, "loc");
          URLData := Append_Child(URLNode, URLData);
          URLText := Create_Text_Node(Sitemap, Url);
+         URLText := Append_Child(URLData, URLText);
+         URLData := Create_Element(Sitemap, "lastmod");
+         URLData := Append_Child(URLNode, URLData);
+         URLText := Create_Text_Node(Sitemap, LastModified);
          URLText := Append_Child(URLData, URLText);
       end if;
    end AddPageToSitemap;
