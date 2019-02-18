@@ -120,6 +120,7 @@ package body Config is
                YassConfig.MonitorInterval := Duration'Value(To_String(Value));
             elsif FieldName = To_Unbounded_String("BaseURL") then
                YassConfig.BaseURL := Value;
+               Tags_Container.Include(SiteTags, "BaseURL", To_String(Value));
             elsif FieldName = To_Unbounded_String("SitemapEnabled") then
                if To_Lower(To_String(Value)) = "true" then
                   YassConfig.SitemapEnabled := True;
