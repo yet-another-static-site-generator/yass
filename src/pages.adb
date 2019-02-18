@@ -33,7 +33,7 @@ with Sitemaps; use Sitemaps;
 package body Pages is
 
    subtype size_t is unsigned_long;
-   LayoutNotFound: exception;
+   LayoutNotFound, SitemapInvalidValue: exception;
 
    function cmark_markdown_to_html(text: chars_ptr; len: size_t;
       options: int) return chars_ptr with
@@ -52,6 +52,12 @@ package body Pages is
         To_String(OutputDirectory) & Dir_Separator &
         Ada.Directories.Base_Name(FileName) & ".html";
       PageTableTags: TableTags_Container.Map;
+      FrequencyValues: constant array(Positive range <>) of Unbounded_String :=
+        (To_Unbounded_String("always"), To_Unbounded_String("hourly"),
+         To_Unbounded_String("daily"), To_Unbounded_String("weekly"),
+         To_Unbounded_String("monthly"), To_Unbounded_String("yearly"),
+         To_Unbounded_String("never"));
+      ValidValue: Boolean := False;
       procedure AddTag(Name, Value: String) is
       begin
          if To_Lower(Value) = "true" then
@@ -95,8 +101,24 @@ package body Pages is
                   elsif Index(Data, "changefreq:", 1) > 0 then
                      ChangeFrequency :=
                        Unbounded_Slice(Data, 16, Length(Data));
+                     for I in FrequencyValues'Range loop
+                        if ChangeFrequency = FrequencyValues(I) then
+                           ValidValue := True;
+                           exit;
+                        end if;
+                     end loop;
+                     if not ValidValue then
+                        raise SitemapInvalidValue
+                          with "Invalid value for changefreq";
+                     end if;
+                     ValidValue := False;
                   elsif Index(Data, "priority:", 1) > 0 then
                      PagePriority := Unbounded_Slice(Data, 13, Length(Data));
+                     if Float'Value(To_String(PagePriority)) < 0.0 or
+                       Float'Value(To_String(PagePriority)) > 1.0 then
+                        raise SitemapInvalidValue
+                          with "Invalid value for page priority";
+                     end if;
                   else
                      StartIndex := Index(Data, ":", 1);
                      if StartIndex > 0 then
@@ -152,6 +174,16 @@ package body Pages is
             Close(PageFile);
             Delete_File(NewFileName);
          end if;
+         raise GenerateSiteException;
+      when An_Exception : SitemapInvalidValue =>
+         Put_Line
+           ("Can't parse """ & Filename & """. " &
+            Exception_Message(An_Exception));
+         raise GenerateSiteException;
+      when Constraint_Error =>
+         Put_Line
+           ("Can't parse """ & Filename &
+            """. Invalid value for page priority.");
          raise GenerateSiteException;
    end CreatePage;
 
