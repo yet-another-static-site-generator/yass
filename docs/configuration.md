@@ -25,7 +25,7 @@ settings are case-sensitive.
 
 ## <a name="configuration"></a>Project configuration
 
-At this moment here are 5 possible settings for project:
+Possible settings for project:
 
 - LayoutDirectory - the path (related to project directory path) where are
   stored files with pages layouts. Standard value for this is setting is
@@ -50,6 +50,13 @@ At this moment here are 5 possible settings for project:
 - MonitorInterval - any positive number. How often (in seconds) the program
   should check for this site changes when working in server mode and
   regenerate the site if needed. Default value is `5.0`.
+- BaseURL - Base URL of the site. It is needed mostly for creating sitemap,
+  but you can use it as a normal the site tag. If your site will be available
+  at `https://mysite.com/blog` then this will be your BaseURL. Default value is
+  `http://localhost:8888`.
+- EnableSitemap - Did the program should create sitemap when creating the site.
+  Possible values are true or false (case-insensitive). Default value is
+  `true` (create sitemap).
 
 <a href="#top">^ Top</a>
 

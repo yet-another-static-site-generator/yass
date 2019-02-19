@@ -21,9 +21,11 @@
 - Time stamp to server messages
 - Default setting for excluded files and directories in site configuration
   files
+- Generating sitemaps
 
 ### Changed
 - New documentation look
+- Updated README.md
 
 <a href="#top">^ Top</a>
 
