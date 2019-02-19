@@ -21,13 +21,10 @@ files included in distributed packages.
 
 * Support almost infinite amount of custom tags in HTML templates (depends
   on available RAM)
-
 * Separated tags for whole site and each page
-
 * Fast
-
 * Can be extended with modules written in any script/programming language
-
+* Generating sitemaps
 * Freshly created, unpolished, have a few bugs :D
 
 ## Build from sources
