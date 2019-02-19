@@ -57,7 +57,8 @@ package body Pages is
          To_Unbounded_String("daily"), To_Unbounded_String("weekly"),
          To_Unbounded_String("monthly"), To_Unbounded_String("yearly"),
          To_Unbounded_String("never"));
-      ValidValue, NotInSitemap: Boolean := False;
+      ValidValue: Boolean := False;
+      InSitemap: Boolean := True;
       procedure AddTag(Name, Value: String) is
       begin
          if To_Lower(Value) = "true" then
@@ -119,9 +120,9 @@ package body Pages is
                         raise SitemapInvalidValue
                           with "Invalid value for page priority";
                      end if;
-                  elsif Index(Data, "notinsitemap:", 1) > 0 then
-                     if To_Lower(Slice(Data, 18, Length(Data))) = "true" then
-                        NotInSitemap := True;
+                  elsif Index(Data, "insitemap:", 1) > 0 then
+                     if To_Lower(Slice(Data, 15, Length(Data))) = "false" then
+                        InSitemap := False;
                      end if;
                   else
                      StartIndex := Index(Data, ":", 1);
@@ -163,7 +164,7 @@ package body Pages is
       Create(PageFile, Append_File, NewFileName);
       Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
       Close(PageFile);
-      if not NotInSitemap then
+      if InSitemap then
          AddPageToSitemap
            (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
       end if;
@@ -250,7 +251,7 @@ package body Pages is
          "-- For more informations how this options works, please look at the program documentation.");
       Put_Line
         (IndexFile,
-         "-- Additionally, you can exclude this file from adding to sitemap by setting option notinsitemap: true.");
+         "-- Additionally, you can exclude this file from adding to sitemap by setting option insitemap: false.");
       Put_Line
         (IndexFile,
          "-- You can without problem delete all this comments from this file.");
