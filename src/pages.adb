@@ -57,7 +57,7 @@ package body Pages is
          To_Unbounded_String("daily"), To_Unbounded_String("weekly"),
          To_Unbounded_String("monthly"), To_Unbounded_String("yearly"),
          To_Unbounded_String("never"));
-      ValidValue: Boolean := False;
+      ValidValue, NotInSitemap: Boolean := False;
       procedure AddTag(Name, Value: String) is
       begin
          if To_Lower(Value) = "true" then
@@ -119,6 +119,10 @@ package body Pages is
                         raise SitemapInvalidValue
                           with "Invalid value for page priority";
                      end if;
+                  elsif Index(Data, "notinsitemap:", 1) > 0 then
+                     if To_Lower(Slice(Data, 18, Length(Data))) = "true" then
+                        NotInSitemap := True;
+                     end if;
                   else
                      StartIndex := Index(Data, ":", 1);
                      if StartIndex > 0 then
@@ -159,8 +163,10 @@ package body Pages is
       Create(PageFile, Append_File, NewFileName);
       Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
       Close(PageFile);
-      AddPageToSitemap
-        (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
+      if not NotInSitemap then
+         AddPageToSitemap
+           (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
+      end if;
       Set("YASSFILE", NewFileName);
    exception
       when An_Exception : LayoutNotFound =>
