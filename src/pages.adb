@@ -238,6 +238,21 @@ package body Pages is
          "-- For more informations about tags please check program documentation.");
       Put_Line
         (IndexFile,
+         "-- If you have enabled creation of sitemap in the project config file, you can set some sitemap parameters too. They are defined in this same way like tags, with ParameterName: Value.");
+      Put_Line
+        (IndexFile,
+         "-- priority - The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
+      Put_Line
+        (IndexFile,
+         "-- changefreq - How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
+      Put_Line
+        (IndexFile,
+         "-- For more informations how this options works, please look at the program documentation.");
+      Put_Line
+        (IndexFile,
+         "-- Additionally, you can exclude this file from adding to sitemap by setting option notinsitemap: true.");
+      Put_Line
+        (IndexFile,
          "-- You can without problem delete all this comments from this file.");
       Close(IndexFile);
    end CreateEmptyIndexFile;
