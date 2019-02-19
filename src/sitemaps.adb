@@ -173,6 +173,25 @@ package body Sitemaps is
       if not YassConfig.SitemapEnabled then
          return;
       end if;
+      if not Exists(To_String(FileName)) then
+         if Exists
+             (Containing_Directory(To_String(FileName)) & Dir_Separator &
+              "robots.txt") then
+            Open
+              (SitemapFile, Append_File,
+               Containing_Directory(To_String(FileName)) & Dir_Separator &
+               "robots.txt");
+         else
+            Create
+              (SitemapFile, Append_File,
+               Containing_Directory(To_String(FileName)) & Dir_Separator &
+               "robots.txt");
+         end if;
+         Put_Line
+           (SitemapFile,
+            "Sitemap: " & To_String(YassConfig.BaseURL) & "/sitemap.xml");
+         Close(SitemapFile);
+      end if;
       Create(SitemapFile, Out_File, To_String(FileName));
       Write(Stream => Stream(SitemapFile), N => Sitemap, Pretty_Print => True);
       Close(SitemapFile);
