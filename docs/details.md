@@ -69,7 +69,9 @@ is `./yass build [ProjectName]` where `[ProjectName]` is name of your site
 project. It will convert any not excluded file with extension `.md` to
 HTML file, apply layout to it and move with all others, not excluded files
 to the output directory (by default it is *_output* directory in `[ProjectName]`
-directory). This command preserve structure of directories and files in
+directory). Additonally, if you have enabled generating sitemaps, it will
+create one with all pages and file `robots.txt` to inform crawlers about the
+sitemap. This command preserve structure of directories and files in
 your project. Thus if you create the directory structure like this:
 
     [ProjectName]
@@ -87,9 +89,12 @@ your project. Thus if you create the directory structure like this:
          |-newimage.png
 
 Your new site will be have that directory structure (inside the *_output*
-directory):
+directory). Files `sitemap.xml` and `robots.txt` will be added only when
+you will be have enabled option to create sitemap:
 
     index.html
+    sitemap.xml
+    robots.txt
     images
       |-newimage.png
 
@@ -108,7 +113,8 @@ directory for changes to files. If any file will be changed during server work,
 it will regenerate it. If you add any new file, it will be added to the site
 output directory. If you change any layout file from layouts directory all
 HTML files which use this layout (directly, not as included) will be updated
-too.
+too. If you have enabled creating sitemaps, it will be upgraded or created too
+if needed, same with file `robots.txt`.
 
 ### Limitations
 - At this moment, when you browsing your project, you must enter valid address
@@ -116,6 +122,9 @@ too.
   enter *http://localhost:[port]/index.html*
 - Monitoring does not delete files. If you delete one, the program will not
   detect it. You must stop, remove old file manually, then restart the server.
+- If you delete page which was in the sitemap, you will be need to edit the
+  sitemap manually or delete it completely with file `robots.txt` to
+  regenerate list of the site pages.
 
 ## <a name="help"></a>Help command
 
