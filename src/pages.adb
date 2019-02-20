@@ -87,7 +87,7 @@ package body Pages is
             Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
             if Length(Data) > 2 then
                if Slice(Data, 1, 3) = "-- " then
-                  if Index(Data, "layout:", 1) > 0 then
+                  if Index(Data, "layout:", 1) = 4 then
                      Data := Unbounded_Slice(Data, 12, Length(Data));
                      Layout :=
                        SiteDirectory & Dir_Separator &
@@ -99,7 +99,7 @@ package body Pages is
                           with Filename & """. Selected layout file """ &
                           To_String(Layout);
                      end if;
-                  elsif Index(Data, "changefreq:", 1) > 0 then
+                  elsif Index(Data, "changefreq:", 1) = 4 then
                      ChangeFrequency :=
                        Unbounded_Slice(Data, 16, Length(Data));
                      for I in FrequencyValues'Range loop
@@ -113,19 +113,22 @@ package body Pages is
                           with "Invalid value for changefreq";
                      end if;
                      ValidValue := False;
-                  elsif Index(Data, "priority:", 1) > 0 then
+                  elsif Index(Data, "priority:", 1) = 4 then
                      PagePriority := Unbounded_Slice(Data, 13, Length(Data));
                      if Float'Value(To_String(PagePriority)) < 0.0 or
                        Float'Value(To_String(PagePriority)) > 1.0 then
                         raise SitemapInvalidValue
                           with "Invalid value for page priority";
                      end if;
-                  elsif Index(Data, "insitemap:", 1) > 0 then
+                  elsif Index(Data, "insitemap:", 1) = 4 then
                      if To_Lower(Slice(Data, 15, Length(Data))) = "false" then
                         InSitemap := False;
                      end if;
                   else
-                     StartIndex := Index(Data, ":", 1);
+                     StartIndex := Index(Data, ":", 4);
+                     if StartIndex > Index(Data, " ", 5) then
+                        StartIndex := 0;
+                     end if;
                      if StartIndex > 0 then
                         AddTag
                           (Slice(Data, 4, StartIndex - 1),
