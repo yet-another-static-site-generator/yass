@@ -26,6 +26,7 @@
 ### Changed
 - New documentation look
 - Updated README.md
+- Don't allow spaces in tags names
 
 <a href="#top">^ Top</a>
 
