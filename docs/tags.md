@@ -35,6 +35,9 @@ extension). They have syntax: `-- [Key]: [Value]`. For example:
 
 - Same as global tags, each pair must be in one line. Neither `Key` nor `Value`
   can't contains new line.
+- `Key` can't have any spaces, thus `some value: text` is invalid tag and will
+  not be parsed by the program. Write instead `somevalue: text` or
+  `some_value: text`.
 - Same as global tags, you can add as many as you want tags to project.
 - Tags can be added in any place of a file (at beginning, between text, at end,
   etc) just they must start with new line. The program can't detect tags inside
