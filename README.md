@@ -4,14 +4,6 @@ As name says, it is static site generator written in Ada. It is *headless*
 application (no user interface). The program documentation is included in
 distribution.
 
-* Stable (released) version of documentation is available at:
-
-https://yet-another-static-site-generator.github.io/docs/
-
-* Development (from *master* branch) version of documentation is available at:
-
-https://yet-another-static-site-generator.github.io/docs-dev/
-
 **Note:** This version of README.md is for the development version of the program.
 It may (and probably will be, especially now, on beginning of the development)
 differ from the released versions. For the released version please refer to
@@ -95,7 +87,6 @@ AppImage version of the program.
 
 ### Current
 
-- Generating sitemaps
 - Generatig RSS feed
 
 ### 0.6
