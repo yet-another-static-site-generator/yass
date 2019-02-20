@@ -57,6 +57,8 @@ package body Sitemaps is
          NodesList :=
            DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "urlset");
          MainNode := Item(NodesList, 0);
+         Set_Attribute
+           (MainNode, "xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
       else
          Sitemap := Create_Document(NewSitemap);
          MainNode := Create_Element(Sitemap, "urlset");
