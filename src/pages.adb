@@ -29,6 +29,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Config; use Config;
 with Sitemaps; use Sitemaps;
+with AtomFeed; use AtomFeed;
 
 package body Pages is
 
@@ -171,6 +172,7 @@ package body Pages is
          AddPageToSitemap
            (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
       end if;
+      AddPageToFeed(FileName, NewFileName);
       Set("YASSFILE", NewFileName);
    exception
       when An_Exception : LayoutNotFound =>
@@ -255,6 +257,10 @@ package body Pages is
       Put_Line
         (IndexFile,
          "-- Additionally, you can exclude this file from adding to sitemap by setting option insitemap: false.");
+      Put_Line
+        (IndexFile,
+         "-- If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you will use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry.");
+      Put_Line(IndexFile, "-- title: New page");
       Put_Line
         (IndexFile,
          "-- You can without problem delete all this comments from this file.");

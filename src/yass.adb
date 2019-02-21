@@ -34,6 +34,7 @@ with Pages; use Pages;
 with Server; use Server;
 with Modules; use Modules;
 with Sitemaps; use Sitemaps;
+with AtomFeed; use AtomFeed;
 
 procedure YASS is
    Version: constant String := "0.5";
@@ -77,7 +78,9 @@ procedure YASS is
    begin
       LoadModules("start");
       StartSitemap;
+      StartAtomFeed;
       Build(DirectoryName);
+      SaveAtomFeed;
       SaveSitemap;
       LoadModules("end");
       return True;

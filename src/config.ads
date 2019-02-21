@@ -46,6 +46,9 @@ package Config is
         To_Unbounded_String
           ("http://localhost:8888"); -- Base URL for site, needed mostly for creating sitemap
       SitemapEnabled: Boolean := True; -- Did creating sitemap is enabled
+      AtomFeedSource: Unbounded_String :=
+        To_Unbounded_String
+          ("tags"); -- Source of atom feed entries. Possible values are: none (don't create atom feed), tags (default, create entries from tags in markdown files) and [filename] (path to markdown file which will be used as a source of feed)
    end record;
    YassConfig: ParserConfig; -- Settings for parser
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,
