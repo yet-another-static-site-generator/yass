@@ -58,12 +58,16 @@ package body Config is
       Put_Line(ConfigFile, "MonitorInverval = 5");
       Put_Line
         (ConfigFile,
-         "# Base URL of the site. It is needed mostly for creating sitemap, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
+         "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
       Put_Line(ConfigFile, "BaseURL = http://localhost:8888");
       Put_Line
         (ConfigFile,
          "# Did the program should create sitemap when creating the site. Possible values are true or false (case-insensitive).");
       Put_Line(ConfigFile, "SitemapEnabled = true");
+      Put_Line
+        (ConfigFile,
+         "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - name of markdown file which will be used as a source of atom feeed (must have proper tags set inside).");
+      Put_Line(ConfigFile, "AtomFeedSource = tags");
       Put_Line
         (ConfigFile,
          "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
@@ -127,6 +131,8 @@ package body Config is
                else
                   YassConfig.SitemapEnabled := False;
                end if;
+            elsif FieldName = To_Unbounded_String("AtomFeedSource") then
+               YassConfig.AtomFeedSource := Value;
             elsif Value = To_Unbounded_String("[]") then
                TableTags_Container.Include
                  (GlobalTableTags, To_String(FieldName), +"");

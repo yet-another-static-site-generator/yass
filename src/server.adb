@@ -27,6 +27,7 @@ with Config; use Config;
 with Pages; use Pages;
 with Modules; use Modules;
 with Sitemaps; use Sitemaps;
+with AtomFeed; use AtomFeed;
 
 package body Server is
 
@@ -128,10 +129,12 @@ package body Server is
          accept Start;
          LoadModules("start");
          StartSitemap;
+         StartAtomFeed;
          loop
             SiteRebuild := False;
             MonitorDirectory(To_String(SiteDirectory));
             if SiteRebuild then
+               SaveAtomFeed;
                SaveSitemap;
                LoadModules("end");
                Put_Line
