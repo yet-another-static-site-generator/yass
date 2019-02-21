@@ -70,6 +70,10 @@ package body Config is
       Put_Line(ConfigFile, "AtomFeedSource = tags");
       Put_Line
         (ConfigFile,
+         "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
+      Put_Line(ConfigFile, "Name = New Site");
+      Put_Line
+        (ConfigFile,
          "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
         (ConfigFile,
@@ -80,7 +84,6 @@ package body Config is
       Put_Line
         (ConfigFile,
          "# For more informations about site.cfg file please check program documentation.");
-      Put_Line(ConfigFile, "Name = New Site");
       Close(ConfigFile);
    end CreateConfig;
 
@@ -133,6 +136,10 @@ package body Config is
                end if;
             elsif FieldName = To_Unbounded_String("AtomFeedSource") then
                YassConfig.AtomFeedSource := Value;
+            elsif FieldName = To_Unbounded_String("Name") then
+               YassConfig.SiteName := Value;
+               Tags_Container.Include
+                 (SiteTags, To_String(FieldName), To_String(Value));
             elsif Value = To_Unbounded_String("[]") then
                TableTags_Container.Include
                  (GlobalTableTags, To_String(FieldName), +"");
