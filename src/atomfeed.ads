@@ -23,7 +23,7 @@ package AtomFeed is
 
    procedure StartAtomFeed; -- Create new or load existing Atom feed for the site
    procedure AddPageToFeed(FileName: String;
-      Titles: String_Container
+      Titles: in out String_Container
         .Vector); -- Add selected page to the site Atom feed
    procedure SaveAtomFeed; -- Save Atom feed to file
 

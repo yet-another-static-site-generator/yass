@@ -80,7 +80,7 @@ package body AtomFeed is
    end StartAtomFeed;
 
    procedure AddPageToFeed(FileName: String;
-      Titles: String_Container.Vector) is
+      Titles: in out String_Container.Vector) is
       NodesList, ChildrenList: Node_List;
       Updated: String :=
         Ada.Calendar.Formatting.Image(Modification_Time(FileName)) & "Z";
@@ -93,7 +93,9 @@ package body AtomFeed is
               Dir_Separator) +
            1,
            FileName'Length);
-      EntryNode: DOM.Core.Element;
+      EntryNode, EntryData: DOM.Core.Element;
+      TitleIndex: Positive;
+      EntryText: Text;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
         (YassConfig.AtomFeedSource /= To_Unbounded_String("tags")
@@ -107,8 +109,10 @@ package body AtomFeed is
       Set_Node_Value(First_Child(Item(NodesList, 0)), Updated);
       NodesList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "title");
       for I in 0 .. Length(NodesList) - 1 loop
-         for Title of Titles loop
-            if Node_Value(First_Child(Item(NodesList, I))) = Title then
+         TitleIndex := Titles.First_Index;
+         while TitleIndex <= Titles.Last_Index loop
+            if Node_Value(First_Child(Item(NodesList, I))) =
+              Titles(TitleIndex) then
                EntryNode := Parent_Node(Item(NodesList, I));
                ChildrenList := Child_Nodes(EntryNode);
                for J in 0 .. Length(ChildrenList) - 1 loop
@@ -119,20 +123,31 @@ package body AtomFeed is
                      Set_Node_Value(First_Child(Item(ChildrenList, J)), Url);
                   end if;
                end loop;
-               if String_Container.Length(Titles) = 1 then
+               Titles.Delete(TitleIndex);
+               if String_Container.Length(Titles) = 0 then
                   return;
                end if;
                exit;
             end if;
+            TitleIndex := TitleIndex + 1;
          end loop;
       end loop;
-      NodesList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "entry");
-      EntryNode := Create_Element(Feed, "entry");
-      if Length(NodesList) = 0 then
+      for EntryTitle of Titles loop
+         EntryNode := Create_Element(Feed, "entry");
          EntryNode := Append_Child(MainNode, EntryNode);
-      else
-         EntryNode := Insert_Before(MainNode, EntryNode, Item(NodesList, 0));
-      end if;
+         EntryData := Create_Element(Feed, "id");
+         EntryData := Append_Child(EntryNode, EntryData);
+         EntryText := Create_Text_Node(Feed, Url);
+         EntryText := Append_Child(EntryData, EntryText);
+         EntryData := Create_Element(Feed, "title");
+         EntryData := Append_Child(EntryNode, EntryData);
+         EntryText := Create_Text_Node(Feed, EntryTitle);
+         EntryText := Append_Child(EntryData, EntryText);
+         EntryData := Create_Element(Feed, "updated");
+         EntryData := Append_Child(EntryNode, EntryData);
+         EntryText := Create_Text_Node(Feed, Updated);
+         EntryText := Append_Child(EntryData, EntryText);
+      end loop;
    end AddPageToFeed;
 
    procedure SaveAtomFeed is
