@@ -39,6 +39,8 @@ package body AtomFeed is
       Reader: Tree_Reader;
       NewFeed: DOM_Implementation;
       NodesList: Node_List;
+      FeedData: DOM.Core.Element;
+      FeedText: Text;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
          return;
@@ -60,6 +62,14 @@ package body AtomFeed is
          MainNode := Create_Element(Feed, "feed");
          Set_Attribute(MainNode, "xmlns", "http://www.w3.org/2005/Atom");
          MainNode := Append_Child(Feed, MainNode);
+         FeedData := Create_Element(Feed, "id");
+         FeedData := Append_Child(MainNode, FeedData);
+         FeedText := Create_Text_Node(Feed, To_String(YassConfig.BaseURL));
+         FeedText := Append_Child(FeedData, FeedText);
+         FeedData := Create_Element(Feed, "title");
+         FeedData := Append_Child(MainNode, FeedData);
+         FeedText := Create_Text_Node(Feed, To_String(YassConfig.SiteName));
+         FeedText := Append_Child(FeedData, FeedText);
       end if;
    end StartAtomFeed;
 
