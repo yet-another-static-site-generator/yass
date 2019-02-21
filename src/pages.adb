@@ -60,8 +60,12 @@ package body Pages is
          To_Unbounded_String("never"));
       ValidValue: Boolean := False;
       InSitemap: Boolean := True;
+      Titles: String_Container.Vector;
       procedure AddTag(Name, Value: String) is
       begin
+         if Name = "title" then
+            Titles.Append(Value);
+         end if;
          if To_Lower(Value) = "true" then
             Insert(Tags, Assoc(Name, True));
          elsif To_Lower(Value) = "false" then
@@ -172,7 +176,7 @@ package body Pages is
          AddPageToSitemap
            (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
       end if;
-      AddPageToFeed(FileName, NewFileName);
+      AddPageToFeed(NewFileName, Titles);
       Set("YASSFILE", NewFileName);
    exception
       when An_Exception : LayoutNotFound =>
