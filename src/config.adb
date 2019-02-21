@@ -70,6 +70,10 @@ package body Config is
       Put_Line(ConfigFile, "AtomFeedSource = tags");
       Put_Line
         (ConfigFile,
+         "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
+      Put_Line(ConfigFile, "AtomFeedAmount = 25");
+      Put_Line
+        (ConfigFile,
          "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
       Put_Line(ConfigFile, "Name = New Site");
       Put_Line
