@@ -15,6 +15,8 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Calendar.Formatting;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
@@ -70,13 +72,66 @@ package body AtomFeed is
          FeedData := Append_Child(MainNode, FeedData);
          FeedText := Create_Text_Node(Feed, To_String(YassConfig.SiteName));
          FeedText := Append_Child(FeedData, FeedText);
+         FeedData := Create_Element(Feed, "updated");
+         FeedData := Append_Child(MainNode, FeedData);
+         FeedText := Create_Text_Node(Feed, "0000-00-00T00:00:00Z");
+         FeedText := Append_Child(FeedData, FeedText);
       end if;
    end StartAtomFeed;
 
-   procedure AddPageToFeed(FileName, NewFileName: String) is
+   procedure AddPageToFeed(FileName: String;
+      Titles: String_Container.Vector) is
+      NodesList, ChildrenList: Node_List;
+      Updated: String :=
+        Ada.Calendar.Formatting.Image(Modification_Time(FileName)) & "Z";
+      Url: constant String :=
+        To_String(YassConfig.BaseURL) & "/" &
+        Slice
+          (To_Unbounded_String(FileName),
+           Length
+             (SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
+              Dir_Separator) +
+           1,
+           FileName'Length);
+      EntryNode: DOM.Core.Element;
    begin
-      if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
+      if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
+        (YassConfig.AtomFeedSource /= To_Unbounded_String("tags")
+         and then Index(FileName, To_String(YassConfig.AtomFeedSource), 1) =
+           0) then
          return;
+      end if;
+      Updated(11) := 'T';
+      NodesList :=
+        DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "updated");
+      Set_Node_Value(First_Child(Item(NodesList, 0)), Updated);
+      NodesList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "title");
+      for I in 0 .. Length(NodesList) - 1 loop
+         for Title of Titles loop
+            if Node_Value(First_Child(Item(NodesList, I))) = Title then
+               EntryNode := Parent_Node(Item(NodesList, I));
+               ChildrenList := Child_Nodes(EntryNode);
+               for J in 0 .. Length(ChildrenList) - 1 loop
+                  if Node_Name(Item(ChildrenList, J)) = "updated" then
+                     Set_Node_Value
+                       (First_Child(Item(ChildrenList, J)), Updated);
+                  elsif Node_Name(Item(ChildrenList, J)) = "id" then
+                     Set_Node_Value(First_Child(Item(ChildrenList, J)), Url);
+                  end if;
+               end loop;
+               if String_Container.Length(Titles) = 1 then
+                  return;
+               end if;
+               exit;
+            end if;
+         end loop;
+      end loop;
+      NodesList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "entry");
+      EntryNode := Create_Element(Feed, "entry");
+      if Length(NodesList) = 0 then
+         EntryNode := Append_Child(MainNode, EntryNode);
+      else
+         EntryNode := Insert_Before(MainNode, EntryNode, Item(NodesList, 0));
       end if;
    end AddPageToFeed;
 

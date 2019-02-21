@@ -15,12 +15,16 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Containers.Indefinite_Vectors; use Ada.Containers;
+
 package AtomFeed is
 
+   package String_Container is new Indefinite_Vectors(Positive, String);
+
    procedure StartAtomFeed; -- Create new or load existing Atom feed for the site
-   procedure AddPageToFeed
-     (FileName,
-      NewFileName: String); -- Add selected page to the site Atom feed
+   procedure AddPageToFeed(FileName: String;
+      Titles: String_Container
+        .Vector); -- Add selected page to the site Atom feed
    procedure SaveAtomFeed; -- Save Atom feed to file
 
 end AtomFeed;
