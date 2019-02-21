@@ -52,6 +52,8 @@ package Config is
       SiteName: Unbounded_String :=
         To_Unbounded_String
           ("New Site"); -- Name of the site, needed for atom feed
+      AtomFeedAmount: Positive :=
+        25; -- Number of entries in the Atom feed of the site
    end record;
    YassConfig: ParserConfig; -- Settings for parser
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,
