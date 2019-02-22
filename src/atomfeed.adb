@@ -137,6 +137,7 @@ package body AtomFeed is
       Feed: Document;
       NewFeed: DOM_Implementation;
       MainNode, EntryNode: DOM.Core.Element;
+      EntriesAmount: Natural := 0;
       procedure AddNode(NodeName, NodeValue: String;
          ParentNode: Dom.Core.Element) is
          FeedData: DOM.Core.Element;
@@ -166,6 +167,8 @@ package body AtomFeed is
          AddNode("id", To_String(FeedEntry.Id), EntryNode);
          AddNode("title", To_String(FeedEntry.EntryTitle), EntryNode);
          AddNode("updated", To_HTTP_Date(FeedEntry.Updated), EntryNode);
+         EntriesAmount := EntriesAmount + 1;
+         exit when EntriesAmount > YassConfig.AtomFeedAmount;
       end loop;
       Create(AtomFile, Out_File, To_String(FeedFileName));
       Write(Stream => Stream(AtomFile), N => Feed, Pretty_Print => True);
