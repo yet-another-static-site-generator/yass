@@ -37,7 +37,7 @@ package body AtomFeed is
    function To_Time(Date: String) return Time is
       NewDate: String := Date(Date'First .. Date'Last - 1);
    begin
-      NewDate(11) := ' ';
+      NewDate(NewDate'First + 10) := ' ';
       return Ada.Calendar.Formatting.Value(NewDate);
    end To_Time;
 
