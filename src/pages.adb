@@ -23,6 +23,7 @@ with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Calendar; use Ada.Calendar;
 with AWS.Templates; use AWS.Templates;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -60,11 +61,22 @@ package body Pages is
          To_Unbounded_String("never"));
       ValidValue: Boolean := False;
       InSitemap: Boolean := True;
-      Titles: String_Container.Vector;
+      AtomEntries: FeedEntry_Container.Vector;
       procedure AddTag(Name, Value: String) is
       begin
-         if Name = "title" then
-            Titles.Append(Value);
+         if Name = "title" and Value /= "[]" then
+            AtomEntries.Prepend
+              (New_Item =>
+                 (EntryTitle => To_Unbounded_String(Value),
+                  Id => Null_Unbounded_String,
+                  Updated => Time_Of(1901, 1, 1)));
+         end if;
+         if Name = "id" and Value /= "[]" then
+            AtomEntries(AtomEntries.First_Index).Id :=
+              To_Unbounded_String(Value);
+         end if;
+         if Name = "updated" and Value /= "[]" then
+            AtomEntries(AtomEntries.First_Index).Updated := To_Time(Value);
          end if;
          if To_Lower(Value) = "true" then
             Insert(Tags, Assoc(Name, True));
@@ -176,7 +188,7 @@ package body Pages is
          AddPageToSitemap
            (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
       end if;
-      AddPageToFeed(NewFileName, Titles);
+      AddPageToFeed(NewFileName, AtomEntries);
       Set("YASSFILE", NewFileName);
    exception
       when An_Exception : LayoutNotFound =>
