@@ -103,7 +103,7 @@ package body AtomFeed is
               Dir_Separator) +
            1,
            FileName'Length);
-      DeleteIndex: Natural := 0;
+      DeleteIndex, EntryIndex: Natural := 0;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
         (YassConfig.AtomFeedSource /= To_Unbounded_String("tags")
@@ -132,7 +132,17 @@ package body AtomFeed is
             Entries_List.Delete(DeleteIndex);
             DeleteIndex := 0;
          end if;
-         Entries_List.Prepend(New_Item => AtomEntry);
+         EntryIndex := Entries_List.First_Index;
+         while EntryIndex <= Entries_List.Last_Index loop
+            if Entries_List(EntryIndex).Updated < AtomEntry.Updated then
+               Entries_List.Insert(EntryIndex, AtomEntry);
+               exit;
+            end if;
+            EntryIndex := EntryIndex + 1;
+         end loop;
+         if EntryIndex > Entries_List.Last_Index then
+            Entries_List.Append(New_Item => AtomEntry);
+         end if;
       end loop;
    end AddPageToFeed;
 
