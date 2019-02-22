@@ -15,34 +15,46 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar.Formatting;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Calendar.Formatting;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with DOM.Core; use DOM.Core;
+with DOM.Core.Elements; use DOM.Core.Elements;
 with DOM.Core.Documents; use DOM.Core.Documents;
 with DOM.Core.Nodes; use DOM.Core.Nodes;
-with DOM.Core.Elements; use DOM.Core.Elements;
 with DOM.Readers; use DOM.Readers;
 with Input_Sources.File; use Input_Sources.File;
 with Config; use Config;
 
 package body AtomFeed is
 
-   Feed: Document;
    FeedFileName: Unbounded_String;
-   MainNode: DOM.Core.Element;
+   Entries_List: FeedEntry_Container.Vector;
+
+   function To_Time(Date: String) return Time is
+      NewDate: String := Date(Date'First .. Date'Last - 1);
+   begin
+      NewDate(11) := ' ';
+      return Ada.Calendar.Formatting.Value(NewDate);
+   end To_Time;
+
+   function To_HTTP_Date(Date: Time) return String is
+      NewDate: String := Ada.Calendar.Formatting.Image(Date) & "Z";
+   begin
+      NewDate(11) := 'T';
+      return NewDate;
+   end To_HTTP_Date;
 
    procedure StartAtomFeed is
       AtomFile: File_Input;
       Reader: Tree_Reader;
-      NewFeed: DOM_Implementation;
-      NodesList: Node_List;
-      FeedData: DOM.Core.Element;
-      FeedText: Text;
+      NodesList, ChildrenNodes: Node_List;
+      Feed: Document;
+      TempEntry: FeedEntry;
+      DataNode: DOM.Core.Element;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
          return;
@@ -56,46 +68,42 @@ package body AtomFeed is
          Close(AtomFile);
          Feed := Get_Tree(Reader);
          NodesList :=
-           DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "feed");
-         MainNode := Item(NodesList, 0);
-         Set_Attribute(MainNode, "xmlns", "http://www.w3.org/2005/Atom");
-      else
-         Feed := Create_Document(NewFeed);
-         MainNode := Create_Element(Feed, "feed");
-         Set_Attribute(MainNode, "xmlns", "http://www.w3.org/2005/Atom");
-         MainNode := Append_Child(Feed, MainNode);
-         FeedData := Create_Element(Feed, "id");
-         FeedData := Append_Child(MainNode, FeedData);
-         FeedText := Create_Text_Node(Feed, To_String(YassConfig.BaseURL));
-         FeedText := Append_Child(FeedData, FeedText);
-         FeedData := Create_Element(Feed, "title");
-         FeedData := Append_Child(MainNode, FeedData);
-         FeedText := Create_Text_Node(Feed, To_String(YassConfig.SiteName));
-         FeedText := Append_Child(FeedData, FeedText);
-         FeedData := Create_Element(Feed, "updated");
-         FeedData := Append_Child(MainNode, FeedData);
-         FeedText := Create_Text_Node(Feed, "0000-00-00T00:00:00Z");
-         FeedText := Append_Child(FeedData, FeedText);
+           DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "entry");
+         for I in 0 .. Length(NodesList) - 1 loop
+            TempEntry := (Null_Unbounded_String, Null_Unbounded_String, Clock);
+            ChildrenNodes := Child_Nodes(Item(NodesList, I));
+            for J in 1 .. Length(ChildrenNodes) - 1 loop
+               if J rem 2 /= 0 then
+                  DataNode := Item(ChildrenNodes, J);
+                  if Node_Name(DataNode) = "id" then
+                     TempEntry.Id :=
+                       To_Unbounded_String(Node_Value(First_Child(DataNode)));
+                  elsif Node_Name(DataNode) = "title" then
+                     TempEntry.EntryTitle :=
+                       To_Unbounded_String(Node_Value(First_Child(DataNode)));
+                  elsif Node_Name(DataNode) = "updated" then
+                     TempEntry.Updated :=
+                       To_Time(Node_Value(First_Child(DataNode)));
+                  end if;
+               end if;
+            end loop;
+            Entries_List.Append(New_Item => TempEntry);
+         end loop;
       end if;
    end StartAtomFeed;
 
    procedure AddPageToFeed(FileName: String;
-      Titles: in out String_Container.Vector) is
-      NodesList, ChildrenList: Node_List;
-      Updated: String :=
-        Ada.Calendar.Formatting.Image(Modification_Time(FileName)) & "Z";
+      Entries: in out FeedEntry_Container.Vector) is
       Url: constant String :=
         To_String(YassConfig.BaseURL) & "/" &
-        Slice
+        Ada.Strings.Unbounded.Slice
           (To_Unbounded_String(FileName),
            Length
              (SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
               Dir_Separator) +
            1,
            FileName'Length);
-      EntryNode, EntryData: DOM.Core.Element;
-      TitleIndex: Positive;
-      EntryText: Text;
+      DeleteIndex: Natural := 0;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
         (YassConfig.AtomFeedSource /= To_Unbounded_String("tags")
@@ -103,59 +111,62 @@ package body AtomFeed is
            0) then
          return;
       end if;
-      Updated(11) := 'T';
-      NodesList :=
-        DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "updated");
-      Set_Node_Value(First_Child(Item(NodesList, 0)), Updated);
-      NodesList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "title");
-      for I in 0 .. Length(NodesList) - 1 loop
-         TitleIndex := Titles.First_Index;
-         while TitleIndex <= Titles.Last_Index loop
-            if Node_Value(First_Child(Item(NodesList, I))) =
-              Titles(TitleIndex) then
-               EntryNode := Parent_Node(Item(NodesList, I));
-               ChildrenList := Child_Nodes(EntryNode);
-               for J in 0 .. Length(ChildrenList) - 1 loop
-                  if Node_Name(Item(ChildrenList, J)) = "updated" then
-                     Set_Node_Value
-                       (First_Child(Item(ChildrenList, J)), Updated);
-                  elsif Node_Name(Item(ChildrenList, J)) = "id" then
-                     Set_Node_Value(First_Child(Item(ChildrenList, J)), Url);
-                  end if;
-               end loop;
-               Titles.Delete(TitleIndex);
-               if String_Container.Length(Titles) = 0 then
-                  return;
-               end if;
+      for AtomEntry of Entries loop
+         if AtomEntry.Id = Null_Unbounded_String then
+            AtomEntry.Id := To_Unbounded_String(Url);
+         end if;
+         if AtomEntry.Updated = Time_Of(1901, 1, 1) then
+            AtomEntry.Updated := Modification_Time(FileName);
+         end if;
+         for I in Entries_List.Iterate loop
+            if Entries_List(I).EntryTitle = AtomEntry.EntryTitle then
+               DeleteIndex := FeedEntry_Container.To_Index(I);
                exit;
             end if;
-            TitleIndex := TitleIndex + 1;
          end loop;
-      end loop;
-      for EntryTitle of Titles loop
-         EntryNode := Create_Element(Feed, "entry");
-         EntryNode := Append_Child(MainNode, EntryNode);
-         EntryData := Create_Element(Feed, "id");
-         EntryData := Append_Child(EntryNode, EntryData);
-         EntryText := Create_Text_Node(Feed, Url);
-         EntryText := Append_Child(EntryData, EntryText);
-         EntryData := Create_Element(Feed, "title");
-         EntryData := Append_Child(EntryNode, EntryData);
-         EntryText := Create_Text_Node(Feed, EntryTitle);
-         EntryText := Append_Child(EntryData, EntryText);
-         EntryData := Create_Element(Feed, "updated");
-         EntryData := Append_Child(EntryNode, EntryData);
-         EntryText := Create_Text_Node(Feed, Updated);
-         EntryText := Append_Child(EntryData, EntryText);
+         if DeleteIndex > 0 then
+            Entries_List.Delete(DeleteIndex);
+            DeleteIndex := 0;
+         end if;
+         Entries_List.Prepend(New_Item => AtomEntry);
       end loop;
    end AddPageToFeed;
 
    procedure SaveAtomFeed is
       AtomFile: File_Type;
+      Feed: Document;
+      NewFeed: DOM_Implementation;
+      MainNode, EntryNode: DOM.Core.Element;
+      procedure AddNode(NodeName, NodeValue: String;
+         ParentNode: Dom.Core.Element) is
+         FeedData: DOM.Core.Element;
+         FeedText: Text;
+      begin
+         FeedData := Create_Element(Feed, NodeName);
+         FeedData := Append_Child(ParentNode, FeedData);
+         FeedText := Create_Text_Node(Feed, NodeValue);
+         if Append_Child(FeedData, FeedText) /= null then
+            return;
+         end if;
+      end AddNode;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
          return;
       end if;
+      Feed := Create_Document(NewFeed);
+      MainNode := Create_Element(Feed, "feed");
+      Set_Attribute(MainNode, "xmlns", "http://www.w3.org/2005/Atom");
+      MainNode := Append_Child(Feed, MainNode);
+      AddNode("id", To_String(YassConfig.BaseURL) & "/", MainNode);
+      AddNode("title", To_String(YassConfig.SiteName), MainNode);
+      AddNode("updated", To_HTTP_Date(Entries_List(1).Updated), MainNode);
+      for FeedEntry of Entries_List loop
+         EntryNode := Create_Element(Feed, "entry");
+         EntryNode := Append_Child(MainNode, EntryNode);
+         AddNode("id", To_String(FeedEntry.Id), EntryNode);
+         AddNode("title", To_String(FeedEntry.EntryTitle), EntryNode);
+         AddNode("updated", To_HTTP_Date(FeedEntry.Updated), EntryNode);
+      end loop;
       Create(AtomFile, Out_File, To_String(FeedFileName));
       Write(Stream => Stream(AtomFile), N => Feed, Pretty_Print => True);
       Close(AtomFile);
