@@ -111,6 +111,10 @@ package body AtomFeed is
            0) then
          return;
       end if;
+      if FeedEntry_Container.Length(Entries) > 1
+        and then Entries(1).Updated < Entries(2).Updated then
+         Entries.Reverse_Elements;
+      end if;
       for AtomEntry of Entries loop
          if AtomEntry.Id = Null_Unbounded_String then
             AtomEntry.Id := To_Unbounded_String(Url);
