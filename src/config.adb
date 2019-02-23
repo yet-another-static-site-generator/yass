@@ -66,7 +66,7 @@ package body Config is
       Put_Line(ConfigFile, "SitemapEnabled = true");
       Put_Line
         (ConfigFile,
-         "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - name of markdown file which will be used as a source of atom feeed (must have proper tags set inside).");
+         "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
       Put_Line(ConfigFile, "AtomFeedSource = tags");
       Put_Line
         (ConfigFile,
@@ -139,7 +139,14 @@ package body Config is
                   YassConfig.SitemapEnabled := False;
                end if;
             elsif FieldName = To_Unbounded_String("AtomFeedSource") then
-               YassConfig.AtomFeedSource := Value;
+               if Value = To_Unbounded_String("none") or
+                 Value = To_Unbounded_String("tags") then
+                  YassConfig.AtomFeedSource := Value;
+               else
+                  YassConfig.AtomFeedSource :=
+                    Unbounded_Slice(Value, 1, Length(Value) - 2) &
+                    To_Unbounded_String("html");
+               end if;
             elsif FieldName = To_Unbounded_String("Name") then
                YassConfig.SiteName := Value;
                Tags_Container.Include
