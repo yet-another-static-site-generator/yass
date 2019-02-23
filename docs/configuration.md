@@ -50,13 +50,21 @@ Possible settings for project:
 - MonitorInterval - any positive number. How often (in seconds) the program
   should check for this site changes when working in server mode and
   regenerate the site if needed. Default value is `5.0`.
-- BaseURL - Base URL of the site. It is needed mostly for creating sitemap,
-  but you can use it as a normal the site tag. If your site will be available
-  at `https://mysite.com/blog` then this will be your BaseURL. Default value is
-  `http://localhost:8888`.
+- BaseURL - Base URL of the site. It is needed mostly for creating sitemap and
+  Atom feed, but you can use it as a normal the site tag. If your site will be
+  available at `https://mysite.com/blog` then this will be your BaseURL.
+  Default value is `http://localhost:8888`.
 - EnableSitemap - Did the program should create sitemap when creating the site.
   Possible values are true or false (case-insensitive). Default value is
   `true` (create sitemap).
+- AtomFeedSource - Source which will be used for creating Atom feed of the
+  site. Possible values are: `none` - don't create Atom feed, `tags` - create
+  Atom entries from proper tags in .md files, `[filename]` - the path (related to
+  the project directory path) to markdown file which will be used as a source of
+  Atom feed (must have proper tags set inside). For more informations about
+  Atom feed tags, please see section [Configuring Pages](pages.html).
+- AtomFeedAmount - Number of entries in the Atom feed (if it will be created,
+  please see setting above).
 
 <a href="#top">^ Top</a>
 

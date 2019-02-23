@@ -43,8 +43,63 @@ page. All sitemap settings are optional.
 - insitemap - optional setting. Did page should be included in sitemap. If you
   want to exclude this page from the sitemap, set it to `insitemap: false`.
   Default value is `true`.
+
+If you enabled creation of Atom feed in the project config file, you can some
+Atom feed parameters too. How much and how it works, depends on selected source
+of the Atom feed. All of this parameters can be used as a normal page tags too.
+
+If you selected source of the Atom feed as `tags`:
+
+- title - Title which will be used as the Atom title entry. Required setting if
+  creating Atom feed is enabled.
+- updated - Time stamp when page (and Atom feed entry) last time was updated.
+  Must be in [RFC3339](http://www.faqs.org/rfcs/rfc3339.html) time style. This
+  parameter is optional. If you not set it, the program will use time when file
+  html (created from this markdown file) was last time updated.
+
+Example of markdown file with Atom feed settings for Atom feed source as
+`tags`:
+
+    -- layout: default
+    -- title: awesome text about something
+    Here is super awesome text.
+
+If you selected source of the Atom feed as `[filename]` and this markdown file
+will be used as a source for the Atom feed:
+
+- title - Composite tag (if you want to have more that one entry in the Atom
+  feed) which will be used as the Atom entries titles. Required setting if
+  creating Atom feed is enabled.
+- id - name or id of the HTML element which will be entry point for each Atom
+  entry. It will be added to the page address in Atom entries. Required
+  setting for creating Atom feed from one file.
+- updated - Time stamp when selected Atom feed entry was last time updated.
+  Must be in [RFC3339](http://www.faqs.org/rfcs/rfc3339.html) time style.
+  Required for each entry if creating Atom feed from one file is enabled.
+
+Example of markdown file `test.md` with Atom feed settings for Atom feed
+source as `test.md`:
+
+    -- layout: news
+    -- title: []
+    -- id: []
+    -- updated: []
+    -- news: []
+    -- title: second news
+    -- id: second
+    -- updated: 2019-02-23T10:00:00Z
+    -- news: This is the second news.
+    -- title: first news
+    -- id: first
+    -- updated: 2019-02-23T09:59:00Z
+    -- news: This is the first news.
+
+And use [TABLE statement](http://docs.adacore.com/aws-docs/templates_parser/template_statements.html#table-statement)
+inside `news.html` layout to show that news.
+
+One parameter is always required:
+
 - layout - the name of file (without extension) which will be used as template
   for the page. This must be existing file from the project layouts directory.
-  It is the only required setting.
 
 <a href="#top">^ Top</a>
