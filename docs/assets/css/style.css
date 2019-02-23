@@ -95,12 +95,7 @@ body {
    width: 95%;
 }
 
-details {
-   width: 50%;
-}
-
 summary {
-   text-align: center;
    background: #98971a;
 }
 
