@@ -22,6 +22,7 @@
 - Default setting for excluded files and directories in site configuration
   files
 - Generating sitemaps
+- Generating Atom feed
 
 ### Changed
 - New documentation look
