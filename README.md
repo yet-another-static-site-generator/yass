@@ -17,6 +17,7 @@ files included in distributed packages.
 * Fast
 * Can be extended with modules written in any script/programming language
 * Generating sitemaps
+* Generating Atom feeds
 * Freshly created, unpolished, have a few bugs :D
 
 ## Build from sources
@@ -84,10 +85,6 @@ environment variable `YASSDIR` to your current directory. Example:
 AppImage version of the program.
 
 ## Roadmap
-
-### Current
-
-- Generatig RSS feed
 
 ### 0.6
 
