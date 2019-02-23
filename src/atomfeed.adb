@@ -167,7 +167,8 @@ package body AtomFeed is
          end if;
       end AddNode;
    begin
-      if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
+      if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
+        FeedEntry_Container.Length(Entries_List) = 0 then
          return;
       end if;
       Feed := Create_Document(NewFeed);
