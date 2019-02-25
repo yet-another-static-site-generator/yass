@@ -37,7 +37,7 @@ with Sitemaps; use Sitemaps;
 with AtomFeed; use AtomFeed;
 
 procedure YASS is
-   Version: constant String := "0.5";
+   Version: constant String := "0.6";
    BaseDirectory: Unbounded_String;
 
    function BuildSite(DirectoryName: String) return Boolean is
