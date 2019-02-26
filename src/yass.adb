@@ -135,6 +135,7 @@ begin
         ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
+      Put_Line("Released: 2019-02-23");
    elsif Argument(1) = "license" then
       Put_Line("Copyright (C) 2019 Bartek thindil Jasicki");
       New_Line;
