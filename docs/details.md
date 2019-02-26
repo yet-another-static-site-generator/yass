@@ -135,8 +135,9 @@ commands. To run it, type in directory where the file `yass` is `./yass help`.
 
 ## <a name="version"></a>Version command
 
-This command gives only short information about the program version. To run
-it, type in directory where the file `yass` is `./yass version`.
+This command gives only short information about the program version and it
+release date. To run it, type in directory where the file `yass` is
+`./yass version`.
 
 <a href="#top">^ Top</a>
 

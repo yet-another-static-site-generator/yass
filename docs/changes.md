@@ -4,17 +4,24 @@
 -- backtext: Extending
 -- indexlink: true
 -- details: []
+-- details: Unreleased
 -- details: 0.5
 -- details: 0.4
 -- details: 0.3
 -- details: 0.2
 -- details: 0.1
 -- detailslink: []
+-- detailslink: unreleased
 -- detailslink: 0.5
 -- detailslink: 0.4
 -- detailslink: 0.3
 -- detailslink: 0.2
 -- detailslink: 0.1
+## <a name="unreleased"></a>[Unreleased]
+
+### Changed
+- Added release date to version command
+
 ## <a name="0.5"></a>[0.5] - 2019-02-23
 
 ### Added
