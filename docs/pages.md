@@ -47,6 +47,8 @@ page. All sitemap settings are optional.
 If you enabled creation of Atom feed in the project config file, you can some
 Atom feed parameters too. How much and how it works, depends on selected source
 of the Atom feed. All of this parameters can be used as a normal page tags too.
+More informations about how Atom feeds parameters works, you can find at
+[Introduction to Atom](https://validator.w3.org/feed/docs/atom.html)
 
 If you selected source of the Atom feed as `tags`:
 

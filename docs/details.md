@@ -90,11 +90,13 @@ your project. Thus if you create the directory structure like this:
 
 Your new site will be have that directory structure (inside the *_output*
 directory). Files `sitemap.xml` and `robots.txt` will be added only when
-you will be have enabled option to create sitemap:
+you will be have enabled option to create sitemap. File `atom.xml` will
+be added only when you will be have enabled option to create Atom feed:
 
     index.html
     sitemap.xml
     robots.txt
+    atom.xml
     images
       |-newimage.png
 
@@ -114,7 +116,8 @@ it will regenerate it. If you add any new file, it will be added to the site
 output directory. If you change any layout file from layouts directory all
 HTML files which use this layout (directly, not as included) will be updated
 too. If you have enabled creating sitemaps, it will be upgraded or created too
-if needed, same with file `robots.txt`.
+if needed, same with file `robots.txt`. If you have enabled creating atom feed,
+it will be upgrade or create `atom.xml` file if needed.
 
 ### Limitations
 - At this moment, when you browsing your project, you must enter valid address
@@ -124,7 +127,9 @@ if needed, same with file `robots.txt`.
   detect it. You must stop, remove old file manually, then restart the server.
 - If you delete page which was in the sitemap, you will be need to edit the
   sitemap manually or delete it completely with file `robots.txt` to
-  regenerate list of the site pages.
+  regenerate list of the site pages with `build` command.
+- Same with Atom feed, if you delete page which was in feed, you will need to
+  edit `atom.xml` file or delete it to regenerate it with `build` command.
 
 ## <a name="help"></a>Help command
 

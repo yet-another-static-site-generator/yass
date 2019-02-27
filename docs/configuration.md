@@ -62,7 +62,8 @@ Possible settings for project:
   Atom entries from proper tags in .md files, `[filename]` - the path (related to
   the project directory path) to markdown file which will be used as a source of
   Atom feed (must have proper tags set inside). For more informations about
-  Atom feed tags, please see section [Configuring Pages](pages.html).
+  Atom feed tags, please see section [Configuring Pages](pages.html). Default
+  value is `none`.
 - AtomFeedAmount - Number of entries in the Atom feed (if it will be created,
   please see setting above).
 
