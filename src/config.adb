@@ -67,7 +67,7 @@ package body Config is
       Put_Line
         (ConfigFile,
          "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
-      Put_Line(ConfigFile, "AtomFeedSource = tags");
+      Put_Line(ConfigFile, "AtomFeedSource = none");
       Put_Line
         (ConfigFile,
          "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");

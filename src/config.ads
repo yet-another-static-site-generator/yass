@@ -48,7 +48,7 @@ package Config is
       SitemapEnabled: Boolean := True; -- Did creating sitemap is enabled
       AtomFeedSource: Unbounded_String :=
         To_Unbounded_String
-          ("tags"); -- Source of atom feed entries. Possible values are: none (don't create atom feed), tags (default, create entries from tags in markdown files) and [filename] (path to markdown file which will be used as a source of feed)
+          ("none"); -- Source of atom feed entries. Possible values are: none (don't create atom feed, default), tags (create entries from tags in markdown files) and [filename] (path to markdown file which will be used as a source of feed)
       SiteName: Unbounded_String :=
         To_Unbounded_String
           ("New Site"); -- Name of the site, needed for atom feed
