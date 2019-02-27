@@ -25,6 +25,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Calendar; use Ada.Calendar;
 with AWS.Templates; use AWS.Templates;
+with AWS.Templates.Utils; use AWS.Templates.Utils;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
@@ -35,7 +36,7 @@ with AtomFeed; use AtomFeed;
 package body Pages is
 
    subtype size_t is unsigned_long;
-   LayoutNotFound, SitemapInvalidValue: exception;
+   LayoutNotFound: exception;
 
    function cmark_markdown_to_html(text: chars_ptr; len: size_t;
       options: int) return chars_ptr with
@@ -62,6 +63,7 @@ package body Pages is
       ValidValue: Boolean := False;
       InSitemap: Boolean := True;
       AtomEntries: FeedEntry_Container.Vector;
+      SitemapInvalidValue, InvalidValue: exception;
       procedure AddTag(Name, Value: String) is
       begin
          if Name = "title" and Value /= "[]" then
@@ -88,11 +90,15 @@ package body Pages is
          elsif TableTags_Container.Contains(PageTableTags, Name) then
             PageTableTags(Name) := PageTableTags(Name) & Value;
          else
-            Insert(Tags, Assoc(Name, Integer'Value(Value)));
+            if Is_Number(Value) then
+               Insert(Tags, Assoc(Name, Integer'Value(Value)));
+            else
+               Insert(Tags, Assoc(Name, Value));
+            end if;
          end if;
       exception
          when Constraint_Error =>
-            Insert(Tags, Assoc(Name, Value));
+            raise InvalidValue with """" & Name & """ value """ & Value & """";
       end AddTag;
    begin
       declare
@@ -212,6 +218,11 @@ package body Pages is
          Put_Line
            ("Can't parse """ & Filename &
             """. Invalid value for page priority.");
+         raise GenerateSiteException;
+      when An_Exception : InvalidValue =>
+         Put_Line
+           ("Can't parse """ & Filename & """. Invalid value for tag: " &
+            Exception_Message(An_Exception));
          raise GenerateSiteException;
    end CreatePage;
 
