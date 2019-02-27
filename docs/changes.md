@@ -18,6 +18,8 @@
 -- detailslink: 0.2
 -- detailslink: 0.1
 ## <a name="unreleased"></a>[Unreleased]
+### Added
+- Better validation of page tags values
 
 ### Changed
 - Added release date to version command
