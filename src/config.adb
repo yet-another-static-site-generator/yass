@@ -97,6 +97,20 @@ package body Config is
       RawData, FieldName, Value: Unbounded_String;
       EqualIndex: Natural;
       Tokens: Slice_Set;
+      procedure NormalizeDir is
+      begin
+         if Dir_Separator = '/' then
+            if Element(Value, 1) /= '/' then
+               Value :=
+                 To_Unbounded_String(DirectoryName & Dir_Separator) & Value;
+            end if;
+         else
+            if Element(Value, 2) /= ':' then
+               Value :=
+                 To_Unbounded_String(DirectoryName & Dir_Separator) & Value;
+            end if;
+         end if;
+      end NormalizeDir;
    begin
       Open(ConfigFile, In_File, DirectoryName & "/site.cfg");
       while not End_Of_File(ConfigFile) loop
@@ -109,8 +123,10 @@ package body Config is
             FieldName := Head(RawData, EqualIndex - 2);
             Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
             if FieldName = To_Unbounded_String("LayoutsDirectory") then
+               NormalizeDir;
                YassConfig.LayoutsDirectory := Value;
             elsif FieldName = To_Unbounded_String("OutputDirectory") then
+               NormalizeDir;
                YassConfig.OutputDirectory := Value;
             elsif FieldName = To_Unbounded_String("ExcludedFiles") then
                Create(Tokens, To_String(Value), ",");
