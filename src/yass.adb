@@ -229,9 +229,7 @@ begin
          HTTPServer: AWS.Server.HTTP;
       begin
          ParseConfig(To_String(WorkDirectory));
-         Set_Directory
-           (To_String(WorkDirectory) & Dir_Separator &
-            To_String(YassConfig.OutputDirectory));
+         Set_Directory(To_String(YassConfig.OutputDirectory));
          if YassConfig.ServerEnabled then
             AWS.Server.Start
               (HTTPServer, "YASS static page server",

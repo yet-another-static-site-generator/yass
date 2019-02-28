@@ -60,7 +60,7 @@ package body AtomFeed is
          return;
       end if;
       FeedFileName :=
-        SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
+        YassConfig.OutputDirectory &
         To_Unbounded_String(Dir_Separator & "atom.xml");
       if Exists(To_String(FeedFileName)) then
          Open(To_String(FeedFileName), AtomFile);
@@ -98,10 +98,7 @@ package body AtomFeed is
         To_String(YassConfig.BaseURL) & "/" &
         Ada.Strings.Unbounded.Slice
           (To_Unbounded_String(FileName),
-           Length
-             (SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
-              Dir_Separator) +
-           1,
+           Length(YassConfig.OutputDirectory & Dir_Separator) + 1,
            FileName'Length);
       DeleteIndex, EntryIndex: Natural := 0;
    begin

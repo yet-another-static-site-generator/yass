@@ -36,15 +36,13 @@ package body Server is
       procedure MonitorDirectory(Name: String) is
          procedure ProcessFiles(Item: Directory_Entry_Type) is
             SiteFileName: Unbounded_String :=
-              To_Unbounded_String(Full_Name(Item));
+              YassConfig.OutputDirectory & Dir_Separator &
+              To_Unbounded_String(Simple_Name(Item));
          begin
             if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) /=
               Excluded_Container.No_Index then
                return;
             end if;
-            Insert
-              (SiteFileName, Length(SiteDirectory) + 1,
-               Dir_Separator & To_String(YassConfig.OutputDirectory));
             if Extension(Simple_Name(Item)) = "md" then
                SiteFileName :=
                  To_Unbounded_String

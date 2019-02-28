@@ -47,7 +47,7 @@ package body Sitemaps is
          return;
       end if;
       FileName :=
-        SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
+        YassConfig.OutputDirectory &
         To_Unbounded_String(Dir_Separator & "sitemap.xml");
       if Exists(To_String(FileName)) then
          Open(To_String(FileName), SitemapFile);
@@ -74,10 +74,7 @@ package body Sitemaps is
         To_String(YassConfig.BaseURL) & "/" &
         Slice
           (To_Unbounded_String(FileName),
-           Length
-             (SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
-              Dir_Separator) +
-           1,
+           Length(YassConfig.OutputDirectory & Dir_Separator) + 1,
            FileName'Length);
       URLsList, ChildrenList: Node_List;
       Added, FrequencyUpdated, PriorityUpdated: Boolean := False;

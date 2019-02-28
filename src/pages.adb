@@ -49,7 +49,7 @@ package body Pages is
       PageFile: File_Type;
       Tags: Translate_Set;
       OutputDirectory: constant Unbounded_String :=
-        SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
+        YassConfig.OutputDirectory &
         Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
       NewFileName: constant String :=
         To_String(OutputDirectory) & Dir_Separator &
@@ -113,7 +113,6 @@ package body Pages is
                   if Index(Data, "layout:", 1) = 4 then
                      Data := Unbounded_Slice(Data, 12, Length(Data));
                      Layout :=
-                       SiteDirectory & Dir_Separator &
                        YassConfig.LayoutsDirectory & Dir_Separator & Data &
                        To_Unbounded_String(".html");
                      if not Ada.Directories.Exists(To_String(Layout)) then
@@ -228,7 +227,7 @@ package body Pages is
 
    procedure CopyFile(FileName, Directory: String) is
       OutputDirectory: constant Unbounded_String :=
-        SiteDirectory & Dir_Separator & YassConfig.OutputDirectory &
+        YassConfig.OutputDirectory &
         Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
    begin
       Create_Path(To_String(OutputDirectory));
@@ -306,7 +305,6 @@ package body Pages is
                if Index(Data, "layout:", 1) > 0 then
                   Data := Unbounded_Slice(Data, 12, Length(Data));
                   Layout :=
-                    SiteDirectory & Dir_Separator &
                     YassConfig.LayoutsDirectory & Dir_Separator & Data &
                     To_Unbounded_String(".html");
                   if not Ada.Directories.Exists(To_String(Layout)) then
