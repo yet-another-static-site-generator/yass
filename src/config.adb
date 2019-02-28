@@ -18,6 +18,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
+with Ada.Directories; use Ada.Directories;
 with GNAT.String_Split; use GNAT.String_Split;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
@@ -169,9 +170,12 @@ package body Config is
       YassConfig.ExcludedFiles.Append(".");
       YassConfig.ExcludedFiles.Append("..");
       YassConfig.ExcludedFiles.Append("site.cfg");
-      YassConfig.ExcludedFiles.Append(To_String(YassConfig.LayoutsDirectory));
-      YassConfig.ExcludedFiles.Append(To_String(YassConfig.OutputDirectory));
-      YassConfig.ExcludedFiles.Append(To_String(YassConfig.ModulesDirectory));
+      YassConfig.ExcludedFiles.Append
+        (Simple_Name(To_String(YassConfig.LayoutsDirectory)));
+      YassConfig.ExcludedFiles.Append
+        (Simple_Name(To_String(YassConfig.OutputDirectory)));
+      YassConfig.ExcludedFiles.Append
+        (Simple_Name(To_String(YassConfig.ModulesDirectory)));
       SiteDirectory := To_Unbounded_String(DirectoryName);
       Set_Tag_Separators("{%", "%}");
    exception
