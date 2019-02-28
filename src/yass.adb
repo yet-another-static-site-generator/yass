@@ -38,7 +38,6 @@ with AtomFeed; use AtomFeed;
 
 procedure YASS is
    Version: constant String := "0.6";
-   BaseDirectory: Unbounded_String;
 
    function BuildSite(DirectoryName: String) return Boolean is
       procedure Build(Name: String) is
@@ -119,7 +118,6 @@ procedure YASS is
    end ValidArguments;
 
 begin
-   BaseDirectory := To_Unbounded_String(Current_Directory);
    if Ada.Environment_Variables.Exists("YASSDIR") then
       Set_Directory(Value("YASSDIR"));
    end if;
@@ -169,7 +167,9 @@ begin
               To_Unbounded_String(Value("APPDIR") & "/usr/share/README.md");
          else
             ReadmeName :=
-              BaseDirectory & To_Unbounded_String(Dir_Separator & "README.md");
+              To_Unbounded_String
+                (Containing_Directory(Command_Name) & Dir_Separator &
+                 "README.md");
          end if;
          if not Ada.Directories.Exists(To_String(ReadmeName)) then
             Put_Line("Can't find file " & To_String(ReadmeName));
