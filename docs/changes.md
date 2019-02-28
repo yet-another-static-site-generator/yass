@@ -25,6 +25,9 @@
 - Added release date to version command
 - Don't create Atom feed by default
 
+### Fixed
+- Showing README.md file
+
 ## <a name="0.5"></a>[0.5] - 2019-02-23
 
 ### Added
