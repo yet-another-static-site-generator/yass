@@ -17,6 +17,7 @@
 
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories; use Ada.Directories;
 with Ada.Calendar; use Ada.Calendar;
@@ -38,6 +39,7 @@ with AtomFeed; use AtomFeed;
 
 procedure YASS is
    Version: constant String := "0.6";
+   WorkDirectory: Unbounded_String;
 
    function BuildSite(DirectoryName: String) return Boolean is
       procedure Build(Name: String) is
@@ -94,9 +96,14 @@ procedure YASS is
          Put_Line("Please specify directory name " & Message);
          return False;
       end if;
-      if Ada.Directories.Exists
-          (Current_Directory & Dir_Separator & Argument(2)) =
-        Exist then
+      if Index(Argument(2), Containing_Directory(Current_Directory)) = 1 then
+         WorkDirectory := To_Unbounded_String(Argument(2));
+      else
+         WorkDirectory :=
+           To_Unbounded_String
+             (Current_Directory & Dir_Separator & Argument(2));
+      end if;
+      if Ada.Directories.Exists(To_String(WorkDirectory)) = Exist then
          if not Exist then
             Put_Line
               ("Directory with that name not exists, please specify existing site directory.");
@@ -108,8 +115,7 @@ procedure YASS is
       end if;
       if not Exist and
         not Ada.Directories.Exists
-          (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
-           "site.cfg") then
+          (To_String(WorkDirectory) & Dir_Separator & "site.cfg") then
          Put_Line
            ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
          return False;
@@ -195,13 +201,12 @@ begin
       begin
          for I in Paths'Range loop
             Create_Path
-              (Current_Directory & Dir_Separator & Argument(2) &
-               Dir_Separator & To_String(Paths(I)));
+              (To_String(WorkDirectory) & Dir_Separator & To_String(Paths(I)));
          end loop;
       end;
-      CreateConfig(Current_Directory & Dir_Separator & Argument(2));
-      CreateLayout(Current_Directory & Dir_Separator & Argument(2));
-      CreateEmptyIndexFile(Current_Directory & Dir_Separator & Argument(2));
+      CreateConfig(To_String(WorkDirectory));
+      CreateLayout(To_String(WorkDirectory));
+      CreateEmptyIndexFile(To_String(WorkDirectory));
       Put_Line
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
          Argument(2) & Dir_Separator &
@@ -210,8 +215,8 @@ begin
       if not ValidArguments("from where page will be created.", False) then
          return;
       end if;
-      ParseConfig(Current_Directory & Dir_Separator & Argument(2));
-      if BuildSite(Current_Directory & Dir_Separator & Argument(2)) then
+      ParseConfig(To_String(WorkDirectory));
+      if BuildSite(To_String(WorkDirectory)) then
          Put_Line("Site was build.");
       else
          Put_Line("Site building has been interrupted.");
@@ -223,9 +228,9 @@ begin
       declare
          HTTPServer: AWS.Server.HTTP;
       begin
-         ParseConfig(Current_Directory & Dir_Separator & Argument(2));
+         ParseConfig(To_String(WorkDirectory));
          Set_Directory
-           (Current_Directory & Dir_Separator & Argument(2) & Dir_Separator &
+           (To_String(WorkDirectory) & Dir_Separator &
             To_String(YassConfig.OutputDirectory));
          if YassConfig.ServerEnabled then
             AWS.Server.Start
