@@ -128,6 +128,9 @@ package body Config is
             elsif FieldName = To_Unbounded_String("OutputDirectory") then
                NormalizeDir;
                YassConfig.OutputDirectory := Value;
+            elsif FieldName = To_Unbounded_String("ModulesDirectory") then
+               NormalizeDir;
+               YassConfig.ModulesDirectory := Value;
             elsif FieldName = To_Unbounded_String("ExcludedFiles") then
                Create(Tokens, To_String(Value), ",");
                for I in 1 .. Slice_Count(Tokens) loop
