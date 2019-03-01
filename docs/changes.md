@@ -21,6 +21,7 @@
 ### Added
 - Better validation of page tags values
 - Ability to set absolute paths for directories
+- Option to set tags separators
 
 ### Changed
 - Added release date to version command

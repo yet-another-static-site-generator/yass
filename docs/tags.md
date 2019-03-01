@@ -92,8 +92,11 @@ apply to composite tags
 
 ## <a name="using"></a>Using tags inside templates files
 
-To use any tags inside template file you must surround selected tag with `{%`
-and `%}`. For example, to get value of tag `Content` add to template file:
+To use any tags inside template file you must surround selected tag with values
+sets in `site.cfg` file for `StartTagSeparator` and `EndTagSeparator`. For
+example, with default setting for `StartTagSeparator` to `{%` and default
+setting for `EndTagSeparator` to `%}` to get value of tag `Content` add to
+template file:
 
     {%Content%}
 
@@ -110,7 +113,8 @@ Especially:
 - [Macros](http://docs.adacore.com/aws-docs/templates_parser/macros.html):
   whole section.
 
-**Note:** In YASS you will use `{%` to start a tag (instead of `@_`) and `%}`
-to end a tag (instead of `_@`).
+**Note:** In YASS you will use by default `{%` to start a tag (instead of `@_`)
+and `%}` to end a tag (instead of `_@`), unless you set other values in
+`site.cfg` file.
 
 <a href="#top">^ Top</a>
