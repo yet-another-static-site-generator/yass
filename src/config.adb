@@ -31,15 +31,15 @@ package body Config is
         (ConfigFile, Append_File, DirectoryName & Dir_Separator & "site.cfg");
       Put_Line
         (ConfigFile,
-         "# Directory in which will be placed HTML files with site layout (templates). Must be relative to project directory.");
+         "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
       Put_Line(ConfigFile, "LayoutsDirectory = _layouts");
       Put_Line
         (ConfigFile,
-         "# Directory in which will be placed generated site. Must be relative to project directory.");
+         "# Directory in which will be placed generated site. May be absolute or relative to project directory.");
       Put_Line(ConfigFile, "OutputDirectory = _output");
       Put_Line
         (ConfigFile,
-         "# Directory in which will be placed program modules used to generate the site. Must be relative to project directory.");
+         "# Directory in which will be placed program modules used to generate the site. May be absolute or relative to project directory.");
       Put_Line(ConfigFile, "ModulesDirectory = _modules");
       Put_Line
         (ConfigFile,
