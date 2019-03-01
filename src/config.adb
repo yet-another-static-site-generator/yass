@@ -79,6 +79,14 @@ package body Config is
       Put_Line(ConfigFile, "Name = New Site");
       Put_Line
         (ConfigFile,
+         "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+      Put_Line(ConfigFile, "StartTagSeparator = {%");
+      Put_Line
+        (ConfigFile,
+         "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+      Put_Line(ConfigFile, "EndTagSeparator = %}");
+      Put_Line
+        (ConfigFile,
          "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
         (ConfigFile,
@@ -97,6 +105,8 @@ package body Config is
       RawData, FieldName, Value: Unbounded_String;
       EqualIndex: Natural;
       Tokens: Slice_Set;
+      StartTag: Unbounded_String := To_Unbounded_String("{%");
+      EndTag: Unbounded_String := To_Unbounded_String("%}");
       procedure NormalizeDir(DirectoryPath: in out Unbounded_String) is
       begin
          if Dir_Separator = '/' then
@@ -170,6 +180,10 @@ package body Config is
                YassConfig.SiteName := Value;
                Tags_Container.Include
                  (SiteTags, To_String(FieldName), To_String(Value));
+            elsif FieldName = To_Unbounded_String("StartTagSeparator") then
+               StartTag := Value;
+            elsif FieldName = To_Unbounded_String("EndTagSeparator") then
+               EndTag := Value;
             elsif Value = To_Unbounded_String("[]") then
                TableTags_Container.Include
                  (GlobalTableTags, To_String(FieldName), +"");
@@ -198,7 +212,7 @@ package body Config is
       YassConfig.ExcludedFiles.Append
         (Simple_Name(To_String(YassConfig.ModulesDirectory)));
       SiteDirectory := To_Unbounded_String(DirectoryName);
-      Set_Tag_Separators("{%", "%}");
+      Set_Tag_Separators(To_String(StartTag), To_String(EndTag));
    exception
       when others =>
          raise InvalidConfigData with To_String(RawData);
