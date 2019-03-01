@@ -97,17 +97,19 @@ package body Config is
       RawData, FieldName, Value: Unbounded_String;
       EqualIndex: Natural;
       Tokens: Slice_Set;
-      procedure NormalizeDir is
+      procedure NormalizeDir(DirectoryPath: in out Unbounded_String) is
       begin
          if Dir_Separator = '/' then
-            if Element(Value, 1) /= '/' then
-               Value :=
-                 To_Unbounded_String(DirectoryName & Dir_Separator) & Value;
+            if Element(DirectoryPath, 1) /= '/' then
+               DirectoryPath :=
+                 To_Unbounded_String(DirectoryName & Dir_Separator) &
+                 DirectoryPath;
             end if;
          else
-            if Element(Value, 2) /= ':' then
-               Value :=
-                 To_Unbounded_String(DirectoryName & Dir_Separator) & Value;
+            if Element(DirectoryPath, 2) /= ':' then
+               DirectoryPath :=
+                 To_Unbounded_String(DirectoryName & Dir_Separator) &
+                 DirectoryPath;
             end if;
          end if;
       end NormalizeDir;
@@ -123,13 +125,10 @@ package body Config is
             FieldName := Head(RawData, EqualIndex - 2);
             Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
             if FieldName = To_Unbounded_String("LayoutsDirectory") then
-               NormalizeDir;
                YassConfig.LayoutsDirectory := Value;
             elsif FieldName = To_Unbounded_String("OutputDirectory") then
-               NormalizeDir;
                YassConfig.OutputDirectory := Value;
             elsif FieldName = To_Unbounded_String("ModulesDirectory") then
-               NormalizeDir;
                YassConfig.ModulesDirectory := Value;
             elsif FieldName = To_Unbounded_String("ExcludedFiles") then
                Create(Tokens, To_String(Value), ",");
@@ -186,6 +185,9 @@ package body Config is
          end if;
       end loop;
       Close(ConfigFile);
+      NormalizeDir(YassConfig.LayoutsDirectory);
+      NormalizeDir(YassConfig.OutputDirectory);
+      NormalizeDir(YassConfig.ModulesDirectory);
       YassConfig.ExcludedFiles.Append(".");
       YassConfig.ExcludedFiles.Append("..");
       YassConfig.ExcludedFiles.Append("site.cfg");
