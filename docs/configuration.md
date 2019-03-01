@@ -66,6 +66,12 @@ Possible settings for project:
   value is `none`.
 - AtomFeedAmount - Number of entries in the Atom feed (if it will be created,
   please see setting above).
+- StartTagSeparator - any string which will be used as start mark for the
+  templates tags. You may want to change it, if you want to use templates from
+  other static site generators. Default value is `{%`.
+- EndTagSeparator - any string which will be used as end mark for the templates
+  tags. You may want to change it, if you want to use templates from other
+  static site generators. Default value is `%}`.
 
 <a href="#top">^ Top</a>
 
