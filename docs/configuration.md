@@ -27,14 +27,14 @@ settings are case-sensitive.
 
 Possible settings for project:
 
-- LayoutDirectory - the path (related to project directory path) where are
-  stored files with pages layouts. Standard value for this is setting is
-  `_layouts`.
-- OutputDirectory - the path (related to project directory path) where
+- LayoutDirectory - the path (absolute or related to project directory path)
+  where are stored files with pages layouts. Standard value for this is setting
+  is `_layouts`.
+- OutputDirectory - the path (absolute related to project directory path) where
   generated site will be stored. Standard values for this setting is
   `_output`.
-- ModulesDirectory - the path (related to project directory path) where
-  the program modules will be stored. Standard values for this setting is
+- ModulesDirectory - the path (absolute or related to project directory path)
+  where the program modules will be stored. Standard values for this setting is
   `_modules`.
 - ExcludedFiles - the list of excluded files and directories from the list
   of sources used to generating the site. All paths must be relative to the
