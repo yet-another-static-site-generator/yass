@@ -20,6 +20,7 @@
 ## <a name="unreleased"></a>[Unreleased]
 ### Added
 - Better validation of page tags values
+- Ability to set absolute paths for directories
 
 ### Changed
 - Added release date to version command
