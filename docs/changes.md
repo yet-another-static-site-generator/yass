@@ -30,6 +30,7 @@
 ### Fixed
 - Showing README.md file
 - Read modules directory setting
+- Saving Atom entry id
 
 ## <a name="0.5"></a>[0.5] - 2019-02-23
 
