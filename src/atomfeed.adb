@@ -116,7 +116,7 @@ package body AtomFeed is
          if AtomEntry.Id = Null_Unbounded_String then
             AtomEntry.Id := To_Unbounded_String(Url);
          elsif Index(AtomEntry.Id, Url, 1) = 0 then
-            AtomEntry.Id := To_Unbounded_String(Url) & AtomEntry.Id;
+            AtomEntry.Id := To_Unbounded_String(Url) & "#" & AtomEntry.Id;
          end if;
          if AtomEntry.Updated = Time_Of(1901, 1, 1) then
             AtomEntry.Updated := Modification_Time(FileName);
