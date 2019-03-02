@@ -22,6 +22,7 @@
 - Better validation of page tags values
 - Ability to set absolute paths for directories
 - Option to set tags separators
+- Link to Atom entry as it content
 
 ### Changed
 - Added release date to version command
