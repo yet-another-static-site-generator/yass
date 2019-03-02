@@ -181,6 +181,7 @@ package body AtomFeed is
          AddNode("id", To_String(FeedEntry.Id), EntryNode);
          AddNode("title", To_String(FeedEntry.EntryTitle), EntryNode);
          AddNode("updated", To_HTTP_Date(FeedEntry.Updated), EntryNode);
+         AddNode("content", To_String(FeedEntry.Id), EntryNode);
          EntriesAmount := EntriesAmount + 1;
          exit when EntriesAmount > YassConfig.AtomFeedAmount;
       end loop;
