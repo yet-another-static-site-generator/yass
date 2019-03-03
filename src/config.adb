@@ -87,6 +87,10 @@ package body Config is
       Put_Line(ConfigFile, "EndTagSeparator = %}");
       Put_Line
         (ConfigFile,
+         "# String used to mark comments in markdown files which will be parsed.");
+      Put_Line(ConfigFile, "MarkdownComment = --");
+      Put_Line
+        (ConfigFile,
          "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
         (ConfigFile,
@@ -184,6 +188,8 @@ package body Config is
                StartTag := Value;
             elsif FieldName = To_Unbounded_String("EndTagSeparator") then
                EndTag := Value;
+            elsif FieldName = To_Unbounded_String("MarkdownComment") then
+               YassConfig.MarkdownComment := Value;
             elsif Value = To_Unbounded_String("[]") then
                TableTags_Container.Include
                  (GlobalTableTags, To_String(FieldName), +"");

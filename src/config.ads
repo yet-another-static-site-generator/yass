@@ -54,6 +54,9 @@ package Config is
           ("New Site"); -- Name of the site, needed for atom feed
       AtomFeedAmount: Positive :=
         25; -- Number of entries in the Atom feed of the site
+      MarkdownComment: Unbounded_String :=
+        To_Unbounded_String
+          ("--"); -- String used to mark comments in markdown files
    end record;
    YassConfig: ParserConfig; -- Settings for parser
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,
