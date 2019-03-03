@@ -23,6 +23,7 @@
 - Ability to set absolute paths for directories
 - Option to set tags separators
 - Link to Atom entry as it content
+- Link element to Atom entries
 
 ### Changed
 - Added release date to version command
