@@ -72,6 +72,8 @@ Possible settings for project:
 - EndTagSeparator - any string which will be used as end mark for the templates
   tags. You may want to change it, if you want to use templates from other
   static site generators. Default value is `%}`.
+- MarkdownComment - any string which will be used as a start mark for comments
+  in parsed markdown files. Default value is `--`
 
 <a href="#top">^ Top</a>
 
