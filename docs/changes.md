@@ -24,6 +24,7 @@
 - Option to set tags separators
 - Link to Atom entry as it content
 - Link element to Atom entries
+- Option to set separator for comments in markdown files
 
 ### Changed
 - Added release date to version command
