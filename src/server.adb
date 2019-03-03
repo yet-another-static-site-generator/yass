@@ -43,6 +43,14 @@ package body Server is
               Excluded_Container.No_Index then
                return;
             end if;
+            if Containing_Directory(Full_Name(Item)) /=
+              To_String(SiteDirectory) then
+               SiteFileName :=
+                 YassConfig.OutputDirectory &
+                 Slice
+                   (To_Unbounded_String(Full_Name(Item)),
+                    Length(SiteDirectory) + 1, Full_Name(Item)'Length);
+            end if;
             if Extension(Simple_Name(Item)) = "md" then
                SiteFileName :=
                  To_Unbounded_String
