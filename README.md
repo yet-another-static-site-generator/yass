@@ -88,7 +88,6 @@ AppImage version of the program.
 
 ### 0.6
 - Better web server
-- More configuration options
 
 ### 0.7
 - Better scripting support
