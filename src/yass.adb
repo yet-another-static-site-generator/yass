@@ -137,9 +137,11 @@ begin
       Put_Line("build [name] - build site in ""name"" directory");
       Put_Line
         ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
+      Put_Line
+        ("createfile [name] - create new empty markdown file with ""name""");
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
-      Put_Line("Released: 2019-02-23");
+      Put_Line("Released: not yet");
    elsif Argument(1) = "license" then
       Put_Line("Copyright (C) 2019 Bartek thindil Jasicki");
       New_Line;
@@ -206,7 +208,7 @@ begin
       end;
       CreateConfig(To_String(WorkDirectory));
       CreateLayout(To_String(WorkDirectory));
-      CreateEmptyIndexFile(To_String(WorkDirectory));
+      CreateEmptyFile(To_String(WorkDirectory));
       Put_Line
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
          Argument(2) & Dir_Separator &
@@ -252,6 +254,30 @@ begin
          abort MonitorSite;
          Put_Line("done.");
       end;
+   elsif Argument(1) = "createfile" then
+      if Argument_Count < 2 then
+         Put_Line("Please specify name of file to create.");
+         return;
+      end if;
+      if Index(Argument(2), Containing_Directory(Current_Directory)) = 1 then
+         WorkDirectory := To_Unbounded_String(Argument(2));
+      else
+         WorkDirectory :=
+           To_Unbounded_String
+             (Current_Directory & Dir_Separator & Argument(2));
+      end if;
+      if Extension(To_String(WorkDirectory)) /= "md" then
+         WorkDirectory := WorkDirectory & To_Unbounded_String(".md");
+      end if;
+      if Ada.Directories.Exists(To_String(WorkDirectory)) then
+         Put_Line
+           ("Can't create file """ & To_String(WorkDirectory) &
+            """. File with that name exists.");
+         return;
+      end if;
+      Create_Path(Containing_Directory(To_String(WorkDirectory)));
+      CreateEmptyFile(To_String(WorkDirectory));
+      Put_Line("Empty file """ & To_String(WorkDirectory) & """ was created.");
    else
       Put_Line
         ("Unknown command. Please enter ""help"" as argument for program to get full list of available commands.");
