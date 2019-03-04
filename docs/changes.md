@@ -29,6 +29,7 @@
 ### Changed
 - Added release date to version command
 - Don't create Atom feed by default
+- Updated README.md
 
 ### Fixed
 - Showing README.md file
