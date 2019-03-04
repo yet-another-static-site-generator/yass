@@ -29,7 +29,9 @@ config file syntax: `[Key] = [Value]`. For example:
 ### Local (page) tags
 
 They are defined directly in pages content files (markdown files with `.md`
-extension). They have syntax: `-- [Key]: [Value]`. For example:
+extension). They have syntax: `[CommentMark] [Key]: [Value]`. Default value
+for the `[CommentMark]` is `--` but you can change it in `site.cfg` file.
+For example:
 
     -- title: Template Tags
 
