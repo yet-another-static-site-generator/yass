@@ -249,12 +249,15 @@ package body Pages is
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
    end CopyFile;
 
-   procedure CreateEmptyIndexFile(DirectoryName: String) is
+   procedure CreateEmptyFile(FileName: String) is
       IndexFile: File_Type;
       CommentMark: constant String := To_String(YassConfig.MarkdownComment);
    begin
-      Create
-        (IndexFile, Append_File, DirectoryName & Dir_Separator & "index.md");
+      if Extension(FileName) /= "md" then
+         Create(IndexFile, Append_File, FileName & Dir_Separator & "index.md");
+      else
+         Create(IndexFile, Append_File, FileName);
+      end if;
       Put_Line
         (IndexFile,
          CommentMark &
@@ -310,7 +313,7 @@ package body Pages is
          CommentMark &
          " You can without problem delete all this comments from this file.");
       Close(IndexFile);
-   end CreateEmptyIndexFile;
+   end CreateEmptyFile;
 
    function GetLayoutName(FileName: String) return String is
       PageFile: File_Type;
