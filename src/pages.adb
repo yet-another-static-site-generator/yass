@@ -251,63 +251,79 @@ package body Pages is
 
    procedure CreateEmptyIndexFile(DirectoryName: String) is
       IndexFile: File_Type;
+      CommentMark: constant String := To_String(YassConfig.MarkdownComment);
    begin
       Create
         (IndexFile, Append_File, DirectoryName & Dir_Separator & "index.md");
       Put_Line
         (IndexFile,
-         "-- All lines which starts with double minus sign are comments and ignored by program. Unless they have colon sign. Then they are tags definition.");
+         CommentMark &
+         " All lines which starts with double minus sign are comments and ignored by program. Unless they have colon sign. Then they are tags definition.");
       Put_Line
         (IndexFile,
-         "-- Ada Web Server template which will be used as HTML template for this file. Required for each file");
-      Put_Line(IndexFile, "-- layout: default");
+         CommentMark &
+         " Ada Web Server template which will be used as HTML template for this file. Required for each file");
+      Put_Line(IndexFile, CommentMark & " layout: default");
       Put_Line
         (IndexFile,
-         "-- You may add as many tags as you want and they can be in any place in file, not only at beginning. Tags can be 4 types: strings, boolean, numeric or composite.");
+         CommentMark &
+         " You may add as many tags as you want and they can be in any place in file, not only at beginning. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
         (IndexFile,
-         "-- First 3 types of tags are in Name: Value scheme. For strings it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always fall back to string value.");
+         CommentMark &
+         " First 3 types of tags are in Name: Value scheme. For strings it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always fall back to string value.");
       Put_Line
         (IndexFile,
-         "-- Composite tags first must be initialized with Name: [] then just add as many as you want values to it by Name: Value scheme.");
+         CommentMark &
+         " Composite tags first must be initialized with Name: [] then just add as many as you want values to it by Name: Value scheme.");
       Put_Line
         (IndexFile,
-         "-- For more informations about tags please check program documentation.");
+         CommentMark &
+         " For more informations about tags please check program documentation.");
       Put_Line
         (IndexFile,
-         "-- If you have enabled creation of sitemap in the project config file, you can set some sitemap parameters too. They are defined in this same way like tags, with ParameterName: Value.");
+         CommentMark &
+         " If you have enabled creation of sitemap in the project config file, you can set some sitemap parameters too. They are defined in this same way like tags, with ParameterName: Value.");
       Put_Line
         (IndexFile,
-         "-- priority - The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
+         CommentMark &
+         " priority - The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
       Put_Line
         (IndexFile,
-         "-- changefreq - How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
+         CommentMark &
+         " changefreq - How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
       Put_Line
         (IndexFile,
-         "-- For more informations how this options works, please look at the program documentation.");
+         CommentMark &
+         " For more informations how this options works, please look at the program documentation.");
       Put_Line
         (IndexFile,
-         "-- Additionally, you can exclude this file from adding to sitemap by setting option insitemap: false.");
+         CommentMark &
+         " Additionally, you can exclude this file from adding to sitemap by setting option insitemap: false.");
       Put_Line
         (IndexFile,
-         "-- If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you will use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry.");
-      Put_Line(IndexFile, "-- title: New page");
+         CommentMark &
+         " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you will use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry.");
+      Put_Line(IndexFile, CommentMark & " title: New page");
       Put_Line
         (IndexFile,
-         "-- You can without problem delete all this comments from this file.");
+         CommentMark &
+         " You can without problem delete all this comments from this file.");
       Close(IndexFile);
    end CreateEmptyIndexFile;
 
    function GetLayoutName(FileName: String) return String is
       PageFile: File_Type;
       Data, Layout: Unbounded_String;
+      StartPos: constant Positive := Length(YassConfig.MarkdownComment);
    begin
       Open(PageFile, In_File, FileName);
       while not End_Of_File(PageFile) loop
          Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
          if Length(Data) > 2 then
-            if Slice(Data, 1, 3) = "-- " then
-               if Index(Data, "layout:", 1) > 0 then
+            if Unbounded_Slice(Data, 1, StartPos) =
+              YassConfig.MarkdownComment then
+               if Index(Data, "layout:", 1) = (StartPos + 2) then
                   Data := Unbounded_Slice(Data, 12, Length(Data));
                   Layout :=
                     YassConfig.LayoutsDirectory & Dir_Separator & Data &
