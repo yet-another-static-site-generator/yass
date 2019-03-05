@@ -23,6 +23,8 @@ with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with AWS.Services.Page_Server;
+with AWS.Services.Directory; use AWS.Services.Directory;
 with Config; use Config;
 with Pages; use Pages;
 with Modules; use Modules;
@@ -155,5 +157,20 @@ package body Server is
          terminate;
       end select;
    end MonitorSite;
+
+   function Callback(Request: AWS.Status.Data) return AWS.Response.Data is
+      URI: constant String := AWS.Status.URI(Request);
+   begin
+      if Kind(To_String(YassConfig.OutputDirectory) & URI) = Directory then
+         return AWS.Response.Build
+             ("text/html",
+              Browse
+                (To_String(YassConfig.OutputDirectory) & URI,
+                 To_String(YassConfig.LayoutsDirectory) & Dir_Separator &
+                 "directory.html",
+                 Request));
+      end if;
+      return AWS.Services.Page_Server.Callback(Request);
+   end Callback;
 
 end Server;
