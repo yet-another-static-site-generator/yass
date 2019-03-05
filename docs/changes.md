@@ -26,6 +26,7 @@
 - Link element to Atom entries
 - Option to set separator for comments in markdown files
 - Command to create empty markdown files
+- Directory listing for the web server
 
 ### Changed
 - Added release date to version command
