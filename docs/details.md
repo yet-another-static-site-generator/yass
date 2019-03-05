@@ -14,6 +14,7 @@
 -- details: Version command
 -- details: License command
 -- details: Readme command
+-- details: Create empty markdown file
 -- detailslink: []
 -- detailslink: notes
 -- detailslink: create
@@ -23,6 +24,7 @@
 -- detailslink: version
 -- detailslink: license
 -- detailslink: readme
+-- detailslink: createfile
 ## <a name="notes"></a>Notes
 * If you want to run the program from other directory, you should set the
   environment variable `YASSDIR` to your current directory. Example:
@@ -157,5 +159,14 @@ it, type in directory where the file `yass` is `./yass license`.
 
 This command prints in terminal content of README.md file. To run it, type in
 directory where the file `yass` is `./yass readme`.
+
+<a href="#top">^ Top</a>
+
+## <a name="createfile"></a>Create empty markdown file
+
+If you want to create a new empty (only with comments) markdown file in your
+site project, type in directory where the file `yass` is
+`./yass [path][filename].md`. You may omit file extension, it will be added
+automatically by the program.
 
 <a href="#top">^ Top</a>
