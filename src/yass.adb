@@ -207,6 +207,7 @@ begin
       end;
       CreateConfig(To_String(WorkDirectory));
       CreateLayout(To_String(WorkDirectory));
+      CreateDirectoryLayout(To_String(WorkDirectory));
       CreateEmptyFile(To_String(WorkDirectory));
       Put_Line
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
@@ -232,6 +233,11 @@ begin
          ParseConfig(To_String(WorkDirectory));
          Set_Directory(To_String(YassConfig.OutputDirectory));
          if YassConfig.ServerEnabled then
+            if not Ada.Directories.Exists
+                (To_String(YassConfig.LayoutsDirectory) & Dir_Separator &
+                 "directory.html") then
+               CreateDirectoryLayout("");
+            end if;
             AWS.Server.Start
               (HTTPServer, "YASS static page server",
                Port => YassConfig.ServerPort, Callback => Callback'Access,

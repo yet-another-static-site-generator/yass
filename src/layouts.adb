@@ -16,7 +16,9 @@
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with Config; use Config;
 
 package body Layouts is
 
@@ -39,5 +41,27 @@ package body Layouts is
       Put_Line(LayoutFile, "</html>");
       Close(LayoutFile);
    end CreateLayout;
+
+   procedure CreateDirectoryLayout(DirectoryName: String) is
+      LayoutFile: File_Type;
+   begin
+      Create
+        (LayoutFile, Append_File,
+         DirectoryName & Dir_Separator &
+         To_String(YassConfig.LayoutsDirectory) & Dir_Separator &
+         "directory.html");
+      Put_Line(LayoutFile, "<!DOCTYPE html>");
+      Put_Line(LayoutFile, "<html>");
+      Put_Line(LayoutFile, "<head>");
+      Put_Line(LayoutFile, "<meta charset=""UTF-8"">");
+      Put_Line(LayoutFile, "</head>");
+      Put_Line(LayoutFile, "<body>");
+      Put_Line(LayoutFile, "@@TABLE@@");
+      Put_Line(LayoutFile, "<a href=""{%NAME_V%}"">{%NAME_V%}</a><br />");
+      Put_Line(LayoutFile, "@@END_TABLE@@");
+      Put_Line(LayoutFile, "</body>");
+      Put_Line(LayoutFile, "</html>");
+      Close(LayoutFile);
+   end CreateDirectoryLayout;
 
 end Layouts;
