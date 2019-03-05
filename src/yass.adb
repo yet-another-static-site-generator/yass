@@ -28,7 +28,6 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with AWS.Server;
-with AWS.Services.Page_Server;
 with Config; use Config;
 with Layouts; use Layouts;
 with Pages; use Pages;
@@ -235,8 +234,7 @@ begin
          if YassConfig.ServerEnabled then
             AWS.Server.Start
               (HTTPServer, "YASS static page server",
-               Port => YassConfig.ServerPort,
-               Callback => AWS.Services.Page_Server.Callback'Access,
+               Port => YassConfig.ServerPort, Callback => Callback'Access,
                Max_Connection => 5);
             Put_Line
               ("Server was started. Web address: http://localhost:8888/index.html Press ""Q"" for quit.");
