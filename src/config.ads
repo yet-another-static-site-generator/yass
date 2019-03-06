@@ -57,6 +57,8 @@ package Config is
       MarkdownComment: Unbounded_String :=
         To_Unbounded_String
           ("--"); -- String used to mark comments in markdown files
+      StopServerOnError: Boolean :=
+        False; -- Did sever should go down if encounter error during creating site
    end record;
    YassConfig: ParserConfig; -- Settings for parser
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,

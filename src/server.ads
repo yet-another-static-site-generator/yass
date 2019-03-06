@@ -27,5 +27,7 @@ package Server is
    function Callback
      (Request: AWS.Status.Data) return AWS.Response
      .Data; -- Handle server responses
+   procedure StartServer; -- Start the web server
+   procedure ShutdownServer; -- Shutdown the web server
 
 end Server;

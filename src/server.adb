@@ -23,8 +23,10 @@ with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with AWS.Services.Page_Server;
 with AWS.Services.Directory; use AWS.Services.Directory;
+with AWS.Server;
 with Config; use Config;
 with Pages; use Pages;
 with Modules; use Modules;
@@ -32,6 +34,8 @@ with Sitemaps; use Sitemaps;
 with AtomFeed; use AtomFeed;
 
 package body Server is
+
+   HTTPServer: AWS.Server.HTTP;
 
    task body MonitorSite is
       SiteRebuild: Boolean;
@@ -131,6 +135,14 @@ package body Server is
                Ada.Calendar.Formatting.Image
                  (Date => Clock, Time_Zone => UTC_Time_Offset) &
                "] " & "Site rebuilding has been interrupted.");
+            if YassConfig.StopServerOnError then
+               if YassConfig.ServerEnabled then
+                  ShutdownServer;
+                  Put_Line("done.");
+               end if;
+               Put_Line("Stopping monitoring site changes...done.");
+               OS_Exit(0);
+            end if;
       end MonitorDirectory;
    begin
       select
@@ -172,5 +184,18 @@ package body Server is
       end if;
       return AWS.Services.Page_Server.Callback(Request);
    end Callback;
+
+   procedure StartServer is
+   begin
+      AWS.Server.Start
+        (HTTPServer, "YASS static page server", Port => YassConfig.ServerPort,
+         Callback => Callback'Access, Max_Connection => 5);
+   end StartServer;
+
+   procedure ShutdownServer is
+   begin
+      Put("Shutting down server...");
+      AWS.Server.Shutdown(HTTPServer);
+   end ShutdownServer;
 
 end Server;

@@ -55,6 +55,10 @@ package body Config is
       Put_Line(ConfigFile, "ServerPort = 8888");
       Put_Line
         (ConfigFile,
+         "# Did web server and whole monitoring of the site changes should stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
+      Put_Line(ConfigFile, "StopServerOnError = false");
+      Put_Line
+        (ConfigFile,
          "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
       Put_Line(ConfigFile, "MonitorInverval = 5");
       Put_Line
@@ -159,6 +163,12 @@ package body Config is
                YassConfig.ServerPort := Positive'Value(To_String(Value));
                if YassConfig.ServerPort > 65535 then
                   raise InvalidConfigData with To_String(RawData);
+               end if;
+            elsif FieldName = To_Unbounded_String("StopServerOnError") then
+               if To_Lower(To_String(Value)) = "true" then
+                  YassConfig.StopServerOnError := True;
+               else
+                  YassConfig.StopServerOnError := False;
                end if;
             elsif FieldName = To_Unbounded_String("MonitorInterval") then
                YassConfig.MonitorInterval := Duration'Value(To_String(Value));
