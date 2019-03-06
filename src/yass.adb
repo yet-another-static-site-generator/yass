@@ -227,41 +227,33 @@ begin
       if not ValidArguments("from where site will be served.", False) then
          return;
       end if;
-      declare
-         HTTPServer: AWS.Server.HTTP;
-      begin
-         ParseConfig(To_String(WorkDirectory));
-         Set_Directory(To_String(YassConfig.OutputDirectory));
-         if YassConfig.ServerEnabled then
-            if not Ada.Directories.Exists
-                (To_String(YassConfig.LayoutsDirectory) & Dir_Separator &
-                 "directory.html") then
-               CreateDirectoryLayout("");
-            end if;
-            AWS.Server.Start
-              (HTTPServer, "YASS static page server",
-               Port => YassConfig.ServerPort, Callback => Callback'Access,
-               Max_Connection => 5);
-            Put_Line
-              ("Server was started. Web address: http://localhost:" &
-               Positive'Image(YassConfig.ServerPort)
-                 (Positive'Image(YassConfig.ServerPort)'First + 1 ..
-                      Positive'Image(YassConfig.ServerPort)'Length) &
-               "/index.html Press ""Q"" for quit.");
-         else
-            Put_Line("Started monitoring site changes. Press ""Q"" for quit.");
+      ParseConfig(To_String(WorkDirectory));
+      Set_Directory(To_String(YassConfig.OutputDirectory));
+      if YassConfig.ServerEnabled then
+         if not Ada.Directories.Exists
+             (To_String(YassConfig.LayoutsDirectory) & Dir_Separator &
+              "directory.html") then
+            CreateDirectoryLayout("");
          end if;
-         MonitorSite.Start;
-         AWS.Server.Wait(AWS.Server.Q_Key_Pressed);
-         if YassConfig.ServerEnabled then
-            Put("Shutting down server...");
-            AWS.Server.Shutdown(HTTPServer);
-         else
-            Put("Stopping monitoring site changes...");
-         end if;
-         abort MonitorSite;
-         Put_Line("done.");
-      end;
+         StartServer;
+         Put_Line
+           ("Server was started. Web address: http://localhost:" &
+            Positive'Image(YassConfig.ServerPort)
+              (Positive'Image(YassConfig.ServerPort)'First + 1 ..
+                   Positive'Image(YassConfig.ServerPort)'Length) &
+            "/index.html Press ""Q"" for quit.");
+      else
+         Put_Line("Started monitoring site changes. Press ""Q"" for quit.");
+      end if;
+      MonitorSite.Start;
+      AWS.Server.Wait(AWS.Server.Q_Key_Pressed);
+      if YassConfig.ServerEnabled then
+         ShutdownServer;
+      else
+         Put("Stopping monitoring site changes...");
+      end if;
+      abort MonitorSite;
+      Put_Line("done.");
    elsif Argument(1) = "createfile" then
       if Argument_Count < 2 then
          Put_Line("Please specify name of file to create.");
