@@ -119,10 +119,12 @@ output directory. If you change any layout file from layouts directory all
 HTML files which use this layout (directly, not as included) will be updated
 too. If you have enabled creating sitemaps, it will be upgraded or created too
 if needed, same with file `robots.txt`. If you have enabled creating atom feed,
-it will be upgrade or create `atom.xml` file if needed. Additionally, you can
-customize how directory listing looks, by editing `directory.html` file in
-layouts directory. More informations about available tags, you can find in
-[AWS API documentation](https://docs.adacore.com/aws-docs/aws/apiref.html#aws-services-directory).
+it will be upgrade or create `atom.xml` file if needed. If you want, you can
+set this command to terminate on any error occurence, during monitoring the
+site. Additionally, you can customize how directory listing looks, by editing
+`directory.html` file in layouts directory. More informations about available
+tags, you can find in [AWS API documentation]
+(https://docs.adacore.com/aws-docs/aws/apiref.html#aws-services-directory).
 
 ### Limitations
 - Monitoring does not delete files. If you delete one, the program will not
