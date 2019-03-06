@@ -41,12 +41,15 @@ Possible settings for project:
   project directory. If you exclude directory, it whole content will be
   excluded too. Layouts, modules and output directories are excluded by
   default. Default value for this is empty list.
-- ServerEnabled - can have true of false value, case-insensitive. Did command
+- ServerEnabled - can have true or false value, case-insensitive. Did command
   `server` should start web server too or not. Default value is `true` (start
   the web server).
 - ServerPort - any number from 1 to 65535. Port on which the web server will
   be listening. Please remember that using ports below 1025 number require
   root privileges. Default value is `8888`
+- StopServerOnError - can have true or false value, case-insensitive. Did
+  command `server` should terminate if error occured, during creating the site.
+  Default value is `false` (don't terminate on error).
 - MonitorInterval - any positive number. How often (in seconds) the program
   should check for this site changes when working in server mode and
   regenerate the site if needed. Default value is `5.0`.
