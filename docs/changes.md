@@ -37,6 +37,7 @@
 - Showing README.md file
 - Read modules directory setting
 - Saving Atom entry id
+- Info about server web address
 
 ## <a name="0.5"></a>[0.5] - 2019-02-23
 
