@@ -27,6 +27,7 @@
 - Option to set separator for comments in markdown files
 - Command to create empty markdown files
 - Directory listing for the web server
+- Option to stop server on error occured during creating the site
 
 ### Changed
 - Added release date to version command
