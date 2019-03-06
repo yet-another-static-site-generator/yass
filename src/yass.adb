@@ -243,7 +243,11 @@ begin
                Port => YassConfig.ServerPort, Callback => Callback'Access,
                Max_Connection => 5);
             Put_Line
-              ("Server was started. Web address: http://localhost:8888/index.html Press ""Q"" for quit.");
+              ("Server was started. Web address: http://localhost:" &
+               Positive'Image(YassConfig.ServerPort)
+                 (Positive'Image(YassConfig.ServerPort)'First + 1 ..
+                      Positive'Image(YassConfig.ServerPort)'Length) &
+               "/index.html Press ""Q"" for quit.");
          else
             Put_Line("Started monitoring site changes. Press ""Q"" for quit.");
          end if;
