@@ -28,6 +28,7 @@
 - Command to create empty markdown files
 - Directory listing for the web server
 - Option to stop server on error occured during creating the site
+- Option to start selected web browser on start web server
 
 ### Changed
 - Added release date to version command
