@@ -111,19 +111,21 @@ is `./yass server [ProjectName]` where `[ProjectName]` is name of your site
 project. If you enabled the web server in `site.cfg` this will start it
 at *http://localhost:[port]/* (where *[port]* is port number set in `site.cfg`,
 by default it is *8888*) to which you can point your web browser to preview
-the site. Additionally, the program will be monitoring every *X* seconds (this
-is set in `site.cfg` file too, default every *5* seconds) your site project
-directory for changes to files. If any file will be changed during server work,
-it will regenerate it. If you add any new file, it will be added to the site
-output directory. If you change any layout file from layouts directory all
-HTML files which use this layout (directly, not as included) will be updated
-too. If you have enabled creating sitemaps, it will be upgraded or created too
-if needed, same with file `robots.txt`. If you have enabled creating atom feed,
-it will be upgrade or create `atom.xml` file if needed. If you want, you can
-set this command to terminate on any error occurence, during monitoring the
-site. Additionally, you can customize how directory listing looks, by editing
-`directory.html` file in layouts directory. More informations about available
-tags, you can find in [AWS API documentation]
+the site. If you enable it too, after the web server start, the program will
+open `index.html` page in selected web browser. Additionally, the program will
+be monitoring every *X* seconds (this is set in `site.cfg` file too, default
+every *5* seconds) your site project directory for changes to files. If any
+file will be changed during server work, it will regenerate it. If you add any
+new file, it will be added to the site output directory. If you change any
+layout file from layouts directory all HTML files which use this layout
+(directly, not as included) will be updated too. If you have enabled creating
+sitemaps, it will be upgraded or created too if needed, same with file
+`robots.txt`. If you have enabled creating atom feed, it will be upgrade or
+create `atom.xml` file if needed. If you want, you can set this command to
+terminate on any error occurence, during monitoring the site. Additionally,
+you can customize how directory listing looks, by editing `directory.html`
+file in layouts directory. More informations about available tags, you can
+find in [AWS API documentation]
 (https://docs.adacore.com/aws-docs/aws/apiref.html#aws-services-directory).
 
 ### Limitations

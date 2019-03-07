@@ -20,9 +20,13 @@ with AWS.Response;
 
 package Server is
 
-   task MonitorSite is
+   task MonitorSite is -- Task for monitor changes in the site files and regenerate them
       entry Start;
    end MonitorSite;
+
+   task MonitorConfig is -- Task for monitor changes in the site config file and reload config if needed
+      entry Start;
+   end MonitorConfig;
 
    function Callback
      (Request: AWS.Status.Data) return AWS.Response

@@ -170,6 +170,35 @@ package body Server is
       end select;
    end MonitorSite;
 
+   task body MonitorConfig is
+      ConfigLastModified: Time;
+   begin
+      select
+         accept Start;
+         loop
+            ConfigLastModified :=
+              Modification_Time
+                (To_String(SiteDirectory) & Dir_Separator & "site.cfg");
+              put_line("here");
+            delay 60.0;
+            if ConfigLastModified /=
+              Modification_Time
+                (To_String(SiteDirectory) & Dir_Separator & "site.cfg") then
+               Put_Line
+                 ("Site configuration was changed, reconfiguring the project.");
+               ParseConfig(To_String(SiteDirectory));
+               ShutdownServer;
+               Put_Line("done");
+               if YassConfig.ServerEnabled then
+                  StartServer;
+               end if;
+            end if;
+         end loop;
+      or
+         terminate;
+      end select;
+   end MonitorConfig;
+
    function Callback(Request: AWS.Status.Data) return AWS.Response.Data is
       URI: constant String := AWS.Status.URI(Request);
    begin
@@ -190,6 +219,12 @@ package body Server is
       AWS.Server.Start
         (HTTPServer, "YASS static page server", Port => YassConfig.ServerPort,
          Callback => Callback'Access, Max_Connection => 5);
+      Put_Line
+        ("Server was started. Web address: http://localhost:" &
+         Positive'Image(YassConfig.ServerPort)
+           (Positive'Image(YassConfig.ServerPort)'First + 1 ..
+                Positive'Image(YassConfig.ServerPort)'Length) &
+         "/index.html Press ""Q"" for quit.");
    end StartServer;
 
    procedure ShutdownServer is
