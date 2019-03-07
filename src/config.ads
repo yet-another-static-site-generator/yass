@@ -59,6 +59,8 @@ package Config is
           ("--"); -- String used to mark comments in markdown files
       StopServerOnError: Boolean :=
         False; -- Did sever should go down if encounter error during creating site
+      BrowserCommand: Unbounded_String :=
+        Null_Unbounded_String; -- Command used to open web browser (if empty, don't open anything)
    end record;
    YassConfig: ParserConfig; -- Settings for parser
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,

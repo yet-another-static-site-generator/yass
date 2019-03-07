@@ -27,6 +27,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with AWS.Server;
 with Config; use Config;
 with Layouts; use Layouts;
@@ -242,6 +243,21 @@ begin
               (Positive'Image(YassConfig.ServerPort)'First + 1 ..
                    Positive'Image(YassConfig.ServerPort)'Length) &
             "/index.html Press ""Q"" for quit.");
+         if YassConfig.BrowserCommand /= To_Unbounded_String("none") then
+            declare
+               Args: constant Argument_List_Access :=
+                 Argument_String_To_List(To_String(YassConfig.BrowserCommand));
+            begin
+               if Non_Blocking_Spawn
+                   (Args(Args'First).all, Args(Args'First + 1 .. Args'Last)) =
+                 Invalid_Pid then
+                  Put_Line
+                    ("Can't start web browser. Please check your site configuration did it have proper value for ""BrowserCommand"" setting.");
+                  ShutdownServer;
+                  return;
+               end if;
+            end;
+         end if;
       else
          Put_Line("Started monitoring site changes. Press ""Q"" for quit.");
       end if;
