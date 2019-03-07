@@ -50,6 +50,10 @@ Possible settings for project:
 - StopServerOnError - can have true or false value, case-insensitive. Did
   command `server` should terminate if error occured, during creating the site.
   Default value is `false` (don't terminate on error).
+- BrowserCommand - Full path to the command which will be used to start the web
+  browser with index.html page of the site. String `%s` will be replaced by
+  server URL. If this setting is `none`, the web browser will be not started,
+  same as when the web server is disabled. Default value is `none`.
 - MonitorInterval - any positive number. How often (in seconds) the program
   should check for this site changes when working in server mode and
   regenerate the site if needed. Default value is `5.0`.
