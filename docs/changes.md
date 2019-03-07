@@ -29,6 +29,7 @@
 - Directory listing for the web server
 - Option to stop server on error occured during creating the site
 - Option to start selected web browser on start web server
+- Monitoring and auto reloading site configuration file on changes in it
 
 ### Changed
 - Added release date to version command
