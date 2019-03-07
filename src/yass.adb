@@ -237,12 +237,6 @@ begin
             CreateDirectoryLayout("");
          end if;
          StartServer;
-         Put_Line
-           ("Server was started. Web address: http://localhost:" &
-            Positive'Image(YassConfig.ServerPort)
-              (Positive'Image(YassConfig.ServerPort)'First + 1 ..
-                   Positive'Image(YassConfig.ServerPort)'Length) &
-            "/index.html Press ""Q"" for quit.");
          if YassConfig.BrowserCommand /= To_Unbounded_String("none") then
             declare
                Args: constant Argument_List_Access :=
@@ -262,6 +256,7 @@ begin
          Put_Line("Started monitoring site changes. Press ""Q"" for quit.");
       end if;
       MonitorSite.Start;
+      MonitorConfig.Start;
       AWS.Server.Wait(AWS.Server.Q_Key_Pressed);
       if YassConfig.ServerEnabled then
          ShutdownServer;
@@ -269,6 +264,7 @@ begin
          Put("Stopping monitoring site changes...");
       end if;
       abort MonitorSite;
+      abort MonitorConfig;
       Put_Line("done.");
    elsif Argument(1) = "createfile" then
       if Argument_Count < 2 then
