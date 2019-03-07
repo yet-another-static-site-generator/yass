@@ -59,6 +59,10 @@ package body Config is
       Put_Line(ConfigFile, "StopServerOnError = false");
       Put_Line
         (ConfigFile,
+         "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
+      Put_Line(ConfigFile, "BrowserCommand = none");
+      Put_Line
+        (ConfigFile,
          "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
       Put_Line(ConfigFile, "MonitorInverval = 5");
       Put_Line
@@ -170,6 +174,16 @@ package body Config is
                else
                   YassConfig.StopServerOnError := False;
                end if;
+            elsif FieldName = To_Unbounded_String("BrowserCommand") then
+               if Index(Value, "%s", 1) > 0 then
+                  Replace_Slice
+                    (Value, Index(Value, "%s", 1), Index(Value, "%s", 1) + 1,
+                     "http://localhost:" &
+                     Positive'Image(YassConfig.ServerPort)
+                       (Positive'Image(YassConfig.ServerPort)'First + 1 ..
+                            Positive'Image(YassConfig.ServerPort)'Length));
+               end if;
+               YassConfig.BrowserCommand := Value;
             elsif FieldName = To_Unbounded_String("MonitorInterval") then
                YassConfig.MonitorInterval := Duration'Value(To_String(Value));
             elsif FieldName = To_Unbounded_String("BaseURL") then
