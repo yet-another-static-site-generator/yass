@@ -141,7 +141,7 @@ begin
         ("createfile [name] - create new empty markdown file with ""name""");
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
-      Put_Line("Released: not yet");
+      Put_Line("Released: 2019-03-08");
    elsif Argument(1) = "license" then
       Put_Line("Copyright (C) 2019 Bartek thindil Jasicki");
       New_Line;
