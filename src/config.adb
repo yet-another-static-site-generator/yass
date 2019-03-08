@@ -140,6 +140,8 @@ package body Config is
          end if;
       end NormalizeDir;
    begin
+      SiteTags.Clear;
+      GlobalTableTags.Clear;
       Open(ConfigFile, In_File, DirectoryName & "/site.cfg");
       while not End_Of_File(ConfigFile) loop
          RawData := To_Unbounded_String(Encode(Get_Line(ConfigFile)));
