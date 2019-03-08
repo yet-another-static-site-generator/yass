@@ -57,6 +57,9 @@ Possible settings for project:
 - MonitorInterval - any positive number. How often (in seconds) the program
   should check for this site changes when working in server mode and
   regenerate the site if needed. Default value is `5.0`.
+- MonitorConfigInterval - any positive number. How often (in seconds) the program
+  should check for the site configuration changes when working in server mode and
+  reconfigure the site if needed. Default value is `60.0`.
 - BaseURL - Base URL of the site. It is needed mostly for creating sitemap and
   Atom feed, but you can use it as a normal the site tag. If your site will be
   available at `https://mysite.com/blog` then this will be your BaseURL.

@@ -136,6 +136,9 @@ find in [AWS API documentation]
   regenerate list of the site pages with `build` command.
 - Same with Atom feed, if you delete page which was in feed, you will need to
   edit `atom.xml` file or delete it to regenerate it with `build` command.
+- If you edit global tag (in `site.cfg` file) you will be need to stop the
+  program and rebuild whole site with `build` command, because server can
+  monitor only settings changes (it will not rebuild `.md` files).
 
 <a href="#top">^ Top</a>
 
