@@ -61,6 +61,8 @@ package Config is
         False; -- Did sever should go down if encounter error during creating site
       BrowserCommand: Unbounded_String :=
         Null_Unbounded_String; -- Command used to open web browser (if empty, don't open anything)
+      MonitorConfigInterval: Duration :=
+        60.0; -- Interval (in seconds) how often program should check for changes in site configuration to reconfigure it
    end record;
    YassConfig: ParserConfig; -- Settings for parser
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,

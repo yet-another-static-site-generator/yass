@@ -67,6 +67,10 @@ package body Config is
       Put_Line(ConfigFile, "MonitorInverval = 5");
       Put_Line
         (ConfigFile,
+         "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
+      Put_Line(ConfigFile, "MonitorConfigInverval = 60");
+      Put_Line
+        (ConfigFile,
          "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
       Put_Line(ConfigFile, "BaseURL = http://localhost:8888");
       Put_Line
@@ -186,6 +190,9 @@ package body Config is
                YassConfig.BrowserCommand := Value;
             elsif FieldName = To_Unbounded_String("MonitorInterval") then
                YassConfig.MonitorInterval := Duration'Value(To_String(Value));
+            elsif FieldName = To_Unbounded_String("MonitorConfigInterval") then
+               YassConfig.MonitorConfigInterval :=
+                 Duration'Value(To_String(Value));
             elsif FieldName = To_Unbounded_String("BaseURL") then
                YassConfig.BaseURL := Value;
                Tags_Container.Include(SiteTags, "BaseURL", To_String(Value));
