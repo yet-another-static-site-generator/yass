@@ -179,8 +179,7 @@ package body Server is
             ConfigLastModified :=
               Modification_Time
                 (To_String(SiteDirectory) & Dir_Separator & "site.cfg");
-              put_line("here");
-            delay 60.0;
+            delay YassConfig.MonitorConfigInterval;
             if ConfigLastModified /=
               Modification_Time
                 (To_String(SiteDirectory) & Dir_Separator & "site.cfg") then
