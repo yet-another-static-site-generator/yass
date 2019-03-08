@@ -86,9 +86,6 @@ AppImage version of the program.
 
 ## Roadmap
 
-### 0.6
-- Better web server
-
 ### 0.7
 - Better scripting support
 
