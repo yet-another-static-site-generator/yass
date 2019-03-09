@@ -4,6 +4,7 @@
 -- backtext: Extending
 -- indexlink: true
 -- details: []
+-- details: Unreleased
 -- details: 0.6
 -- details: 0.5
 -- details: 0.4
@@ -11,12 +12,20 @@
 -- details: 0.2
 -- details: 0.1
 -- detailslink: []
+-- detailslink: unreleased
 -- detailslink: 0.6
 -- detailslink: 0.5
 -- detailslink: 0.4
 -- detailslink: 0.3
 -- detailslink: 0.2
 -- detailslink: 0.1
+## <a name="unreleased"></a>[Unreleased]
+
+### Changed
+- Updated README.md
+
+<a href="#top">^ Top</a>
+
 ## <a name="0.6"></a>[0.6] - 2019-03-08
 ### Added
 - Better validation of page tags values
@@ -41,6 +50,8 @@
 - Read modules directory setting
 - Saving Atom entry id
 - Info about server web address
+
+<a href="#top">^ Top</a>
 
 ## <a name="0.5"></a>[0.5] - 2019-02-23
 
