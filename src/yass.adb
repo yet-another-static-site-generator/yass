@@ -38,7 +38,7 @@ with Sitemaps; use Sitemaps;
 with AtomFeed; use AtomFeed;
 
 procedure YASS is
-   Version: constant String := "0.6";
+   Version: constant String := "0.7";
    WorkDirectory: Unbounded_String;
 
    function BuildSite(DirectoryName: String) return Boolean is
@@ -141,7 +141,7 @@ begin
         ("createfile [name] - create new empty markdown file with ""name""");
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
-      Put_Line("Released: 2019-03-08");
+      Put_Line("Released: not yet");
    elsif Argument(1) = "license" then
       Put_Line("Copyright (C) 2019 Bartek thindil Jasicki");
       New_Line;
