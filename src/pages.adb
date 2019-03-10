@@ -192,7 +192,7 @@ package body Pages is
          Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
       end loop;
       for I in GlobalTableTags.Iterate loop
-         Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
+         Insert(Tags, Assoc(TableTags_Container.Key(I), GlobalTableTags(I)));
       end loop;
       Create_Path(To_String(OutputDirectory));
       Create(PageFile, Append_File, NewFileName);
