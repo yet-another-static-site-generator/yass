@@ -21,6 +21,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.Expect; use GNAT.Expect;
+with AWS.Templates; use AWS.Templates;
 
 package body Modules is
 
@@ -34,7 +35,7 @@ package body Modules is
          Result: Expect_Match;
          Text, TagName: Unbounded_String;
          type Tag_Types is
-           (NoTag, GlobalTag, GlobalCompositeTag, PageTag, PageCompositeTag);
+           (NoTag, GlobalTag, GlobalTableTag, PageTag, PageTableTag);
          function TagExist return Tag_Types is
             use Tags_Container;
          begin
@@ -42,15 +43,14 @@ package body Modules is
                return GlobalTag;
             elsif TableTags_Container.Contains
                 (GlobalTableTags, To_String(TagName)) then
-               return GlobalCompositeTag;
+               return GlobalTableTag;
             end if;
-            if (State = "pre" or State = "post")
-              and then PageTags /= Empty_Map then
+            if PageTags /= Empty_Map then
                if Contains(PageTags, To_String(TagName)) then
                   return PageTag;
                elsif TableTags_Container.Contains
                    (PageTableTags, To_String(TagName)) then
-                  return PageCompositeTag;
+                  return PageTableTag;
                end if;
             end if;
             return NoTag;
@@ -77,13 +77,40 @@ package body Modules is
                               Send
                                 (Module,
                                  "Tag with name """ & To_String(TagName) &
-                                 """ don't exists.");
+                                 """ doesn't exists.");
                            when GlobalTag =>
                               Send(Module, SiteTags(To_String(TagName)));
+                           when GlobalTableTag =>
+                              Send
+                                (Module,
+                                 Natural'Image
+                                   (Size
+                                      (GlobalTableTags(To_String(TagName)))));
+                              for I in
+                                1 ..
+                                  Size
+                                    (GlobalTableTags(To_String(TagName))) loop
+                                 Send
+                                   (Module,
+                                    AWS.Templates.Item
+                                      (GlobalTableTags(To_String(TagName)),
+                                       I));
+                              end loop;
                            when PageTag =>
                               Send(Module, PageTags(To_String(TagName)));
-                           when others =>
-                              null;
+                           when PageTableTag =>
+                              Send
+                                (Module,
+                                 Natural'Image
+                                   (Size(PageTableTags(To_String(TagName)))));
+                              for I in
+                                1 ..
+                                  Size(PageTableTags(To_String(TagName))) loop
+                                 Send
+                                   (Module,
+                                    AWS.Templates.Item
+                                      (PageTableTags(To_String(TagName)), I));
+                              end loop;
                         end case;
                      elsif Slice(Text, 1, 7) = "edittag" then
                         TagName :=
