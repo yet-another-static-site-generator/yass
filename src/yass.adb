@@ -50,13 +50,11 @@ procedure YASS is
                return;
             end if;
             Set("YASSFILE", Full_Name(Item));
-            LoadModules("pre");
             if Extension(Simple_Name(Item)) = "md" then
                CreatePage(Full_Name(Item), Name);
             else
                CopyFile(Full_Name(Item), Name);
             end if;
-            LoadModules("post");
          end ProcessFiles;
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin

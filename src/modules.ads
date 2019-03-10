@@ -15,9 +15,14 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
+with Config; use Config;
+
 package Modules is
 
-   procedure LoadModules
-     (State: String); -- Load all modules for selected state: start, pre, post, end
+   procedure LoadModules(State: String;
+      PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
+      PageTableTags: TableTags_Container.Map :=
+        TableTags_Container
+          .Empty_Map); -- Load all modules for selected state: start, pre, post, end
 
 end Modules;

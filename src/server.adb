@@ -67,13 +67,11 @@ package body Server is
             end if;
             if not Ada.Directories.Exists(To_String(SiteFileName)) then
                Set("YASSFILE", Full_Name(Item));
-               LoadModules("pre");
                if Extension(Simple_Name(Item)) = "md" then
                   CreatePage(Full_Name(Item), Name);
                else
                   CopyFile(Full_Name(Item), Name);
                end if;
-               LoadModules("post");
                Put_Line
                  ("[" &
                   Ada.Calendar.Formatting.Image
@@ -86,9 +84,7 @@ package body Server is
                  Modification_Time(GetLayoutName(Full_Name(Item))) >
                    Modification_Time(To_String(SiteFileName)) then
                   Set("YASSFILE", Full_Name(Item));
-                  LoadModules("pre");
                   CreatePage(Full_Name(Item), Name);
-                  LoadModules("post");
                   Put_Line
                     ("[" &
                      Ada.Calendar.Formatting.Image
@@ -100,9 +96,7 @@ package body Server is
             elsif Modification_Time(Full_Name(Item)) >
               Modification_Time(To_String(SiteFileName)) then
                Set("YASSFILE", Full_Name(Item));
-               LoadModules("pre");
                CopyFile(Full_Name(Item), Name);
-               LoadModules("post");
                Put_Line
                  ("[" &
                   Ada.Calendar.Formatting.Image
