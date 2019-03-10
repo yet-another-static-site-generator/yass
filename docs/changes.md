@@ -24,6 +24,9 @@
 ### Changed
 - Updated README.md
 
+### Fixed
+- Crash on adding site-wide global tags to the page
+
 <a href="#top">^ Top</a>
 
 ## <a name="0.6"></a>[0.6] - 2019-03-08
