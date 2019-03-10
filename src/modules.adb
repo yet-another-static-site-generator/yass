@@ -20,21 +20,46 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.Expect; use GNAT.Expect;
 with Config; use Config;
 
 package body Modules is
 
    procedure LoadModules(State: String) is
       procedure RunModule(Item: Directory_Entry_Type) is
-         Success: Boolean;
+         Module: Process_Descriptor;
+         Finished: Boolean := False;
+         Result: Expect_Match;
+         Text, TagName: Unbounded_String;
       begin
          if not Is_Executable_File(Full_Name(Item)) then
             return;
          end if;
-         Spawn(Full_Name(Item), Argument_String_To_List("").all, Success);
-         if not Success then
+         Non_Blocking_Spawn(Module, Full_Name(Item), Argument_String_To_List("").all);
+         while not Finished loop
+            Expect(Module, Result, ".+", 1_000);
+            case Result is
+               when Expect_Timeout =>
+                  Finished := True;
+               when 1 =>
+                  Text := To_Unbounded_String(Expect_Out_Match(Module));
+                  if Slice(Text, 1, 6) = "gettag" then
+                     TagName := Unbounded_Slice(Text, 8, Length(Text));
+                  elsif Slice(Text, 1, 7) = "edittag" then
+                     TagName := Unbounded_Slice(Text, 9, Length(Text));
+                  else
+                     Put_Line(To_String(Text));
+                  end if;
+               when others =>
+                  null;
+            end case;
+         end loop;
+         Close(Module);
+      exception
+         when Invalid_Process =>
             Put_Line("Module " & Full_Name(Item) & " failed to execute.");
-         end if;
+         when Process_Died =>
+            null;
       end RunModule;
    begin
       if not Exists
