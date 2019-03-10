@@ -68,33 +68,38 @@ package body Modules is
                   Finished := True;
                when 1 =>
                   Text := To_Unbounded_String(Expect_Out_Match(Module));
-                  if Slice(Text, 1, 6) = "gettag" then
-                     TagName := Unbounded_Slice(Text, 8, Length(Text));
-                     case TagExist is
-                        when NoTag =>
-                           Send
-                             (Module,
-                              "Tag with name """ & To_String(TagName) &
-                              """ don't exists.");
-                        when GlobalTag =>
-                           Send(Module, SiteTags(To_String(TagName)));
-                        when PageTag =>
-                           Send(Module, PageTags(To_String(TagName)));
-                        when others =>
-                           null;
-                     end case;
-                  elsif Slice(Text, 1, 7) = "edittag" then
-                     TagName :=
-                       Unbounded_Slice(Text, 9, Index(Text, " ", 10) - 1);
-                     case TagExist is
-                        when NoTag =>
-                           Send
-                             (Module,
-                              "Tag with name """ & To_String(TagName) &
-                              """ don't exists.");
-                        when others =>
-                           null;
-                     end case;
+                  exit when Text = To_Unbounded_String("done");
+                  if Length(Text) > 5 then
+                     if Slice(Text, 1, 6) = "gettag" then
+                        TagName := Unbounded_Slice(Text, 8, Length(Text));
+                        case TagExist is
+                           when NoTag =>
+                              Send
+                                (Module,
+                                 "Tag with name """ & To_String(TagName) &
+                                 """ don't exists.");
+                           when GlobalTag =>
+                              Send(Module, SiteTags(To_String(TagName)));
+                           when PageTag =>
+                              Send(Module, PageTags(To_String(TagName)));
+                           when others =>
+                              null;
+                        end case;
+                     elsif Slice(Text, 1, 7) = "edittag" then
+                        TagName :=
+                          Unbounded_Slice(Text, 9, Index(Text, " ", 10) - 1);
+                        case TagExist is
+                           when NoTag =>
+                              Send
+                                (Module,
+                                 "Tag with name """ & To_String(TagName) &
+                                 """ don't exists.");
+                           when others =>
+                              null;
+                        end case;
+                     else
+                        Put_Line(To_String(Text));
+                     end if;
                   else
                      Put_Line(To_String(Text));
                   end if;
