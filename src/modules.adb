@@ -21,21 +21,46 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.Expect; use GNAT.Expect;
-with Config; use Config;
 
 package body Modules is
 
-   procedure LoadModules(State: String) is
+   procedure LoadModules(State: String;
+      PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
+      PageTableTags: TableTags_Container.Map :=
+        TableTags_Container.Empty_Map) is
       procedure RunModule(Item: Directory_Entry_Type) is
          Module: Process_Descriptor;
          Finished: Boolean := False;
          Result: Expect_Match;
          Text, TagName: Unbounded_String;
+         type Tag_Types is
+           (NoTag, GlobalTag, GlobalCompositeTag, PageTag, PageCompositeTag);
+         function TagExist return Tag_Types is
+            use Tags_Container;
+         begin
+            if Contains(SiteTags, To_String(TagName)) then
+               return GlobalTag;
+            elsif TableTags_Container.Contains
+                (GlobalTableTags, To_String(TagName)) then
+               return GlobalCompositeTag;
+            end if;
+            if (State = "pre" or State = "post")
+              and then PageTags /= Empty_Map then
+               if Contains(PageTags, To_String(TagName)) then
+                  return PageTag;
+               elsif TableTags_Container.Contains
+                   (PageTableTags, To_String(TagName)) then
+                  return PageCompositeTag;
+               end if;
+            end if;
+            return NoTag;
+         end TagExist;
       begin
          if not Is_Executable_File(Full_Name(Item)) then
             return;
          end if;
-         Non_Blocking_Spawn(Module, Full_Name(Item), Argument_String_To_List("").all);
+         Non_Blocking_Spawn
+           (Module, Full_Name(Item), Argument_String_To_List("").all);
          while not Finished loop
             Expect(Module, Result, ".+", 1_000);
             case Result is
@@ -45,8 +70,31 @@ package body Modules is
                   Text := To_Unbounded_String(Expect_Out_Match(Module));
                   if Slice(Text, 1, 6) = "gettag" then
                      TagName := Unbounded_Slice(Text, 8, Length(Text));
+                     case TagExist is
+                        when NoTag =>
+                           Send
+                             (Module,
+                              "Tag with name """ & To_String(TagName) &
+                              """ don't exists.");
+                        when GlobalTag =>
+                           Send(Module, SiteTags(To_String(TagName)));
+                        when PageTag =>
+                           Send(Module, PageTags(To_String(TagName)));
+                        when others =>
+                           null;
+                     end case;
                   elsif Slice(Text, 1, 7) = "edittag" then
-                     TagName := Unbounded_Slice(Text, 9, Length(Text));
+                     TagName :=
+                       Unbounded_Slice(Text, 9, Index(Text, " ", 10) - 1);
+                     case TagExist is
+                        when NoTag =>
+                           Send
+                             (Module,
+                              "Tag with name """ & To_String(TagName) &
+                              """ don't exists.");
+                        when others =>
+                           null;
+                     end case;
                   else
                      Put_Line(To_String(Text));
                   end if;

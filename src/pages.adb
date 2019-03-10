@@ -32,6 +32,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Config; use Config;
 with Sitemaps; use Sitemaps;
 with AtomFeed; use AtomFeed;
+with Modules; use Modules;
 
 package body Pages is
 
@@ -54,6 +55,7 @@ package body Pages is
       NewFileName: constant String :=
         To_String(OutputDirectory) & Dir_Separator &
         Ada.Directories.Base_Name(FileName) & ".html";
+      PageTags: Tags_Container.Map;
       PageTableTags: TableTags_Container.Map;
       FrequencyValues: constant array(Positive range <>) of Unbounded_String :=
         (To_Unbounded_String("always"), To_Unbounded_String("hourly"),
@@ -82,8 +84,10 @@ package body Pages is
          end if;
          if To_Lower(Value) = "true" then
             Insert(Tags, Assoc(Name, True));
+            Tags_Container.Include(PageTags, Name, Value);
          elsif To_Lower(Value) = "false" then
             Insert(Tags, Assoc(Name, False));
+            Tags_Container.Include(PageTags, Name, Value);
          elsif Value = "[]" then
             TableTags_Container.Include(PageTableTags, Name, +"");
             Clear(PageTableTags(Name));
@@ -95,6 +99,7 @@ package body Pages is
             else
                Insert(Tags, Assoc(Name, Value));
             end if;
+            Tags_Container.Include(PageTags, Name, Value);
          end if;
       exception
          when Constraint_Error =>
@@ -173,14 +178,13 @@ package body Pages is
          end loop;
          Close(PageFile);
       end;
-      Insert
-        (Tags,
-         Assoc
-           ("Content",
-            Value
-              (cmark_markdown_to_html
-                 (New_String(To_String(Content)), size_t(Length(Content)),
-                  0))));
+      Tags_Container.Include
+        (PageTags, "Content",
+         Value
+           (cmark_markdown_to_html
+              (New_String(To_String(Content)), size_t(Length(Content)), 0)));
+      Insert(Tags, Assoc("Content", PageTags("Content")));
+      LoadModules("pre", PageTags, PageTableTags);
       for I in SiteTags.Iterate loop
          AddTag(Tags_Container.Key(I), SiteTags(I));
       end loop;
@@ -200,6 +204,7 @@ package body Pages is
       end if;
       AddPageToFeed(NewFileName, AtomEntries);
       Set("YASSFILE", NewFileName);
+      LoadModules("post", PageTags, PageTableTags);
    exception
       when An_Exception : LayoutNotFound =>
          Put_Line
@@ -235,6 +240,7 @@ package body Pages is
         YassConfig.OutputDirectory &
         Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
    begin
+      LoadModules("pre");
       Create_Path(To_String(OutputDirectory));
       Copy_File
         (FileName,
@@ -247,6 +253,7 @@ package body Pages is
       Set
         ("YASSFILE",
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
+      LoadModules("post");
    end CopyFile;
 
    procedure CreateEmptyFile(FileName: String) is
