@@ -26,6 +26,7 @@
 
 ### Fixed
 - Crash on adding site-wide global tags to the page
+- Crash when browser command is not set
 
 <a href="#top">^ Top</a>
 
