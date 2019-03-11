@@ -141,7 +141,7 @@ package body Server is
    begin
       select
          accept Start;
-         LoadModules("start");
+         LoadModules("start", SiteTags, GlobalTableTags);
          StartSitemap;
          StartAtomFeed;
          loop
@@ -150,7 +150,7 @@ package body Server is
             if SiteRebuild then
                SaveAtomFeed;
                SaveSitemap;
-               LoadModules("end");
+               LoadModules("end", SiteTags, GlobalTableTags);
                Put_Line
                  ("[" &
                   Ada.Calendar.Formatting.Image

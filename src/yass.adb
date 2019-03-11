@@ -75,13 +75,13 @@ procedure YASS is
             ProcessDirectories'Access);
       end Build;
    begin
-      LoadModules("start");
+      LoadModules("start", SiteTags, GlobalTableTags);
       StartSitemap;
       StartAtomFeed;
       Build(DirectoryName);
       SaveAtomFeed;
       SaveSitemap;
-      LoadModules("end");
+      LoadModules("end", SiteTags, GlobalTableTags);
       return True;
    exception
       when GenerateSiteException =>
