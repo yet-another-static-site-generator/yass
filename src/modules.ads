@@ -19,10 +19,8 @@ with Config; use Config;
 
 package Modules is
 
-   procedure LoadModules(State: String;
-      PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
-      PageTableTags: TableTags_Container.Map :=
-        TableTags_Container
-          .Empty_Map); -- Load all modules for selected state: start, pre, post, end
+   procedure LoadModules(State: String; PageTags: in out Tags_Container.Map;
+      PageTableTags: in out TableTags_Container
+        .Map); -- Load all modules for selected state: start, pre, post, end
 
 end Modules;

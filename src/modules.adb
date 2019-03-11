@@ -25,15 +25,13 @@ with AWS.Templates; use AWS.Templates;
 
 package body Modules is
 
-   procedure LoadModules(State: String;
-      PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
-      PageTableTags: TableTags_Container.Map :=
-        TableTags_Container.Empty_Map) is
+   procedure LoadModules(State: String; PageTags: in out Tags_Container.Map;
+      PageTableTags: in out TableTags_Container.Map) is
       procedure RunModule(Item: Directory_Entry_Type) is
          Module: Process_Descriptor;
          Finished: Boolean := False;
          Result: Expect_Match;
-         Text, TagName: Unbounded_String;
+         Text, TagName, TagValue: Unbounded_String;
          type Tag_Types is
            (NoTag, GlobalTag, GlobalTableTag, PageTag, PageTableTag);
          function TagExist return Tag_Types is
@@ -45,7 +43,7 @@ package body Modules is
                 (GlobalTableTags, To_String(TagName)) then
                return GlobalTableTag;
             end if;
-            if PageTags /= Empty_Map then
+            if PageTags /= SiteTags then
                if Contains(PageTags, To_String(TagName)) then
                   return PageTag;
                elsif TableTags_Container.Contains
@@ -121,6 +119,22 @@ package body Modules is
                                 (Module,
                                  "Tag with name """ & To_String(TagName) &
                                  """ don't exists.");
+                           when GlobalTag =>
+                              TagValue :=
+                                Unbounded_Slice
+                                  (Text, Index(Text, " ", 10) + 1,
+                                   Length(Text));
+                              SiteTags(To_String(TagName)) :=
+                                To_String(TagValue);
+                              Send(Module, "Success");
+                           when PageTag =>
+                              TagValue :=
+                                Unbounded_Slice
+                                  (Text, Index(Text, " ", 10) + 1,
+                                   Length(Text));
+                              PageTags(To_String(TagName)) :=
+                                To_String(TagValue);
+                              Send(Module, "Success");
                            when others =>
                               null;
                         end case;

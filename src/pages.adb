@@ -25,7 +25,6 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Calendar; use Ada.Calendar;
 with AWS.Templates; use AWS.Templates;
-with AWS.Templates.Utils; use AWS.Templates.Utils;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
@@ -82,23 +81,12 @@ package body Pages is
          if Name = "updated" and Value /= "[]" then
             AtomEntries(AtomEntries.First_Index).Updated := To_Time(Value);
          end if;
-         if To_Lower(Value) = "true" then
-            Insert(Tags, Assoc(Name, True));
-            Tags_Container.Include(PageTags, Name, Value);
-         elsif To_Lower(Value) = "false" then
-            Insert(Tags, Assoc(Name, False));
-            Tags_Container.Include(PageTags, Name, Value);
-         elsif Value = "[]" then
+         if Value = "[]" then
             TableTags_Container.Include(PageTableTags, Name, +"");
             Clear(PageTableTags(Name));
          elsif TableTags_Container.Contains(PageTableTags, Name) then
             PageTableTags(Name) := PageTableTags(Name) & Value;
          else
-            if Is_Number(Value) then
-               Insert(Tags, Assoc(Name, Integer'Value(Value)));
-            else
-               Insert(Tags, Assoc(Name, Value));
-            end if;
             Tags_Container.Include(PageTags, Name, Value);
          end if;
       exception
@@ -183,16 +171,19 @@ package body Pages is
          Value
            (cmark_markdown_to_html
               (New_String(To_String(Content)), size_t(Length(Content)), 0)));
-      Insert(Tags, Assoc("Content", PageTags("Content")));
       LoadModules("pre", PageTags, PageTableTags);
+      Insert(Tags, Assoc("Content", PageTags("Content")));
       for I in SiteTags.Iterate loop
-         AddTag(Tags_Container.Key(I), SiteTags(I));
+         Insert(Tags, Assoc(Tags_Container.Key(I), SiteTags(I)));
       end loop;
       for I in PageTableTags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
       end loop;
       for I in GlobalTableTags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), GlobalTableTags(I)));
+      end loop;
+      for I in PageTags.Iterate loop
+         Insert(Tags, Assoc(Tags_Container.Key(I), PageTags(I)));
       end loop;
       Create_Path(To_String(OutputDirectory));
       Create(PageFile, Append_File, NewFileName);
@@ -240,7 +231,7 @@ package body Pages is
         YassConfig.OutputDirectory &
         Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
    begin
-      LoadModules("pre");
+      LoadModules("pre", SiteTags, GlobalTableTags);
       Create_Path(To_String(OutputDirectory));
       Copy_File
         (FileName,
@@ -253,7 +244,7 @@ package body Pages is
       Set
         ("YASSFILE",
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
-      LoadModules("post");
+      LoadModules("post", SiteTags, GlobalTableTags);
    end CopyFile;
 
    procedure CreateEmptyFile(FileName: String) is
