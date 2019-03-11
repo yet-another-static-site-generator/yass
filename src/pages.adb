@@ -25,6 +25,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Calendar; use Ada.Calendar;
 with AWS.Templates; use AWS.Templates;
+with AWS.Templates.Utils; use AWS.Templates.Utils;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
@@ -93,6 +94,24 @@ package body Pages is
          when Constraint_Error =>
             raise InvalidValue with """" & Name & """ value """ & Value & """";
       end AddTag;
+      procedure InsertTags(TagsList: Tags_Container.Map) is
+      begin
+         for I in TagsList.Iterate loop
+            if To_Lower(TagsList(I)) = "true" then
+               Insert(Tags, Assoc(Tags_Container.Key(I), True));
+            elsif To_Lower(TagsList(I)) = "false" then
+               Insert(Tags, Assoc(Tags_Container.Key(I), False));
+            else
+               if Is_Number(TagsList(I)) then
+                  Insert
+                    (Tags,
+                     Assoc(Tags_Container.Key(I), Integer'Value(TagsList(I))));
+               else
+                  Insert(Tags, Assoc(Tags_Container.Key(I), TagsList(I)));
+               end if;
+            end if;
+         end loop;
+      end InsertTags;
    begin
       declare
          Data: Unbounded_String;
@@ -173,18 +192,14 @@ package body Pages is
               (New_String(To_String(Content)), size_t(Length(Content)), 0)));
       LoadModules("pre", PageTags, PageTableTags);
       Insert(Tags, Assoc("Content", PageTags("Content")));
-      for I in SiteTags.Iterate loop
-         Insert(Tags, Assoc(Tags_Container.Key(I), SiteTags(I)));
-      end loop;
+      InsertTags(SiteTags);
       for I in PageTableTags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
       end loop;
       for I in GlobalTableTags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), GlobalTableTags(I)));
       end loop;
-      for I in PageTags.Iterate loop
-         Insert(Tags, Assoc(Tags_Container.Key(I), PageTags(I)));
-      end loop;
+      InsertTags(PageTags);
       Create_Path(To_String(OutputDirectory));
       Create(PageFile, Append_File, NewFileName);
       Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
