@@ -87,9 +87,6 @@ AppImage version of the program.
 
 ## Roadmap
 
-### 0.7
-- Better scripting support
-
 ### 0.8
 - Better generating of atom feed and sitemap
 
