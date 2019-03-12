@@ -20,6 +20,8 @@
 -- detailslink: 0.2
 -- detailslink: 0.1
 ## <a name="unreleased"></a>[Unreleased]
+### Added
+- API to read/edit template tags values via the program modules
 
 ### Changed
 - Updated README.md
