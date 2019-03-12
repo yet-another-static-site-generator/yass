@@ -31,7 +31,9 @@ package body Modules is
          Module: Process_Descriptor;
          Finished: Boolean := False;
          Result: Expect_Match;
-         Text, TagName, TagValue: Unbounded_String;
+         Text, TagName, TagValue, TagIndex: Unbounded_String;
+         StartIndex: Positive;
+         TempTag: Vector_Tag;
          type Tag_Types is
            (NoTag, GlobalTag, GlobalTableTag, PageTag, PageTableTag);
          function TagExist return Tag_Types is
@@ -67,7 +69,7 @@ package body Modules is
                when 1 =>
                   Text := To_Unbounded_String(Expect_Out_Match(Module));
                   exit when Text = To_Unbounded_String("done");
-                  if Length(Text) > 5 then
+                  if Length(Text) > 6 then
                      if Slice(Text, 1, 6) = "gettag" then
                         TagName := Unbounded_Slice(Text, 8, Length(Text));
                         case TagExist is
@@ -127,6 +129,49 @@ package body Modules is
                               SiteTags(To_String(TagName)) :=
                                 To_String(TagValue);
                               Send(Module, "Success");
+                           when GlobalTableTag =>
+                              StartIndex := Length(TagName) + 9;
+                              TagIndex :=
+                                Unbounded_Slice
+                                  (Text, Index(Text, " ", StartIndex) + 1,
+                                   Index(Text, " ", StartIndex + 1) - 1);
+                              StartIndex := StartIndex + Length(TagIndex);
+                              TagValue :=
+                                Unbounded_Slice
+                                  (Text, Index(Text, " ", StartIndex) + 1,
+                                   Length(Text));
+                              if Integer'Value(To_String(TagIndex)) <=
+                                Size(GlobalTableTags(To_String(TagName))) and
+                                Integer'Value(To_String(TagIndex)) > 0 then
+                                 TempTag := +"";
+                                 for I in
+                                   1 ..
+                                     Size
+                                       (GlobalTableTags
+                                          (To_String(TagName))) loop
+                                    if Integer'Value(To_String(TagIndex)) =
+                                      I then
+                                       TempTag :=
+                                         TempTag & To_String(TagValue);
+                                    else
+                                       TempTag :=
+                                         TempTag &
+                                         AWS.Templates.Item
+                                           (GlobalTableTags
+                                              (To_String(TagName)),
+                                            I);
+                                    end if;
+                                 end loop;
+                                 GlobalTableTags(To_String(TagName)) :=
+                                   TempTag;
+                                 Send(Module, "Success");
+                              else
+                                 Send
+                                   (Module,
+                                    "Index """ & To_String(TagIndex) &
+                                    """ is not in tag """ &
+                                    To_String(TagName) & """ index range.");
+                              end if;
                            when PageTag =>
                               TagValue :=
                                 Unbounded_Slice
@@ -135,8 +180,46 @@ package body Modules is
                               PageTags(To_String(TagName)) :=
                                 To_String(TagValue);
                               Send(Module, "Success");
-                           when others =>
-                              null;
+                           when PageTableTag =>
+                              StartIndex := Length(TagName) + 9;
+                              TagIndex :=
+                                Unbounded_Slice
+                                  (Text, Index(Text, " ", StartIndex) + 1,
+                                   Index(Text, " ", StartIndex + 1) - 1);
+                              StartIndex := StartIndex + Length(TagIndex);
+                              TagValue :=
+                                Unbounded_Slice
+                                  (Text, Index(Text, " ", StartIndex) + 1,
+                                   Length(Text));
+                              if Integer'Value(To_String(TagIndex)) <=
+                                Size(PageTableTags(To_String(TagName))) and
+                                Integer'Value(To_String(TagIndex)) > 0 then
+                                 TempTag := +"";
+                                 for I in
+                                   1 ..
+                                     Size
+                                       (PageTableTags(To_String(TagName))) loop
+                                    if Integer'Value(To_String(TagIndex)) =
+                                      I then
+                                       TempTag :=
+                                         TempTag & To_String(TagValue);
+                                    else
+                                       TempTag :=
+                                         TempTag &
+                                         AWS.Templates.Item
+                                           (PageTableTags(To_String(TagName)),
+                                            I);
+                                    end if;
+                                 end loop;
+                                 PageTableTags(To_String(TagName)) := TempTag;
+                                 Send(Module, "Success");
+                              else
+                                 Send
+                                   (Module,
+                                    "Index """ & To_String(TagIndex) &
+                                    """ is not in tag """ &
+                                    To_String(TagName) & """ index range.");
+                              end if;
                         end case;
                      else
                         Put_Line(To_String(Text));
