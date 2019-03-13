@@ -31,6 +31,8 @@ package AtomFeed is
 
    function To_Time
      (Date: String) return Time; -- Convert Atom time to Ada format
+   function To_HTTP_Date
+     (Date: Time) return String; -- Convert Ada time to Atom format
    procedure StartAtomFeed; -- Create new or load existing Atom feed for the site
    procedure AddPageToFeed(FileName: String;
       Entries: in out FeedEntry_Container
