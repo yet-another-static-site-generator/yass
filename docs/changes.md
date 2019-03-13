@@ -4,6 +4,7 @@
 -- backtext: Extending
 -- indexlink: true
 -- details: []
+-- details: Unreleased
 -- details: 0.7
 -- details: 0.6
 -- details: 0.5
@@ -12,6 +13,7 @@
 -- details: 0.2
 -- details: 0.1
 -- detailslink: []
+-- detailslink: unreleased
 -- detailslink: 0.7
 -- detailslink: 0.6
 -- detailslink: 0.5
@@ -19,7 +21,13 @@
 -- detailslink: 0.3
 -- detailslink: 0.2
 -- detailslink: 0.1
-## <a name="unreleased"></a>[0.7] - 2019-03-12
+## <a name="unreleased"></a>[Unreleased]
+### Added
+- Time to updated date in sitemaps
+
+<a href="#top">^ Top</a>
+
+## <a name="0.7"></a>[0.7] - 2019-03-12
 ### Added
 - API to read/edit template tags values via the program modules
 
