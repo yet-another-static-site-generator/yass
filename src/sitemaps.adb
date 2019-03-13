@@ -20,8 +20,6 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Calendar; use Ada.Calendar;
-with Ada.Calendar.Formatting;
-with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with DOM.Core; use DOM.Core;
 with DOM.Core.Documents; use DOM.Core.Documents;
@@ -30,6 +28,7 @@ with DOM.Core.Elements; use DOM.Core.Elements;
 with DOM.Readers; use DOM.Readers;
 with Input_Sources.File; use Input_Sources.File;
 with Config; use Config;
+with Atomfeed; use Atomfeed;
 
 package body Sitemaps is
 
@@ -81,10 +80,7 @@ package body Sitemaps is
       URLNode, URLData, OldMainNode, RemoveFrequency,
       RemovePriority: DOM.Core.Element;
       URLText: Text;
-      LastModified: constant String :=
-        Ada.Calendar.Formatting.Image
-          (Date => Clock, Time_Zone => UTC_Time_Offset)
-          (1 .. 10);
+      LastModified: constant String := To_HTTP_Date(Clock);
    begin
       if not YassConfig.SitemapEnabled then
          return;
