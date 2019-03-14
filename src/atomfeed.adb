@@ -151,10 +151,10 @@ package body AtomFeed is
       NewFeed: DOM_Implementation;
       MainNode, EntryNode: DOM.Core.Element;
       EntriesAmount: Natural := 0;
-      FeedData: DOM.Core.Element;
       procedure AddNode(NodeName, NodeValue: String;
          ParentNode: Dom.Core.Element) is
          FeedText: Text;
+         FeedData: DOM.Core.Element;
       begin
          FeedData := Create_Element(Feed, NodeName);
          FeedData := Append_Child(ParentNode, FeedData);
@@ -163,6 +163,15 @@ package body AtomFeed is
             return;
          end if;
       end AddNode;
+      procedure AddLink(ParentNode: Dom.Core.Element;
+         URL, Relationship: String) is
+         FeedData: DOM.Core.Element;
+      begin
+         FeedData := Create_Element(Feed, "link");
+         FeedData := Append_Child(ParentNode, FeedData);
+         Set_Attribute(FeedData, "rel", Relationship);
+         Set_Attribute(FeedData, "href", URL);
+      end AddLink;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
         FeedEntry_Container.Length(Entries_List) = 0 then
@@ -172,6 +181,7 @@ package body AtomFeed is
       MainNode := Create_Element(Feed, "feed");
       Set_Attribute(MainNode, "xmlns", "http://www.w3.org/2005/Atom");
       MainNode := Append_Child(Feed, MainNode);
+      AddLink(MainNode, To_String(YassConfig.BaseURL) & "/atom.xml", "self");
       AddNode("id", To_String(YassConfig.BaseURL) & "/", MainNode);
       AddNode("title", To_String(YassConfig.SiteName), MainNode);
       AddNode("updated", To_HTTP_Date(Entries_List(1).Updated), MainNode);
@@ -182,10 +192,7 @@ package body AtomFeed is
          AddNode("title", To_String(FeedEntry.EntryTitle), EntryNode);
          AddNode("updated", To_HTTP_Date(FeedEntry.Updated), EntryNode);
          AddNode("content", To_String(FeedEntry.Id), EntryNode);
-         FeedData := Create_Element(Feed, "link");
-         FeedData := Append_Child(EntryNode, FeedData);
-         Set_Attribute(FeedData, "rel", "alternate");
-         Set_Attribute(FeedData, "href", To_String(FeedEntry.Id));
+         AddLink(EntryNode, To_String(FeedEntry.Id), "alternate");
          EntriesAmount := EntriesAmount + 1;
          exit when EntriesAmount > YassConfig.AtomFeedAmount;
       end loop;
