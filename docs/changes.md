@@ -25,6 +25,9 @@
 ### Added
 - Time to updated date in sitemaps
 
+### Changed
+- Updated README.md
+
 <a href="#top">^ Top</a>
 
 ## <a name="0.7"></a>[0.7] - 2019-03-12
