@@ -90,9 +90,6 @@ AppImage version of the program.
 ### 0.8
 - Better generating of atom feed and sitemap
 
-### 0.9
-- Some formal verification of code
-
 ### 1.0
 - Bugfixes, code cleanup and optimization
 
