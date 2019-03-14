@@ -64,6 +64,12 @@ package Config is
           ("none"); -- Command used to open web browser (if empty, don't open anything)
       MonitorConfigInterval: Duration :=
         60.0; -- Interval (in seconds) how often program should check for changes in site configuration to reconfigure it
+      AuthorName: Unbounded_String :=
+        To_Unbounded_String
+          ("John Doe"); -- Name of author of the site, needed for atom feed
+      AuthorEmail: Unbounded_String :=
+        To_Unbounded_String
+          ("johndoe@example.com"); -- Email address of author of the site, needed for atom feed
    end record;
    YassConfig: ParserConfig; -- Settings for parser
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,

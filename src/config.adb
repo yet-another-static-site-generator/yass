@@ -91,6 +91,14 @@ package body Config is
       Put_Line(ConfigFile, "Name = New Site");
       Put_Line
         (ConfigFile,
+         "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
+      Put_Line(ConfigFile, "Author = John Doe");
+      Put_Line
+        (ConfigFile,
+         "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
+      Put_Line(ConfigFile, "AuthorEmail = johndoe@example.com");
+      Put_Line
+        (ConfigFile,
          "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
       Put_Line(ConfigFile, "StartTagSeparator = {%");
       Put_Line
@@ -223,6 +231,10 @@ package body Config is
                EndTag := Value;
             elsif FieldName = To_Unbounded_String("MarkdownComment") then
                YassConfig.MarkdownComment := Value;
+            elsif FieldName = To_Unbounded_String("Author") then
+               YassConfig.AuthorName := Value;
+            elsif FieldName = To_Unbounded_String("AuthorEmail") then
+               YassConfig.AuthorEmail := Value;
             elsif Value = To_Unbounded_String("[]") then
                TableTags_Container.Include
                  (GlobalTableTags, To_String(FieldName), +"");

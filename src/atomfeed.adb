@@ -149,7 +149,7 @@ package body AtomFeed is
       AtomFile: File_Type;
       Feed: Document;
       NewFeed: DOM_Implementation;
-      MainNode, EntryNode: DOM.Core.Element;
+      MainNode, EntryNode, AuthorNode: DOM.Core.Element;
       EntriesAmount: Natural := 0;
       procedure AddNode(NodeName, NodeValue: String;
          ParentNode: Dom.Core.Element) is
@@ -185,6 +185,10 @@ package body AtomFeed is
       AddNode("id", To_String(YassConfig.BaseURL) & "/", MainNode);
       AddNode("title", To_String(YassConfig.SiteName), MainNode);
       AddNode("updated", To_HTTP_Date(Entries_List(1).Updated), MainNode);
+      AuthorNode := Create_Element(Feed, "author");
+      AuthorNode := Append_Child(MainNode, AuthorNode);
+      AddNode("name", To_String(YassConfig.AuthorName), AuthorNode);
+      AddNode("email", To_String(YassConfig.AuthorEmail), AuthorNode);
       for FeedEntry of Entries_List loop
          EntryNode := Create_Element(Feed, "entry");
          EntryNode := Append_Child(MainNode, EntryNode);
