@@ -76,6 +76,12 @@ Possible settings for project:
   value is `none`.
 - AtomFeedAmount - Number of entries in the Atom feed (if it will be created,
   please see setting above).
+- Author - the name of the author of the site. If you have enabled creating
+  Atom feed, then it is needed. Otherwise, you can use it as a normal template
+  tag. Default value is `Jon Doe`.
+- AuthorEmail - the email address of the author of the site. If you have
+  enabled creating Atom feed, then it is needed. Otherwise, you can use it as
+  a normal template tag. Default valuse is `jondoe@example.com`.
 - StartTagSeparator - any string which will be used as start mark for the
   templates tags. You may want to change it, if you want to use templates from
   other static site generators. Default value is `{%`.
