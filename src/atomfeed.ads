@@ -26,6 +26,10 @@ package AtomFeed is
       Id: Unbounded_String; -- Url of entry
       EntryTitle: Unbounded_String; -- Title of entry
       Updated: Time; -- Update time of entry
+      AuthorName: Unbounded_String :=
+        Null_Unbounded_String; -- Name of author of entry
+      AuthorEmail: Unbounded_String :=
+        Null_Unbounded_String; -- Email of author of entry
    end record;
    package FeedEntry_Container is new Vectors(Positive, FeedEntry);
 
