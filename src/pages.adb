@@ -327,7 +327,7 @@ package body Pages is
       Put_Line
         (IndexFile,
          CommentMark &
-         " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you will use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry.");
+         " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you will use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry. If you want to set author name for Atom feed, you must add ""author"" tag for whole page or for each entry (depends on your Atom feed source setting). If you want to set author email for Atom feed, you must add ""authoremail"" tag for whole page or for each entry (again, depends on your Atom feed source setting).");
       Put_Line(IndexFile, CommentMark & " title: New page");
       Put_Line
         (IndexFile,
