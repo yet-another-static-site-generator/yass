@@ -25,7 +25,7 @@
 ### Added
 - Time to updated date in sitemaps
 - Self link to the Atom feed
-- Author info to the Atom feed
+- Author info to the Atom feed and it entries
 
 ### Changed
 - Updated README.md
