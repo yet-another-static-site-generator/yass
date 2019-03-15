@@ -68,27 +68,35 @@ package body Pages is
       SitemapInvalidValue, InvalidValue: exception;
       procedure AddTag(Name, Value: String) is
       begin
-         if Name = "title" and Value /= "[]" then
-            AtomEntries.Prepend
-              (New_Item =>
-                 (EntryTitle => To_Unbounded_String(Value),
-                  Id => Null_Unbounded_String,
-                  Updated => Time_Of(1901, 1, 1)));
-         end if;
-         if Name = "id" and Value /= "[]" then
-            AtomEntries(AtomEntries.First_Index).Id :=
-              To_Unbounded_String(Value);
-         end if;
-         if Name = "updated" and Value /= "[]" then
-            AtomEntries(AtomEntries.First_Index).Updated := To_Time(Value);
-         end if;
-         if Value = "[]" then
+         if Value /= "[]" then
+            if Name = "title" then
+               AtomEntries.Prepend
+                 (New_Item =>
+                    (EntryTitle => To_Unbounded_String(Value),
+                     Id => Null_Unbounded_String,
+                     Updated => Time_Of(1901, 1, 1),
+                     AuthorName => Null_Unbounded_String,
+                     AuthorEmail => Null_Unbounded_String));
+            elsif Name = "id" then
+               AtomEntries(AtomEntries.First_Index).Id :=
+                 To_Unbounded_String(Value);
+            elsif Name = "updated" then
+               AtomEntries(AtomEntries.First_Index).Updated := To_Time(Value);
+            elsif Name = "author" then
+               AtomEntries(AtomEntries.First_Index).AuthorName :=
+                 To_Unbounded_String(Value);
+            elsif Name = "authoremail" then
+               AtomEntries(AtomEntries.First_Index).AuthorEmail :=
+                 To_Unbounded_String(Value);
+            end if;
+            if TableTags_Container.Contains(PageTableTags, Name) then
+               PageTableTags(Name) := PageTableTags(Name) & Value;
+            else
+               Tags_Container.Include(PageTags, Name, Value);
+            end if;
+         else
             TableTags_Container.Include(PageTableTags, Name, +"");
             Clear(PageTableTags(Name));
-         elsif TableTags_Container.Contains(PageTableTags, Name) then
-            PageTableTags(Name) := PageTableTags(Name) & Value;
-         else
-            Tags_Container.Include(PageTags, Name, Value);
          end if;
       exception
          when Constraint_Error =>
