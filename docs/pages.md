@@ -58,6 +58,9 @@ If you selected source of the Atom feed as `tags`:
   Must be in [RFC3339](http://www.faqs.org/rfcs/rfc3339.html) time style. This
   parameter is optional. If you not set it, the program will use time when file
   html (created from this markdown file) was last time updated.
+- author - The name of the author of the page. This parameter is optional.
+- authoremail - The email address of the author of the page. This parameter is
+  optional.
 
 Example of markdown file with Atom feed settings for Atom feed source as
 `tags`:
@@ -78,6 +81,10 @@ will be used as a source for the Atom feed:
 - updated - Time stamp when selected Atom feed entry was last time updated.
   Must be in [RFC3339](http://www.faqs.org/rfcs/rfc3339.html) time style.
   Required for each entry if creating Atom feed from one file is enabled.
+- author - The name of the author of selected Atom feed entry. This is
+  optional parameter for each entry.
+- authoremail - The email address of the author of selected Atom feed entry.
+  This is optional parameter for each entry.
 
 Example of markdown file `test.md` with Atom feed settings for Atom feed
 source as `test.md`:
@@ -87,13 +94,24 @@ source as `test.md`:
     -- id: []
     -- updated: []
     -- news: []
+    -- title: third news
+    -- id: latest
+    -- updated: 2019-02-23T10:05:00Z
+    -- authoremail: jondoe@example.com
+    -- author: Jon Doe
+    -- news: This is the latest news.
+    -- id: third
+    -- updated: 2019-02-23T10:02:00Z
+    -- news: This is the third news.
     -- title: second news
     -- id: second
     -- updated: 2019-02-23T10:00:00Z
+    -- authoremail: jondoe@example.com
     -- news: This is the second news.
     -- title: first news
     -- id: first
     -- updated: 2019-02-23T09:59:00Z
+    -- author: Jon Doe
     -- news: This is the first news.
 
 And use [TABLE statement](http://docs.adacore.com/aws-docs/templates_parser/template_statements.html#table-statement)
