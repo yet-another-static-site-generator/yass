@@ -73,7 +73,7 @@ package body AtomFeed is
             TempEntry :=
               (Null_Unbounded_String, Null_Unbounded_String, Clock,
                Null_Unbounded_String, Null_Unbounded_String,
-               Null_Unbounded_String);
+               Null_Unbounded_String, Null_Unbounded_String);
             ChildrenNodes := Child_Nodes(Item(NodesList, I));
             for J in 1 .. Length(ChildrenNodes) - 1 loop
                if J rem 2 /= 0 then
@@ -105,6 +105,9 @@ package body AtomFeed is
                      end loop;
                   elsif Node_Name(DataNode) = "summary" then
                      TempEntry.Summary :=
+                       To_Unbounded_String(Node_Value(First_Child(DataNode)));
+                  elsif Node_Name(DataNode) = "content" then
+                     TempEntry.Content :=
                        To_Unbounded_String(Node_Value(First_Child(DataNode)));
                   end if;
                end if;
@@ -142,6 +145,9 @@ package body AtomFeed is
          end if;
          if AtomEntry.Updated = Time_Of(1901, 1, 1) then
             AtomEntry.Updated := Modification_Time(FileName);
+         end if;
+         if AtomEntry.Content = Null_Unbounded_String then
+            AtomEntry.Content := AtomEntry.Id;
          end if;
          for I in Entries_List.Iterate loop
             if Entries_List(I).EntryTitle = AtomEntry.EntryTitle then
@@ -228,7 +234,7 @@ package body AtomFeed is
          AddNode("id", To_String(FeedEntry.Id), EntryNode);
          AddNode("title", To_String(FeedEntry.EntryTitle), EntryNode);
          AddNode("updated", To_HTTP_Date(FeedEntry.Updated), EntryNode);
-         AddNode("content", To_String(FeedEntry.Id), EntryNode);
+         AddNode("content", To_String(FeedEntry.Content), EntryNode);
          AddLink(EntryNode, To_String(FeedEntry.Id), "alternate");
          if FeedEntry.AuthorName /= Null_Unbounded_String or
            FeedEntry.AuthorEmail /= Null_Unbounded_String then

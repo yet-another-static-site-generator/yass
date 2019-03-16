@@ -77,7 +77,8 @@ package body Pages is
                      Updated => Time_Of(1901, 1, 1),
                      AuthorName => Null_Unbounded_String,
                      AuthorEmail => Null_Unbounded_String,
-                     Summary => Null_Unbounded_String));
+                     Summary => Null_Unbounded_String,
+                     Content => Null_Unbounded_String));
             elsif Name = "id" then
                AtomEntries(AtomEntries.First_Index).Id :=
                  To_Unbounded_String(Value);
@@ -91,6 +92,9 @@ package body Pages is
                  To_Unbounded_String(Value);
             elsif Name = "summary" then
                AtomEntries(AtomEntries.First_Index).Summary :=
+                 To_Unbounded_String(Value);
+            elsif Name = "content" then
+               AtomEntries(AtomEntries.First_Index).Content :=
                  To_Unbounded_String(Value);
             end if;
             if TableTags_Container.Contains(PageTableTags, Name) then
@@ -219,6 +223,9 @@ package body Pages is
       if InSitemap then
          AddPageToSitemap
            (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
+      end if;
+      if YassConfig.AtomFeedSource = To_Unbounded_String("tags") then
+         AtomEntries(AtomEntries.First_Index).Content := Content;
       end if;
       AddPageToFeed(NewFileName, AtomEntries);
       Set("YASSFILE", NewFileName);
