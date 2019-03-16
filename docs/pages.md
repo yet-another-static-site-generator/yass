@@ -61,6 +61,10 @@ If you selected source of the Atom feed as `tags`:
 - author - The name of the author of the page. This parameter is optional.
 - authoremail - The email address of the author of the page. This parameter is
   optional.
+- summary - Short summary for this page. This parameter is optional.
+- content - Content of the page in Atom feed. If you not set it, then the
+  program will load here markdown version of the page content. This parameter
+  is optional.
 
 Example of markdown file with Atom feed settings for Atom feed source as
 `tags`:
@@ -85,6 +89,11 @@ will be used as a source for the Atom feed:
   optional parameter for each entry.
 - authoremail - The email address of the author of selected Atom feed entry.
   This is optional parameter for each entry.
+- summary - Short summary for selected Atom feed entry. This is optional
+  parameter for each entry.
+- content - Content of selected Atom feed entry. If you not set it, then the
+  program will load here id of selected Atom feed entry. This parameter is
+  optional.
 
 Example of markdown file `test.md` with Atom feed settings for Atom feed
 source as `test.md`:
