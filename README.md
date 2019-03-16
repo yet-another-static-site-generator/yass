@@ -87,9 +87,6 @@ AppImage version of the program.
 
 ## Roadmap
 
-### 0.8
-- Better generating of atom feed and sitemap
-
 ### 1.0
 - Bugfixes, code cleanup and optimization
 
