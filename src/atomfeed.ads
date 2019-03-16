@@ -29,6 +29,7 @@ package AtomFeed is
       AuthorName: Unbounded_String; -- Name of author of entry
       AuthorEmail: Unbounded_String; -- Email of author of entry
       Summary: Unbounded_String; -- Short summary of entry
+      Content: Unbounded_String; -- Content of entry
    end record;
    package FeedEntry_Container is new Vectors(Positive, FeedEntry);
 
