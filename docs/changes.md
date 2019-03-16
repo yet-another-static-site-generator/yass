@@ -27,6 +27,7 @@
 - Self link to the Atom feed
 - Author info to the Atom feed and it entries
 - Summary tag to the Atom feed entries
+- Content tag to the Atom feed entries
 
 ### Changed
 - Updated README.md
