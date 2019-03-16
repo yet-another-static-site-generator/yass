@@ -76,7 +76,8 @@ package body Pages is
                      Id => Null_Unbounded_String,
                      Updated => Time_Of(1901, 1, 1),
                      AuthorName => Null_Unbounded_String,
-                     AuthorEmail => Null_Unbounded_String));
+                     AuthorEmail => Null_Unbounded_String,
+                     Summary => Null_Unbounded_String));
             elsif Name = "id" then
                AtomEntries(AtomEntries.First_Index).Id :=
                  To_Unbounded_String(Value);
@@ -87,6 +88,9 @@ package body Pages is
                  To_Unbounded_String(Value);
             elsif Name = "authoremail" then
                AtomEntries(AtomEntries.First_Index).AuthorEmail :=
+                 To_Unbounded_String(Value);
+            elsif Name = "summary" then
+               AtomEntries(AtomEntries.First_Index).Summary :=
                  To_Unbounded_String(Value);
             end if;
             if TableTags_Container.Contains(PageTableTags, Name) then
@@ -327,7 +331,7 @@ package body Pages is
       Put_Line
         (IndexFile,
          CommentMark &
-         " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you will use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry. If you want to set author name for Atom feed, you must add ""author"" tag for whole page or for each entry (depends on your Atom feed source setting). If you want to set author email for Atom feed, you must add ""authoremail"" tag for whole page or for each entry (again, depends on your Atom feed source setting).");
+         " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you will use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry. If you want to set author name for Atom feed, you must add ""author"" tag. If you want to set author email for Atom feed, you must add ""authoremail"" tag. If you want to add short entry summary, you must add tag ""summary"". Did that tags will be for whole page or for each entry depends on your Atom feed configuration.");
       Put_Line(IndexFile, CommentMark & " title: New page");
       Put_Line
         (IndexFile,

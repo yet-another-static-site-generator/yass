@@ -72,7 +72,8 @@ package body AtomFeed is
          for I in 0 .. Length(NodesList) - 1 loop
             TempEntry :=
               (Null_Unbounded_String, Null_Unbounded_String, Clock,
-               Null_Unbounded_String, Null_Unbounded_String);
+               Null_Unbounded_String, Null_Unbounded_String,
+               Null_Unbounded_String);
             ChildrenNodes := Child_Nodes(Item(NodesList, I));
             for J in 1 .. Length(ChildrenNodes) - 1 loop
                if J rem 2 /= 0 then
@@ -102,6 +103,9 @@ package body AtomFeed is
                            end if;
                         end if;
                      end loop;
+                  elsif Node_Name(DataNode) = "summary" then
+                     TempEntry.Summary :=
+                       To_Unbounded_String(Node_Value(First_Child(DataNode)));
                   end if;
                end if;
             end loop;
@@ -231,6 +235,9 @@ package body AtomFeed is
             AddAuthor
               (EntryNode, To_String(FeedEntry.AuthorName),
                To_String(FeedEntry.AuthorEmail));
+         end if;
+         if FeedEntry.Summary /= Null_Unbounded_String then
+            AddNode("summary", To_String(FeedEntry.Summary), EntryNode);
          end if;
          EntriesAmount := EntriesAmount + 1;
          exit when EntriesAmount > YassConfig.AtomFeedAmount;
