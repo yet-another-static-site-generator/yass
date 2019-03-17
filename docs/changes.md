@@ -4,7 +4,7 @@
 -- backtext: Extending
 -- indexlink: true
 -- details: []
--- details: Unreleased
+-- details: 0.8
 -- details: 0.7
 -- details: 0.6
 -- details: 0.5
@@ -13,7 +13,7 @@
 -- details: 0.2
 -- details: 0.1
 -- detailslink: []
--- detailslink: unreleased
+-- detailslink: 0.8
 -- detailslink: 0.7
 -- detailslink: 0.6
 -- detailslink: 0.5
@@ -21,7 +21,7 @@
 -- detailslink: 0.3
 -- detailslink: 0.2
 -- detailslink: 0.1
-## <a name="unreleased"></a>[Unreleased]
+## <a name="0.8"></a>[0.8] - 2019-03-17
 ### Added
 - Time to updated date in sitemaps
 - Self link to the Atom feed
