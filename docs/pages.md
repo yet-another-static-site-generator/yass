@@ -124,7 +124,22 @@ source as `test.md`:
     -- news: This is the first news.
 
 And use [TABLE statement](http://docs.adacore.com/aws-docs/templates_parser/template_statements.html#table-statement)
-inside `news.html` layout to show that news.
+inside `news.html` layout to show that news:
+
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+         <meta charset="UTF-8">
+         <title>News</title>
+      </head>
+      <body>
+         @@TABLE@@
+            <h2>{%title%}<a name="{%id%}"></a></h2>
+            <p>{%NO_LETTER:updated%}</p>
+            <p>{%news%}</p>
+         @@END_TABLE@@
+      </body>
+   </html>
 
 One parameter is always required:
 
