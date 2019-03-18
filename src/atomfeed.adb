@@ -55,6 +55,7 @@ package body AtomFeed is
       Feed: Document;
       TempEntry: FeedEntry;
       DataNode, AuthorNode: DOM.Core.Element;
+      ChildIndex, AuthorNodeIndex: Positive;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
          return;
@@ -62,59 +63,58 @@ package body AtomFeed is
       FeedFileName :=
         YassConfig.OutputDirectory &
         To_Unbounded_String(Dir_Separator & "atom.xml");
-      if Exists(To_String(FeedFileName)) then
-         Open(To_String(FeedFileName), AtomFile);
-         Parse(Reader, AtomFile);
-         Close(AtomFile);
-         Feed := Get_Tree(Reader);
-         NodesList :=
-           DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "entry");
-         for I in 0 .. Length(NodesList) - 1 loop
-            TempEntry :=
-              (Null_Unbounded_String, Null_Unbounded_String, Clock,
-               Null_Unbounded_String, Null_Unbounded_String,
-               Null_Unbounded_String, Null_Unbounded_String);
-            ChildrenNodes := Child_Nodes(Item(NodesList, I));
-            for J in 1 .. Length(ChildrenNodes) - 1 loop
-               if J rem 2 /= 0 then
-                  DataNode := Item(ChildrenNodes, J);
-                  if Node_Name(DataNode) = "id" then
-                     TempEntry.Id :=
-                       To_Unbounded_String(Node_Value(First_Child(DataNode)));
-                  elsif Node_Name(DataNode) = "title" then
-                     TempEntry.EntryTitle :=
-                       To_Unbounded_String(Node_Value(First_Child(DataNode)));
-                  elsif Node_Name(DataNode) = "updated" then
-                     TempEntry.Updated :=
-                       To_Time(Node_Value(First_Child(DataNode)));
-                  elsif Node_Name(DataNode) = "author" then
-                     AuthorNodes := Child_Nodes(DataNode);
-                     for K in 1 .. Length(AuthorNodes) - 1 loop
-                        if K rem 2 /= 0 then
-                           AuthorNode := Item(AuthorNodes, K);
-                           if Node_Name(AuthorNode) = "name" then
-                              TempEntry.AuthorName :=
-                                To_Unbounded_String
-                                  (Node_Value(First_Child(AuthorNode)));
-                           elsif Node_Name(AuthorNode) = "email" then
-                              TempEntry.AuthorEmail :=
-                                To_Unbounded_String
-                                  (Node_Value(First_Child(AuthorNode)));
-                           end if;
-                        end if;
-                     end loop;
-                  elsif Node_Name(DataNode) = "summary" then
-                     TempEntry.Summary :=
-                       To_Unbounded_String(Node_Value(First_Child(DataNode)));
-                  elsif Node_Name(DataNode) = "content" then
-                     TempEntry.Content :=
-                       To_Unbounded_String(Node_Value(First_Child(DataNode)));
-                  end if;
-               end if;
-            end loop;
-            Entries_List.Append(New_Item => TempEntry);
-         end loop;
+      if not Exists(To_String(FeedFileName)) then
+         return;
       end if;
+      Open(To_String(FeedFileName), AtomFile);
+      Parse(Reader, AtomFile);
+      Close(AtomFile);
+      Feed := Get_Tree(Reader);
+      NodesList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "entry");
+      for I in 0 .. Length(NodesList) - 1 loop
+         TempEntry :=
+           (Null_Unbounded_String, Null_Unbounded_String, Clock,
+            Null_Unbounded_String, Null_Unbounded_String,
+            Null_Unbounded_String, Null_Unbounded_String);
+         ChildrenNodes := Child_Nodes(Item(NodesList, I));
+         ChildIndex := 1;
+         while ChildIndex < Length(ChildrenNodes) loop
+            DataNode := Item(ChildrenNodes, ChildIndex);
+            if Node_Name(DataNode) = "id" then
+               TempEntry.Id :=
+                 To_Unbounded_String(Node_Value(First_Child(DataNode)));
+            elsif Node_Name(DataNode) = "title" then
+               TempEntry.EntryTitle :=
+                 To_Unbounded_String(Node_Value(First_Child(DataNode)));
+            elsif Node_Name(DataNode) = "updated" then
+               TempEntry.Updated := To_Time(Node_Value(First_Child(DataNode)));
+            elsif Node_Name(DataNode) = "author" then
+               AuthorNodes := Child_Nodes(DataNode);
+               AuthorNodeIndex := 1;
+               while AuthorNodeIndex < Length(AuthorNodes) loop
+                  AuthorNode := Item(AuthorNodes, AuthorNodeIndex);
+                  if Node_Name(AuthorNode) = "name" then
+                     TempEntry.AuthorName :=
+                       To_Unbounded_String
+                         (Node_Value(First_Child(AuthorNode)));
+                  elsif Node_Name(AuthorNode) = "email" then
+                     TempEntry.AuthorEmail :=
+                       To_Unbounded_String
+                         (Node_Value(First_Child(AuthorNode)));
+                  end if;
+                  AuthorNodeIndex := AuthorNodeIndex + 2;
+               end loop;
+            elsif Node_Name(DataNode) = "summary" then
+               TempEntry.Summary :=
+                 To_Unbounded_String(Node_Value(First_Child(DataNode)));
+            elsif Node_Name(DataNode) = "content" then
+               TempEntry.Content :=
+                 To_Unbounded_String(Node_Value(First_Child(DataNode)));
+            end if;
+            ChildIndex := ChildIndex + 2;
+         end loop;
+         Entries_List.Append(New_Item => TempEntry);
+      end loop;
    end StartAtomFeed;
 
    procedure AddPageToFeed(FileName: String;
