@@ -240,9 +240,12 @@ begin
                Args: constant Argument_List_Access :=
                  Argument_String_To_List(To_String(YassConfig.BrowserCommand));
             begin
-               if Non_Blocking_Spawn
-                   (Args(Args'First).all, Args(Args'First + 1 .. Args'Last)) =
-                 Invalid_Pid then
+               if not Ada.Directories.Exists(Args(Args'First).all)
+                 or else
+                   Non_Blocking_Spawn
+                     (Args(Args'First).all,
+                      Args(Args'First + 1 .. Args'Last)) =
+                   Invalid_Pid then
                   Put_Line
                     ("Can't start web browser. Please check your site configuration did it have proper value for ""BrowserCommand"" setting.");
                   ShutdownServer;
