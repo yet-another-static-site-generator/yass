@@ -31,9 +31,7 @@ package body Modules is
          Module: Process_Descriptor;
          Finished: Boolean := False;
          Result: Expect_Match;
-         Text, TagName, TagValue, TagIndex: Unbounded_String;
-         StartIndex: Positive;
-         TempTag: Vector_Tag;
+         Text, TagName: Unbounded_String;
          type Tag_Types is
            (NoTag, GlobalTag, GlobalTableTag, PageTag, PageTableTag);
          function TagExist return Tag_Types is
@@ -55,6 +53,51 @@ package body Modules is
             end if;
             return NoTag;
          end TagExist;
+         procedure SendTableTag(TableTags: TableTags_Container.Map) is
+            Key: constant String := To_String(TagName);
+         begin
+            Send(Module, Natural'Image(Size(TableTags(Key))));
+            for I in 1 .. Size(TableTags(Key)) loop
+               Send(Module, AWS.Templates.Item(TableTags(Key), I));
+            end loop;
+         end SendTableTag;
+         procedure EditTableTag(TableTags: in out TableTags_Container.Map) is
+            StartIndex: Positive;
+            TagValue, TagIndex: Unbounded_String;
+            TempTag: Vector_Tag;
+            TableIndex: Integer;
+         begin
+            StartIndex := Length(TagName) + 9;
+            TagIndex :=
+              Unbounded_Slice
+                (Text, Index(Text, " ", StartIndex) + 1,
+                 Index(Text, " ", StartIndex + 1) - 1);
+            StartIndex := StartIndex + Length(TagIndex);
+            TagValue :=
+              Unbounded_Slice
+                (Text, Index(Text, " ", StartIndex) + 1, Length(Text));
+            TableIndex := Integer'Value(To_String(TagIndex));
+            if TableIndex <= Size(TableTags(To_String(TagName))) and
+              TableIndex > 0 then
+               TempTag := +"";
+               for I in 1 .. Size(TableTags(To_String(TagName))) loop
+                  if TableIndex = I then
+                     TempTag := TempTag & To_String(TagValue);
+                  else
+                     TempTag :=
+                       TempTag &
+                       AWS.Templates.Item(TableTags(To_String(TagName)), I);
+                  end if;
+               end loop;
+               TableTags(To_String(TagName)) := TempTag;
+               Send(Module, "Success");
+            else
+               Send
+                 (Module,
+                  "Index """ & To_String(TagIndex) & """ is not in tag """ &
+                  To_String(TagName) & """ index range.");
+            end if;
+         end EditTableTag;
       begin
          if not Is_Executable_File(Full_Name(Item)) then
             return;
@@ -63,173 +106,60 @@ package body Modules is
            (Module, Full_Name(Item), Argument_String_To_List("").all);
          while not Finished loop
             Expect(Module, Result, ".+", 1_000);
-            case Result is
-               when Expect_Timeout =>
-                  Finished := True;
-               when 1 =>
-                  Text := To_Unbounded_String(Expect_Out_Match(Module));
-                  exit when Text = To_Unbounded_String("done");
-                  if Length(Text) > 6 then
-                     if Slice(Text, 1, 6) = "gettag" then
-                        TagName := Unbounded_Slice(Text, 8, Length(Text));
-                        case TagExist is
-                           when NoTag =>
-                              Send
-                                (Module,
-                                 "Tag with name """ & To_String(TagName) &
-                                 """ doesn't exists.");
-                           when GlobalTag =>
-                              Send(Module, SiteTags(To_String(TagName)));
-                           when GlobalTableTag =>
-                              Send
-                                (Module,
-                                 Natural'Image
-                                   (Size
-                                      (GlobalTableTags(To_String(TagName)))));
-                              for I in
-                                1 ..
-                                  Size
-                                    (GlobalTableTags(To_String(TagName))) loop
-                                 Send
-                                   (Module,
-                                    AWS.Templates.Item
-                                      (GlobalTableTags(To_String(TagName)),
-                                       I));
-                              end loop;
-                           when PageTag =>
-                              Send(Module, PageTags(To_String(TagName)));
-                           when PageTableTag =>
-                              Send
-                                (Module,
-                                 Natural'Image
-                                   (Size(PageTableTags(To_String(TagName)))));
-                              for I in
-                                1 ..
-                                  Size(PageTableTags(To_String(TagName))) loop
-                                 Send
-                                   (Module,
-                                    AWS.Templates.Item
-                                      (PageTableTags(To_String(TagName)), I));
-                              end loop;
-                        end case;
-                     elsif Slice(Text, 1, 7) = "edittag" then
-                        TagName :=
-                          Unbounded_Slice(Text, 9, Index(Text, " ", 10) - 1);
-                        case TagExist is
-                           when NoTag =>
-                              Send
-                                (Module,
-                                 "Tag with name """ & To_String(TagName) &
-                                 """ don't exists.");
-                           when GlobalTag =>
-                              TagValue :=
-                                Unbounded_Slice
-                                  (Text, Index(Text, " ", 10) + 1,
-                                   Length(Text));
-                              SiteTags(To_String(TagName)) :=
-                                To_String(TagValue);
-                              Send(Module, "Success");
-                           when GlobalTableTag =>
-                              StartIndex := Length(TagName) + 9;
-                              TagIndex :=
-                                Unbounded_Slice
-                                  (Text, Index(Text, " ", StartIndex) + 1,
-                                   Index(Text, " ", StartIndex + 1) - 1);
-                              StartIndex := StartIndex + Length(TagIndex);
-                              TagValue :=
-                                Unbounded_Slice
-                                  (Text, Index(Text, " ", StartIndex) + 1,
-                                   Length(Text));
-                              if Integer'Value(To_String(TagIndex)) <=
-                                Size(GlobalTableTags(To_String(TagName))) and
-                                Integer'Value(To_String(TagIndex)) > 0 then
-                                 TempTag := +"";
-                                 for I in
-                                   1 ..
-                                     Size
-                                       (GlobalTableTags
-                                          (To_String(TagName))) loop
-                                    if Integer'Value(To_String(TagIndex)) =
-                                      I then
-                                       TempTag :=
-                                         TempTag & To_String(TagValue);
-                                    else
-                                       TempTag :=
-                                         TempTag &
-                                         AWS.Templates.Item
-                                           (GlobalTableTags
-                                              (To_String(TagName)),
-                                            I);
-                                    end if;
-                                 end loop;
-                                 GlobalTableTags(To_String(TagName)) :=
-                                   TempTag;
-                                 Send(Module, "Success");
-                              else
-                                 Send
-                                   (Module,
-                                    "Index """ & To_String(TagIndex) &
-                                    """ is not in tag """ &
-                                    To_String(TagName) & """ index range.");
-                              end if;
-                           when PageTag =>
-                              TagValue :=
-                                Unbounded_Slice
-                                  (Text, Index(Text, " ", 10) + 1,
-                                   Length(Text));
-                              PageTags(To_String(TagName)) :=
-                                To_String(TagValue);
-                              Send(Module, "Success");
-                           when PageTableTag =>
-                              StartIndex := Length(TagName) + 9;
-                              TagIndex :=
-                                Unbounded_Slice
-                                  (Text, Index(Text, " ", StartIndex) + 1,
-                                   Index(Text, " ", StartIndex + 1) - 1);
-                              StartIndex := StartIndex + Length(TagIndex);
-                              TagValue :=
-                                Unbounded_Slice
-                                  (Text, Index(Text, " ", StartIndex) + 1,
-                                   Length(Text));
-                              if Integer'Value(To_String(TagIndex)) <=
-                                Size(PageTableTags(To_String(TagName))) and
-                                Integer'Value(To_String(TagIndex)) > 0 then
-                                 TempTag := +"";
-                                 for I in
-                                   1 ..
-                                     Size
-                                       (PageTableTags(To_String(TagName))) loop
-                                    if Integer'Value(To_String(TagIndex)) =
-                                      I then
-                                       TempTag :=
-                                         TempTag & To_String(TagValue);
-                                    else
-                                       TempTag :=
-                                         TempTag &
-                                         AWS.Templates.Item
-                                           (PageTableTags(To_String(TagName)),
-                                            I);
-                                    end if;
-                                 end loop;
-                                 PageTableTags(To_String(TagName)) := TempTag;
-                                 Send(Module, "Success");
-                              else
-                                 Send
-                                   (Module,
-                                    "Index """ & To_String(TagIndex) &
-                                    """ is not in tag """ &
-                                    To_String(TagName) & """ index range.");
-                              end if;
-                        end case;
-                     else
-                        Put_Line(To_String(Text));
-                     end if;
-                  else
-                     Put_Line(To_String(Text));
-                  end if;
-               when others =>
-                  null;
-            end case;
+            if Result = Expect_Timeout then
+               Finished := True;
+               goto End_Of_Loop;
+            elsif Result > 1 then
+               goto End_Of_Loop;
+            end if;
+            Text := To_Unbounded_String(Expect_Out_Match(Module));
+            exit when Text = To_Unbounded_String("done");
+            if Length(Text) < 7 then
+               Put_Line(To_String(Text));
+               goto End_Of_Loop;
+            end if;
+            if Slice(Text, 1, 6) = "gettag" then
+               TagName := Unbounded_Slice(Text, 8, Length(Text));
+               case TagExist is
+                  when NoTag =>
+                     Send
+                       (Module,
+                        "Tag with name """ & To_String(TagName) &
+                        """ doesn't exists.");
+                  when GlobalTag =>
+                     Send(Module, SiteTags(To_String(TagName)));
+                  when GlobalTableTag =>
+                     SendTableTag(GlobalTableTags);
+                  when PageTag =>
+                     Send(Module, PageTags(To_String(TagName)));
+                  when PageTableTag =>
+                     SendTableTag(PageTableTags);
+               end case;
+            elsif Slice(Text, 1, 7) = "edittag" then
+               TagName := Unbounded_Slice(Text, 9, Index(Text, " ", 10) - 1);
+               case TagExist is
+                  when NoTag =>
+                     Send
+                       (Module,
+                        "Tag with name """ & To_String(TagName) &
+                        """ don't exists.");
+                  when GlobalTag =>
+                     SiteTags(To_String(TagName)) :=
+                       Slice(Text, Index(Text, " ", 10) + 1, Length(Text));
+                     Send(Module, "Success");
+                  when GlobalTableTag =>
+                     EditTableTag(GlobalTableTags);
+                  when PageTag =>
+                     PageTags(To_String(TagName)) :=
+                       Slice(Text, Index(Text, " ", 10) + 1, Length(Text));
+                     Send(Module, "Success");
+                  when PageTableTag =>
+                     EditTableTag(PageTableTags);
+               end case;
+            else
+               Put_Line(To_String(Text));
+            end if;
+            <<End_Of_Loop>>
          end loop;
          Close(Module);
       exception
