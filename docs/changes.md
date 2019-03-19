@@ -27,6 +27,9 @@
 ### Added
 - Better check for spawn web browser by web server
 
+### Fixed
+- Editing simple tags by modules
+
 ## <a name="0.8"></a>[0.8] - 2019-03-17
 ### Added
 - Time to updated date in sitemaps
