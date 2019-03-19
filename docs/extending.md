@@ -134,11 +134,12 @@ at the end show all values of the tag "news".
     # set value of tag "Name" to "NewName"
     echo "edittag Name NewName"
     # read result of the operation
+    read result
     echo "Result:$result"
     # set second value of tag "news" to "NewSite2"
     echo "edittag news 2 NewSite2"
     # get result of operation and print it
-    read result of the operation
+    read result
     echo "Result:$result"
     # get all values for composite tag "news"
     echo "gettag news"
