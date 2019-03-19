@@ -176,11 +176,17 @@ package body Pages is
             elsif Index(Data, "priority:", 1) = (StartPos + 2) then
                PagePriority :=
                  Unbounded_Slice(Data, (StartPos + 11), Length(Data));
-               if Float'Value(To_String(PagePriority)) < 0.0 or
-                 Float'Value(To_String(PagePriority)) > 1.0 then
-                  raise SitemapInvalidValue
-                    with "Invalid value for page priority";
-               end if;
+               begin
+                  if Float'Value(To_String(PagePriority)) < 0.0 or
+                    Float'Value(To_String(PagePriority)) > 1.0 then
+                     raise SitemapInvalidValue
+                       with "Invalid value for page priority";
+                  end if;
+               exception
+                  when Constraint_Error =>
+                     raise SitemapInvalidValue
+                       with "Invalid value for page priority";
+               end;
             elsif Index(Data, "insitemap:", 1) = (StartPos + 2) then
                if To_Lower(Slice(Data, (StartPos + 13), Length(Data))) =
                  "false" then
@@ -247,11 +253,6 @@ package body Pages is
          Put_Line
            ("Can't parse """ & Filename & """. " &
             Exception_Message(An_Exception));
-         raise GenerateSiteException;
-      when Constraint_Error =>
-         Put_Line
-           ("Can't parse """ & Filename &
-            """. Invalid value for page priority.");
          raise GenerateSiteException;
       when An_Exception : InvalidValue =>
          Put_Line
