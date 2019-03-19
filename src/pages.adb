@@ -137,67 +137,67 @@ package body Pages is
          Open(PageFile, In_File, FileName);
          while not End_Of_File(PageFile) loop
             Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
-            if Length(Data) > 2 then
-               if Unbounded_Slice(Data, 1, StartPos) =
-                 YassConfig.MarkdownComment then
-                  if Index(Data, "layout:", 1) = (StartPos + 2) then
-                     Data :=
-                       Unbounded_Slice(Data, (StartPos + 10), Length(Data));
-                     Layout :=
-                       YassConfig.LayoutsDirectory & Dir_Separator & Data &
-                       To_Unbounded_String(".html");
-                     if not Ada.Directories.Exists(To_String(Layout)) then
-                        Close(PageFile);
-                        raise LayoutNotFound
-                          with Filename & """. Selected layout file """ &
-                          To_String(Layout);
-                     end if;
-                  elsif Index(Data, "changefreq:", 1) = (StartPos + 2) then
-                     ChangeFrequency :=
-                       Unbounded_Slice(Data, (StartPos + 14), Length(Data));
-                     for I in FrequencyValues'Range loop
-                        if ChangeFrequency = FrequencyValues(I) then
-                           ValidValue := True;
-                           exit;
-                        end if;
-                     end loop;
-                     if not ValidValue then
-                        raise SitemapInvalidValue
-                          with "Invalid value for changefreq";
-                     end if;
-                     ValidValue := False;
-                  elsif Index(Data, "priority:", 1) = (StartPos + 2) then
-                     PagePriority :=
-                       Unbounded_Slice(Data, (StartPos + 11), Length(Data));
-                     if Float'Value(To_String(PagePriority)) < 0.0 or
-                       Float'Value(To_String(PagePriority)) > 1.0 then
-                        raise SitemapInvalidValue
-                          with "Invalid value for page priority";
-                     end if;
-                  elsif Index(Data, "insitemap:", 1) = (StartPos + 2) then
-                     if To_Lower(Slice(Data, (StartPos + 13), Length(Data))) =
-                       "false" then
-                        InSitemap := False;
-                     end if;
-                  else
-                     StartIndex := Index(Data, ":", (StartPos + 2));
-                     if StartIndex > Index(Data, " ", (StartPos + 2)) then
-                        StartIndex := 0;
-                     end if;
-                     if StartIndex > 0 then
-                        AddTag
-                          (Slice(Data, (StartPos + 2), StartIndex - 1),
-                           Slice(Data, StartIndex + 2, Length(Data)));
-                     end if;
-                  end if;
-               else
-                  Append(Content, Data);
-                  Append(Content, LF);
-               end if;
-            else
+            if Length(Data) < 3 then
                Append(Content, Data);
                Append(Content, LF);
+               goto End_Of_Loop;
             end if;
+            if Unbounded_Slice(Data, 1, StartPos) /=
+              YassConfig.MarkdownComment then
+               Append(Content, Data);
+               Append(Content, LF);
+               goto End_Of_Loop;
+            end if;
+            if Index(Data, "layout:", 1) = (StartPos + 2) then
+               Data := Unbounded_Slice(Data, (StartPos + 10), Length(Data));
+               Layout :=
+                 YassConfig.LayoutsDirectory & Dir_Separator & Data &
+                 To_Unbounded_String(".html");
+               if not Ada.Directories.Exists(To_String(Layout)) then
+                  Close(PageFile);
+                  raise LayoutNotFound
+                    with Filename & """. Selected layout file """ &
+                    To_String(Layout);
+               end if;
+            elsif Index(Data, "changefreq:", 1) = (StartPos + 2) then
+               ChangeFrequency :=
+                 Unbounded_Slice(Data, (StartPos + 14), Length(Data));
+               for I in FrequencyValues'Range loop
+                  if ChangeFrequency = FrequencyValues(I) then
+                     ValidValue := True;
+                     exit;
+                  end if;
+               end loop;
+               if not ValidValue then
+                  raise SitemapInvalidValue
+                    with "Invalid value for changefreq";
+               end if;
+               ValidValue := False;
+            elsif Index(Data, "priority:", 1) = (StartPos + 2) then
+               PagePriority :=
+                 Unbounded_Slice(Data, (StartPos + 11), Length(Data));
+               if Float'Value(To_String(PagePriority)) < 0.0 or
+                 Float'Value(To_String(PagePriority)) > 1.0 then
+                  raise SitemapInvalidValue
+                    with "Invalid value for page priority";
+               end if;
+            elsif Index(Data, "insitemap:", 1) = (StartPos + 2) then
+               if To_Lower(Slice(Data, (StartPos + 13), Length(Data))) =
+                 "false" then
+                  InSitemap := False;
+               end if;
+            else
+               StartIndex := Index(Data, ":", (StartPos + 2));
+               if StartIndex > Index(Data, " ", (StartPos + 2)) then
+                  StartIndex := 0;
+               end if;
+               if StartIndex > 0 then
+                  AddTag
+                    (Slice(Data, (StartPos + 2), StartIndex - 1),
+                     Slice(Data, StartIndex + 2, Length(Data)));
+               end if;
+            end if;
+            <<End_Of_Loop>>
          end loop;
          Close(PageFile);
       end;
@@ -355,24 +355,22 @@ package body Pages is
       Open(PageFile, In_File, FileName);
       while not End_Of_File(PageFile) loop
          Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
-         if Length(Data) > 2 then
-            if Unbounded_Slice(Data, 1, StartPos) =
-              YassConfig.MarkdownComment then
-               if Index(Data, "layout:", 1) = (StartPos + 2) then
-                  Data := Unbounded_Slice(Data, 12, Length(Data));
-                  Layout :=
-                    YassConfig.LayoutsDirectory & Dir_Separator & Data &
-                    To_Unbounded_String(".html");
-                  if not Ada.Directories.Exists(To_String(Layout)) then
-                     Close(PageFile);
-                     raise LayoutNotFound
-                       with Filename & """. Selected layout file """ &
-                       To_String(Layout);
-                  end if;
-                  Close(PageFile);
-                  return To_String(Layout);
-               end if;
+         if Length(Data) > 2
+           and then Unbounded_Slice(Data, 1, StartPos) =
+             YassConfig.MarkdownComment
+           and then Index(Data, "layout:", 1) = (StartPos + 2) then
+            Data := Unbounded_Slice(Data, 12, Length(Data));
+            Layout :=
+              YassConfig.LayoutsDirectory & Dir_Separator & Data &
+              To_Unbounded_String(".html");
+            if not Ada.Directories.Exists(To_String(Layout)) then
+               Close(PageFile);
+               raise LayoutNotFound
+                 with Filename & """. Selected layout file """ &
+                 To_String(Layout);
             end if;
+            Close(PageFile);
+            return To_String(Layout);
          end if;
       end loop;
       Close(PageFile);
