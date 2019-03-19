@@ -61,6 +61,16 @@ package body Modules is
                Send(Module, AWS.Templates.Item(TableTags(Key), I));
             end loop;
          end SendTableTag;
+         procedure EditTag(Tags: in out Tags_Container.Map) is
+            Key: constant String := To_String(TagName);
+         begin
+            if Tags_Container.Contains(Tags, Key) then
+               Tags_Container.Exclude(Tags, Key);
+            end if;
+            Tags_Container.Include
+              (Tags, Key, Slice(Text, Index(Text, " ", 10) + 1, Length(Text)));
+            Send(Module, "Success");
+         end EditTag;
          procedure EditTableTag(TableTags: in out TableTags_Container.Map) is
             StartIndex: Positive;
             TagValue, TagIndex: Unbounded_String;
@@ -144,15 +154,11 @@ package body Modules is
                         "Tag with name """ & To_String(TagName) &
                         """ don't exists.");
                   when GlobalTag =>
-                     SiteTags(To_String(TagName)) :=
-                       Slice(Text, Index(Text, " ", 10) + 1, Length(Text));
-                     Send(Module, "Success");
+                     EditTag(SiteTags);
                   when GlobalTableTag =>
                      EditTableTag(GlobalTableTags);
                   when PageTag =>
-                     PageTags(To_String(TagName)) :=
-                       Slice(Text, Index(Text, " ", 10) + 1, Length(Text));
-                     Send(Module, "Success");
+                     EditTag(PageTags);
                   when PageTableTag =>
                      EditTableTag(PageTableTags);
                end case;
