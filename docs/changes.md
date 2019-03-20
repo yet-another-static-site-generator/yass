@@ -29,6 +29,7 @@
 
 ### Fixed
 - Editing simple tags by modules
+- Reading Atom feed entries amount from site config file
 
 ## <a name="0.8"></a>[0.8] - 2019-03-17
 ### Added
