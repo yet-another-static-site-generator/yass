@@ -24,11 +24,11 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Calendar; use Ada.Calendar;
-with AWS.Templates; use AWS.Templates;
-with AWS.Templates.Utils; use AWS.Templates.Utils;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with AWS.Templates; use AWS.Templates;
+with AWS.Templates.Utils; use AWS.Templates.Utils;
 with Config; use Config;
 with Sitemaps; use Sitemaps;
 with AtomFeed; use AtomFeed;
@@ -62,7 +62,6 @@ package body Pages is
          To_Unbounded_String("daily"), To_Unbounded_String("weekly"),
          To_Unbounded_String("monthly"), To_Unbounded_String("yearly"),
          To_Unbounded_String("never"));
-      ValidValue: Boolean := False;
       InSitemap: Boolean := True;
       AtomEntries: FeedEntry_Container.Vector;
       SitemapInvalidValue, InvalidValue: exception;
@@ -133,6 +132,7 @@ package body Pages is
          Data: Unbounded_String;
          StartIndex: Natural;
          StartPos: constant Positive := Length(YassConfig.MarkdownComment);
+         ValidValue: Boolean := False;
       begin
          Open(PageFile, In_File, FileName);
          while not End_Of_File(PageFile) loop
@@ -265,8 +265,10 @@ package body Pages is
       OutputDirectory: constant Unbounded_String :=
         YassConfig.OutputDirectory &
         Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
+      PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
+      PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
    begin
-      LoadModules("pre", SiteTags, GlobalTableTags);
+      LoadModules("pre", PageTags, PageTableTags);
       Create_Path(To_String(OutputDirectory));
       Copy_File
         (FileName,
@@ -279,7 +281,7 @@ package body Pages is
       Set
         ("YASSFILE",
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
-      LoadModules("post", SiteTags, GlobalTableTags);
+      LoadModules("post", PageTags, PageTableTags);
    end CopyFile;
 
    procedure CreateEmptyFile(FileName: String) is
