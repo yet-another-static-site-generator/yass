@@ -139,7 +139,7 @@ inside `news.html` layout to show that news:
             <p>{%news%}</p>
          @@END_TABLE@@
       </body>
-   </html>
+    </html>
 
 One parameter is always required:
 
