@@ -246,7 +246,7 @@ package body AtomFeed is
             AddNode("summary", To_String(FeedEntry.Summary), EntryNode);
          end if;
          EntriesAmount := EntriesAmount + 1;
-         exit when EntriesAmount > YassConfig.AtomFeedAmount;
+         exit when EntriesAmount = YassConfig.AtomFeedAmount;
       end loop;
       Create(AtomFile, Out_File, To_String(FeedFileName));
       Write(Stream => Stream(AtomFile), N => Feed, Pretty_Print => True);

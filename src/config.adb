@@ -219,6 +219,8 @@ package body Config is
                  Unbounded_Slice(Value, 1, Length(Value) - 2) &
                  To_Unbounded_String("html");
             end if;
+         elsif FieldName = To_Unbounded_String("AtomFeedAmount") then
+            YassConfig.AtomFeedAmount := Positive'Value(To_String(Value));
          elsif FieldName = To_Unbounded_String("Name") then
             YassConfig.SiteName := Value;
             Tags_Container.Include
