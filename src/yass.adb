@@ -42,6 +42,8 @@ procedure YASS is
    WorkDirectory: Unbounded_String;
 
    function BuildSite(DirectoryName: String) return Boolean is
+      PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
+      PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
       procedure Build(Name: String) is
          procedure ProcessFiles(Item: Directory_Entry_Type) is
          begin
@@ -75,13 +77,13 @@ procedure YASS is
             ProcessDirectories'Access);
       end Build;
    begin
-      LoadModules("start", SiteTags, GlobalTableTags);
+      LoadModules("start", PageTags, PageTableTags);
       StartSitemap;
       StartAtomFeed;
       Build(DirectoryName);
       SaveAtomFeed;
       SaveSitemap;
-      LoadModules("end", SiteTags, GlobalTableTags);
+      LoadModules("end", PageTags, PageTableTags);
       return True;
    exception
       when GenerateSiteException =>

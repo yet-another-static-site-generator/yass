@@ -39,6 +39,8 @@ package body Server is
 
    task body MonitorSite is
       SiteRebuild: Boolean;
+      PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
+      PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
       procedure MonitorDirectory(Name: String) is
          procedure ProcessFiles(Item: Directory_Entry_Type) is
             SiteFileName: Unbounded_String :=
@@ -141,7 +143,7 @@ package body Server is
    begin
       select
          accept Start;
-         LoadModules("start", SiteTags, GlobalTableTags);
+         LoadModules("start", PageTags, PageTableTags);
          StartSitemap;
          StartAtomFeed;
          loop
@@ -150,7 +152,7 @@ package body Server is
             if SiteRebuild then
                SaveAtomFeed;
                SaveSitemap;
-               LoadModules("end", SiteTags, GlobalTableTags);
+               LoadModules("end", PageTags, PageTableTags);
                Put_Line
                  ("[" &
                   Ada.Calendar.Formatting.Image

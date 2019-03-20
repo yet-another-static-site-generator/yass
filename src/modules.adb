@@ -43,13 +43,14 @@ package body Modules is
                 (GlobalTableTags, To_String(TagName)) then
                return GlobalTableTag;
             end if;
-            if PageTags /= SiteTags then
-               if Contains(PageTags, To_String(TagName)) then
-                  return PageTag;
-               elsif TableTags_Container.Contains
-                   (PageTableTags, To_String(TagName)) then
-                  return PageTableTag;
-               end if;
+            if PageTags = Tags_Container.Empty_Map then
+               return NoTag;
+            end if;
+            if Contains(PageTags, To_String(TagName)) then
+               return PageTag;
+            elsif TableTags_Container.Contains
+               (PageTableTags, To_String(TagName)) then
+               return PageTableTag;
             end if;
             return NoTag;
          end TagExist;
