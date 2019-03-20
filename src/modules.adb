@@ -49,7 +49,7 @@ package body Modules is
             if Contains(PageTags, To_String(TagName)) then
                return PageTag;
             elsif TableTags_Container.Contains
-               (PageTableTags, To_String(TagName)) then
+                (PageTableTags, To_String(TagName)) then
                return PageTableTag;
             end if;
             return NoTag;
