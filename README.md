@@ -4,11 +4,6 @@ As name says, it is static site generator written in Ada. It is *headless*
 application (no user interface). The program documentation is included in
 distribution.
 
-**Note:** This version of README.md is for the development version of the program.
-It may (and probably will be, especially now, on beginning of the development)
-differ from the released versions. For the released version please refer to
-files included in distributed packages.
-
 ## Features
 
 * Support almost infinite amount of custom tags in HTML templates (depends
@@ -19,7 +14,6 @@ files included in distributed packages.
 * Generating sitemaps
 * Generating Atom feeds
 * Auto reconfigure server when configuration file was changed
-* Unpolished, have a few bugs :D
 
 ## Build from sources
 
@@ -53,7 +47,7 @@ To build you need:
 
   or
 
-  https://github.com/AdaCore/xmlad://github.com/AdaCore/xmlada 
+  https://github.com/AdaCore/xmlad://github.com/AdaCore/xmlada
 
 Navigate to the main directory(where this file is) to compile:
 
