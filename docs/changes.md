@@ -27,6 +27,9 @@
 ### Added
 - Better check for spawn web browser by web server
 
+### Changed
+- Updated README.md
+
 ### Fixed
 - Editing simple tags by modules
 - Reading Atom feed entries amount from site config file
