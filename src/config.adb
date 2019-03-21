@@ -65,11 +65,11 @@ package body Config is
       Put_Line
         (ConfigFile,
          "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
-      Put_Line(ConfigFile, "MonitorInverval = 5");
+      Put_Line(ConfigFile, "MonitorInterval = 5");
       Put_Line
         (ConfigFile,
          "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
-      Put_Line(ConfigFile, "MonitorConfigInverval = 60");
+      Put_Line(ConfigFile, "MonitorConfigInterval = 60");
       Put_Line
         (ConfigFile,
          "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
