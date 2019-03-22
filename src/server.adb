@@ -41,7 +41,9 @@ package body Server is
       SiteRebuild: Boolean;
       PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
       PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
+      -- Monitor directory with full path Name for changes and update the site if needed
       procedure MonitorDirectory(Name: String) is
+         -- Process file with full path Item: create html pages from markdown files or copy any other file if they was updated since last check.
          procedure ProcessFiles(Item: Directory_Entry_Type) is
             SiteFileName: Unbounded_String :=
               YassConfig.OutputDirectory & Dir_Separator &
@@ -107,6 +109,7 @@ package body Server is
                SiteRebuild := True;
             end if;
          end ProcessFiles;
+         -- Go recursive with directory with full path Item.
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin
             if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) =
@@ -143,15 +146,22 @@ package body Server is
    begin
       select
          accept Start;
+         -- Load the program modules with 'start' hook
          LoadModules("start", PageTags, PageTableTags);
+         -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
          StartSitemap;
+         -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
          StartAtomFeed;
          loop
             SiteRebuild := False;
+            -- Monitor the site project directory for changes
             MonitorDirectory(To_String(SiteDirectory));
             if SiteRebuild then
+      -- Save atom feed to file or nothing if atom feed generation is disabled
                SaveAtomFeed;
+         -- Save sitemap to file or nothing if sitemap generation is disabled
                SaveSitemap;
+               -- Load the program modules with 'end' hook
                LoadModules("end", PageTags, PageTableTags);
                Put_Line
                  ("[" &
@@ -159,6 +169,7 @@ package body Server is
                     (Date => Clock, Time_Zone => UTC_Time_Offset) &
                   "] " & "Site was rebuild.");
             end if;
+            -- Wait before next check
             delay YassConfig.MonitorInterval;
          end loop;
       or
@@ -175,7 +186,9 @@ package body Server is
             ConfigLastModified :=
               Modification_Time
                 (To_String(SiteDirectory) & Dir_Separator & "site.cfg");
+            -- Wait before next check
             delay YassConfig.MonitorConfigInterval;
+            -- Update configuration if needed
             if ConfigLastModified /=
               Modification_Time
                 (To_String(SiteDirectory) & Dir_Separator & "site.cfg") then
@@ -197,6 +210,7 @@ package body Server is
    function Callback(Request: AWS.Status.Data) return AWS.Response.Data is
       URI: constant String := AWS.Status.URI(Request);
    begin
+      -- Show directory listing if requested
       if Kind(To_String(YassConfig.OutputDirectory) & URI) = Directory then
          return AWS.Response.Build
              ("text/html",
@@ -206,6 +220,7 @@ package body Server is
                  "directory.html",
                  Request));
       end if;
+      -- Show selected page if requested
       return AWS.Services.Page_Server.Callback(Request);
    end Callback;
 
