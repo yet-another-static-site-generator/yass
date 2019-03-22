@@ -41,10 +41,15 @@ procedure YASS is
    Version: constant String := "1.0";
    WorkDirectory: Unbounded_String;
 
+   -- Build the site from directory
+   -- DirectoryName: full path to the site directory
+   -- Returns True if the site was build, otherwise False.
    function BuildSite(DirectoryName: String) return Boolean is
       PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
       PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
+      -- Build the site from directory with full path Name
       procedure Build(Name: String) is
+         -- Process file with full path Item: create html pages from markdown files or copy any other file.
          procedure ProcessFiles(Item: Directory_Entry_Type) is
          begin
             if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) /=
@@ -58,6 +63,7 @@ procedure YASS is
                CopyFile(Full_Name(Item), Name);
             end if;
          end ProcessFiles;
+         -- Go recursive with directory with full path Item.
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin
             if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) =
@@ -77,12 +83,19 @@ procedure YASS is
             ProcessDirectories'Access);
       end Build;
    begin
+      -- Load the program modules with 'start' hook
       LoadModules("start", PageTags, PageTableTags);
+      -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
       StartSitemap;
+      -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
       StartAtomFeed;
+      -- Build the site
       Build(DirectoryName);
+      -- Save atom feed to file or nothing if atom feed generation is disabled
       SaveAtomFeed;
+      -- Save sitemap to file or nothing if sitemap generation is disabled
       SaveSitemap;
+      -- Load the program modules with 'end' hook
       LoadModules("end", PageTags, PageTableTags);
       return True;
    exception
@@ -90,12 +103,18 @@ procedure YASS is
          return False;
    end BuildSite;
 
+   -- Validate arguments which user was entered when started the program and set WorkDirectory for the program.
+   -- Message: part of message to show when user does not entered the site project directory
+   -- Exist: did selected directory should be test did it exist or not
+   -- Returns True if entered arguments are valid, otherwise False.
    function ValidArguments(Message: String; Exist: Boolean) return Boolean is
    begin
+      -- User does not entered name of the site project directory
       if Argument_Count < 2 then
          Put_Line("Please specify directory name " & Message);
          return False;
       end if;
+      -- Assign WorkDirectory
       if Index(Argument(2), Containing_Directory(Current_Directory)) = 1 then
          WorkDirectory := To_Unbounded_String(Argument(2));
       else
@@ -103,6 +122,7 @@ procedure YASS is
            To_Unbounded_String
              (Current_Directory & Dir_Separator & Argument(2));
       end if;
+      -- Check if selected directory exist, if not, return False
       if Ada.Directories.Exists(To_String(WorkDirectory)) = Exist then
          if not Exist then
             Put_Line
@@ -113,6 +133,7 @@ procedure YASS is
          end if;
          return False;
       end if;
+      -- Check if selected directory is valid the program site project directory. Return False if not.
       if not Exist and
         not Ada.Directories.Exists
           (To_String(WorkDirectory) & Dir_Separator & "site.cfg") then
@@ -127,6 +148,7 @@ begin
    if Ada.Environment_Variables.Exists("YASSDIR") then
       Set_Directory(Value("YASSDIR"));
    end if;
+   -- No arguments or help: show available commands
    if Argument_Count < 1 or else Argument(1) = "help" then
       Put_Line("Possible actions:");
       Put_Line("help - show this screen and exit");
@@ -139,9 +161,11 @@ begin
         ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
       Put_Line
         ("createfile [name] - create new empty markdown file with ""name""");
+      -- Show version information
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
       Put_Line("Released: not yet");
+      -- Show license information
    elsif Argument(1) = "license" then
       Put_Line("Copyright (C) 2019 Bartek thindil Jasicki");
       New_Line;
@@ -165,6 +189,7 @@ begin
         ("You should have received a copy of the GNU General Public License");
       Put_Line
         ("along with this program.  If not, see <https://www.gnu.org/licenses/>.");
+      -- Show README.md file
    elsif Argument(1) = "readme" then
       declare
          ReadmeName: Unbounded_String;
@@ -189,6 +214,7 @@ begin
          end loop;
          Close(ReadmeFile);
       end;
+      -- Create new, selected site project directory
    elsif Argument(1) = "create" then
       if not ValidArguments("where new page will be created.", True) then
          return;
@@ -214,6 +240,7 @@ begin
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
          Argument(2) & Dir_Separator &
          "site.cfg"" file to set data for your new site.");
+      -- Build existing site project from selected directory
    elsif Argument(1) = "build" then
       if not ValidArguments("from where page will be created.", False) then
          return;
@@ -224,6 +251,7 @@ begin
       else
          Put_Line("Site building has been interrupted.");
       end if;
+      -- Start server to monitor changes in selected site project
    elsif Argument(1) = "server" then
       if not ValidArguments("from where site will be served.", False) then
          return;
@@ -269,6 +297,7 @@ begin
       abort MonitorSite;
       abort MonitorConfig;
       Put_Line("done.");
+      -- Create new empty markdown file with selected name
    elsif Argument(1) = "createfile" then
       if Argument_Count < 2 then
          Put_Line("Please specify name of file to create.");
@@ -293,6 +322,7 @@ begin
       Create_Path(Containing_Directory(To_String(WorkDirectory)));
       CreateEmptyFile(To_String(WorkDirectory));
       Put_Line("Empty file """ & To_String(WorkDirectory) & """ was created.");
+      -- Unknown command entered
    else
       Put_Line
         ("Unknown command. Please enter ""help"" as argument for program to get full list of available commands.");
