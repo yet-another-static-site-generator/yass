@@ -34,13 +34,13 @@ package AtomFeed is
    package FeedEntry_Container is new Vectors(Positive, FeedEntry);
 
    function To_Time
-     (Date: String) return Time; -- Convert Atom time to Ada format
+     (Date: String) return Time; -- Convert Atom date to Ada format
    function To_HTTP_Date
-     (Date: Time) return String; -- Convert Ada time to Atom format
+     (Date: Time) return String; -- Convert Ada date to Atom format
    procedure StartAtomFeed; -- Create new or load existing Atom feed for the site
    procedure AddPageToFeed(FileName: String;
       Entries: in out FeedEntry_Container
-        .Vector); -- Add selected page to the site Atom feed
+        .Vector); -- Add page with full path FileName and it extracted Atom entries Entries to the site Atom feed
    procedure SaveAtomFeed; -- Save Atom feed to file
 
 end AtomFeed;

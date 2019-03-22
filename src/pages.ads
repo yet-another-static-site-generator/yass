@@ -20,14 +20,15 @@ package Pages is
    GenerateSiteException: exception; -- Raised when generating site was interrupted
 
    procedure CreatePage
-     (FileName, Directory: String); -- Create page from selected file
+     (FileName,
+      Directory: String); -- Create page from file with full path FileName in directory with full path Directory
    procedure CopyFile
      (FileName,
-      Directory: String); -- Copy file to proper location in site output directory
+      Directory: String); -- Copy file with full path FileName to proper location in site output directory with full path Directory
    procedure CreateEmptyFile
-     (FileName: String); -- Create empty markdown file with default tags
+     (FileName: String); -- Create empty markdown file with default tags and with full path FileName
    function GetLayoutName
      (FileName: String)
-     return String; -- Get name of layout used in selected page
+     return String; -- Get name of layout used in the page with full path FileName
 
 end Pages;

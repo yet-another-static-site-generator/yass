@@ -71,7 +71,7 @@ package Config is
         To_Unbounded_String
           ("johndoe@example.com"); -- Email address of author of the site, needed for atom feed
    end record;
-   YassConfig: ParserConfig; -- Settings for parser
+   YassConfig: ParserConfig; -- Settings for the program
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,
       String, Ada.Strings.Hash, "=");
    SiteTags: Tags_Container.Map; -- Site tags (like title, author, etc)
@@ -83,8 +83,8 @@ package Config is
    InvalidConfigData: exception; -- Raised when invalid data found in site config file
 
    procedure CreateConfig
-     (DirectoryName: String); -- Create default config in selected directory
+     (DirectoryName: String); -- Create default config in directory with full path DirectoryName
    procedure ParseConfig
-     (DirectoryName: String); -- Parse config file and set all settings and tags for site
+     (DirectoryName: String); -- Parse config file and set all settings and tags for site in directory with full path DirectoryName
 
 end Config;

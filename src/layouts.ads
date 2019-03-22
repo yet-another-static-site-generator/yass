@@ -18,8 +18,8 @@
 package Layouts is
 
    procedure CreateLayout
-     (DirectoryName: String); -- Create default site layouts in selected directory
+     (DirectoryName: String); -- Create default site layouts in directory with full path DirectoryName
    procedure CreateDirectoryLayout
-     (DirectoryName: String); -- Create default layout for directory listing for web server in layouts directory
+     (DirectoryName: String); -- Create default layout for directory listing for web server in layouts directory with full path DirectoryName
 
 end Layouts;
