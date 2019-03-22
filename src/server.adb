@@ -50,7 +50,8 @@ package body Server is
               To_Unbounded_String(Simple_Name(Item));
          begin
             if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) /=
-              Excluded_Container.No_Index then
+              Excluded_Container.No_Index or
+              not Ada.Directories.Exists(Full_Name(Item)) then
                return;
             end if;
             if Containing_Directory(Full_Name(Item)) /=
@@ -113,7 +114,8 @@ package body Server is
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin
             if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) =
-              Excluded_Container.No_Index then
+              Excluded_Container.No_Index and
+              Ada.Directories.Exists(Full_Name(Item)) then
                MonitorDirectory(Full_Name(Item));
             end if;
          exception
