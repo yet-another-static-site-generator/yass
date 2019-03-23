@@ -1,0 +1,13 @@
+with "aunit";
+with "gnattest_common.gpr";
+with "../../yass.gpr";
+project test_yass is
+
+   for Source_Dirs use
+     ("../../obj/../tests",
+      "common");
+
+   for Languages use Gnattest_Common'Languages & ("Ada");
+   package Compiler renames Gnattest_Common.Compiler;
+
+end test_yass;
