@@ -35,10 +35,15 @@ package body AtomFeed is
    Entries_List: FeedEntry_Container.Vector;
 
    function To_Time(Date: String) return Time is
-      NewDate: String := Date(Date'First .. Date'Last - 1);
+      NewDate: Unbounded_String;
    begin
-      NewDate(NewDate'First + 10) := ' ';
-      return Ada.Calendar.Formatting.Value(NewDate);
+      if Date'Length > 11 then
+         NewDate := To_Unbounded_String(Date(Date'First .. Date'Last - 1));
+         Replace_Element(NewDate, 11, ' ');
+      else
+         NewDate := To_Unbounded_String(Date & " 00:00:00");
+      end if;
+      return Ada.Calendar.Formatting.Value(To_String(NewDate));
    end To_Time;
 
    function To_HTTP_Date(Date: Time) return String is
