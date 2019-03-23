@@ -37,7 +37,7 @@ package AtomFeed is
      (Date: String) return Time; -- Convert Atom date to Ada format
    function To_HTTP_Date
      (Date: Time) return String; -- Convert Ada date to Atom format
-   procedure StartAtomFeed; -- Create new or load existing Atom feed for the site
+   procedure StartAtomFeed; -- Load existing Atom feed for the site
    procedure AddPageToFeed(FileName: String;
       Entries: in out FeedEntry_Container
         .Vector); -- Add page with full path FileName and it extracted Atom entries Entries to the site Atom feed
