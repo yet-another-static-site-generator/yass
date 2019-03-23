@@ -27,6 +27,7 @@ package body Modules is
 
    procedure LoadModules(State: String; PageTags: in out Tags_Container.Map;
       PageTableTags: in out TableTags_Container.Map) is
+      -- Run executable file with Item as full path name
       procedure RunModule(Item: Directory_Entry_Type) is
          Module: Process_Descriptor;
          Finished: Boolean := False;
@@ -34,6 +35,7 @@ package body Modules is
          Text, TagName: Unbounded_String;
          type Tag_Types is
            (NoTag, GlobalTag, GlobalTableTag, PageTag, PageTableTag);
+         -- Check if tag with selected name exists and return it type
          function TagExist return Tag_Types is
             use Tags_Container;
          begin
@@ -54,6 +56,7 @@ package body Modules is
             end if;
             return NoTag;
          end TagExist;
+         -- Send to the module values for selected composite tag in TableTags list of tags. First response contains amount of values.
          procedure SendTableTag(TableTags: TableTags_Container.Map) is
             Key: constant String := To_String(TagName);
          begin
@@ -62,6 +65,7 @@ package body Modules is
                Send(Module, AWS.Templates.Item(TableTags(Key), I));
             end loop;
          end SendTableTag;
+         -- Edit selected simple tag in selected Tags list of tags.
          procedure EditTag(Tags: in out Tags_Container.Map) is
             Key: constant String := To_String(TagName);
          begin
@@ -72,6 +76,7 @@ package body Modules is
               (Tags, Key, Slice(Text, Index(Text, " ", 10) + 1, Length(Text)));
             Send(Module, "Success");
          end EditTag;
+   -- Edit selected composite tag in selected TableTags list of composite tags.
          procedure EditTableTag(TableTags: in out TableTags_Container.Map) is
             StartIndex: Positive;
             TagValue, TagIndex: Unbounded_String;
@@ -102,6 +107,7 @@ package body Modules is
                end loop;
                TableTags(To_String(TagName)) := TempTag;
                Send(Module, "Success");
+               -- Invalid tag index in tags list
             else
                Send
                  (Module,
@@ -113,9 +119,11 @@ package body Modules is
          if not Is_Executable_File(Full_Name(Item)) then
             return;
          end if;
+         -- Spawn selected module
          Non_Blocking_Spawn
            (Module, Full_Name(Item), Argument_String_To_List("").all);
          while not Finished loop
+            -- Wait for the response from the module
             Expect(Module, Result, ".+", 1_000);
             if Result = Expect_Timeout then
                Finished := True;
@@ -129,6 +137,7 @@ package body Modules is
                Put_Line(To_String(Text));
                goto End_Of_Loop;
             end if;
+            -- Send value of selected tag to the module
             if Slice(Text, 1, 6) = "gettag" then
                TagName := Unbounded_Slice(Text, 8, Length(Text));
                case TagExist is
@@ -146,6 +155,7 @@ package body Modules is
                   when PageTableTag =>
                      SendTableTag(PageTableTags);
                end case;
+               -- Edit value of selected tag with new value from the module
             elsif Slice(Text, 1, 7) = "edittag" then
                TagName := Unbounded_Slice(Text, 9, Index(Text, " ", 10) - 1);
                case TagExist is
