@@ -65,50 +65,57 @@ package body Pages is
       InSitemap: Boolean := True;
       AtomEntries: FeedEntry_Container.Vector;
       SitemapInvalidValue, InvalidValue: exception;
+      -- Add tag to the page template tags lists (simple or composite).
+      -- Name: name of the tag
+      -- Value: value of the tag
       procedure AddTag(Name, Value: String) is
       begin
-         if Value /= "[]" then
-            if Name = "title" then
-               AtomEntries.Prepend
-                 (New_Item =>
-                    (EntryTitle => To_Unbounded_String(Value),
-                     Id => Null_Unbounded_String,
-                     Updated => Time_Of(1901, 1, 1),
-                     AuthorName => Null_Unbounded_String,
-                     AuthorEmail => Null_Unbounded_String,
-                     Summary => Null_Unbounded_String,
-                     Content => Null_Unbounded_String));
-            elsif Name = "id" then
-               AtomEntries(AtomEntries.First_Index).Id :=
-                 To_Unbounded_String(Value);
-            elsif Name = "updated" then
-               AtomEntries(AtomEntries.First_Index).Updated := To_Time(Value);
-            elsif Name = "author" then
-               AtomEntries(AtomEntries.First_Index).AuthorName :=
-                 To_Unbounded_String(Value);
-            elsif Name = "authoremail" then
-               AtomEntries(AtomEntries.First_Index).AuthorEmail :=
-                 To_Unbounded_String(Value);
-            elsif Name = "summary" then
-               AtomEntries(AtomEntries.First_Index).Summary :=
-                 To_Unbounded_String(Value);
-            elsif Name = "content" then
-               AtomEntries(AtomEntries.First_Index).Content :=
-                 To_Unbounded_String(Value);
-            end if;
-            if TableTags_Container.Contains(PageTableTags, Name) then
-               PageTableTags(Name) := PageTableTags(Name) & Value;
-            else
-               Tags_Container.Include(PageTags, Name, Value);
-            end if;
-         else
+         -- Create new composite template tag
+         if Value = "[]" then
             TableTags_Container.Include(PageTableTags, Name, +"");
             Clear(PageTableTags(Name));
+            return;
+         end if;
+         -- Add values to Atom feed entries for the page
+         if Name = "title" then
+            AtomEntries.Prepend
+              (New_Item =>
+                 (EntryTitle => To_Unbounded_String(Value),
+                  Id => Null_Unbounded_String, Updated => Time_Of(1901, 1, 1),
+                  AuthorName => Null_Unbounded_String,
+                  AuthorEmail => Null_Unbounded_String,
+                  Summary => Null_Unbounded_String,
+                  Content => Null_Unbounded_String));
+         elsif Name = "id" then
+            AtomEntries(AtomEntries.First_Index).Id :=
+              To_Unbounded_String(Value);
+         elsif Name = "updated" then
+            AtomEntries(AtomEntries.First_Index).Updated := To_Time(Value);
+         elsif Name = "author" then
+            AtomEntries(AtomEntries.First_Index).AuthorName :=
+              To_Unbounded_String(Value);
+         elsif Name = "authoremail" then
+            AtomEntries(AtomEntries.First_Index).AuthorEmail :=
+              To_Unbounded_String(Value);
+         elsif Name = "summary" then
+            AtomEntries(AtomEntries.First_Index).Summary :=
+              To_Unbounded_String(Value);
+         elsif Name = "content" then
+            AtomEntries(AtomEntries.First_Index).Content :=
+              To_Unbounded_String(Value);
+         end if;
+         -- Add value for composite tag
+         if TableTags_Container.Contains(PageTableTags, Name) then
+            PageTableTags(Name) := PageTableTags(Name) & Value;
+            -- Add value for simple tag
+         else
+            Tags_Container.Include(PageTags, Name, Value);
          end if;
       exception
          when Constraint_Error =>
             raise InvalidValue with """" & Name & """ value """ & Value & """";
       end AddTag;
+      -- Insert selected list of tags TagsList to templates
       procedure InsertTags(TagsList: Tags_Container.Map) is
       begin
          for I in TagsList.Iterate loop
@@ -134,6 +141,7 @@ package body Pages is
          StartPos: constant Positive := Length(YassConfig.MarkdownComment);
          ValidValue: Boolean := False;
       begin
+         -- Read selected markdown file
          Open(PageFile, In_File, FileName);
          while not End_Of_File(PageFile) loop
             Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
@@ -148,6 +156,7 @@ package body Pages is
                Append(Content, LF);
                goto End_Of_Loop;
             end if;
+            -- Get the page template layout
             if Index(Data, "layout:", 1) = (StartPos + 2) then
                Data := Unbounded_Slice(Data, (StartPos + 10), Length(Data));
                Layout :=
@@ -159,6 +168,7 @@ package body Pages is
                     with Filename & """. Selected layout file """ &
                     To_String(Layout);
                end if;
+               -- Set update frequency for the page in the sitemap
             elsif Index(Data, "changefreq:", 1) = (StartPos + 2) then
                ChangeFrequency :=
                  Unbounded_Slice(Data, (StartPos + 14), Length(Data));
@@ -173,6 +183,7 @@ package body Pages is
                     with "Invalid value for changefreq";
                end if;
                ValidValue := False;
+               -- Set priority for the page in the sitemap
             elsif Index(Data, "priority:", 1) = (StartPos + 2) then
                PagePriority :=
                  Unbounded_Slice(Data, (StartPos + 11), Length(Data));
@@ -187,11 +198,13 @@ package body Pages is
                      raise SitemapInvalidValue
                        with "Invalid value for page priority";
                end;
+               -- Check if the page is excluded from the sitemap
             elsif Index(Data, "insitemap:", 1) = (StartPos + 2) then
                if To_Lower(Slice(Data, (StartPos + 13), Length(Data))) =
                  "false" then
                   InSitemap := False;
                end if;
+               -- Add tag to the page tags lists
             else
                StartIndex := Index(Data, ":", (StartPos + 2));
                if StartIndex > Index(Data, " ", (StartPos + 2)) then
@@ -207,12 +220,15 @@ package body Pages is
          end loop;
          Close(PageFile);
       end;
+      -- Convert markdown to HTML
       Tags_Container.Include
         (PageTags, "Content",
          Value
            (cmark_markdown_to_html
               (New_String(To_String(Content)), size_t(Length(Content)), 0)));
+      -- Load the program modules with 'pre' hook
       LoadModules("pre", PageTags, PageTableTags);
+      -- Insert tags to template
       Insert(Tags, Assoc("Content", PageTags("Content")));
       InsertTags(SiteTags);
       for I in PageTableTags.Iterate loop
@@ -222,19 +238,23 @@ package body Pages is
          Insert(Tags, Assoc(TableTags_Container.Key(I), GlobalTableTags(I)));
       end loop;
       InsertTags(PageTags);
+      -- Create HTML file in outputdirectory
       Create_Path(To_String(OutputDirectory));
       Create(PageFile, Append_File, NewFileName);
       Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
       Close(PageFile);
+      -- Add the page to the sitemap
       if InSitemap then
          AddPageToSitemap
            (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
       end if;
+      -- Add the page to the Atom feed
       if YassConfig.AtomFeedSource = To_Unbounded_String("tags") then
          AtomEntries(AtomEntries.First_Index).Content := Content;
       end if;
       AddPageToFeed(NewFileName, AtomEntries);
       Set("YASSFILE", NewFileName);
+      -- Load the program modules with 'post' hook
       LoadModules("post", PageTags, PageTableTags);
    exception
       when An_Exception : LayoutNotFound =>
@@ -268,7 +288,9 @@ package body Pages is
       PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
       PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
    begin
+      -- Load the program modules with 'pre' hook
       LoadModules("pre", PageTags, PageTableTags);
+      -- Copy the file to output directory
       Create_Path(To_String(OutputDirectory));
       Copy_File
         (FileName,
@@ -281,6 +303,7 @@ package body Pages is
       Set
         ("YASSFILE",
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
+      -- Load the program modules with 'post' hook
       LoadModules("post", PageTags, PageTableTags);
    end CopyFile;
 
