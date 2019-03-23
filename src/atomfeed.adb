@@ -179,6 +179,7 @@ package body AtomFeed is
       NewFeed: DOM_Implementation;
       MainNode, EntryNode: DOM.Core.Element;
       EntriesAmount: Natural := 0;
+   -- Add XML node NodeName with value NodeValue to parent XML node ParentNode
       procedure AddNode(NodeName, NodeValue: String;
          ParentNode: Dom.Core.Element) is
          FeedText: Text;
@@ -191,6 +192,7 @@ package body AtomFeed is
             return;
          end if;
       end AddNode;
+      -- Add link entry to parent node ParentNode with url URL and relationship Relationship
       procedure AddLink(ParentNode: Dom.Core.Element;
          URL, Relationship: String) is
          LinkNode: DOM.Core.Element;
@@ -200,6 +202,7 @@ package body AtomFeed is
          Set_Attribute(LinkNode, "rel", Relationship);
          Set_Attribute(LinkNode, "href", URL);
       end AddLink;
+      -- Add author to parent node ParentNode with author name Name and author email Email
       procedure AddAuthor(ParentNode: Dom.Core.Element; Name, Email: String) is
          AuthorNode: DOM.Core.Element;
       begin
