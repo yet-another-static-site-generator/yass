@@ -15,6 +15,7 @@ with System.Assertions;
 --
 --  end read only
 
+with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 --  begin read only
 --  end read only
 package body AtomFeed.Test_Data.Tests is
@@ -38,13 +39,11 @@ package body AtomFeed.Test_Data.Tests is
 --  end read only
 
       pragma Unreferenced (Gnattest_T);
-
    begin
-
-      AUnit.Assertions.Assert
-        (Gnattest_Generated.Default_Assert_Value,
-         "Test not implemented.");
-
+      Assert(To_Time("2019-03-03T04:12:45Z") = Value("2019-03-03 04:12:45"),
+         "Invalid HTTP date to Ada date convertion.");
+      Assert(To_Time("2019-03-03") = Value("2019-03-03 00:00:00"),
+         "Incomplete HTTP date to Ada date not converted.");
 --  begin read only
    end Test_To_Time;
 --  end read only
