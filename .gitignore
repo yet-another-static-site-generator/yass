@@ -1,2 +1,3 @@
 bin
 obj
+tests/driver/test_runner
