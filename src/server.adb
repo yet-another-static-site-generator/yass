@@ -27,6 +27,8 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with AWS.Services.Page_Server;
 with AWS.Services.Directory; use AWS.Services.Directory;
 with AWS.Server;
+with AWS.Status;
+with AWS.Response;
 with Config; use Config;
 with Pages; use Pages;
 with Modules; use Modules;
