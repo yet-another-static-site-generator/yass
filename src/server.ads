@@ -15,9 +15,6 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with AWS.Status;
-with AWS.Response;
-
 package Server is
 
    task MonitorSite is -- Task for monitor changes in the site files and regenerate them
@@ -28,9 +25,6 @@ package Server is
       entry Start;
    end MonitorConfig;
 
-   function Callback
-     (Request: AWS.Status.Data) return AWS.Response
-     .Data; -- Handle server responses for HTTP request Request
    procedure StartServer; -- Start the web server
    procedure ShutdownServer; -- Shutdown the web server
 
