@@ -60,11 +60,8 @@ package body AtomFeed.Test_Data.Tests is
       pragma Unreferenced (Gnattest_T);
 
    begin
-
-      AUnit.Assertions.Assert
-        (Gnattest_Generated.Default_Assert_Value,
-         "Test not implemented.");
-
+      Assert(To_HTTP_Date(Value("2019-03-03 04:12:45")) = "2019-03-03T04:12:45Z",
+         "Invalid Ada date to HTTP date convertion.");
 --  begin read only
    end Test_To_HTTP_Date;
 --  end read only
