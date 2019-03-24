@@ -30,32 +30,11 @@ package body Server.Test_Data.Tests is
 --  end read only
 
 --  begin read only
-   procedure Test_Callback (Gnattest_T : in out Test);
-   procedure Test_Callback_f59e91 (Gnattest_T : in out Test) renames Test_Callback;
---  id:2.2/f59e912e47f561f4/Callback/1/0/
-   procedure Test_Callback (Gnattest_T : in out Test) is
-   --  server.ads:31:4:Callback
---  end read only
-
-      pragma Unreferenced (Gnattest_T);
-
-   begin
-
-      AUnit.Assertions.Assert
-        (Gnattest_Generated.Default_Assert_Value,
-         "Test not implemented.");
-
---  begin read only
-   end Test_Callback;
---  end read only
-
-
---  begin read only
    procedure Test_StartServer (Gnattest_T : in out Test);
    procedure Test_StartServer_1470b4 (Gnattest_T : in out Test) renames Test_StartServer;
 --  id:2.2/1470b4fce0379142/StartServer/1/0/
    procedure Test_StartServer (Gnattest_T : in out Test) is
-   --  server.ads:34:4:StartServer
+   --  server.ads:28:4:StartServer
 --  end read only
 
       pragma Unreferenced (Gnattest_T);
@@ -76,7 +55,7 @@ package body Server.Test_Data.Tests is
    procedure Test_ShutdownServer_f63a3b (Gnattest_T : in out Test) renames Test_ShutdownServer;
 --  id:2.2/f63a3b9e26d7ee05/ShutdownServer/1/0/
    procedure Test_ShutdownServer (Gnattest_T : in out Test) is
-   --  server.ads:35:4:ShutdownServer
+   --  server.ads:29:4:ShutdownServer
 --  end read only
 
       pragma Unreferenced (Gnattest_T);

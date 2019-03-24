@@ -26,15 +26,15 @@ package body Pages.Test_Data.Tests.Suite is
          Test_CreatePage_8e91e0'Access);
       Runner_1.Create
         (Case_2_1_Test_CopyFile_1a0ae8,
-         "pages.ads:24:4:",
+         "pages.ads:25:4:",
          Test_CopyFile_1a0ae8'Access);
       Runner_1.Create
         (Case_3_1_Test_CreateEmptyFile_7571dc,
-         "pages.ads:27:4:",
+         "pages.ads:28:4:",
          Test_CreateEmptyFile_7571dc'Access);
       Runner_1.Create
         (Case_4_1_Test_GetLayoutName_5a4eaf,
-         "pages.ads:29:4:",
+         "pages.ads:30:4:",
          Test_GetLayoutName_5a4eaf'Access);
 
       Result.Add_Test (Case_1_1_Test_CreatePage_8e91e0'Access);
