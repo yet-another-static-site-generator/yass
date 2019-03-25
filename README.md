@@ -64,7 +64,14 @@ If you want to be able to print content of README.md file to terminal (by
 **Note:** If you want to move the program around, compile it in release mode. In
 debug mode the program may have problems with finding all dependencies.
 
-## Running program
+### Build unit tests
+
+Navigate to `tests/driver` directory from the main directory (where this
+file is):
+
+* From console: type `gprbuild -P test_driver.gpr`
+
+## Running the program
 
 ### Linux
 
@@ -79,16 +86,14 @@ environment variable `YASSDIR` to your current directory. Example:
 `export YASSDIR=$(pwd)`. You don't need to set it manually when you use
 AppImage version of the program.
 
-## Roadmap
+### Running unit tests
 
-### 1.0
-- Bugfixes, code cleanup and optimization
-
-### Always
-
-- Your proposition(s)
+From the main directory (where this file is) go to `test/driver` directory
+and type in console `./test_runner`.
 
 ## Licenses
+
+- Yass is released under GNU GPL v3 license.
 
 - Libcmark library distributed with AppImage version of the program is released
 under [few Open Sources licenses](https://github.com/commonmark/cmark/blob/master/COPYING)
