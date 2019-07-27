@@ -100,6 +100,13 @@ under [few Open Sources licenses](https://github.com/commonmark/cmark/blob/maste
 
 https://github.com/commonmark/cmark
 
+## TODO (someday or if someone want to contribute)
+
+- Windows version of the program
+- [ROBODoc](https://rfsber.home.xs4all.nl/Robo/) documentation for the code
+- More unit tests
+- Your propositions?
+
 ----
 
 As usual, I probably forgot about something important here :)
