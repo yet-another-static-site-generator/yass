@@ -22,7 +22,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories; use Ada.Directories;
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting;
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
@@ -337,29 +336,21 @@ exception
    when An_Exception : others =>
       declare
          ErrorFile: File_Type;
-         ErrorText: Unbounded_String;
       begin
          if Ada.Directories.Exists("error.log") then
             Open(ErrorFile, Append_File, "error.log");
          else
             Create(ErrorFile, Append_File, "error.log");
          end if;
-         Append(ErrorText, Ada.Calendar.Formatting.Image(Clock));
-         Append(ErrorText, LF);
-         Append(ErrorText, Version);
-         Append(ErrorText, LF);
-         Append(ErrorText, "Exception: " & Exception_Name(An_Exception));
-         Append(ErrorText, LF);
-         Append(ErrorText, "Message: " & Exception_Message(An_Exception));
-         Append(ErrorText, LF);
-         Append
-           (ErrorText, "-------------------------------------------------");
-         Append(ErrorText, LF);
-         Append(ErrorText, Symbolic_Traceback(An_Exception));
-         Append(ErrorText, LF);
-         Append
-           (ErrorText, "-------------------------------------------------");
-         Put_Line(ErrorFile, To_String(ErrorText));
+         Put_Line(ErrorFile, Ada.Calendar.Formatting.Image(Clock));
+         Put_Line(ErrorFile, Version);
+         Put_Line(ErrorFile, "Exception: " & Exception_Name(An_Exception));
+         Put_Line(ErrorFile, "Message: " & Exception_Message(An_Exception));
+         Put_Line
+           (ErrorFile, "-------------------------------------------------");
+         Put(ErrorFile, Symbolic_Traceback(An_Exception));
+         Put_Line
+           (ErrorFile, "-------------------------------------------------");
          Close(ErrorFile);
          Put_Line
            ("Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://github.com/yet-another-static-site-generator/yass/issues (or if you prefer, on mail thindil@laeran.pl) and attach (if possible) file 'error.log' (should be in this same directory).");
