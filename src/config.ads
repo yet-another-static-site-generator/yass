@@ -21,7 +21,7 @@ with Ada.Containers.Indefinite_Vectors;
 with Ada.Strings.Hash;
 with AWS.Templates; use AWS.Templates;
 
--- ****h* Config/Config
+-- ****h* Yass/Config
 -- FUNCTION
 -- Provide code for manipulate config file
 -- SOURCE
