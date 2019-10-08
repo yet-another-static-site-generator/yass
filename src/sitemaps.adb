@@ -28,7 +28,7 @@ with DOM.Core.Elements; use DOM.Core.Elements;
 with DOM.Readers; use DOM.Readers;
 with Input_Sources.File; use Input_Sources.File;
 with Config; use Config;
-with Atomfeed; use Atomfeed;
+with AtomFeed; use AtomFeed;
 
 package body Sitemaps is
 
@@ -87,7 +87,7 @@ package body Sitemaps is
       if not YassConfig.SitemapEnabled then
          return;
       end if;
-      UrlsList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "loc");
+      URLsList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "loc");
       for I in 0 .. Length(URLsList) - 1 loop
          if Node_Value(First_Child(Item(URLsList, I))) /= Url then
             goto End_Of_Loop;

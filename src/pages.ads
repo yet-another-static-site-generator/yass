@@ -29,6 +29,6 @@ package Pages is
      (FileName: String); -- Create empty markdown file with default tags and with full path FileName
    function GetLayoutName
      (FileName: String)
-     return String; -- Get name of layout used in the page with full path FileName
+      return String; -- Get name of layout used in the page with full path FileName
 
 end Pages;

@@ -39,8 +39,8 @@ package body Pages is
    subtype size_t is unsigned_long;
    LayoutNotFound: exception;
 
-   function cmark_markdown_to_html(text: chars_ptr; len: size_t;
-      options: int) return chars_ptr with
+   function cmark_markdown_to_html
+     (text: chars_ptr; len: size_t; options: int) return chars_ptr with
       Import => True,
       Convention => C,
       External_Name => "cmark_markdown_to_html";
@@ -165,7 +165,7 @@ package body Pages is
                if not Ada.Directories.Exists(To_String(Layout)) then
                   Close(PageFile);
                   raise LayoutNotFound
-                    with Filename & """. Selected layout file """ &
+                    with FileName & """. Selected layout file """ &
                     To_String(Layout);
                end if;
                -- Set update frequency for the page in the sitemap
@@ -271,12 +271,12 @@ package body Pages is
          raise GenerateSiteException;
       when An_Exception : SitemapInvalidValue =>
          Put_Line
-           ("Can't parse """ & Filename & """. " &
+           ("Can't parse """ & FileName & """. " &
             Exception_Message(An_Exception));
          raise GenerateSiteException;
       when An_Exception : InvalidValue =>
          Put_Line
-           ("Can't parse """ & Filename & """. Invalid value for tag: " &
+           ("Can't parse """ & FileName & """. Invalid value for tag: " &
             Exception_Message(An_Exception));
          raise GenerateSiteException;
    end CreatePage;
@@ -392,7 +392,7 @@ package body Pages is
             if not Ada.Directories.Exists(To_String(Layout)) then
                Close(PageFile);
                raise LayoutNotFound
-                 with Filename & """. Selected layout file """ &
+                 with FileName & """. Selected layout file """ &
                  To_String(Layout);
             end if;
             Close(PageFile);
