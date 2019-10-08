@@ -19,29 +19,88 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Calendar; use Ada.Calendar;
 
+-- ****h* Yass/AtomFeed
+-- FUNCTION
+-- Provide code to create Atom feed
+-- SOURCE
 package AtomFeed is
+-- ****
 
-   type FeedEntry is -- Data structure for Atom entries
-   record
-      Id: Unbounded_String; -- Url of entry
-      EntryTitle: Unbounded_String; -- Title of entry
-      Updated: Time; -- Update time of entry
-      AuthorName: Unbounded_String; -- Name of author of entry
-      AuthorEmail: Unbounded_String; -- Email of author of entry
-      Summary: Unbounded_String; -- Short summary of entry
-      Content: Unbounded_String; -- Content of entry
+   -- ****t* AtomFeed/FeedEntry
+   -- FUNCTION
+   -- Data structure for Atom entries
+   -- PARAMETERS
+   -- Id          - Url of entry
+   -- EntryTitle  - Title of entry
+   -- Updated     - Update time of entry
+   -- AuthorName  - Name of author of entry
+   -- AuthorEmail - Email of author of entry
+   -- Summary     - Short summary of entry
+   -- Content     - Content of entry
+   -- SOURCE
+   type FeedEntry is record
+      Id: Unbounded_String;
+      EntryTitle: Unbounded_String;
+      Updated: Time;
+      AuthorName: Unbounded_String;
+      AuthorEmail: Unbounded_String;
+      Summary: Unbounded_String;
+      Content: Unbounded_String;
    end record;
-   package FeedEntry_Container is new Vectors(Positive, FeedEntry);
+   -- ****
 
-   function To_Time
-     (Date: String) return Time; -- Convert Atom date to Ada format
-   function To_HTTP_Date
-     (Date: Time) return String; -- Convert Ada date to Atom format
-   procedure StartAtomFeed; -- Load existing Atom feed for the site
+   -- ****t* AtomFeed/FeedEntry_Container
+   -- FUNCTION
+   -- Used to store Atom feed entries
+   -- SOURCE
+   package FeedEntry_Container is new Vectors(Positive, FeedEntry);
+   -- ****
+
+   -- ****f* AtomFeed/To_Time
+   -- FUNCTION
+   -- Convert HTTP date to Ada format
+   -- PARAMETERS
+   -- Date - HTTP date to convert
+   -- RESULT
+   -- Converted HTTP date to Ada Time
+   -- SOURCE
+   function To_Time(Date: String) return Time;
+   -- ****
+
+   -- ****f* AtomFeed/To_HTTP_Date
+   -- FUNCTION
+   -- Convert Ada Time to HTTP date format
+   -- PARAMETERS
+   -- Date - Ada Time to convert
+   -- RESULT
+   -- Converted Ada Time to HTTP date format
+   -- SOURCE
+   function To_HTTP_Date(Date: Time) return String;
+   -- ****
+
+   -- ****f* AtomFeed/StartAtomFeed
+   -- FUNCTION
+   -- Load existing Atom feed for the site
+   -- SOURCE
+   procedure StartAtomFeed;
+   -- ****
+
+   -- ****f* AtomFeed/AddPageToFeed
+   -- FUNCTION
+   -- Add page with full path FileName and it extracted Atom entries Entries to the site Atom feed
+   -- PARAMETERS
+   -- FileName - File name of the page to add
+   -- Entries  - List of Atom feed entries
+   -- SOURCE
    procedure AddPageToFeed
-     (FileName: String;
-      Entries: in out FeedEntry_Container
-        .Vector); -- Add page with full path FileName and it extracted Atom entries Entries to the site Atom feed
-   procedure SaveAtomFeed; -- Save Atom feed to file
+     (FileName: String; Entries: in out FeedEntry_Container.Vector);
+   -- ****
+
+   -- ****f* AtomFeed/SaveAtomFeed
+   -- FUNCTION
+   -- Save Atom feed to file
+   -- SOURCE
+   procedure SaveAtomFeed;
+   -- ****
 
 end AtomFeed;
