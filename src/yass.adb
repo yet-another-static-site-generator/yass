@@ -38,7 +38,7 @@ with Sitemaps; use Sitemaps;
 with AtomFeed; use AtomFeed;
 
 procedure YASS is
-   Version: constant String := "1.0";
+   Version: constant String := "1.1";
    WorkDirectory: Unbounded_String;
 
    -- Build the site from directory
