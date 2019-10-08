@@ -25,7 +25,8 @@ with AWS.Templates; use AWS.Templates;
 
 package body Modules is
 
-   procedure LoadModules(State: String; PageTags: in out Tags_Container.Map;
+   procedure LoadModules
+     (State: String; PageTags: in out Tags_Container.Map;
       PageTableTags: in out TableTags_Container.Map) is
       -- Run executable file with Item as full path name
       procedure RunModule(Item: Directory_Entry_Type) is

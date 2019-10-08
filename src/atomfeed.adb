@@ -122,8 +122,8 @@ package body AtomFeed is
       end loop;
    end StartAtomFeed;
 
-   procedure AddPageToFeed(FileName: String;
-      Entries: in out FeedEntry_Container.Vector) is
+   procedure AddPageToFeed
+     (FileName: String; Entries: in out FeedEntry_Container.Vector) is
       Url: constant String :=
         To_String(YassConfig.BaseURL) & "/" &
         Ada.Strings.Unbounded.Slice
@@ -185,8 +185,8 @@ package body AtomFeed is
       MainNode, EntryNode: DOM.Core.Element;
       EntriesAmount: Natural := 0;
    -- Add XML node NodeName with value NodeValue to parent XML node ParentNode
-      procedure AddNode(NodeName, NodeValue: String;
-         ParentNode: Dom.Core.Element) is
+      procedure AddNode
+        (NodeName, NodeValue: String; ParentNode: DOM.Core.Element) is
          FeedText: Text;
          FeedData: DOM.Core.Element;
       begin
@@ -198,8 +198,8 @@ package body AtomFeed is
          end if;
       end AddNode;
       -- Add link entry to parent node ParentNode with url URL and relationship Relationship
-      procedure AddLink(ParentNode: Dom.Core.Element;
-         URL, Relationship: String) is
+      procedure AddLink
+        (ParentNode: DOM.Core.Element; URL, Relationship: String) is
          LinkNode: DOM.Core.Element;
       begin
          LinkNode := Create_Element(Feed, "link");
@@ -208,7 +208,7 @@ package body AtomFeed is
          Set_Attribute(LinkNode, "href", URL);
       end AddLink;
       -- Add author to parent node ParentNode with author name Name and author email Email
-      procedure AddAuthor(ParentNode: Dom.Core.Element; Name, Email: String) is
+      procedure AddAuthor(ParentNode: DOM.Core.Element; Name, Email: String) is
          AuthorNode: DOM.Core.Element;
       begin
          AuthorNode := Create_Element(Feed, "author");
