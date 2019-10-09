@@ -17,10 +17,26 @@
 
 with Config; use Config;
 
+-- ****h* Yass/Modules
+-- FUNCTION
+-- Provide code for operating the program modules
+-- SOURCE
 package Modules is
+-- ****
 
+   -- ****f* Modules/LoadModules
+   -- FUNCTION
+   -- Load all modules for selected state: start, pre, post, end. PageTags and
+   -- PageTableTags will be empty in all states except pre and post for
+   -- markdown files.
+   -- PARAMETERS
+   -- State         - State of the program in which module are loaded
+   -- PageTags      - All current processed page tags with their contents
+   -- PageTableTags - All current processed page table tags with their contents
+   -- SOURCE
    procedure LoadModules
      (State: String; PageTags: in out Tags_Container.Map;
-      PageTableTags: in out TableTags_Container
-        .Map); -- Load all modules for selected state: start, pre, post, end. PageTags and PageTableTags will be empty in all states except pre and post for markdown files.
+      PageTableTags: in out TableTags_Container.Map);
+   -- ****
+
 end Modules;
