@@ -15,12 +15,38 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
+-- ****h* Sitemaps/Sitemaps
+-- FUNCTION
+-- Provide code for create sitemap
+-- SOURCE
 package Sitemaps is
+-- ****
 
-   procedure StartSitemap; -- Create new or load existing sitemap for the site
-   procedure AddPageToSitemap
-     (FileName, ChangeFrequency,
-      PagePriority: String); -- Add selected page with full path FileName, it ChangeFrequency and PagePriority to the sitemap
-   procedure SaveSitemap; -- Save site map to file
+   -- ****f* Sitemaps/StartSitemap
+   -- FUNCTION
+   -- Create new or load existing sitemap for the site
+   -- SOURCE
+   procedure StartSitemap;
+   -- ****
+
+   -- ****f* Sitemaps/AddPageToSitemap
+   -- FUNCTION
+   -- Add selected page with full path FileName, it ChangeFrequency and
+   -- PagePriority to the sitemap
+   -- PARAMETERS
+   -- FileName        - Full path to the page which will be added to the
+   --                   sitemap
+   -- ChangeFrequency - How often selected page will change
+   -- PagePriority    - Priority for the page
+   -- SOURCE
+   procedure AddPageToSitemap(FileName, ChangeFrequency, PagePriority: String);
+   -- ****
+
+   -- ****f* Sitemaps/SaveSitemap
+   -- FUNCTION
+   -- Save site map to file
+   -- SOURCE
+   procedure SaveSitemap;
+   -- ****
 
 end Sitemaps;
