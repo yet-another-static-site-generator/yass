@@ -15,11 +15,31 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
+-- ****h* Yass/Layouts
+-- FUNCTION
+-- Provide code for manipulate site layouts
+-- SOURCE
 package Layouts is
+-- ****
 
-   procedure CreateLayout
-     (DirectoryName: String); -- Create default site layouts in directory with full path DirectoryName
-   procedure CreateDirectoryLayout
-     (DirectoryName: String); -- Create default layout for directory listing for web server in layouts directory with full path DirectoryName
+   -- ****f* Layouts/CreateLayout
+   -- FUNCTION
+   -- Create default site layouts in directory with full path DirectoryName
+   -- PARAMETERS
+   -- DirectoryName - Full path to the directory where default layout will be
+   --                 created
+   -- SOURCE
+   procedure CreateLayout(DirectoryName: String);
+   -- ****
+
+   -- ****f* Layouts/CreateDirectoryLayout
+   -- FUNCTION
+   -- Create default layout for directory listing for web server in layouts
+   -- directory with full path DirectoryName
+   -- PARAMETERS
+   -- DirectoryName - Full path to the directory where layout will be created
+   -- SOURCE
+   procedure CreateDirectoryLayout(DirectoryName: String);
+   -- ****
 
 end Layouts;
