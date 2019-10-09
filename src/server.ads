@@ -15,17 +15,44 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
+-- ****h* Yass/Server
+-- FUNCTION
+-- Provide code for running simple HTTP server
+-- SOURCE
 package Server is
+-- ****
 
-   task MonitorSite is -- Task for monitor changes in the site files and regenerate them
+   -- ****a* Server/MonitorSite
+   -- FUNCTION
+   -- Task for monitor changes in the site files and regenerate them
+   -- SOURCE
+   task MonitorSite is
       entry Start;
    end MonitorSite;
+   -- ****
 
-   task MonitorConfig is -- Task for monitor changes in the site config file and reload config if needed
+   -- ****a* Server/MonitorConfig
+   -- FUNCTION
+   -- Task for monitor changes in the site config file and reload config if
+   -- needed
+   -- SOURCE
+   task MonitorConfig is
       entry Start;
    end MonitorConfig;
+   -- ****
 
-   procedure StartServer; -- Start the web server
-   procedure ShutdownServer; -- Shutdown the web server
+   -- ****f* Server/StartServer
+   -- FUNCTION
+   -- Start the web server
+   -- SOURCE
+   procedure StartServer;
+   -- ****
+
+   -- ****f* Server/ShutdownServer
+   -- FUNCTION
+   -- Shutdown the web server
+   -- SOURCE
+   procedure ShutdownServer;
+   -- ****
 
 end Server;
