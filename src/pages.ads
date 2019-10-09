@@ -15,20 +15,61 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
+-- ****h* Yass/Pages
+-- FUNCTION
+-- Provide code to create pages from Markdown files
+-- SOURCE
 package Pages is
+-- ****
 
-   GenerateSiteException: exception; -- Raised when generating site was interrupted
+   -- ****e* Pages/GenerateSiteException
+   -- FUNCTION
+   -- Raised when generating site was interrupted
+   -- SOURCE
+   GenerateSiteException: exception;
+   -- ****
 
-   procedure CreatePage
-     (FileName,
-      Directory: String); -- Create page from file with full path FileName in directory with full path Directory
-   procedure CopyFile
-     (FileName,
-      Directory: String); -- Copy file with full path FileName to proper location in site output directory with full path Directory
-   procedure CreateEmptyFile
-     (FileName: String); -- Create empty markdown file with default tags and with full path FileName
-   function GetLayoutName
-     (FileName: String)
-      return String; -- Get name of layout used in the page with full path FileName
+   -- ****f* Pages/CreatePage
+   -- FUNCTION
+   -- Create page from file with full path FileName in directory with full
+   -- path Directory
+   -- PARAMETERS
+   -- FileName  - Full path to the Markdown file which will be processed
+   -- Directory - Full path to the directory where newly create HTML file will
+   --             be added
+   -- SOURCE
+   procedure CreatePage(FileName, Directory: String);
+   -- ****
+
+   -- ****f* Pages/CopyFile
+   -- FUNCTION
+   -- Copy file with full path FileName to proper location in site output
+   -- directory with full path Directory
+   -- PARAMETERS
+   -- FileName  - Full path to the file which will be copied
+   -- Directory - Full path to the directory where file will be added
+   -- SOURCE
+   procedure CopyFile(FileName, Directory: String);
+   -- ****
+
+   -- ****f* Pages/CreateEmptyFile
+   -- FUNCTION
+   -- Create empty markdown file with default tags and with full path FileName
+   -- PARAMETERS
+   -- FileName - Full path to the Markdown file which will be created
+   -- SOURCE
+   procedure CreateEmptyFile(FileName: String);
+   -- ****
+
+   -- ****f* Pages/GetLayoutName
+   -- FUNCTION
+   -- Get name of layout used in the page with full path FileName
+   -- PARAMETERS
+   -- FileName - Full path to the file which name layout will be check
+   -- RESULT
+   -- Name of the layout used by the file
+   -- SOURCE
+   function GetLayoutName(FileName: String) return String;
+   -- ****
 
 end Pages;
