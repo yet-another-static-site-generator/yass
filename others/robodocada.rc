@@ -6,7 +6,7 @@ end markers:
   -- ****
 options:
   --src src
-  --doc docs
+  --doc docs/code
   --html
   --multidoc
   --index
@@ -53,3 +53,5 @@ keywords:
   constant
   private
   exception
+  task
+  entry
