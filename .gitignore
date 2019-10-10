@@ -1,3 +1,4 @@
 bin
 obj
 tests/driver/test_runner
+docs/user/_output
