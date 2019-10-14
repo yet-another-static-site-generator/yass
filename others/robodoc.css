@@ -1,0 +1,299 @@
+/****h* ROBODoc/ROBODoc Cascading Style Sheet
+ * FUNCTION
+ *   This is the default cascading style sheet for documentation
+ *   generated with ROBODoc.
+ *   You can edit this file to your own liking and then use
+ *   it with the option
+ *      --css <filename>
+ *
+ *   This style-sheet defines the following layout
+ *      +----------------------------------------+
+ *      |    logo                                |
+ *      +----------------------------------------+
+ *      |    extra                               |
+ *      +----------------------------------------+
+ *      |                              | navi-   |
+ *      |                              | gation  |
+ *      |      content                 |         |
+ *      |                              |         |
+ *      +----------------------------------------+
+ *      |    footer                              |
+ *      +----------------------------------------+
+ *
+ *   This style-sheet is based on a style-sheet that was automatically
+ *   generated with the Strange Banana stylesheet generator.
+ *   See http://www.strangebanana.com/generator.aspx
+ *
+ ******
+ * $Id: html_generator.c,v 1.94 2008/06/17 11:49:27 gumpu Exp $
+ */
+
+body
+{
+    background-color:    #ebdbb2;
+    color:               #282828;
+    font-family: Verdana, serif;
+    border-color:        rgb(226,199,143);
+}
+
+pre
+{
+    font:        Monospace;
+    margin:      15px;
+    padding:     5px;
+    white-space: pre;
+    color:       #282828;
+}
+
+pre.source
+{
+    background-color: #d5c4a1;
+    border: dashed #f1fa8c 1px;
+}
+
+p
+{
+    margin:15px;
+}
+
+p.item_name 
+{
+    font-weight: bolder;
+    margin:5px;
+    font-size: 120%;
+}
+
+#content
+{
+    font-size:           100%;
+    color:               #282828;
+    background-color:    #ebdbb2;
+    border-left-width:   0px; 
+    border-right-width:  0px; 
+    border-top-width:    0px; 
+    border-bottom-width: 0px;
+    border-left-style:   none; 
+    border-right-style:  none; 
+    border-top-style:    none; 
+    border-bottom-style: none;
+    padding:             40px 31px 14px 17px;
+    border-color:        #d65d0e;
+    text-align:          justify;
+}
+
+#navigation
+{
+    background-color: #98971a;
+    color:            #bd93f9;
+    font-style:       normal;
+    border-color:     #98971a;
+}
+
+a.menuitem
+{
+    font-size: 120%;
+    background-color:    #ebdbb2;
+    color:               #076778;
+    font-variant:        normal;
+    text-transform:      none;
+    font-weight:         normal;
+    padding:             1px 8px 3px 1px;
+    margin-left:         5px; 
+    margin-right:        5px; 
+    margin-top:          5px; 
+    margin-bottom:       5px;
+    border-color:        #ebdbb2;
+    text-align:          right;
+}
+
+#logo, #logo a
+{
+    font-size: 130%;
+    background-color:   #d65d0e;
+    color:              #282828;
+    font-style:         normal;
+    font-variant:       normal;
+    text-transform:     none;
+    font-weight:        bold;
+    padding:            20px 18px 20px 18px;
+    border-color:       #282828;
+    text-align:         right;
+}
+
+#extra, #extra a
+{
+    font-size: 128%;
+    background-color:    #ebdbb2;
+    color:               #076778;
+    font-style:          normal;
+    font-variant:        normal;
+    text-transform:      none;
+    font-weight:         normal;
+    border-left-width:   0px; 
+    border-right-width:  0px; 
+    border-top-width:    0px; 
+    border-bottom-width: 0px;
+    border-left-style:   none; 
+    border-right-style:  none; 
+    border-top-style:    none; 
+    border-bottom-style: none;
+    padding: 12px 12px 12px 12px;
+    border-color:        #076778;
+    text-align:          center;
+}
+
+#content a
+{
+    color:              #076778;
+    text-decoration:    none;
+}
+
+#content a:hover, #content a:active
+{
+    color:              #9d0006;
+}
+
+a.indexitem
+{
+    display: block;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+    background-color: #d79921;
+    font-style:       normal;
+    font-variant:     normal;
+    text-transform:   none;
+    font-weight:      normal;
+}
+
+h1
+{
+    font-size: 151%;
+}
+
+h2
+{
+    font-size: 142%;
+}
+
+h3
+{
+    font-size: 133%;
+}
+
+h4
+{
+    font-size: 124%;
+}
+
+h5
+{
+    font-size: 115%;
+}
+
+h6
+{
+    font-size: 106%;
+}
+
+#navigation a
+{
+    text-decoration: none;
+}
+
+.menuitem:hover
+{
+    background-color:   #076778;
+    color:              #ebdbb2;
+}
+
+#extra a
+{
+    text-decoration: none;
+}
+
+#logo a
+{
+    text-decoration: none;
+}
+
+#extra a:hover
+{
+}
+
+/* layout */
+#navigation
+{
+    width:       22%; 
+    position:    relative; 
+    top:         0; 
+    right:       0; 
+    float:       right; 
+    text-align:  center;
+    margin-left: 10px;
+}
+
+.menuitem       {width: auto;}
+#content        {width: auto;}
+.menuitem       {display: block;}
+
+
+div#footer
+{
+    clear:      left;
+    width:      100%;
+    font-size:   71%;
+}
+
+div#footer a
+{
+    color:           #9d0006;
+}
+
+div#footer a:hover
+{
+    color:           #076778;
+}
+div#footer p
+{
+    margin:0;
+    padding:5px 10px
+}
+
+span.keyword
+{
+    color: #8f3f71;
+}
+
+span.comment
+{
+    color: #7c6f64;
+}
+
+span.quote
+{
+    color: #79740e;
+}
+
+span.squote
+{
+    color: #98971a;
+}
+
+span.sign
+{
+    color: #9d0006;
+}
+
+span.line_number
+{
+    color: #458588;
+}
+
+@media print
+{
+    #navigation {display: none;}
+    #content    {padding: 0px;}
+    #content a  {text-decoration: underline;}
+}
