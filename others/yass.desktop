@@ -3,3 +3,4 @@ Type=Application
 Name=yass
 Icon=yass-icon
 Terminal=true
+Categories=Utility;TextTools;
