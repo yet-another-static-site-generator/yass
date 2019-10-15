@@ -1,0 +1,57 @@
+- command:
+   name: runtests
+   execute:
+      - cd tests/driver
+      - ./test_runner
+   description: Run Yass unit tests
+- command:
+   name: debug
+   execute:
+      - gprbuild -P yass.gpr
+   description: Build Yass in debug mode
+- command:
+   name: release
+   variables:
+      - releasedir = usr
+   execute:
+      - gprclean -P yass.gpr
+      - gprbuild -p yass.gpr -XMode=release
+      - mkdir -p $releasedir/share/doc/yass
+      - mkdir -p $releasedir/bin
+      - cp bin/yass $releasedir/bin
+      - cp README.md $releasedir/share
+      - cp COPYING $releasedir/share
+      - cp CHANGELOG.md $releasedir/share
+      - cp CONTRIBUTING.md $releasedir/share
+      - gprclean -P yass.gpr
+   description: Build yass in release mode
+- command:
+   name: analyze
+   execute:
+      - gprbuild -P yass.gpr -XMode=analyze
+   description: Build yass in analyze mode
+- command:
+   name: clean
+   execute:
+      - gprclean -P yass.gpr
+   description: Clean all compilation files
+- command:
+   name: createtests
+   execute:
+      - gnattest -P yass.gpr
+   description: Regenerate unit tests
+- command:
+   name: tests
+   execute:
+      - gprbuild -P tests/driver/test_driver.gpr
+   description: Build yass unit tests
+- command:
+   name: docs
+   execute:
+      - others/generatedocs.py
+   description: Generate code documentation
+- command:
+   name: gprof
+   execute:
+      - gprof bin/yass gmon.out
+   description: Generate gprof report
