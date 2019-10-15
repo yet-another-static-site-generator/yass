@@ -91,6 +91,15 @@ AppImage version of the program.
 From the main directory (where this file is) go to `test/driver` directory
 and type in console `./test_runner`.
 
+## Generating code documentation
+
+To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsber.home.xs4all.nl/Robo/)
+If you have it, in main program directory (where this file is) enter terminal
+command: `./generatedocs.py`. For more information about this script, please
+look [here](https://github.com/thindil/roboada#generatedocspy). This version
+of script have set all default settings for Hunter code. You can also use
+build script `build.sh` for this. Enter command: `./build.sh docs`.
+
 ## Licenses
 
 - Yass is released under GNU GPL v3 license.
