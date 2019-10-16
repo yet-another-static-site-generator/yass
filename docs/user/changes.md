@@ -28,6 +28,7 @@
 ## <a name="unreleased"></a>[Unreleased]
 ### Added
 - Contributing guide
+- Code documentation
 
 <a href="#top">^ Top</a>
 
