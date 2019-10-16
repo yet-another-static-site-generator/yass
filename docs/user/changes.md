@@ -4,6 +4,7 @@
 -- backtext: Extending
 -- indexlink: true
 -- details: []
+-- details: unreleased
 -- details: 1.0
 -- details: 0.8
 -- details: 0.7
@@ -14,6 +15,7 @@
 -- details: 0.2
 -- details: 0.1
 -- detailslink: []
+-- detailslink: unreleased
 -- detailslink: 1.0
 -- detailslink: 0.8
 -- detailslink: 0.7
@@ -23,6 +25,12 @@
 -- detailslink: 0.3
 -- detailslink: 0.2
 -- detailslink: 0.1
+## <a name="unreleased"></a>[Unreleased]
+### Added
+- Contributing guide
+
+<a href="#top">^ Top</a>
+
 ## <a name="1.0"></a>[1.0] - 2019-03-25
 ### Added
 - Better check for spawn web browser by web server
