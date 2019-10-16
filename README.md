@@ -56,7 +56,9 @@ Navigate to the main directory(where this file is) to compile:
   `Build All`.
 
 * If you prefer using console: in main source code directory type `gprbuild`
-  for debug mode build or for release mode: `gprbuild -XMode=release`.
+  for debug mode build or for release mode: `gprbuild -XMode=release`. If you
+  have installed *Bob* you can type `bob debug` for build in debug mode or
+  `bob release` to prepare release for the program.
 
 If you want to be able to print content of README.md file to terminal (by
 `readme` program command), copy file *README.md* to `bin` directory.
@@ -70,6 +72,8 @@ Navigate to `tests/driver` directory from the main directory (where this
 file is):
 
 * From console: type `gprbuild -P test_driver.gpr`
+
+Or if you have *Bob* installed, type `bob tests`.
 
 ## Running the program
 
@@ -89,7 +93,8 @@ AppImage version of the program.
 ### Running unit tests
 
 From the main directory (where this file is) go to `test/driver` directory
-and type in console `./test_runner`.
+and type in console `./test_runner`. If you have *Bob* installed, you can type
+`bob runtests`.
 
 ## Generating code documentation
 
@@ -97,8 +102,8 @@ To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsbe
 If you have it, in main program directory (where this file is) enter terminal
 command: `./generatedocs.py`. For more information about this script, please
 look [here](https://github.com/thindil/roboada#generatedocspy). This version
-of script have set all default settings for Hunter code. You can also use
-build script `build.sh` for this. Enter command: `./build.sh docs`.
+of script have set all default settings for Hunter code. If you have *Bob*
+installed, you can type `bob docs`.
 
 ## Contributing to the project
 For detailed informations about contributing to the project (bugs reporting,
