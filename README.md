@@ -100,6 +100,10 @@ look [here](https://github.com/thindil/roboada#generatedocspy). This version
 of script have set all default settings for Hunter code. You can also use
 build script `build.sh` for this. Enter command: `./build.sh docs`.
 
+## Contributing to the project
+For detailed informations about contributing to the project (bugs reporting,
+ideas propositions, code conduct, etc), see [CONTRIBUTING.md](CONTRIBUTING.md)
+
 ## Licenses
 
 - Yass is released under GNU GPL v3 license.
@@ -112,7 +116,6 @@ https://github.com/commonmark/cmark
 ## TODO (someday or if someone want to contribute)
 
 - Windows version of the program
-- [ROBODoc](https://rfsber.home.xs4all.nl/Robo/) documentation for the code
 - More unit tests
 - Your propositions?
 
