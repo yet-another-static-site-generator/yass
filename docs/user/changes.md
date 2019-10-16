@@ -30,6 +30,9 @@
 - Contributing guide
 - Code documentation
 
+### Changed
+- Updated README.md
+
 <a href="#top">^ Top</a>
 
 ## <a name="1.0"></a>[1.0] - 2019-03-25
