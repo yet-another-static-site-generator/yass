@@ -100,10 +100,10 @@ and type in console `./test_runner`. If you have *Bob* installed, you can type
 
 To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsber.home.xs4all.nl/Robo/)
 If you have it, in main program directory (where this file is) enter terminal
-command: `./generatedocs.py`. For more information about this script, please
-look [here](https://github.com/thindil/roboada#generatedocspy). This version
-of script have set all default settings for Hunter code. If you have *Bob*
-installed, you can type `bob docs`.
+command: `others/generatedocs.py`. For more information about this script,
+please look [here](https://github.com/thindil/roboada#generatedocspy). This
+version of script have set all default settings for Hunter code. If you have
+*Bob* installed, you can type `bob docs`.
 
 ## Contributing to the project
 For detailed informations about contributing to the project (bugs reporting,
