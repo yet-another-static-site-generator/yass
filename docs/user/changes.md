@@ -33,6 +33,9 @@
 ### Changed
 - Updated README.md
 
+### Fixed
+- Typos in list of changes
+
 <a href="#top">^ Top</a>
 
 ## <a name="1.0"></a>[1.0] - 2019-03-25
