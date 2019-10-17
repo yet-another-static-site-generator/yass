@@ -44,8 +44,8 @@
 
 ### Fixed
 - Editing simple tags by modules
-- Reading Atom feed entries amount from site config file
-- Names of settings for server intervals in fresh site config files
+- Reading Atom feed entries amount from site configuration file
+- Names of settings for server intervals in fresh site configuration files
 
 ## <a name="0.8"></a>[0.8] - 2019-03-17
 ### Added
@@ -83,7 +83,7 @@
 - Option to set separator for comments in markdown files
 - Command to create empty markdown files
 - Directory listing for the web server
-- Option to stop server on error occured during creating the site
+- Option to stop server on error occurred during creating the site
 - Option to start selected web browser on start web server
 - Monitoring and auto reloading site configuration file on changes in it
 
@@ -131,7 +131,7 @@
 - Updated README.md
 
 ### Fixed
-- Crash on invalid data in site config files
+- Crash on invalid data in site configuration files
 
 <a href="#top">^ Top</a>
 
