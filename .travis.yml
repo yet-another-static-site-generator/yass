@@ -1,0 +1,34 @@
+language: minimal
+
+branches:
+   except:
+      - travis-dev-build
+
+services:
+   - docker
+
+install:
+   - docker pull thindil/gnat
+
+script:
+   - docker run -v $(pwd):/app thindil/gnat /bin/sh -c "apt-get update && apt-get install -y libcmark-dev && cd /app && gprbuild -P yass.gpr -XMode=release && mkdir -p usr/share && mkdir -p usr/bin && cp bin/yass usr/bin && cp README.md usr/share && cp COPYING usr/share && cp CONTRIBUTING.md usr/share"
+   - tar -czf yass-development.tar.gz usr
+
+before_deploy:
+  - git tag -f travis-dev-build
+  - git remote add gh https://${TRAVIS_REPO_SLUG%/*}:${KEY}@github.com/${TRAVIS_REPO_SLUG}.git
+  - git push -f gh travis-dev-build
+  - git remote remove gh
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api-key: $KEY
+  file: yass-development.tar.gz
+  name: Continuous Integration build
+  body: Development build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI on $(date +'%F %T %Z').
+  prerelease: true
+  overwrite: true
+  target_commitish: $TRAVIS_COMMIT
+  on:
+   branch: master
