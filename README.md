@@ -96,6 +96,16 @@ From the main directory (where this file is) go to `test/driver` directory
 and type in console `./test_runner`. If you have *Bob* installed, you can type
 `bob runtests`.
 
+### Testing versions
+
+Here are available also testing versions of the program. You can find them
+in [Releases](https://github.com/yet-another-static-site-generator/yass/releases/tag/travis-dev-build).
+To use them, first you must download normal release. Then, inside directory
+where the program is, type `./yass-x86_64.AppImage --appimage-extract`
+to extract whole program to directory *squashfs-root*. And then just move files
+from the archive to proper locations. To run that version, just enter
+*squashfs-root* directory and type in console `./AppRun`.
+
 ## Generating code documentation
 
 To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsber.home.xs4all.nl/Robo/)
