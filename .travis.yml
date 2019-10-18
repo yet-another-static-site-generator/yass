@@ -11,7 +11,7 @@ install:
    - docker pull thindil/gnat
 
 script:
-   - docker run -v $(pwd):/app thindil/gnat /bin/sh -c "apt-get update && apt-get install -y libcmark-dev && cd /app && gprbuild -P yass.gpr -XMode=release && mkdir -p usr/share && mkdir -p usr/bin && cp bin/yass usr/bin && cp README.md usr/share && cp COPYING usr/share && cp CONTRIBUTING.md usr/share"
+   - docker run -v $(pwd):/app thindil/gnat /bin/sh -c "apt-get update && apt-get install -y libcmark-dev && cd /app && others/build.sh"
    - tar -czf yass-development.tar.gz usr
 
 before_deploy:
