@@ -29,6 +29,7 @@
 ### Added
 - Contributing guide
 - Code documentation
+- Added Atom link to the default page template
 
 ### Changed
 - Updated README.md
