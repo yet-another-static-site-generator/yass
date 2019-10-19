@@ -33,6 +33,9 @@ package body Layouts is
       Put_Line(LayoutFile, "<html>");
       Put_Line(LayoutFile, "<head>");
       Put_Line(LayoutFile, "<meta charset=""UTF-8"">");
+      Put_Line(LayoutFile, "@@IF@@ not {%AtomLink%} = """"");
+      Put_Line(LayoutFile, "{%AtomLink%}");
+      Put_Line(LayoutFile, "@@END_IF@@");
       Put_Line(LayoutFile, "<title>{%Name%}</title>");
       Put_Line(LayoutFile, "</head>");
       Put_Line(LayoutFile, "<body>");
