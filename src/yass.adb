@@ -198,7 +198,8 @@ begin
       begin
          if Ada.Environment_Variables.Exists(("APPDIR")) then
             ReadmeName :=
-              To_Unbounded_String(Value("APPDIR") & "/usr/share/doc/yass/README.md");
+              To_Unbounded_String
+                (Value("APPDIR") & "/usr/share/doc/yass/README.md");
          else
             ReadmeName :=
               To_Unbounded_String
