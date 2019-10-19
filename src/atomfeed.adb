@@ -63,8 +63,14 @@ package body AtomFeed is
       ChildIndex, AuthorNodeIndex: Positive;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
+         SiteTags.Include("AtomLink", "");
          return;
       end if;
+      SiteTags.Include
+        ("AtomLink",
+         "<link rel=""alternate"" type=""application/rss+xml"" title=""" &
+         To_String(YassConfig.SiteName) & " Feed"" href=""" &
+         To_String(YassConfig.BaseURL) & "/atom.xml"" />");
       FeedFileName :=
         YassConfig.OutputDirectory &
         To_Unbounded_String(Dir_Separator & "atom.xml");
