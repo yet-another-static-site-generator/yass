@@ -36,6 +36,7 @@
 
 ### Fixed
 - Typos in list of changes
+- Crash on blocket socket when starts the program in server mode
 
 <a href="#top">^ Top</a>
 
