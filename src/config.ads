@@ -71,6 +71,7 @@ package Config is
    -- AuthorName            - Name of author of the site, needed for atom feed
    -- AuthorEmail           - Email address of author of the site, needed for
    --                         atom feed
+   -- Language              - ISO code of the language of the site
    -- SOURCE
    type ParserConfig is record
       OutputDirectory: Unbounded_String := To_Unbounded_String("_output");
@@ -93,6 +94,7 @@ package Config is
       AuthorName: Unbounded_String := To_Unbounded_String("John Doe");
       AuthorEmail: Unbounded_String :=
         To_Unbounded_String("johndoe@example.com");
+      Language: Unbounded_String := To_Unbounded_String("en");
    end record;
    -- ****
 

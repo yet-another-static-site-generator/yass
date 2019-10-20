@@ -92,6 +92,10 @@ package body Config is
       Put_Line(ConfigFile, "Name = New Site");
       Put_Line
         (ConfigFile,
+         "# The ISO 639-1 language code in which the site will be created.");
+      Put_Line(ConfigFile, "Language = en");
+      Put_Line
+        (ConfigFile,
          "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
       Put_Line(ConfigFile, "Author = John Doe");
       Put_Line
@@ -235,6 +239,10 @@ package body Config is
             YassConfig.AuthorName := Value;
          elsif FieldName = To_Unbounded_String("AuthorEmail") then
             YassConfig.AuthorEmail := Value;
+         elsif FieldName = To_Unbounded_String("Language") then
+            YassConfig.Language := Value;
+            Tags_Container.Include
+              (SiteTags, To_String(FieldName), To_String(Value));
          elsif Value = To_Unbounded_String("[]") then
             TableTags_Container.Include
               (GlobalTableTags, To_String(FieldName), +"");
