@@ -30,6 +30,7 @@
 - Contributing guide
 - Code documentation
 - Added Atom link to the default page template
+- Language configuration option to the site
 
 ### Changed
 - Updated README.md
