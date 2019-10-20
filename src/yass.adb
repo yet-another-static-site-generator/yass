@@ -27,6 +27,7 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with AWS.Net;
 with AWS.Server;
 with Config; use Config;
 with Layouts; use Layouts;
@@ -334,6 +335,9 @@ exception
       Put_Line
         ("Invalid data in site config file ""site.cfg"". Invalid line:""" &
          Exception_Message(An_Exception) & """");
+   when AWS.Net.Socket_Error =>
+      Put_Line
+        ("Can't start program in server mode. Probably another program is using this same port, or you have still connected old instance of the program in your browser. Please close whole browser and try run the program again. If problem will persist, try to change port for the server in the site configuration.");
    when An_Exception : others =>
       declare
          ErrorFile: File_Type;
