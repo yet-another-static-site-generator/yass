@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<title>./src/pages.ads</title>
+<!-- Source: ./src/pages.ads -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc">YASS v1.1 code documentation</a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./sources.html#top">Source files</a>
+<a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
+<a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_types.html#top">Types</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<h3>TABLE OF CONTENTS</h3>
+<ul>
+<li>1. <a href="#robo5">Yass/Pages</a></li>
+<ul>
+<li>1.1. <a href="#robo20">Pages/GenerateSiteException</a></li>
+<li>1.2. <a href="#robo31">Pages/CopyFile</a></li>
+<li>1.3. <a href="#robo32">Pages/CreateEmptyFile</a></li>
+<li>1.4. <a href="#robo33">Pages/CreatePage</a></li>
+<li>1.5. <a href="#robo34">Pages/GetLayoutName</a></li>
+</ul>
+</ul>
+<hr />
+<a name="Yass2fPages"></a>
+<a name="robo5"></a><h2>Yass/Pages [ Packages ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Provide code to create pages from Markdown files
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="keyword">package</span> <strong>Pages</strong> <span class="keyword">is</span>
+</pre>
+
+<hr />
+<a name="Pages2fGenerateSiteException"></a>
+<a name="robo20"></a><h2>Pages/GenerateSiteException [ Exceptions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo5">Pages</a> ] [ <a href="./robo_exceptions.html#robo_top_of_doc">Exceptions</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Raised when generating site was interrupted
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>GenerateSiteException</strong><span class="sign">:</span> <span class="keyword">exception</span><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Pages2fCopyFile"></a>
+<a name="robo31"></a><h2>Pages/CopyFile [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo5">Pages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Copy file with full path FileName to proper location in site output
+ directory with full path Directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>CopyFile</strong><span class="sign">(</span>FileName<span class="sign">,</span> Directory<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> FileName  - Full path to the file which will be copied
+ Directory - Full path to the directory where file will be added
+</pre>
+
+<hr />
+<a name="Pages2fCreateEmptyFile"></a>
+<a name="robo32"></a><h2>Pages/CreateEmptyFile [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo5">Pages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Create empty markdown file with default tags and with full path FileName
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>CreateEmptyFile</strong><span class="sign">(</span>FileName<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> FileName - Full path to the Markdown file which will be created
+</pre>
+
+<hr />
+<a name="Pages2fCreatePage"></a>
+<a name="robo33"></a><h2>Pages/CreatePage [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo5">Pages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Create page from file with full path FileName in directory with full
+ path Directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>CreatePage</strong><span class="sign">(</span>FileName<span class="sign">,</span> Directory<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> FileName  - Full path to the Markdown file which will be processed
+ Directory - Full path to the directory where newly create HTML file will
+             be added
+</pre>
+
+<hr />
+<a name="Pages2fGetLayoutName"></a>
+<a name="robo34"></a><h2>Pages/GetLayoutName [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo5">Pages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Get name of layout used in the page with full path FileName
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>GetLayoutName</strong><span class="sign">(</span>FileName<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">return</span> String<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> FileName - Full path to the file which name layout will be check
+</pre>
+<p class="item_name">RESULT</p>
+<pre> Name of the layout used by the file
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/pages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Oct 20 2019 09:13:08
+</p>
+</div> <!-- footer -->
+</body>
+</html>
