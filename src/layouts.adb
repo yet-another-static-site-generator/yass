@@ -30,7 +30,7 @@ package body Layouts is
          DirectoryName & Dir_Separator & "_layouts" & Dir_Separator &
          "default.html");
       Put_Line(LayoutFile, "<!DOCTYPE html>");
-      Put_Line(LayoutFile, "<html>");
+      Put_Line(LayoutFile, "<html lang=""{%Language%}"">");
       Put_Line(LayoutFile, "<head>");
       Put_Line(LayoutFile, "<meta charset=""UTF-8"">");
       Put_Line(LayoutFile, "@@IF@@ not {%AtomLink%} = """"");
