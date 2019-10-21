@@ -1,10 +1,9 @@
 #!/bin/sh
 
-
+export YASSDIR=$(pwd)
 if [ -z ${APPDIR+x} ]; then
    export APPDIR=$(pwd)
 fi
 cd "$APPDIR/usr/bin"
-export YASSDIR=$(pwd)
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$APPDIR/lib
 ./yass "$@"
