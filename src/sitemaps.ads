@@ -15,7 +15,7 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* Sitemaps/Sitemaps
+-- ****h* Yass/Sitemaps
 -- FUNCTION
 -- Provide code for create sitemap
 -- SOURCE
