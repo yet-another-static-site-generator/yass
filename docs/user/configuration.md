@@ -48,7 +48,7 @@ Possible settings for project:
   be listening. Please remember that using ports below 1025 number require
   root privileges. Default value is `8888`
 - StopServerOnError - can have true or false value, case-insensitive. Did
-  command `server` should terminate if error occured, during creating the site.
+  command `server` should terminate if error occurred, during creating the site.
   Default value is `false` (don't terminate on error).
 - BrowserCommand - Full path to the command which will be used to start the web
   browser with index.html page of the site. String `%s` will be replaced by
@@ -76,6 +76,10 @@ Possible settings for project:
   value is `none`.
 - AtomFeedAmount - Number of entries in the Atom feed (if it will be created,
   please see setting above).
+- Name - The name of the site which will be created. If you have enabled
+  creating Atom feed then it is needed. Otherwise, you can use it as a normal
+  template tag.
+- Language - The ISO 639-1 language code in which the site will be created.
 - Author - the name of the author of the site. If you have enabled creating
   Atom feed, then it is needed. Otherwise, you can use it as a normal template
   tag. Default value is `Jon Doe`.
