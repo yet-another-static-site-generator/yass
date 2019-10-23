@@ -166,7 +166,7 @@ begin
       -- Show version information
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
-      Put_Line("Released: 2019-03-25");
+      Put_Line("Released: 2019-10-23");
       -- Show license information
    elsif Argument(1) = "license" then
       Put_Line("Copyright (C) 2019 Bartek thindil Jasicki");
