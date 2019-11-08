@@ -47,7 +47,7 @@ To build you need:
 
   or
 
-  https://github.com/AdaCore/xmlad://github.com/AdaCore/xmlada
+  https://github.com/AdaCore/xmlada
 
 Navigate to the main directory(where this file is) to compile:
 
