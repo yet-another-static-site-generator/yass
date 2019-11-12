@@ -123,7 +123,7 @@ procedure YASS is
    -- Returns True if entered arguments are valid, otherwise False.
    -- SOURCE
    function ValidArguments(Message: String; Exist: Boolean) return Boolean is
-      -- ****
+   -- ****
    begin
       -- User does not entered name of the site project directory
       if Argument_Count < 2 then
@@ -160,12 +160,13 @@ procedure YASS is
       return True;
    end ValidArguments;
 
-begin
-   if Ada.Environment_Variables.Exists("YASSDIR") then
-      Set_Directory(Value("YASSDIR"));
-   end if;
-   -- No arguments or help: show available commands
-   if Argument_Count < 1 or else Argument(1) = "help" then
+   -- ****if* YASS/ShowHelp
+   -- FUNCTION
+   -- Show the program help - list of available commands
+   -- SOURCE
+   procedure ShowHelp is
+   -- ****
+   begin
       Put_Line("Possible actions:");
       Put_Line("help - show this screen and exit");
       Put_Line("version - show the program version and exit");
@@ -177,6 +178,15 @@ begin
         ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
       Put_Line
         ("createfile [name] - create new empty markdown file with ""name""");
+   end ShowHelp;
+
+begin
+   if Ada.Environment_Variables.Exists("YASSDIR") then
+      Set_Directory(Value("YASSDIR"));
+   end if;
+   -- No arguments or help: show available commands
+   if Argument_Count < 1 or else Argument(1) = "help" then
+      ShowHelp;
       -- Show version information
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
@@ -341,8 +351,8 @@ begin
       Put_Line("Empty file """ & To_String(WorkDirectory) & """ was created.");
       -- Unknown command entered
    else
-      Put_Line
-        ("Unknown command. Please enter ""help"" as argument for program to get full list of available commands.");
+      Put_Line("Unknown command '" & Argument(1) & "'");
+      ShowHelp;
    end if;
 exception
    when An_Exception : InvalidConfigData =>
