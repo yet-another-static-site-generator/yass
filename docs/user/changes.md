@@ -4,6 +4,7 @@
 -- backtext: Extending
 -- indexlink: true
 -- details: []
+-- details: unreleased
 -- details: 1.1
 -- details: 1.0
 -- details: 0.8
@@ -15,6 +16,7 @@
 -- details: 0.2
 -- details: 0.1
 -- detailslink: []
+-- detailslink: unreleased
 -- detailslink: 1.1
 -- detailslink: 1.0
 -- detailslink: 0.8
@@ -25,6 +27,11 @@
 -- detailslink: 0.3
 -- detailslink: 0.2
 -- detailslink: 0.1
+## <a name="unreleased"></a>[Unreleased]
+
+### Fixed
+- Typos in README.md
+
 ## <a name="1.1"></a>[1.1] - 2019-10-23
 ### Added
 - Contributing guide
