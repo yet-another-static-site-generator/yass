@@ -112,7 +112,7 @@ To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsbe
 If you have it, in main program directory (where this file is) enter terminal
 command: `others/generatedocs.py`. For more information about this script,
 please look [here](https://github.com/thindil/roboada#generatedocspy). This
-version of script have set all default settings for Hunter code. If you have
+version of script have set all default settings for the YASS code. If you have
 *Bob* installed, you can type `bob docs`.
 
 ## Contributing to the project
