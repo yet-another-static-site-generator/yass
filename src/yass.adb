@@ -41,10 +41,16 @@ procedure YASS is
    Version: constant String := "2.0";
    WorkDirectory: Unbounded_String;
 
+   -- ****if* YASS/BuildSite
+   -- FUNCTION
    -- Build the site from directory
-   -- DirectoryName: full path to the site directory
+   -- PARAMETERS
+   -- DirectoryName - full path to the site directory
+   -- RESULT
    -- Returns True if the site was build, otherwise False.
+   -- SOURCE
    function BuildSite(DirectoryName: String) return Boolean is
+      -- ****
       PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
       PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
       -- Build the site from directory with full path Name
@@ -105,11 +111,19 @@ procedure YASS is
          return False;
    end BuildSite;
 
-   -- Validate arguments which user was entered when started the program and set WorkDirectory for the program.
-   -- Message: part of message to show when user does not entered the site project directory
-   -- Exist: did selected directory should be test did it exist or not
+   -- ****if* YASS/ValidArguments
+   -- FUNCTION
+   -- Validate arguments which user was entered when started the program and
+   -- set WorkDirectory for the program.
+   -- PARAMETERS
+   -- Message - part of message to show when user does not entered the site
+   --           project directory
+   -- Exist   - did selected directory should be test did it exist or not
+   -- RESULT
    -- Returns True if entered arguments are valid, otherwise False.
+   -- SOURCE
    function ValidArguments(Message: String; Exist: Boolean) return Boolean is
+      -- ****
    begin
       -- User does not entered name of the site project directory
       if Argument_Count < 2 then
