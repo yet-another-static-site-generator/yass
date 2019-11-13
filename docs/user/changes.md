@@ -32,6 +32,7 @@
 ### Fixed
 - Typos in README.md
 - Server crash on lack of output directory
+- Adding Atom link to pages
 
 ## <a name="1.1"></a>[1.1] - 2019-10-23
 ### Added
