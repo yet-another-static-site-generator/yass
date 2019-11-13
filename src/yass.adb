@@ -284,6 +284,9 @@ begin
          return;
       end if;
       ParseConfig(To_String(WorkDirectory));
+      if not Ada.Directories.Exists(To_String(YassConfig.OutputDirectory)) then
+         Create_Path(To_String(YassConfig.OutputDirectory));
+      end if;
       Set_Directory(To_String(YassConfig.OutputDirectory));
       if YassConfig.ServerEnabled then
          if not Ada.Directories.Exists
