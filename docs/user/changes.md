@@ -30,7 +30,7 @@
 ## <a name="unreleased"></a>[Unreleased]
 
 ### Fixed
-- Typos in README.md
+- Typos in README.md and CONTRIBUTING.md
 - Server crash on lack of output directory
 - Adding Atom link to pages
 
