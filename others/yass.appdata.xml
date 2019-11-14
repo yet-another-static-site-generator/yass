@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>yass.desktop</id>
+  <metadata_license>GPL-3</metadata_license>
+  <project_license>GPL-3</project_license>
+  <name>yass</name>
+  <summary>Yet Another Static Site (generator)</summary>
+  <description>
+    <p>
+      YASS is console static site generator. It generate html pages
+      from CommonMarkdown files. The program is easily extendable with
+      modules which can be written in any programming language.
+    </p>
+  </description>
+  <url type="homepage">https://yet-another-static-site-generator.github.io/</url>
+  <provides>
+    <binary>yass</binary>
+  </provides>
+</component>
