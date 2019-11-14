@@ -37,7 +37,7 @@ Body:
 
 ## Features propositions
 
-If you want to talk/propose changes in any existing the prorgam feature or
+If you want to talk/propose changes in any existing the program feature or
 mechanic, feel free to contact me via issues tracker or mail (addresses of
 both you can find at top of this file). General rule about propositions is
 same as for bugs reports - please, try write that much informations as
@@ -88,7 +88,7 @@ header:
 format for documentation headers.
 
 2-9 - Documentation. For all available options, please refer to ROBODoc
-documentation. Yass uses `-- ` for start all documenation lines.
+documentation. Yass uses `-- ` for start all documentation lines.
 
 10 - Source code of item.
 
@@ -114,7 +114,7 @@ file is):
 
 `gprbuild -P yass.gpr -XMode=analyze`
 
-or, if you have Bob installed, command:
+or, if you have [Bob](https://github.com/thindil/bob) installed, command:
 
 `bob analyze`
 
