@@ -172,7 +172,7 @@ procedure YASS is
       Put_Line("version - show the program version and exit");
       Put_Line("license - show short info about the program license");
       Put_Line("readme - show content of README file");
-      Put_Line("create [name] - create new site in ""name"" directory");
+      Put_Line("createnow [name] - create new site in ""name"" directory");
       Put_Line("build [name] - build site in ""name"" directory");
       Put_Line
         ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
@@ -242,7 +242,7 @@ begin
          Close(ReadmeFile);
       end;
       -- Create new, selected site project directory
-   elsif Argument(1) = "create" then
+   elsif Argument(1) = "createnow" then
       if not ValidArguments("where new page will be created.", True) then
          return;
       end if;
