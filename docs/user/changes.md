@@ -29,6 +29,9 @@
 -- detailslink: 0.1
 ## <a name="unreleased"></a>[Unreleased]
 
+### Changed
+- Create command to createnow
+
 ### Fixed
 - Typos in README.md and CONTRIBUTING.md
 - Server crash on lack of output directory
