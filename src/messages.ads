@@ -22,7 +22,7 @@ package Messages is
 
    -- ****t* Messages/Messages_Types
    -- FUNCTION
-   -- Types of messages: Normal or Error
+   -- Types of messages: Normal, Error or Success
    -- SOURCE
    type Messages_Types is (Normal, Error, Success);
    -- ****
