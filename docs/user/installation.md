@@ -47,13 +47,25 @@ Navigate to the main directory to compile:
   in GNAT. Just run GPS, select *yass.gpr* as a project file and select option
   `Build All`.
 
-* If you prefer using console: in the main source code directory type `gprbuild`
-  for debug mode build or for release mode: `gprbuild -XMode=release`.
+* If you prefer using console: in main source code directory type `gprbuild`
+  for debug mode build or for release mode: `gprbuild -XMode=release`. If you
+  have installed [Bob](https://github.com/thindil/bob) you can type `bob debug`
+  for build in debug mode or `bob release` to prepare release for the program.
 
 If you want to be able to print content of README.md file to terminal (by
 `readme` program command), copy file README.md to `bin` directory.
 
 **Note:** If you want to move the program around, compile it in release mode. In
 debug mode the program may have problems with finding all dependencies.
+
+### Build unit tests
+
+Navigate to `tests/driver` directory from the main directory (where this
+file is):
+
+* From console: type `gprbuild -P test_driver.gpr`
+
+Or if you have [Bob](https://github.com/thindil/bob) installed, type
+`bob tests`.
 
 <a href="#top">^ Top</a>
