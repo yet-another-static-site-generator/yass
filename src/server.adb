@@ -34,6 +34,7 @@ with Pages; use Pages;
 with Modules; use Modules;
 with Sitemaps; use Sitemaps;
 with AtomFeed; use AtomFeed;
+with Messages; use Messages;
 
 package body Server is
 
@@ -133,7 +134,7 @@ package body Server is
             ProcessDirectories'Access);
       exception
          when GenerateSiteException =>
-            Put_Line
+            ShowMessage
               ("[" &
                Ada.Calendar.Formatting.Image
                  (Date => Clock, Time_Zone => UTC_Time_Offset) &
@@ -141,9 +142,10 @@ package body Server is
             if YassConfig.StopServerOnError then
                if YassConfig.ServerEnabled then
                   ShutdownServer;
-                  Put_Line("done.");
+                  ShowMessage("done.", Success);
                end if;
-               Put_Line("Stopping monitoring site changes...done.");
+               ShowMessage
+                 ("Stopping monitoring site changes...done.", Success);
                OS_Exit(0);
             end if;
       end MonitorDirectory;
@@ -200,7 +202,7 @@ package body Server is
                  ("Site configuration was changed, reconfiguring the project.");
                ParseConfig(To_String(SiteDirectory));
                ShutdownServer;
-               Put_Line("done");
+               ShowMessage("done", Messages.Success);
                if YassConfig.ServerEnabled then
                   StartServer;
                end if;

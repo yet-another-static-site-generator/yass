@@ -22,6 +22,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.Expect; use GNAT.Expect;
 with AWS.Templates; use AWS.Templates;
+with Messages; use Messages;
 
 package body Modules is
 
@@ -182,7 +183,7 @@ package body Modules is
          Close(Module);
       exception
          when Invalid_Process =>
-            Put_Line("Module " & Full_Name(Item) & " failed to execute.");
+            ShowMessage("Module " & Full_Name(Item) & " failed to execute.");
          when Process_Died =>
             null;
       end RunModule;
