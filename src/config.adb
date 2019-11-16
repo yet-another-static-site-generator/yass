@@ -48,7 +48,31 @@ package body Config is
       Put_Line(ConfigFile, "ExcludedFiles = .git,.gitignore,tags");
       Put_Line
         (ConfigFile,
-         "# Did program should start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
+         "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
+      Put_Line(ConfigFile, "Name = New Site");
+      Put_Line
+        (ConfigFile,
+         "# The ISO 639-1 language code in which the site will be created.");
+      Put_Line(ConfigFile, "Language = en");
+      Put_Line
+        (ConfigFile,
+         "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
+      Put_Line(ConfigFile, "Author = John Doe");
+      Put_Line
+        (ConfigFile,
+         "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
+      Put_Line(ConfigFile, "AuthorEmail = johndoe@example.com");
+      Put_Line
+        (ConfigFile,
+         "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
+      Put_Line(ConfigFile, "AtomFeedSource = none");
+      Put_Line
+        (ConfigFile,
+         "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
+      Put_Line(ConfigFile, "AtomFeedAmount = 25");
+      Put_Line
+        (ConfigFile,
+         "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
       Put_Line(ConfigFile, "ServerEnabled = true");
       Put_Line
         (ConfigFile,
@@ -56,7 +80,7 @@ package body Config is
       Put_Line(ConfigFile, "ServerPort = 8888");
       Put_Line
         (ConfigFile,
-         "# Did web server and whole monitoring of the site changes should stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
+         "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
       Put_Line(ConfigFile, "StopServerOnError = false");
       Put_Line
         (ConfigFile,
@@ -76,32 +100,8 @@ package body Config is
       Put_Line(ConfigFile, "BaseURL = http://localhost:8888");
       Put_Line
         (ConfigFile,
-         "# Did the program should create sitemap when creating the site. Possible values are true or false (case-insensitive).");
+         "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
       Put_Line(ConfigFile, "SitemapEnabled = true");
-      Put_Line
-        (ConfigFile,
-         "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
-      Put_Line(ConfigFile, "AtomFeedSource = none");
-      Put_Line
-        (ConfigFile,
-         "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
-      Put_Line(ConfigFile, "AtomFeedAmount = 25");
-      Put_Line
-        (ConfigFile,
-         "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
-      Put_Line(ConfigFile, "Name = New Site");
-      Put_Line
-        (ConfigFile,
-         "# The ISO 639-1 language code in which the site will be created.");
-      Put_Line(ConfigFile, "Language = en");
-      Put_Line
-        (ConfigFile,
-         "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
-      Put_Line(ConfigFile, "Author = John Doe");
-      Put_Line
-        (ConfigFile,
-         "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
-      Put_Line(ConfigFile, "AuthorEmail = johndoe@example.com");
       Put_Line
         (ConfigFile,
          "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
@@ -276,5 +276,155 @@ package body Config is
       when others =>
          raise InvalidConfigData with To_String(RawData);
    end ParseConfig;
+
+   procedure CreateInteractiveConfig(DirectoryName: String) is
+      ConfigFile: File_Type;
+      Answer: Unbounded_String;
+   begin
+      Create
+        (ConfigFile, Append_File, DirectoryName & Dir_Separator & "site.cfg");
+      Put_Line
+        (ConfigFile,
+         "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
+      Put_Line(ConfigFile, "LayoutsDirectory = _layouts");
+      Put_Line
+        (ConfigFile,
+         "# Directory in which will be placed generated site. May be absolute or relative to project directory.");
+      Put_Line(ConfigFile, "OutputDirectory = _output");
+      Put_Line
+        (ConfigFile,
+         "# Directory in which will be placed program modules used to generate the site. May be absolute or relative to project directory.");
+      Put_Line(ConfigFile, "ModulesDirectory = _modules");
+      Put_Line
+        (ConfigFile,
+         "# List of excluded files and directories from list of sources used to generating the site. All paths must be relative to the project directory. If you exclude directory, it whole content will be excluded too. Layouts, modules and output directories are excluded by default.");
+      Put_Line(ConfigFile, "ExcludedFiles = .git,.gitignore,tags");
+      Put_Line
+        (ConfigFile,
+         "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
+      Put_Line
+        ("Now we ask you some questions about your new site. You can always change it later by modifying the site configuration file. If you just press Enter as a answer, default value will be used.");
+      Put("Please enter the name of the new site (default - New Site): ");
+      Answer := To_Unbounded_String(Get_Line);
+      if Answer = Null_Unbounded_String then
+         Answer := To_Unbounded_String("New Site");
+      end if;
+      Put_Line(ConfigFile, "Name = " & To_String(Answer));
+      Answer := Null_Unbounded_String;
+      Put_Line
+        (ConfigFile,
+         "# The ISO 639-1 language code in which the site will be created.");
+      Put
+        ("Please enter language code in which the new site will be written (default - en): ");
+      Answer := To_Unbounded_String(Get_Line);
+      if Answer = Null_Unbounded_String then
+         Answer := To_Unbounded_String("en");
+      end if;
+      Put_Line(ConfigFile, "Language = " & To_String(Answer));
+      Answer := Null_Unbounded_String;
+      Put_Line
+        (ConfigFile,
+         "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
+      Put("Please enter the author of the new site (default - Jon Doe): ");
+      Answer := To_Unbounded_String(Get_Line);
+      if Answer = Null_Unbounded_String then
+         Answer := To_Unbounded_String("Jon Doe");
+      end if;
+      Put_Line(ConfigFile, "Author = " & To_String(Answer));
+      Answer := Null_Unbounded_String;
+      Put_Line
+        (ConfigFile,
+         "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
+      Put
+        ("Please enter the contact email for the new site (default - jondoe@example.com): ");
+      Answer := To_Unbounded_String(Get_Line);
+      if Answer = Null_Unbounded_String then
+         Answer := To_Unbounded_String("jondoe@example.com");
+      end if;
+      Put_Line(ConfigFile, "AuthorEmail = " & To_String(Answer));
+      Answer := Null_Unbounded_String;
+      Put_Line
+        (ConfigFile,
+         "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
+      Put
+        ("Do you want to create Atom feed for the new site? If yes, you must specify source for the feed: tags - create Atom entries from proper tags in Markdown files, filename - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside). If you press Enter, creating Atom feed will be disabled (default - none): ");
+      Answer := To_Unbounded_String(Get_Line);
+      if Answer = Null_Unbounded_String then
+         Answer := To_Unbounded_String("none");
+      end if;
+      Put_Line(ConfigFile, "AtomFeedSource = " & To_String(Answer));
+      if Answer /= To_Unbounded_String("none") then
+         Put
+           ("How much maximum entries should be in the Atom feed? Recommended valuese are between 10 and 50 (default - 25): ");
+         Answer := To_Unbounded_String(Get_Line);
+         if Answer = Null_Unbounded_String then
+            Answer := To_Unbounded_String("25");
+         end if;
+      else
+         Answer := To_Unbounded_String("25");
+      end if;
+      Put_Line
+        (ConfigFile,
+         "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
+      Put_Line(ConfigFile, "AtomFeedAmount = " & To_String(Answer));
+
+      Put_Line
+        (ConfigFile,
+         "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
+      Put_Line(ConfigFile, "ServerEnabled = true");
+      Put_Line
+        (ConfigFile,
+         "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
+      Put_Line(ConfigFile, "ServerPort = 8888");
+      Put_Line
+        (ConfigFile,
+         "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
+      Put_Line(ConfigFile, "StopServerOnError = false");
+      Put_Line
+        (ConfigFile,
+         "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
+      Put_Line(ConfigFile, "BrowserCommand = none");
+      Put_Line
+        (ConfigFile,
+         "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
+      Put_Line(ConfigFile, "MonitorInterval = 5");
+      Put_Line
+        (ConfigFile,
+         "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
+      Put_Line(ConfigFile, "MonitorConfigInterval = 60");
+      Put_Line
+        (ConfigFile,
+         "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
+      Put_Line(ConfigFile, "BaseURL = http://localhost:8888");
+      Put_Line
+        (ConfigFile,
+         "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
+      Put_Line(ConfigFile, "SitemapEnabled = true");
+      Put_Line
+        (ConfigFile,
+         "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+      Put_Line(ConfigFile, "StartTagSeparator = {%");
+      Put_Line
+        (ConfigFile,
+         "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+      Put_Line(ConfigFile, "EndTagSeparator = %}");
+      Put_Line
+        (ConfigFile,
+         "# String used to mark comments in markdown files which will be parsed.");
+      Put_Line(ConfigFile, "MarkdownComment = --");
+      Put_Line
+        (ConfigFile,
+         "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
+      Put_Line
+        (ConfigFile,
+         "# First 3 types of tags are in Name = Value scheme. For strings it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always fall back to string value.");
+      Put_Line
+        (ConfigFile,
+         "# Composite tags first must be initialized with Name = [] then just add as many as you want values to it by Name = Value scheme.");
+      Put_Line
+        (ConfigFile,
+         "# For more informations about site.cfg file please check program documentation.");
+      Close(ConfigFile);
+   end CreateInteractiveConfig;
 
 end Config;

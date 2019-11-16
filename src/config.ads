@@ -170,4 +170,15 @@ package Config is
    procedure ParseConfig(DirectoryName: String);
    -- ****
 
+   -- ****f* Config/CreateInteractiveConfig
+   -- FUNCTION
+   -- Create configuration file based on the user answers to the program
+   -- questions
+   -- PARAMETERS
+   -- DirectoryName - Full path to the directory where config file will be
+   --                 created
+   -- SOURCE
+   procedure CreateInteractiveConfig(DirectoryName: String);
+   -- ****
+
 end Config;

@@ -174,12 +174,45 @@ procedure YASS is
       Put_Line("license - show short info about the program license");
       Put_Line("readme - show content of README file");
       Put_Line("createnow [name] - create new site in ""name"" directory");
+      Put_Line("create [name] - interactively create new site in ""name"" directory");
       Put_Line("build [name] - build site in ""name"" directory");
       Put_Line
         ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
       Put_Line
         ("createfile [name] - create new empty markdown file with ""name""");
    end ShowHelp;
+
+   procedure Create is
+   begin
+      if not ValidArguments("where new page will be created.", True) then
+         return;
+      end if;
+      declare
+         Paths: constant array(Positive range <>) of Unbounded_String :=
+           (To_Unbounded_String("_layouts"), To_Unbounded_String("_output"),
+            To_Unbounded_String("_modules" & Dir_Separator & "start"),
+            To_Unbounded_String("_modules" & Dir_Separator & "pre"),
+            To_Unbounded_String("_modules" & Dir_Separator & "post"),
+            To_Unbounded_String("_modules" & Dir_Separator & "end"));
+      begin
+         for I in Paths'Range loop
+            Create_Path
+              (To_String(WorkDirectory) & Dir_Separator & To_String(Paths(I)));
+         end loop;
+      end;
+      if Argument(1) = "create" then
+         CreateInteractiveConfig(To_String(WorkDirectory));
+      else
+         CreateConfig(To_String(WorkDirectory));
+      end if;
+      CreateLayout(To_String(WorkDirectory));
+      CreateDirectoryLayout(To_String(WorkDirectory));
+      CreateEmptyFile(To_String(WorkDirectory));
+      ShowMessage
+        ("New page in directory """ & Argument(2) & """ was created. Edit """ &
+         Argument(2) & Dir_Separator &
+         "site.cfg"" file to set data for your new site.", Messages.Success);
+   end Create;
 
 begin
    if Ada.Environment_Variables.Exists("YASSDIR") then
@@ -243,32 +276,8 @@ begin
          Close(ReadmeFile);
       end;
       -- Create new, selected site project directory
-   elsif Argument(1) = "createnow" then
-      if not ValidArguments("where new page will be created.", True) then
-         return;
-      end if;
-      declare
-         Paths: constant array(Positive range <>) of Unbounded_String :=
-           (To_Unbounded_String("_layouts"), To_Unbounded_String("_output"),
-            To_Unbounded_String("_modules" & Dir_Separator & "start"),
-            To_Unbounded_String("_modules" & Dir_Separator & "pre"),
-            To_Unbounded_String("_modules" & Dir_Separator & "post"),
-            To_Unbounded_String("_modules" & Dir_Separator & "end"));
-      begin
-         for I in Paths'Range loop
-            Create_Path
-              (To_String(WorkDirectory) & Dir_Separator & To_String(Paths(I)));
-         end loop;
-      end;
-      CreateConfig(To_String(WorkDirectory));
-      CreateLayout(To_String(WorkDirectory));
-      CreateDirectoryLayout(To_String(WorkDirectory));
-      CreateEmptyFile(To_String(WorkDirectory));
-      ShowMessage
-        ("New page in directory """ & Argument(2) & """ was created. Edit """ &
-         Argument(2) & Dir_Separator &
-         "site.cfg"" file to set data for your new site.", Messages.Success);
-      -- Build existing site project from selected directory
+   elsif Argument(1) = "createnow" or Argument(1) = "create" then
+      Create;
    elsif Argument(1) = "build" then
       if not ValidArguments("from where page will be created.", False) then
          return;
