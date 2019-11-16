@@ -483,19 +483,55 @@ package body Config is
             "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
          Put_Line(ConfigFile, "MonitorConfigInterval = 60");
       end if;
-
-      Put_Line
-        (ConfigFile,
-         "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-      Put_Line(ConfigFile, "StartTagSeparator = {%");
-      Put_Line
-        (ConfigFile,
-         "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-      Put_Line(ConfigFile, "EndTagSeparator = %}");
-      Put_Line
-        (ConfigFile,
-         "# String used to mark comments in markdown files which will be parsed.");
-      Put_Line(ConfigFile, "MarkdownComment = --");
+      Put
+        ("Do you want to set options related to compatybility with other static sites generators? (default - no): ");
+      Answer := To_Unbounded_String(Get_Line);
+      if Answer = To_Unbounded_String("yes") or
+        Answer = To_Unbounded_String("y") then
+         Put_Line
+           (ConfigFile,
+            "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+         Put
+           ("What mark should be used as a start for template tag? (default, without quotes - ""{%""): ");
+         Answer := To_Unbounded_String(Get_Line);
+         if Answer = Null_Unbounded_String then
+            Answer := To_Unbounded_String("{%");
+         end if;
+         Put_Line(ConfigFile, "StartTagSeparator = " & To_String(Answer));
+         Put_Line
+           (ConfigFile,
+            "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+         Put
+           ("What mark should be used as an end for template tag? (default, without quotes - ""%}""): ");
+         Answer := To_Unbounded_String(Get_Line);
+         if Answer = Null_Unbounded_String then
+            Answer := To_Unbounded_String("%}");
+         end if;
+         Put_Line(ConfigFile, "EndTagSeparator = " & To_String(Answer));
+         Put_Line
+           (ConfigFile,
+            "# String used to mark comments in markdown files which will be parsed.");
+         Put
+           ("What mark should be used as a start for the comment line in Markdown files? (default, without quotes - ""--""): ");
+         Answer := To_Unbounded_String(Get_Line);
+         if Answer = Null_Unbounded_String then
+            Answer := To_Unbounded_String("--");
+         end if;
+         Put_Line(ConfigFile, "MarkdownComment = " & To_String(Answer));
+      else
+         Put_Line
+           (ConfigFile,
+            "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+         Put_Line(ConfigFile, "StartTagSeparator = {%");
+         Put_Line
+           (ConfigFile,
+            "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+         Put_Line(ConfigFile, "EndTagSeparator = %}");
+         Put_Line
+           (ConfigFile,
+            "# String used to mark comments in markdown files which will be parsed.");
+         Put_Line(ConfigFile, "MarkdownComment = --");
+      end if;
       Put_Line
         (ConfigFile,
          "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
