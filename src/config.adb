@@ -414,6 +414,7 @@ package body Config is
          Put_Line(ConfigFile, "ServerPort = " & To_String(Answer));
          Put
            ("Should whole monitoring option stop if encounter any error during the site creation? (default - no): ");
+         Answer := To_Unbounded_String(Get_Line);
          if Answer = To_Unbounded_String("yes") or
            Answer = To_Unbounded_String("y") then
             Put_Line(ConfigFile, "StopServerOnError = true");
@@ -422,18 +423,21 @@ package body Config is
          end if;
          Put
            ("Full path to the web broser which will be started when the program starts in server mode. (default - none): ");
+         Answer := To_Unbounded_String(Get_Line);
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("none");
          end if;
          Put_Line(ConfigFile, "BrowserCommand = " & To_String(Answer));
          Put
            ("How often, in seconds, the program should check for changes in the site files? (default - 5): ");
+         Answer := To_Unbounded_String(Get_Line);
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("5");
          end if;
          Put_Line(ConfigFile, "MonitorInterval = " & To_String(Answer));
          Put
            ("How often, in seconds, the program should check for changes in the site configuration file? (default - 60): ");
+         Answer := To_Unbounded_String(Get_Line);
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("60");
          end if;
