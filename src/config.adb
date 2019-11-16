@@ -64,12 +64,20 @@ package body Config is
       Put_Line(ConfigFile, "AuthorEmail = johndoe@example.com");
       Put_Line
         (ConfigFile,
+         "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
+      Put_Line(ConfigFile, "BaseURL = http://localhost:8888");
+      Put_Line
+        (ConfigFile,
          "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
       Put_Line(ConfigFile, "AtomFeedSource = none");
       Put_Line
         (ConfigFile,
          "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
       Put_Line(ConfigFile, "AtomFeedAmount = 25");
+      Put_Line
+        (ConfigFile,
+         "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
+      Put_Line(ConfigFile, "SitemapEnabled = true");
       Put_Line
         (ConfigFile,
          "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
@@ -94,14 +102,6 @@ package body Config is
         (ConfigFile,
          "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
       Put_Line(ConfigFile, "MonitorConfigInterval = 60");
-      Put_Line
-        (ConfigFile,
-         "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
-      Put_Line(ConfigFile, "BaseURL = http://localhost:8888");
-      Put_Line
-        (ConfigFile,
-         "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
-      Put_Line(ConfigFile, "SitemapEnabled = true");
       Put_Line
         (ConfigFile,
          "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
@@ -310,7 +310,6 @@ package body Config is
          Answer := To_Unbounded_String("New Site");
       end if;
       Put_Line(ConfigFile, "Name = " & To_String(Answer));
-      Answer := Null_Unbounded_String;
       Put_Line
         (ConfigFile,
          "# The ISO 639-1 language code in which the site will be created.");
@@ -321,7 +320,6 @@ package body Config is
          Answer := To_Unbounded_String("en");
       end if;
       Put_Line(ConfigFile, "Language = " & To_String(Answer));
-      Answer := Null_Unbounded_String;
       Put_Line
         (ConfigFile,
          "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
@@ -331,7 +329,6 @@ package body Config is
          Answer := To_Unbounded_String("Jon Doe");
       end if;
       Put_Line(ConfigFile, "Author = " & To_String(Answer));
-      Answer := Null_Unbounded_String;
       Put_Line
         (ConfigFile,
          "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
@@ -342,7 +339,16 @@ package body Config is
          Answer := To_Unbounded_String("jondoe@example.com");
       end if;
       Put_Line(ConfigFile, "AuthorEmail = " & To_String(Answer));
-      Answer := Null_Unbounded_String;
+      Put_Line
+        (ConfigFile,
+         "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
+      Put
+        ("Please enter base URL of the new site (default - http://localhost:8888): ");
+      Answer := To_Unbounded_String(Get_Line);
+      if Answer = Null_Unbounded_String then
+         Answer := To_Unbounded_String("http://localhost:8888");
+      end if;
+      Put_Line(ConfigFile, "BaseURL = " & To_String(Answer));
       Put_Line
         (ConfigFile,
          "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
@@ -367,39 +373,98 @@ package body Config is
         (ConfigFile,
          "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
       Put_Line(ConfigFile, "AtomFeedAmount = " & To_String(Answer));
-
-      Put_Line
-        (ConfigFile,
-         "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
-      Put_Line(ConfigFile, "ServerEnabled = true");
-      Put_Line
-        (ConfigFile,
-         "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
-      Put_Line(ConfigFile, "ServerPort = 8888");
-      Put_Line
-        (ConfigFile,
-         "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
-      Put_Line(ConfigFile, "StopServerOnError = false");
-      Put_Line
-        (ConfigFile,
-         "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
-      Put_Line(ConfigFile, "BrowserCommand = none");
-      Put_Line
-        (ConfigFile,
-         "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
-      Put_Line(ConfigFile, "MonitorInterval = 5");
-      Put_Line
-        (ConfigFile,
-         "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
-      Put_Line(ConfigFile, "MonitorConfigInterval = 60");
-      Put_Line
-        (ConfigFile,
-         "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
-      Put_Line(ConfigFile, "BaseURL = http://localhost:8888");
       Put_Line
         (ConfigFile,
          "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
-      Put_Line(ConfigFile, "SitemapEnabled = true");
+      Put
+        ("Do you want to create sitemap file for the new site? (default - yes): ");
+      Answer := To_Unbounded_String(Get_Line);
+      if Answer = To_Unbounded_String("yes") or
+        Answer = To_Unbounded_String("y") or
+        Answer = Null_Unbounded_String then
+         Put_Line(ConfigFile, "SitemapEnabled = true");
+      else
+         Put_Line(ConfigFile, "SitemapEnabled = false");
+      end if;
+      Put
+        ("Do you want to set more technical options (like configuring build-in web server)? (default - no): ");
+      Answer := To_Unbounded_String(Get_Line);
+      if Answer = To_Unbounded_String("yes") or
+        Answer = To_Unbounded_String("y") then
+         Put_Line
+           (ConfigFile,
+            "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
+         Put
+           ("Should the program start web server when monitoring for changes in the site? (default - yes): ");
+         Answer := To_Unbounded_String(Get_Line);
+         if Answer = To_Unbounded_String("yes") or
+           Answer = To_Unbounded_String("y") or
+           Answer = Null_Unbounded_String then
+            Put_Line(ConfigFile, "ServerEnabled = true");
+         else
+            Put_Line(ConfigFile, "ServerEnabled = false");
+         end if;
+         Put_Line(ConfigFile, "ServerEnabled = " & To_String(Answer));
+         Put
+           ("On which port should the web server listening? Possible values are from 1 to 65535. Ports below 1025 require root privileges. (default - 8888): ");
+         Answer := To_Unbounded_String(Get_Line);
+         if Answer = Null_Unbounded_String then
+            Answer := To_Unbounded_String("8888");
+         end if;
+         Put_Line(ConfigFile, "ServerPort = " & To_String(Answer));
+         Put
+           ("Should whole monitoring option stop if encounter any error during the site creation? (default - no): ");
+         if Answer = To_Unbounded_String("yes") or
+           Answer = To_Unbounded_String("y") then
+            Put_Line(ConfigFile, "StopServerOnError = true");
+         else
+            Put_Line(ConfigFile, "StopServerOnError = false");
+         end if;
+         Put
+           ("Full path to the web broser which will be started when the program starts in server mode. (default - none): ");
+         if Answer = Null_Unbounded_String then
+            Answer := To_Unbounded_String("none");
+         end if;
+         Put_Line(ConfigFile, "BrowserCommand = " & To_String(Answer));
+         Put
+           ("How often, in seconds, the program should check for changes in the site files? (default - 5): ");
+         if Answer = Null_Unbounded_String then
+            Answer := To_Unbounded_String("5");
+         end if;
+         Put_Line(ConfigFile, "MonitorInterval = " & To_String(Answer));
+         Put
+           ("How often, in seconds, the program should check for changes in the site configuration file? (default - 60): ");
+         if Answer = Null_Unbounded_String then
+            Answer := To_Unbounded_String("60");
+         end if;
+         Put_Line(ConfigFile, "MonitorConfigInterval = " & To_String(Answer));
+      else
+         Put_Line
+           (ConfigFile,
+            "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
+         Put_Line(ConfigFile, "ServerEnabled = true");
+         Put_Line
+           (ConfigFile,
+            "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
+         Put_Line(ConfigFile, "ServerPort = 8888");
+         Put_Line
+           (ConfigFile,
+            "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
+         Put_Line(ConfigFile, "StopServerOnError = false");
+         Put_Line
+           (ConfigFile,
+            "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
+         Put_Line(ConfigFile, "BrowserCommand = none");
+         Put_Line
+           (ConfigFile,
+            "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
+         Put_Line(ConfigFile, "MonitorInterval = 5");
+         Put_Line
+           (ConfigFile,
+            "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
+         Put_Line(ConfigFile, "MonitorConfigInterval = 60");
+      end if;
+
       Put_Line
         (ConfigFile,
          "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
