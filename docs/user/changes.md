@@ -29,6 +29,9 @@
 -- detailslink: 0.1
 ## <a name="unreleased"></a>[Unreleased]
 
+### Added
+- Coloring the program messages
+
 ### Changed
 - Create command to createnow
 
