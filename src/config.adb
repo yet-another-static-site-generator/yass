@@ -405,6 +405,9 @@ package body Config is
             Put_Line(ConfigFile, "ServerEnabled = false");
          end if;
          Put_Line(ConfigFile, "ServerEnabled = " & To_String(Answer));
+         Put_Line
+           (ConfigFile,
+            "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
          Put
            ("On which port should the web server listening? Possible values are from 1 to 65535. Ports below 1025 require root privileges. (default - 8888): ");
          Answer := To_Unbounded_String(Get_Line);
@@ -412,6 +415,9 @@ package body Config is
             Answer := To_Unbounded_String("8888");
          end if;
          Put_Line(ConfigFile, "ServerPort = " & To_String(Answer));
+         Put_Line
+           (ConfigFile,
+            "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
          Put
            ("Should whole monitoring option stop if encounter any error during the site creation? (default - no): ");
          Answer := To_Unbounded_String(Get_Line);
@@ -421,6 +427,9 @@ package body Config is
          else
             Put_Line(ConfigFile, "StopServerOnError = false");
          end if;
+         Put_Line
+           (ConfigFile,
+            "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
          Put
            ("Full path to the web broser which will be started when the program starts in server mode. (default - none): ");
          Answer := To_Unbounded_String(Get_Line);
@@ -428,6 +437,9 @@ package body Config is
             Answer := To_Unbounded_String("none");
          end if;
          Put_Line(ConfigFile, "BrowserCommand = " & To_String(Answer));
+         Put_Line
+           (ConfigFile,
+            "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
          Put
            ("How often, in seconds, the program should check for changes in the site files? (default - 5): ");
          Answer := To_Unbounded_String(Get_Line);
@@ -435,6 +447,9 @@ package body Config is
             Answer := To_Unbounded_String("5");
          end if;
          Put_Line(ConfigFile, "MonitorInterval = " & To_String(Answer));
+         Put_Line
+           (ConfigFile,
+            "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
          Put
            ("How often, in seconds, the program should check for changes in the site configuration file? (default - 60): ");
          Answer := To_Unbounded_String(Get_Line);
