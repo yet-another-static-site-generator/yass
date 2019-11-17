@@ -4,7 +4,7 @@
 -- backtext: Extending
 -- indexlink: true
 -- details: []
--- details: unreleased
+-- details: 2.0
 -- details: 1.1
 -- details: 1.0
 -- details: 0.8
@@ -16,7 +16,7 @@
 -- details: 0.2
 -- details: 0.1
 -- detailslink: []
--- detailslink: unreleased
+-- detailslink: 2.0
 -- detailslink: 1.1
 -- detailslink: 1.0
 -- detailslink: 0.8
@@ -27,7 +27,7 @@
 -- detailslink: 0.3
 -- detailslink: 0.2
 -- detailslink: 0.1
-## <a name="unreleased"></a>[Unreleased]
+## <a name="2.0"></a>[2.0] - 2019-11-17
 
 ### Added
 - Coloring the program messages
