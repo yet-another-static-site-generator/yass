@@ -26,7 +26,10 @@
 ## <a name="quickstart"></a>Quick start
 
 1. To create NewSite project, type in console `./yass createnow NewSite`. This
-   will create skeletal project in directory `NewSite`.
+   will create skeletal project with default configuration in directory
+   `NewSite`. If you prefer to have more control over creation of new project,
+   use command `./yass create NewSite` which allow you to set some settings
+   for the new project.
 2. Inside newly created directory `NewSite` you can find file *index.md*, which
    later will be main page of the site and *site.cfg* which contains all basic
    settings of the site. Add some markdown text to *index.md* file or some new

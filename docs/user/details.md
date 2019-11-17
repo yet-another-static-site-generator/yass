@@ -37,7 +37,9 @@
 ## <a name="create"></a>Creating new site project
 
 To create new site project type in the directory where the file `yass` is
-`./yass createnow [ProjectName]` where `[ProjectName]` is the name of your site
+`./yass createnow [ProjectName]` for fast create of new project with default
+settings, or `./yass create [ProjectName]` for creation of new project based
+on your answers to few questions. `[ProjectName]` is the name of your site
 project. It will be the name of directory too. This command create the
 directory with the content:
 
