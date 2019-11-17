@@ -3,7 +3,7 @@
 -- nexttext: Installation
 YASS is *headless* application (no user interface) used to generate static
 (HTML) pages from [Common Markdown](https://commonmark.org/) files. This
-documentation is about newest version of program (currently 1.1).
+documentation is about newest version of program (currently 2.0).
 
 - [Installation and Requirements](installation.html)
 - [Quick Start Guide](quickstart.html)
