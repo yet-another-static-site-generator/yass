@@ -31,6 +31,7 @@
 
 ### Added
 - Coloring the program messages
+- Interactive creation of new projects
 
 ### Changed
 - Create command to createnow
