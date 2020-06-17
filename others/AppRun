@@ -5,5 +5,4 @@ if [ -z ${APPDIR+x} ]; then
    export APPDIR=$(pwd)
 fi
 cd "$APPDIR/usr/bin"
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$APPDIR/lib
-./yass "$@"
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../lib ./yass "$@"
