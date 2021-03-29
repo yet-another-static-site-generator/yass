@@ -11,7 +11,7 @@ options:
   --multidoc
   --index
   --internal
-  --documenttitle "YASS v2.0 code documentation"
+  --documenttitle "YASS 3.0 code documentation"
   --syntaxcolors
   --css others/robodoc.css
   --sections
@@ -19,39 +19,100 @@ options:
   --masterindex "Index,index"
   --sourceindex "Source files,sources"
 headertypes:
-  h Packages robo_packages 5
-  a Tasks robo_tasks 4
-  t Types robo_types 3
-  v Variables robo_variables 2
-  e Exceptions robo_exceptions 1
-  f Subprograms robo_subprograms 0
+  h Packages robo_packages 8
+  a Tasks robo_tasks 7
+  t Types robo_types 6
+  s Records robo_records 5
+  d Constants robo_constants 4
+  v Variables robo_variables 3
+  e Exceptions robo_exceptions 2
+  f Subprograms robo_subprograms 1
+  o Commands robo_commands 0
 item order:
   FUNCTION
   SOURCE
   OPTIONS
   PARAMETERS
   RESULT
+  OUTPUT
+  EXAMPLE
+  SEE ALSO
+  NOTES
+  TODO
+  HISTORY
+source items:
+  EXAMPLE
 keywords:
-  procedure
-  function
-  return
-  is
-  type
-  record
-  pragma
-  end
-  package
-  new
+  abort
+  abs
+  abstract
+  accept
   access
+  aliased
+  all
+  and
+  array
+  at
+  begin
+  body
+  case
+  constant
+  declare
+  delay
+  delta
+  digits
+  do
+  else
+  elsif
+  end
+  entry
+  exception
+  exit
+  for
+  function
+  generic
+  goto
+  if
+  in
+  interface
+  is
+  limited
+  loop
+  mod
+  new
   not
   null
-  subtype
-  renames
-  range
+  of
+  or
+  others
   out
-  in
-  constant
+  overriding
+  package
+  pragma
   private
-  exception
+  procedure
+  protected
+  raise
+  range
+  record
+  rem
+  renames
+  requeue
+  return
+  reverse
+  select
+  separate
+  some
+  subtype
+  synchronized
+  tagged
   task
-  entry
+  terminate
+  then
+  type
+  until
+  use
+  when
+  while
+  with
+  xor
