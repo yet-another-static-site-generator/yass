@@ -46,3 +46,9 @@
    execute:
       - gprof bin/yass gmon.out
    description: Generate gprof report
+- command:
+   name: push
+   execute:
+      - fossil push
+      - fossil git export --force
+   description: Update remote Fossil repository and its Git mirror
