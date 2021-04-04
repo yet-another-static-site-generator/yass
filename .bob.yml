@@ -39,7 +39,7 @@
 - command:
    name: docs
    execute:
-      - others/generatedocs.py
+      - others/generatedocs.tcl
    description: Generate code documentation
 - command:
    name: gprof
