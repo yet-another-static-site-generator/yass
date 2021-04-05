@@ -51,7 +51,7 @@ project yass is
             when "debug" =>
               for Default_Switches ("ada") use ("-no-pie", "-lcmark");
             when "release" =>
-                for Default_Switches ("ada") use ("-Wl,--gc-sections", "-lcmark");
+                for Default_Switches ("ada") use ("-Wl,--gc-sections", "-lcmark", "-L/opt/lib");
             when "analyze" =>
               for Default_Switches ("ada") use ("-no-pie", "-pg", "-fprofile-arcs", "-lcmark");
         end case;
