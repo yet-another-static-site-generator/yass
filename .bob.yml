@@ -12,9 +12,7 @@
 - command:
    name: release
    execute:
-      - gprclean -P yass.gpr
-      - others/build.sh
-      - gprclean -P yass.gpr
+      - tclsh others/build.tcl
    description: Build yass in release mode
 - command:
    name: analyze
