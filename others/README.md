@@ -8,7 +8,8 @@ Various files which are not necessary needed for development:
 - robodoc.css      - CSS for code documentation
 - yass-icon.png    - icon for AppImage
 - yass.desktop     - desktop file for AppImage
-- build.sh         - script to build release for the program. Build the
+- build.tcl        - script to build release for the program. Build the
                      program in release mode and copy all files to proper
-                     location
+                     location. **Important:** run this script from the main
+                     project directory, not from this.
 - yass.appdata.xml - AppStream meta data for AppImage
