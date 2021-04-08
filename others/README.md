@@ -4,7 +4,7 @@ Various files which are not necessary needed for development:
 - generatedocs.tcl - script to generate code documentation. **Important:** run
                      this script from the main project directory, not from
                      this.
-- robodocada.rc    - configuration file to generate development documentation
+- robodocada.rc    - configuration file to generate the code documentation
 - robodoc.css      - CSS for code documentation
 - yass-icon.png    - icon for AppImage
 - yass.desktop     - desktop file for AppImage
@@ -13,3 +13,5 @@ Various files which are not necessary needed for development:
                      location. **Important:** run this script from the main
                      project directory, not from this.
 - yass.appdata.xml - AppStream meta data for AppImage
+- rules.aru        - configuration file with rules for check code with
+                     AdaControl.
