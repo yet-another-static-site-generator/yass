@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -39,7 +39,7 @@ with AtomFeed; use AtomFeed;
 with Messages; use Messages;
 
 procedure YASS is
-   Version: constant String := "2.0";
+   Version: constant String := "3.0";
    WorkDirectory: Unbounded_String;
 
    -- ****if* YASS/BuildSite
@@ -227,7 +227,7 @@ begin
       Put_Line("Released: 2019-11-17");
       -- Show license information
    elsif Argument(1) = "license" then
-      Put_Line("Copyright (C) 2019 Bartek thindil Jasicki");
+      Put_Line("Copyright (C) 2019-2021 Bartek thindil Jasicki");
       New_Line;
       Put_Line
         ("This program is free software: you can redistribute it and/or modify");
