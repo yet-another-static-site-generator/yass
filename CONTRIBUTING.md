@@ -45,24 +45,22 @@ possible. This help us all better understand purpose of your changes.
 
 ## Code propositions
 
-### General informations
+### General information
 
 If you want to start help in the program development, please consider starts
 from something easy like fixing bugs. Before you been want to add new feature
-to the program, please contact with me by issues tracker or mail, addresses
-of both are at top of this file. Same as with features proposition - your code
-may "collide" with my work and it this moment you may just lost time by
-working on it. So it is better that we first discuss your proposition. In any
-other case, fell free to fix my code.
+to the program, please contact with me by options available at [contact page](https://www.laeran.pl/repositories/yass/wiki?name=Contact). Same as with features proposition - your code may "collide" with
+my work and it this moment you may just lose time by working on it. So it is
+better that we first discuss your proposition. In any other case, fell free
+to fix my code.
 
 ### Coding standard
 
-When you write your own code, feel free to use any coding standard you want.
-But before you send your changes to the project, please use command `gnatpp`
-which automatically format source code to project coding standard. Proper
-`gnatpp` command usage (in main project directory, where *yass.gpr* file is):
-
-`gnatpp -P yass.gpr`
+The full description of coding style used by the project, you can find on the
+[Coding Standard](https://www.laeran.pl/repositories/yass/wiki?name=Coding%20Standard) page.
+On the page [Testing the Project](https://www.laeran.pl/repositories/yass/wiki?name=Testing%20the%20Project) you will
+find information how to test your code, so it will be compliant with the
+project standards.
 
 #### Code comments formatting
 
@@ -98,11 +96,12 @@ How to generate the code documentation is described in main *README.md* file.
 
 ### Code submission
 
-Preferred way to submit your code is clone repository and then open new pull
-proposal at <https://github.com/yet-another-static-site-generator/yass/compare>.
-But if you prefer, you can send your code by mail too (email address is at
-top of this file). In that situation, please append to your mail patch file
-with changes.
+A preferred way to submit your code is to use [tickets](https://www.laeran.pl/repositories/yass/ticket)
+on the project page. Please attach to that ticket file with diff changes,
+the best if done with command `fossil diff`. But any other diff program will
+work. In that situation, please add information which program was used to
+create the diff file. If you prefer you can also use other options from
+[contact page](https://www.laeran.pl/repositories/yass/wiki?name=Contact).
 
 ## Additional debugging options
 
