@@ -4,6 +4,7 @@
 -- backtext: Extending
 -- indexlink: true
 -- details: []
+-- details: Unreleased
 -- details: 2.0
 -- details: 1.1
 -- details: 1.0
@@ -16,6 +17,7 @@
 -- details: 0.2
 -- details: 0.1
 -- detailslink: []
+-- detailslink: 3.0
 -- detailslink: 2.0
 -- detailslink: 1.1
 -- detailslink: 1.0
@@ -27,6 +29,11 @@
 -- detailslink: 0.3
 -- detailslink: 0.2
 -- detailslink: 0.1
+## <a name="3.0"></a>[Unreleased]
+### Changed
+- Updated README.md
+- Updated contributing guide
+
 ## <a name="2.0"></a>[2.0] - 2019-11-17
 
 ### Added
