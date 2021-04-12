@@ -15,3 +15,5 @@ Various files which are not necessary needed for development:
 - yass.appdata.xml - AppStream meta data for AppImage
 - rules.aru        - configuration file with rules for check code with
                      AdaControl.
+- tests.tcl        - script to run unit tests. **Important**: run this script
+                     from the main project directory, not from this.
