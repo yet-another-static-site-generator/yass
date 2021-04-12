@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -64,7 +64,8 @@ package AtomFeed is
    -- RESULT
    -- Converted HTTP date to Ada Time
    -- SOURCE
-   function To_Time(Date: String) return Time;
+   function To_Time(Date: String) return Time with
+      Test_Case => (Name => "Test_To_Date", Mode => Nominal);
    -- ****
 
    -- ****f* AtomFeed/To_HTTP_Date
@@ -75,7 +76,8 @@ package AtomFeed is
    -- RESULT
    -- Converted Ada Time to HTTP date format
    -- SOURCE
-   function To_HTTP_Date(Date: Time) return String;
+   function To_HTTP_Date(Date: Time) return String with
+      Test_Case => (Name => "Test_To_HTTP_Date", Mode => Nominal);
    -- ****
 
    -- ****f* AtomFeed/StartAtomFeed
