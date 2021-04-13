@@ -7,46 +7,30 @@ with Gnattest_Generated;
 
 package body AtomFeed.Test_Data.Tests.Suite is
 
+   use AUnit.Test_Suites;
+
    package Runner_1 is new AUnit.Test_Caller
      (GNATtest_Generated.GNATtest_Standard.AtomFeed.Test_Data.Tests.Test);
 
    Result : aliased AUnit.Test_Suites.Test_Suite;
 
-   Case_1_1_Test_To_Time_e953f5 : aliased Runner_1.Test_Case;
-   Case_2_1_Test_To_HTTP_Date_2bd5b1 : aliased Runner_1.Test_Case;
-   Case_3_1_Test_StartAtomFeed_57b23e : aliased Runner_1.Test_Case;
-   Case_4_1_Test_AddPageToFeed_6edf8c : aliased Runner_1.Test_Case;
-   Case_5_1_Test_SaveAtomFeed_b0372c : aliased Runner_1.Test_Case;
+   Case_1_1_Test_To_Time_e953f5_8a629f : aliased Runner_1.Test_Case;
+   Case_2_1_Test_To_HTTP_Date_2bd5b1_bcc90f : aliased Runner_1.Test_Case;
 
    function Suite return AUnit.Test_Suites.Access_Test_Suite is
    begin
 
       Runner_1.Create
-        (Case_1_1_Test_To_Time_e953f5,
-         "atomfeed.ads:36:4:",
-         Test_To_Time_e953f5'Access);
+        (Case_1_1_Test_To_Time_e953f5_8a629f,
+         "atomfeed.ads:68:7:",
+         Test_To_Time_e953f5_8a629f'Access);
       Runner_1.Create
-        (Case_2_1_Test_To_HTTP_Date_2bd5b1,
-         "atomfeed.ads:38:4:",
-         Test_To_HTTP_Date_2bd5b1'Access);
-      Runner_1.Create
-        (Case_3_1_Test_StartAtomFeed_57b23e,
-         "atomfeed.ads:40:4:",
-         Test_StartAtomFeed_57b23e'Access);
-      Runner_1.Create
-        (Case_4_1_Test_AddPageToFeed_6edf8c,
-         "atomfeed.ads:41:4:",
-         Test_AddPageToFeed_6edf8c'Access);
-      Runner_1.Create
-        (Case_5_1_Test_SaveAtomFeed_b0372c,
-         "atomfeed.ads:44:4:",
-         Test_SaveAtomFeed_b0372c'Access);
+        (Case_2_1_Test_To_HTTP_Date_2bd5b1_bcc90f,
+         "atomfeed.ads:80:7:",
+         Test_To_HTTP_Date_2bd5b1_bcc90f'Access);
 
-      Result.Add_Test (Case_1_1_Test_To_Time_e953f5'Access);
-      Result.Add_Test (Case_2_1_Test_To_HTTP_Date_2bd5b1'Access);
-      Result.Add_Test (Case_3_1_Test_StartAtomFeed_57b23e'Access);
-      Result.Add_Test (Case_4_1_Test_AddPageToFeed_6edf8c'Access);
-      Result.Add_Test (Case_5_1_Test_SaveAtomFeed_b0372c'Access);
+      Add_Test (Result'Access, Case_1_1_Test_To_Time_e953f5_8a629f'Access);
+      Add_Test (Result'Access, Case_2_1_Test_To_HTTP_Date_2bd5b1_bcc90f'Access);
 
       return Result'Access;
 

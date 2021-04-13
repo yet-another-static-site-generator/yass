@@ -21,7 +21,7 @@ procedure Test_Runner is
    GT_Options : AUnit_Options := Default_Options;
 begin
 
-   GT_Options.Report_Successes := True;
+   GT_Options.Report_Successes := False;
 
    begin
       Initialize_Option_Scan;

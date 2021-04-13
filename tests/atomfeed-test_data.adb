@@ -15,6 +15,4 @@ package body AtomFeed.Test_Data is
       pragma Unreferenced (Gnattest_T);
    begin
       null;
-   end Tear_Down;
-
-end AtomFeed.Test_Data;
+   end Tear_Down;end AtomFeed.Test_Data;
