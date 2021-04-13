@@ -30,11 +30,6 @@
       - gnattest -P yass.gpr
    description: Regenerate unit tests
 - command:
-   name: tests
-   execute:
-      - gprbuild -P tests/driver/test_driver.gpr
-   description: Build yass unit tests
-- command:
    name: docs
    execute:
       - others/generatedocs.tcl
@@ -57,3 +52,8 @@
    description: Build yass release for Windows on Linux, required argument is full path to the program source code
    flags:
       - unixonly
+- command:
+   name: tests
+   execute:
+      - tclsh others/tests.tcl
+   description: Build and run yass unit tests
