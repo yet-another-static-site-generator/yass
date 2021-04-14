@@ -174,7 +174,8 @@ procedure YASS is
       Put_Line("license - show short info about the program license");
       Put_Line("readme - show content of README file");
       Put_Line("createnow [name] - create new site in ""name"" directory");
-      Put_Line("create [name] - interactively create new site in ""name"" directory");
+      Put_Line
+        ("create [name] - interactively create new site in ""name"" directory");
       Put_Line("build [name] - build site in ""name"" directory");
       Put_Line
         ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
@@ -211,7 +212,8 @@ procedure YASS is
       ShowMessage
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
          Argument(2) & Dir_Separator &
-         "site.cfg"" file to set data for your new site.", Messages.Success);
+         "site.cfg"" file to set data for your new site.",
+         Messages.Success);
    end Create;
 
 begin
