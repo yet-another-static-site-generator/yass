@@ -57,3 +57,8 @@
    execute:
       - tclsh others/tests.tcl
    description: Build and run yass unit tests
+- command:
+   name: pretty
+   execute:
+      - gnatpp -P yass.gpr
+   description: Pretty print yass source code
