@@ -1,0 +1,74 @@
+name: Continuous Integration - development version
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  tests:
+
+    runs-on: ubuntu-latest
+
+    container: ghcr.io/thindil/adabuild
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Generate tests
+      run: gnattest -P yass.gpr
+
+    - name: Build the tests
+      run: gprbuild -P tests/driver/test_driver.gpr
+
+    - name: Run the tests
+      run: others/tests.tcl
+
+  build_linux:
+
+    needs: tests
+
+    runs-on: ubuntu-latest
+
+    container: ghcr.io/thindil/adabuild
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build the program
+      run: others/build.tcl x86_64-linux-gnu
+
+    - name: Compress the artifact
+      run: tar -cf yass-development-linux.tar usr
+
+    - name: Upload the artifact
+      uses: actions/upload-artifact@v2
+      with:
+         name: yass-development-linux.tar
+         path: yass-development-linux.tar
+
+  build_windows:
+
+    needs: tests
+
+    runs-on: ubuntu-latest
+
+    container: ghcr.io/thindil/adabuildwin64
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build the program
+      run: others/build.tcl x86_64-windows
+
+    - name: Compress the artifact
+      run: tar -cf yass-development-windows.tar release
+
+    - name: Upload the artifact
+      uses: actions/upload-artifact@v2
+      with:
+         name: yass-development-windows.tar
+         path: yass-development-windows.tar
