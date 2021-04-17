@@ -68,3 +68,28 @@
    execute:
       - gnatpp -P tests/prettytests.gpr
    description: Pretty print unit tests source code
+- command:
+   name: check
+   execute:
+      - gprclean -P yass.gpr
+      - cd obj
+      - adactl -f ../others/rules.aru -p ../yass.gpr -o ../adacontrol.log -r yass-aws-templates_parser-dom-unicode-input_sources
+   description: Run AdaControl to check correctness of the code
+   flags:
+      - unixpath
+- command:
+   name: checkall
+   execute:
+      - bob debug
+      - bob tests
+      - bob check
+   description: Run all the project tests
+- command:
+   name: checkfile
+   execute:
+      - gprclean -P yass.gpr
+      - cd obj
+      - adactl -f ../others/rules.aru -p ../yass.gpr ../src/$1
+   description: Run AdaControl to check correctness of the selected file
+   flags:
+      - unixpath
