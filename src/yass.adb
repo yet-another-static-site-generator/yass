@@ -38,26 +38,27 @@ with Sitemaps; use Sitemaps;
 with AtomFeed; use AtomFeed;
 with Messages; use Messages;
 
-procedure YASS is
+procedure Yass is
    Version: constant String := "3.0";
-   WorkDirectory: Unbounded_String;
+   Work_Directory: Unbounded_String := Null_Unbounded_String;
 
-   -- ****if* YASS/BuildSite
+   -- ****if* YASS/Build_Site
    -- FUNCTION
    -- Build the site from directory
    -- PARAMETERS
-   -- DirectoryName - full path to the site directory
+   -- Directory_Name - full path to the site directory
    -- RESULT
    -- Returns True if the site was build, otherwise False.
    -- SOURCE
-   function BuildSite(DirectoryName: String) return Boolean is
+   function Build_Site(Directory_Name: String) return Boolean is
       -- ****
-      PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
-      PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
+      Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
+      Page_Table_Tags: TableTags_Container.Map :=
+        TableTags_Container.Empty_Map;
       -- Build the site from directory with full path Name
       procedure Build(Name: String) is
          -- Process file with full path Item: create html pages from markdown files or copy any other file.
-         procedure ProcessFiles(Item: Directory_Entry_Type) is
+         procedure Process_Files(Item: Directory_Entry_Type) is
          begin
             if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) /=
               Excluded_Container.No_Index or
@@ -70,7 +71,7 @@ procedure YASS is
             else
                CopyFile(Full_Name(Item), Name);
             end if;
-         end ProcessFiles;
+         end Process_Files;
          -- Go recursive with directory with full path Item.
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin
@@ -86,36 +87,36 @@ procedure YASS is
       begin
          Search
            (Name, "", (Directory => False, others => True),
-            ProcessFiles'Access);
+            Process_Files'Access);
          Search
            (Name, "", (Directory => True, others => False),
             ProcessDirectories'Access);
       end Build;
    begin
       -- Load the program modules with 'start' hook
-      LoadModules("start", PageTags, PageTableTags);
+      LoadModules("start", Page_Tags, Page_Table_Tags);
       -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
       StartSitemap;
       -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
       StartAtomFeed;
       -- Build the site
-      Build(DirectoryName);
+      Build(Directory_Name);
       -- Save atom feed to file or nothing if atom feed generation is disabled
       SaveAtomFeed;
       -- Save sitemap to file or nothing if sitemap generation is disabled
       SaveSitemap;
       -- Load the program modules with 'end' hook
-      LoadModules("end", PageTags, PageTableTags);
+      LoadModules("end", Page_Tags, Page_Table_Tags);
       return True;
    exception
       when GenerateSiteException =>
          return False;
-   end BuildSite;
+   end Build_Site;
 
    -- ****if* YASS/ValidArguments
    -- FUNCTION
    -- Validate arguments which user was entered when started the program and
-   -- set WorkDirectory for the program.
+   -- set Work_Directory for the program.
    -- PARAMETERS
    -- Message - part of message to show when user does not entered the site
    --           project directory
@@ -131,16 +132,16 @@ procedure YASS is
          ShowMessage("Please specify directory name " & Message);
          return False;
       end if;
-      -- Assign WorkDirectory
+      -- Assign Work_Directory
       if Index(Argument(2), Containing_Directory(Current_Directory)) = 1 then
-         WorkDirectory := To_Unbounded_String(Argument(2));
+         Work_Directory := To_Unbounded_String(Argument(2));
       else
-         WorkDirectory :=
+         Work_Directory :=
            To_Unbounded_String
              (Current_Directory & Dir_Separator & Argument(2));
       end if;
       -- Check if selected directory exist, if not, return False
-      if Ada.Directories.Exists(To_String(WorkDirectory)) = Exist then
+      if Ada.Directories.Exists(To_String(Work_Directory)) = Exist then
          if not Exist then
             ShowMessage
               ("Directory with that name not exists, please specify existing site directory.");
@@ -153,7 +154,7 @@ procedure YASS is
       -- Check if selected directory is valid the program site project directory. Return False if not.
       if not Exist and
         not Ada.Directories.Exists
-          (To_String(WorkDirectory) & Dir_Separator & "site.cfg") then
+          (To_String(Work_Directory) & Dir_Separator & "site.cfg") then
          ShowMessage
            ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
          return False;
@@ -198,17 +199,18 @@ procedure YASS is
       begin
          for I in Paths'Range loop
             Create_Path
-              (To_String(WorkDirectory) & Dir_Separator & To_String(Paths(I)));
+              (To_String(Work_Directory) & Dir_Separator &
+               To_String(Paths(I)));
          end loop;
       end;
       if Argument(1) = "create" then
-         CreateInteractiveConfig(To_String(WorkDirectory));
+         CreateInteractiveConfig(To_String(Work_Directory));
       else
-         CreateConfig(To_String(WorkDirectory));
+         CreateConfig(To_String(Work_Directory));
       end if;
-      CreateLayout(To_String(WorkDirectory));
-      CreateDirectoryLayout(To_String(WorkDirectory));
-      CreateEmptyFile(To_String(WorkDirectory));
+      CreateLayout(To_String(Work_Directory));
+      CreateDirectoryLayout(To_String(Work_Directory));
+      CreateEmptyFile(To_String(Work_Directory));
       ShowMessage
         ("New page in directory """ & Argument(2) & """ was created. Edit """ &
          Argument(2) & Dir_Separator &
@@ -284,8 +286,8 @@ begin
       if not ValidArguments("from where page will be created.", False) then
          return;
       end if;
-      ParseConfig(To_String(WorkDirectory));
-      if BuildSite(To_String(WorkDirectory)) then
+      ParseConfig(To_String(Work_Directory));
+      if Build_Site(To_String(Work_Directory)) then
          ShowMessage("Site was build.", Messages.Success);
       else
          ShowMessage("Site building has been interrupted.");
@@ -295,7 +297,7 @@ begin
       if not ValidArguments("from where site will be served.", False) then
          return;
       end if;
-      ParseConfig(To_String(WorkDirectory));
+      ParseConfig(To_String(Work_Directory));
       if not Ada.Directories.Exists(To_String(YassConfig.OutputDirectory)) then
          Create_Path(To_String(YassConfig.OutputDirectory));
       end if;
@@ -346,25 +348,25 @@ begin
          return;
       end if;
       if Index(Argument(2), Containing_Directory(Current_Directory)) = 1 then
-         WorkDirectory := To_Unbounded_String(Argument(2));
+         Work_Directory := To_Unbounded_String(Argument(2));
       else
-         WorkDirectory :=
+         Work_Directory :=
            To_Unbounded_String
              (Current_Directory & Dir_Separator & Argument(2));
       end if;
-      if Extension(To_String(WorkDirectory)) /= "md" then
-         WorkDirectory := WorkDirectory & To_Unbounded_String(".md");
+      if Extension(To_String(Work_Directory)) /= "md" then
+         Work_Directory := Work_Directory & To_Unbounded_String(".md");
       end if;
-      if Ada.Directories.Exists(To_String(WorkDirectory)) then
+      if Ada.Directories.Exists(To_String(Work_Directory)) then
          Put_Line
-           ("Can't create file """ & To_String(WorkDirectory) &
+           ("Can't create file """ & To_String(Work_Directory) &
             """. File with that name exists.");
          return;
       end if;
-      Create_Path(Containing_Directory(To_String(WorkDirectory)));
-      CreateEmptyFile(To_String(WorkDirectory));
+      Create_Path(Containing_Directory(To_String(Work_Directory)));
+      CreateEmptyFile(To_String(Work_Directory));
       ShowMessage
-        ("Empty file """ & To_String(WorkDirectory) & """ was created.",
+        ("Empty file """ & To_String(Work_Directory) & """ was created.",
          Messages.Success);
       -- Unknown command entered
    else
@@ -401,4 +403,4 @@ exception
          Put_Line
            ("Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://www.laeran.pl/repositories/yass and attach (if possible) file 'error.log' (should be in this same directory).");
       end;
-end YASS;
+end Yass;
