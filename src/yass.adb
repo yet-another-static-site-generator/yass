@@ -60,37 +60,48 @@ procedure Yass is
          -- Process file with full path Item: create html pages from markdown files or copy any other file.
          procedure Process_Files(Item: Directory_Entry_Type) is
          begin
-            if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) /=
+            if YassConfig.ExcludedFiles.Find_Index
+                (Item => Simple_Name(Directory_Entry => Item)) /=
               Excluded_Container.No_Index or
-              not Ada.Directories.Exists(Full_Name(Item)) then
+              not Ada.Directories.Exists
+                (Name => Full_Name(Directory_Entry => Item)) then
                return;
             end if;
-            Set("YASSFILE", Full_Name(Item));
-            if Extension(Simple_Name(Item)) = "md" then
-               CreatePage(Full_Name(Item), Name);
+            Set
+              (Name => "YASSFILE",
+               Value => Full_Name(Directory_Entry => Item));
+            if Extension(Name => Simple_Name(Directory_Entry => Item)) =
+              "md" then
+               CreatePage
+                 (FileName => Full_Name(Directory_Entry => Item),
+                  Directory => Name);
             else
-               CopyFile(Full_Name(Item), Name);
+               CopyFile
+                 (FileName => Full_Name(Directory_Entry => Item),
+                  Directory => Name);
             end if;
          end Process_Files;
          -- Go recursive with directory with full path Item.
-         procedure ProcessDirectories(Item: Directory_Entry_Type) is
+         procedure Process_Directories(Item: Directory_Entry_Type) is
          begin
-            if YassConfig.ExcludedFiles.Find_Index(Simple_Name(Item)) =
+            if YassConfig.ExcludedFiles.Find_Index
+                (Item => Simple_Name(Directory_Entry => Item)) =
               Excluded_Container.No_Index and
-              Ada.Directories.Exists(Full_Name(Item)) then
-               Build(Full_Name(Item));
+              Ada.Directories.Exists
+                (Name => Full_Name(Directory_Entry => Item)) then
+               Build(Name => Full_Name(Directory_Entry => Item));
             end if;
          exception
             when Ada.Directories.Name_Error =>
                null;
-         end ProcessDirectories;
+         end Process_Directories;
       begin
          Search
            (Name, "", (Directory => False, others => True),
             Process_Files'Access);
          Search
            (Name, "", (Directory => True, others => False),
-            ProcessDirectories'Access);
+            Process_Directories'Access);
       end Build;
    begin
       -- Load the program modules with 'start' hook
