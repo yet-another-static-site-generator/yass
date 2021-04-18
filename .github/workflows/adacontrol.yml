@@ -2,7 +2,7 @@ name: AdaControl tests - temporary workflow
 
 on:
   push:
-    branches: [ tk ]
+    branches: [ master ]
 
 jobs:
 
