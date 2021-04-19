@@ -97,34 +97,40 @@ procedure Yass is
          end Process_Directories;
       begin
          Search
-           (Name, "", (Directory => False, others => True),
-            Process_Files'Access);
+           (Directory => Name, Pattern => "",
+            Filter => (Directory => False, others => True),
+            Process => Process_Files'Access);
          Search
-           (Name, "", (Directory => True, others => False),
-            Process_Directories'Access);
+           (Directory => Name, Pattern => "",
+            Filter => (Directory => True, others => False),
+            Process => Process_Directories'Access);
       end Build;
    begin
       -- Load the program modules with 'start' hook
-      LoadModules("start", Page_Tags, Page_Table_Tags);
+      LoadModules
+        (State => "start", PageTags => Page_Tags,
+         PageTableTags => Page_Table_Tags);
       -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
       StartSitemap;
       -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
       StartAtomFeed;
       -- Build the site
-      Build(Directory_Name);
+      Build(Name => Directory_Name);
       -- Save atom feed to file or nothing if atom feed generation is disabled
       SaveAtomFeed;
       -- Save sitemap to file or nothing if sitemap generation is disabled
       SaveSitemap;
       -- Load the program modules with 'end' hook
-      LoadModules("end", Page_Tags, Page_Table_Tags);
+      LoadModules
+        (State => "end", PageTags => Page_Tags,
+         PageTableTags => Page_Table_Tags);
       return True;
    exception
       when GenerateSiteException =>
          return False;
    end Build_Site;
 
-   -- ****if* YASS/ValidArguments
+   -- ****if* YASS/Valid_Arguments
    -- FUNCTION
    -- Validate arguments which user was entered when started the program and
    -- set Work_Directory for the program.
@@ -135,17 +141,20 @@ procedure Yass is
    -- RESULT
    -- Returns True if entered arguments are valid, otherwise False.
    -- SOURCE
-   function ValidArguments(Message: String; Exist: Boolean) return Boolean is
+   function Valid_Arguments(Message: String; Exist: Boolean) return Boolean is
    -- ****
    begin
       -- User does not entered name of the site project directory
       if Argument_Count < 2 then
-         ShowMessage("Please specify directory name " & Message);
+         ShowMessage(Text => "Please specify directory name " & Message);
          return False;
       end if;
       -- Assign Work_Directory
-      if Index(Argument(2), Containing_Directory(Current_Directory)) = 1 then
-         Work_Directory := To_Unbounded_String(Argument(2));
+      if Index
+          (Source => Argument(2),
+           Pattern => Containing_Directory(Name => Current_Directory)) =
+        1 then
+         Work_Directory := To_Unbounded_String(Source => Argument(2));
       else
          Work_Directory :=
            To_Unbounded_String
@@ -171,7 +180,7 @@ procedure Yass is
          return False;
       end if;
       return True;
-   end ValidArguments;
+   end Valid_Arguments;
 
    -- ****if* YASS/ShowHelp
    -- FUNCTION
@@ -197,7 +206,7 @@ procedure Yass is
 
    procedure Create is
    begin
-      if not ValidArguments("where new page will be created.", True) then
+      if not Valid_Arguments("where new page will be created.", True) then
          return;
       end if;
       declare
@@ -294,7 +303,7 @@ begin
    elsif Argument(1) = "createnow" or Argument(1) = "create" then
       Create;
    elsif Argument(1) = "build" then
-      if not ValidArguments("from where page will be created.", False) then
+      if not Valid_Arguments("from where page will be created.", False) then
          return;
       end if;
       ParseConfig(To_String(Work_Directory));
@@ -305,7 +314,7 @@ begin
       end if;
       -- Start server to monitor changes in selected site project
    elsif Argument(1) = "server" then
-      if not ValidArguments("from where site will be served.", False) then
+      if not Valid_Arguments("from where site will be served.", False) then
          return;
       end if;
       ParseConfig(To_String(Work_Directory));
