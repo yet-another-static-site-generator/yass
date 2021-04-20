@@ -417,6 +417,15 @@ exception
          Put_Line
            (ErrorFile, "-------------------------------------------------");
          Put(ErrorFile, Symbolic_Traceback(An_Exception));
+         if Directory_Separator = '/' then
+            Put_Line
+              (File => ErrorFile,
+               Item => Symbolic_Traceback(E => An_Exception));
+         else
+            Put_Line
+              (File => ErrorFile,
+               Item => Exception_Information(X => An_Exception));
+         end if;
          Put_Line
            (ErrorFile, "-------------------------------------------------");
          Close(ErrorFile);
