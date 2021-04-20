@@ -182,11 +182,11 @@ procedure Yass is
       return True;
    end Valid_Arguments;
 
-   -- ****if* YASS/ShowHelp
+   -- ****if* YASS/Show_Help
    -- FUNCTION
    -- Show the program help - list of available commands
    -- SOURCE
-   procedure ShowHelp is
+   procedure Show_Help is
    -- ****
    begin
       Put_Line("Possible actions:");
@@ -202,7 +202,7 @@ procedure Yass is
         ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
       Put_Line
         ("createfile [name] - create new empty markdown file with ""name""");
-   end ShowHelp;
+   end Show_Help;
 
    procedure Create is
    begin
@@ -244,7 +244,7 @@ begin
    end if;
    -- No arguments or help: show available commands
    if Argument_Count < 1 or else Argument(1) = "help" then
-      ShowHelp;
+      Show_Help;
       -- Show version information
    elsif Argument(1) = "version" then
       Put_Line("Version: " & Version);
@@ -391,7 +391,7 @@ begin
       -- Unknown command entered
    else
       ShowMessage("Unknown command '" & Argument(1) & "'");
-      ShowHelp;
+      Show_Help;
    end if;
 exception
    when An_Exception : InvalidConfigData =>
