@@ -34,6 +34,9 @@
 - Updated README.md
 - Updated contributing guide
 
+### Fixed
+- Saving and showing crash data on Windows
+
 ## <a name="2.0"></a>[2.0] - 2019-11-17
 
 ### Added
