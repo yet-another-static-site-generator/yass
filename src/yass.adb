@@ -151,32 +151,40 @@ procedure Yass is
       end if;
       -- Assign Work_Directory
       if Index
-          (Source => Argument(2),
+          (Source => Argument(Number => 2),
            Pattern => Containing_Directory(Name => Current_Directory)) =
         1 then
-         Work_Directory := To_Unbounded_String(Source => Argument(2));
+         Work_Directory :=
+           To_Unbounded_String(Source => Argument(Number => 2));
       else
          Work_Directory :=
            To_Unbounded_String
-             (Current_Directory & Dir_Separator & Argument(2));
+             (Source =>
+                Current_Directory & Dir_Separator & Argument(Number => 2));
       end if;
       -- Check if selected directory exist, if not, return False
-      if Ada.Directories.Exists(To_String(Work_Directory)) = Exist then
-         if not Exist then
+      if Ada.Directories.Exists(Name => To_String(Source => Work_Directory)) =
+        Exist then
+         if Exist then
             ShowMessage
-              ("Directory with that name not exists, please specify existing site directory.");
+              (Text =>
+                 "Directory with that name exists, please specify another.");
          else
             ShowMessage
-              ("Directory with that name exists, please specify another.");
+              (Text =>
+                 "Directory with that name not exists, please specify existing site directory.");
          end if;
          return False;
       end if;
       -- Check if selected directory is valid the program site project directory. Return False if not.
       if not Exist and
         not Ada.Directories.Exists
-          (To_String(Work_Directory) & Dir_Separator & "site.cfg") then
+          (Name =>
+             To_String(Source => Work_Directory) & Dir_Separator &
+             "site.cfg") then
          ShowMessage
-           ("Selected directory don't have file ""site.cfg"". Please specify proper directory.");
+           (Text =>
+              "Selected directory don't have file ""site.cfg"". Please specify proper directory.");
          return False;
       end if;
       return True;
@@ -189,19 +197,23 @@ procedure Yass is
    procedure Show_Help is
    -- ****
    begin
-      Put_Line("Possible actions:");
-      Put_Line("help - show this screen and exit");
-      Put_Line("version - show the program version and exit");
-      Put_Line("license - show short info about the program license");
-      Put_Line("readme - show content of README file");
-      Put_Line("createnow [name] - create new site in ""name"" directory");
+      Put_Line(Item => "Possible actions:");
+      Put_Line(Item => "help - show this screen and exit");
+      Put_Line(Item => "version - show the program version and exit");
+      Put_Line(Item => "license - show short info about the program license");
+      Put_Line(Item => "readme - show content of README file");
       Put_Line
-        ("create [name] - interactively create new site in ""name"" directory");
-      Put_Line("build [name] - build site in ""name"" directory");
+        (Item => "createnow [name] - create new site in ""name"" directory");
       Put_Line
-        ("server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
+        (Item =>
+           "create [name] - interactively create new site in ""name"" directory");
+      Put_Line(Item => "build [name] - build site in ""name"" directory");
       Put_Line
-        ("createfile [name] - create new empty markdown file with ""name""");
+        (Item =>
+           "server [name] - start simple HTTP server in ""name"" directory and auto rebuild site if needed.");
+      Put_Line
+        (Item =>
+           "createfile [name] - create new empty markdown file with ""name""");
    end Show_Help;
 
    procedure Create is
