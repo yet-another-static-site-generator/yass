@@ -1,8 +1,8 @@
-YASS - Yet Another Static Site (Generator)
+YASS: Yet Another Static Site (Generator)
 
 As name says, it is static site generator written in Ada. It is *headless*
 application (no user interface). The program documentation is included in
-distribution.  If you read this file on Github: **please don't send pull
+distribution.  If you read this file on GitHub: **please don't send pull
 requests here**. All will be automatically closed. Any code propositions
 should go to the [Fossil](https://www.laeran.pl/repositories/yass)
 repository.
@@ -22,19 +22,19 @@ repository.
 
 To build you need:
 
-* compiler - GCC with enabled Ada support or (best option) GNAT from:
+* compiler: GCC with enabled Ada support or (best option) GNAT from:
 
   https://www.adacore.com/download/
 
-* gprbuild - it is included in GNAT and should be available in most Linux
+* gprbuild: it is included in GNAT and should be available in most Linux
   distributions too.
 
-* libcmark - should be available in every Linux distribution, if not, you
+* libcmark: should be available in every Linux distribution, if not, you
   can download source code from:
 
   https://github.com/commonmark/cmark
 
-* Ada Web Server (AWS) - if you use GNAT from AdaCore it is included in
+* Ada Web Server (AWS): if you use GNAT from AdaCore it is included in
   package. In other situations, you may need to download it from:
 
   https://www.adacore.com/download/more
@@ -43,7 +43,7 @@ To build you need:
 
   https://github.com/AdaCore/aws
 
-* XmlAda - if you use GNAT from AdaCore it is included in package. In other
+* XmlAda: if you use GNAT from AdaCore it is included in package. In other
   situation, you may need to download it from:
 
   https://www.adacore.com/download/more
@@ -54,7 +54,7 @@ To build you need:
 
 Navigate to the main directory(where this file is) to compile:
 
-* Easiest way to compile program is use Gnat Programming Studio included in
+* The easiest way to compile program is use Gnat Programming Studio included in
   GNAT. Just run GPS, select *yass.gpr* as a project file and select option
   `Build All`.
 
@@ -84,8 +84,8 @@ Or if you have [Bob](https://github.com/thindil/bob) installed, type
 ### Linux
 
 To see all available options, type in console `./yass help` in directory where
-binary file is. It work that same way for downloaded AppImage version of
-program. More informations about using AppImage files you can find here:
+binary file is. It works that same way for downloaded AppImage version of
+program. More information about using AppImage files you can find here:
 
 https://docs.appimage.org/user-guide/run-appimages.html
 
@@ -120,23 +120,23 @@ version of script have set all default settings for the YASS code. If you have
 [Bob](https://github.com/thindil/bob) installed, you can type `bob docs`.
 
 ## Contributing to the project
-For detailed informations about contributing to the project (bugs reporting,
+For detailed information about contributing to the project (bugs reporting,
 ideas propositions, code conduct, etc), see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Licenses
 
-- Yass is released under GNU GPL v3 license.
+* Yass is released under GNU GPL v3 license.
 
-- Libcmark library distributed with AppImage version of the program is released
+* Libcmark library distributed with AppImage version of the program is released
 under [few Open Sources licenses](https://github.com/commonmark/cmark/blob/master/COPYING)
 
 https://github.com/commonmark/cmark
 
-## TODO (someday or if someone want to contribute)
+## TODO (someday or if someone wants to contribute)
 
-- Windows version of the program
-- More unit tests
-- Your propositions?
+* Windows version of the program
+* More unit tests
+* Your propositions?
 
 ----
 
