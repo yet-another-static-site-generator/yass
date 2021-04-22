@@ -218,21 +218,32 @@ procedure Yass is
 
    procedure Create is
    begin
-      if not Valid_Arguments("where new page will be created.", True) then
+      if not Valid_Arguments
+          (Message => "where new page will be created.", Exist => True) then
          return;
       end if;
       declare
-         Paths: constant array(Positive range <>) of Unbounded_String :=
-           (To_Unbounded_String("_layouts"), To_Unbounded_String("_output"),
-            To_Unbounded_String("_modules" & Dir_Separator & "start"),
-            To_Unbounded_String("_modules" & Dir_Separator & "pre"),
-            To_Unbounded_String("_modules" & Dir_Separator & "post"),
-            To_Unbounded_String("_modules" & Dir_Separator & "end"));
+         Paths: constant array(1 .. 6) of Unbounded_String :=
+           (1 => To_Unbounded_String(Source => "_layouts"),
+            2 => To_Unbounded_String(Source => "_output"),
+            3 =>
+              To_Unbounded_String
+                (Source => "_modules" & Dir_Separator & "start"),
+            4 =>
+              To_Unbounded_String
+                (Source => "_modules" & Dir_Separator & "pre"),
+            5 =>
+              To_Unbounded_String
+                (Source => "_modules" & Dir_Separator & "post"),
+            6 =>
+              To_Unbounded_String
+                (Source => "_modules" & Dir_Separator & "end"));
       begin
          for I in Paths'Range loop
             Create_Path
-              (To_String(Work_Directory) & Dir_Separator &
-               To_String(Paths(I)));
+              (New_Directory =>
+                 To_String(Source => Work_Directory) & Dir_Separator &
+                 To_String(Source => Paths(I)));
          end loop;
       end;
       if Argument(1) = "create" then
