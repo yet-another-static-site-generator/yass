@@ -222,6 +222,7 @@ procedure Yass is
           (Message => "where new page will be created.", Exist => True) then
          return;
       end if;
+      Create_Directories_Block :
       declare
          Paths: constant array(1 .. 6) of Unbounded_String :=
            (1 => To_Unbounded_String(Source => "_layouts"),
@@ -239,13 +240,14 @@ procedure Yass is
               To_Unbounded_String
                 (Source => "_modules" & Dir_Separator & "end"));
       begin
-         for I in Paths'Range loop
+         Create_Directories_Loop :
+         for Directory of Paths loop
             Create_Path
               (New_Directory =>
                  To_String(Source => Work_Directory) & Dir_Separator &
-                 To_String(Source => Paths(I)));
-         end loop;
-      end;
+                 To_String(Source => Directory));
+         end loop Create_Directories_Loop;
+      end Create_Directories_Block;
       if Argument(1) = "create" then
          CreateInteractiveConfig(To_String(Work_Directory));
       else
