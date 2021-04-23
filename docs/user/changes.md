@@ -36,6 +36,7 @@
 
 ### Fixed
 - Saving and showing crash data on Windows
+- Grammar and typos in README.md
 
 ## <a name="2.0"></a>[2.0] - 2019-11-17
 
