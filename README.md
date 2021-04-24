@@ -20,6 +20,22 @@ repository.
 
 ## Build from sources
 
+### Docker way
+
+You can use Docker images `adabuild` and `adabuildwin64` from the project
+[Docker Ada](https://www.laeran.pl/repositories/dockerada). They contain all libraries
+and compiler needed to build the game.
+
+To build the game for Linux, download `adabuild` image and type in console:
+
+`docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuild /bin/bash -c "cd /app && gprbuild -p -P yass.gpr -XMode=release"`
+
+To build the game for Windows 64-bit, download `adabuildwin64` image and type in console:
+
+`docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuildwin64 /bin/bash -c "cd /app && gprbuild -p -P yass.gpr -XMode=release --target=x86_64-windows"`
+
+### Classic way
+
 To build you need:
 
 * compiler: GCC with enabled Ada support or (best option) GNAT from:
@@ -60,7 +76,7 @@ Navigate to the main directory(where this file is) to compile:
 
 * If you prefer using console: in main source code directory type `gprbuild`
   for debug mode build or for release mode: `gprbuild -XMode=release`. If you
-  have installed [Bob](https://github.com/thindil/bob) you can type `bob debug`
+  have installed [Bob](https://www.laeran.pl/repositories/bob) you can type `bob debug`
   for build in debug mode or `bob release` to prepare release for the program.
 
 If you want to be able to print content of README.md file to terminal (by
@@ -76,7 +92,7 @@ file is):
 
 * From console: type `gprbuild -P test_driver.gpr`
 
-Or if you have [Bob](https://github.com/thindil/bob) installed, type
+Or if you have [Bob](https://www.laeran.pl/repositories/bob) installed, type
 `bob tests`.
 
 ## Running the program
@@ -97,7 +113,7 @@ AppImage version of the program.
 ### Running unit tests
 
 From the main directory (where this file is) go to `test/driver` directory
-and type in console `./test_runner`. If you have [Bob](https://github.com/thindil/bob)
+and type in console `./test_runner`. If you have [Bob](https://www.laeran.pl/repositories/bob)
 installed, you can type `bob runtests`.
 
 ### Testing versions
@@ -113,11 +129,12 @@ from the archive to proper locations. To run that version, just enter
 ## Generating code documentation
 
 To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsber.home.xs4all.nl/Robo/)
-If you have it, in main program directory (where this file is) enter terminal
-command: `others/generatedocs.py`. For more information about this script,
-please look [here](https://github.com/thindil/roboada#generatedocspy). This
-version of script have set all default settings for the YASS code. If you have
-[Bob](https://github.com/thindil/bob) installed, you can type `bob docs`.
+and [Tcl](https://tcl.tk) scripting language. If you have them, in main program
+directory (where this file is) enter terminal command: `others/generatedocs.tcl`.
+For more information about this script, please look [here](https://github.com/thindil/roboada#generatedocspy).
+This version of script have set all default settings for the YASS code. If you
+have [Bob](https://www.laeran.pl/repositories//bob) installed, you can type
+`bob docs`.
 
 ## Contributing to the project
 For detailed information about contributing to the project (bugs reporting,
