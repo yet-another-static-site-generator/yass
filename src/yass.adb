@@ -248,32 +248,35 @@ procedure Yass is
                  To_String(Source => Directory));
          end loop Create_Directories_Loop;
       end Create_Directories_Block;
-      if Argument(1) = "create" then
-         CreateInteractiveConfig(To_String(Work_Directory));
+      if Argument(Number => 1) = "create" then
+         CreateInteractiveConfig
+           (DirectoryName => To_String(Source => Work_Directory));
       else
-         CreateConfig(To_String(Work_Directory));
+         CreateConfig(DirectoryName => To_String(Source => Work_Directory));
       end if;
-      CreateLayout(To_String(Work_Directory));
-      CreateDirectoryLayout(To_String(Work_Directory));
-      CreateEmptyFile(To_String(Work_Directory));
+      CreateLayout(DirectoryName => To_String(Source => Work_Directory));
+      CreateDirectoryLayout
+        (DirectoryName => To_String(Source => Work_Directory));
+      CreateEmptyFile(FileName => To_String(Source => Work_Directory));
       ShowMessage
-        ("New page in directory """ & Argument(2) & """ was created. Edit """ &
-         Argument(2) & Dir_Separator &
-         "site.cfg"" file to set data for your new site.",
-         Messages.Success);
+        (Text =>
+           "New page in directory """ & Argument(Number => 2) &
+           """ was created. Edit """ & Argument(Number => 2) & Dir_Separator &
+           "site.cfg"" file to set data for your new site.",
+         MType => Messages.Success);
    end Create;
 
 begin
-   if Ada.Environment_Variables.Exists("YASSDIR") then
-      Set_Directory(Value("YASSDIR"));
+   if Ada.Environment_Variables.Exists(Name => "YASSDIR") then
+      Set_Directory(Directory => Value(Name => "YASSDIR"));
    end if;
    -- No arguments or help: show available commands
-   if Argument_Count < 1 or else Argument(1) = "help" then
+   if Argument_Count < 1 or else Argument(Number => 1) = "help" then
       Show_Help;
       -- Show version information
-   elsif Argument(1) = "version" then
+   elsif Argument(Number => 1) = "version" then
       Put_Line("Version: " & Version);
-      Put_Line("Released: 2019-11-17");
+      Put_Line("Released: not yet");
       -- Show license information
    elsif Argument(1) = "license" then
       Put_Line("Copyright (C) 2019-2021 Bartek thindil Jasicki");
