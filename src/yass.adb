@@ -275,58 +275,61 @@ begin
       Show_Help;
       -- Show version information
    elsif Argument(Number => 1) = "version" then
-      Put_Line("Version: " & Version);
-      Put_Line("Released: not yet");
+      Put_Line(Item => "Version: " & Version);
+      Put_Line(Item => "Released: not yet");
       -- Show license information
-   elsif Argument(1) = "license" then
-      Put_Line("Copyright (C) 2019-2021 Bartek thindil Jasicki");
+   elsif Argument(Number => 1) = "license" then
+      Put_Line(Item => "Copyright (C) 2019-2021 Bartek thindil Jasicki");
       New_Line;
       Put_Line
-        ("This program is free software: you can redistribute it and/or modify");
+        (Item =>
+           "This program is free software: you can redistribute it and/or modify");
       Put_Line
-        ("it under the terms of the GNU General Public License as published by");
+        (Item =>
+           "it under the terms of the GNU General Public License as published by");
       Put_Line
-        ("the Free Software Foundation, either version 3 of the License, or");
-      Put_Line("(at your option) any later version.");
+        (Item =>
+           "the Free Software Foundation, either version 3 of the License, or");
+      Put_Line(Item => "(at your option) any later version.");
       New_Line;
       Put_Line
-        ("This program is distributed in the hope that it will be useful,");
+        (Item =>
+           "This program is distributed in the hope that it will be useful,");
       Put_Line
-        ("but WITHOUT ANY WARRANTY; without even the implied warranty of");
+        (Item =>
+           "but WITHOUT ANY WARRANTY; without even the implied warranty of");
       Put_Line
-        ("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
-      Put_Line("GNU General Public License for more details.");
+        (Item =>
+           "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
+      Put_Line(Item => "GNU General Public License for more details.");
       New_Line;
       Put_Line
-        ("You should have received a copy of the GNU General Public License");
+        (Item =>
+           "You should have received a copy of the GNU General Public License");
       Put_Line
-        ("along with this program.  If not, see <https://www.gnu.org/licenses/>.");
+        (Item =>
+           "along with this program.  If not, see <https://www.gnu.org/licenses/>.");
       -- Show README.md file
-   elsif Argument(1) = "readme" then
+   elsif Argument(Number => 1) = "readme" then
+      Show_Readme_Block :
       declare
-         ReadmeName: Unbounded_String;
-         ReadmeFile: File_Type;
+         Readme_Name: constant String :=
+           (if Ada.Environment_Variables.Exists(("APPDIR")) then
+              Value("APPDIR") & "/usr/share/doc/yass/README.md"
+            else Containing_Directory(Command_Name) & Dir_Separator &
+              "README.md");
+         Readme_File: File_Type;
       begin
-         if Ada.Environment_Variables.Exists(("APPDIR")) then
-            ReadmeName :=
-              To_Unbounded_String
-                (Value("APPDIR") & "/usr/share/doc/yass/README.md");
-         else
-            ReadmeName :=
-              To_Unbounded_String
-                (Containing_Directory(Command_Name) & Dir_Separator &
-                 "README.md");
-         end if;
-         if not Ada.Directories.Exists(To_String(ReadmeName)) then
-            ShowMessage("Can't find file " & To_String(ReadmeName));
+         if not Ada.Directories.Exists(Readme_Name) then
+            ShowMessage("Can't find file " & Readme_Name);
             return;
          end if;
-         Open(ReadmeFile, In_File, To_String(ReadmeName));
-         while not End_Of_File(ReadmeFile) loop
-            Put_Line(Get_Line(ReadmeFile));
+         Open(Readme_File, In_File, Readme_Name);
+         while not End_Of_File(Readme_File) loop
+            Put_Line(Get_Line(Readme_File));
          end loop;
-         Close(ReadmeFile);
-      end;
+         Close(Readme_File);
+      end Show_Readme_Block;
       -- Create new, selected site project directory
    elsif Argument(1) = "createnow" or Argument(1) = "create" then
       Create;
