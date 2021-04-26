@@ -314,21 +314,22 @@ begin
       Show_Readme_Block :
       declare
          Readme_Name: constant String :=
-           (if Ada.Environment_Variables.Exists(("APPDIR")) then
-              Value("APPDIR") & "/usr/share/doc/yass/README.md"
-            else Containing_Directory(Command_Name) & Dir_Separator &
+           (if Ada.Environment_Variables.Exists(Name => "APPDIR") then
+              Value(Name => "APPDIR") & "/usr/share/doc/yass/README.md"
+            else Containing_Directory(Name => Command_Name) & Dir_Separator &
               "README.md");
          Readme_File: File_Type;
       begin
-         if not Ada.Directories.Exists(Readme_Name) then
-            ShowMessage("Can't find file " & Readme_Name);
+         if not Ada.Directories.Exists(Name => Readme_Name) then
+            ShowMessage(Text => "Can't find file " & Readme_Name);
             return;
          end if;
-         Open(Readme_File, In_File, Readme_Name);
-         while not End_Of_File(Readme_File) loop
-            Put_Line(Get_Line(Readme_File));
-         end loop;
-         Close(Readme_File);
+         Open(File => Readme_File, Mode => In_File, Name => Readme_Name);
+         Show_Readme_Loop :
+         while not End_Of_File(File => Readme_File) loop
+            Put_Line(Item => Get_Line(File => Readme_File));
+         end loop Show_Readme_Loop;
+         Close(File => Readme_File);
       end Show_Readme_Block;
       -- Create new, selected site project directory
    elsif Argument(1) = "createnow" or Argument(1) = "create" then
