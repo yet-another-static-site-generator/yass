@@ -24,13 +24,13 @@ repository.
 
 You can use Docker images `adabuild` and `adabuildwin64` from the project
 [Docker Ada](https://www.laeran.pl/repositories/dockerada). They contain all libraries
-and compiler needed to build the game.
+and compiler needed to build the program.
 
-To build the game for Linux, download `adabuild` image and type in console:
+To build the program for Linux, download `adabuild` image and type in console:
 
 `docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuild /bin/bash -c "cd /app && gprbuild -p -P yass.gpr -XMode=release"`
 
-To build the game for Windows 64-bit, download `adabuildwin64` image and type in console:
+To build the program for Windows 64-bit, download `adabuildwin64` image and type in console:
 
 `docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuildwin64 /bin/bash -c "cd /app && gprbuild -p -P yass.gpr -XMode=release --target=x86_64-windows"`
 
@@ -118,13 +118,22 @@ installed, you can type `bob runtests`.
 
 ### Testing versions
 
-Here are available also testing versions of the program. You can find them
-in [Releases](https://github.com/yet-another-static-site-generator/yass/releases/tag/travis-dev-build).
-To use them, first you must download normal release. Then, inside directory
-where the program is, type `./yass-x86_64.AppImage --appimage-extract`
-to extract whole program to directory *squashfs-root*. And then just move files
-from the archive to proper locations. To run that version, just enter
-*squashfs-root* directory and type in console `./AppRun`.
+Here are available testing versions of the program. You can find them
+in [Github Actions](https://github.com/yet-another-static-site-generator/yass/actions/workflows/ada.yml).
+Just select option from the list of results to see Artifacts list.
+To use them, first you must download normal release. Then, for Linux: inside
+directory where the program is, type `./yass-x86_64.AppImage --appimage-extract`
+to extract whole program to directory *squashfs-root*. And then move files
+from the archive to the proper location. To run that version, enter
+*squashfs-root* directory and type in console `./AppRun`. For Windows:
+unzip files (replace existing) to the proper location where the program is installed.
+
+* yass-development-windows.tar contains Windows 64-bit version of the program.
+
+* yass-development-linux.tar contains Linux 64-bit version of the program.
+
+Size is a file's size after unpacking. You will download it compressed with
+Zip.
 
 ## Generating code documentation
 
