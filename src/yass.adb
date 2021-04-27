@@ -332,26 +332,30 @@ begin
          Close(File => Readme_File);
       end Show_Readme_Block;
       -- Create new, selected site project directory
-   elsif Argument(1) = "createnow" or Argument(1) = "create" then
+   elsif Argument(Number => 1) in "createnow" | "create" then
       Create;
-   elsif Argument(1) = "build" then
-      if not Valid_Arguments("from where page will be created.", False) then
+   elsif Argument(Number => 1) = "build" then
+      if not Valid_Arguments
+          (Message => "from where page will be created.", Exist => False) then
          return;
       end if;
-      ParseConfig(To_String(Work_Directory));
-      if Build_Site(To_String(Work_Directory)) then
-         ShowMessage("Site was build.", Messages.Success);
+      ParseConfig(DirectoryName => To_String(Source => Work_Directory));
+      if Build_Site(Directory_Name => To_String(Source => Work_Directory)) then
+         ShowMessage(Text => "Site was build.", MType => Messages.Success);
       else
-         ShowMessage("Site building has been interrupted.");
+         ShowMessage(Text => "Site building has been interrupted.");
       end if;
       -- Start server to monitor changes in selected site project
-   elsif Argument(1) = "server" then
-      if not Valid_Arguments("from where site will be served.", False) then
+   elsif Argument(Number => 1) = "server" then
+      if not Valid_Arguments
+          (Message => "from where site will be served.", Exist => False) then
          return;
       end if;
-      ParseConfig(To_String(Work_Directory));
-      if not Ada.Directories.Exists(To_String(YassConfig.OutputDirectory)) then
-         Create_Path(To_String(YassConfig.OutputDirectory));
+      ParseConfig(DirectoryName => To_String(Source => Work_Directory));
+      if not Ada.Directories.Exists
+          (Name => To_String(Source => YassConfig.OutputDirectory)) then
+         Create_Path
+           (New_Directory => To_String(Source => YassConfig.OutputDirectory));
       end if;
       Set_Directory(To_String(YassConfig.OutputDirectory));
       if YassConfig.ServerEnabled then
