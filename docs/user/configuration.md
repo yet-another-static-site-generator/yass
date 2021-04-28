@@ -50,57 +50,57 @@ Possible settings for project:
 * StopServerOnError: can have true or false value, case-insensitive. Did
   command `server` should terminate if error occurred, during creating the site.
   Default value is `false` (don't terminate on error).
-* BrowserCommand - Full path to the command which will be used to start the web
+* BrowserCommand: Full path to the command which will be used to start the web
   browser with index.html page of the site. String `%s` will be replaced by
   server URL. If this setting is `none`, the web browser will be not started,
   same as when the web server is disabled. Default value is `none`.
-* MonitorInterval - any positive number. How often (in seconds) the program
+* MonitorInterval: any positive number. How often (in seconds) the program
   should check for this site changes when working in server mode and
   regenerate the site if needed. Default value is `5.0`.
-* MonitorConfigInterval - any positive number. How often (in seconds) the program
+* MonitorConfigInterval: any positive number. How often (in seconds) the program
   should check for the site configuration changes when working in server mode and
   reconfigure the site if needed. Default value is `60.0`.
-* BaseURL - Base URL of the site. It is needed mostly for creating sitemap and
+* BaseURL: Base URL of the site. It is needed mostly for creating sitemap and
   Atom feed, but you can use it as a normal the site tag. If your site will be
   available at `https://mysite.com/blog` then this will be your BaseURL.
   Default value is `http://localhost:8888`.
-* EnableSitemap - Did the program should create sitemap when creating the site.
+* EnableSitemap: Did the program should create sitemap when creating the site.
   Possible values are true or false (case-insensitive). Default value is
   `true` (create sitemap).
-* AtomFeedSource - Source which will be used for creating Atom feed of the
-  site. Possible values are: `none` - don't create Atom feed, `tags` - create
-  Atom entries from proper tags in .md files, `[filename]` - the path (related to
+* AtomFeedSource: Source which will be used for creating Atom feed of the
+  site. Possible values are: `none`: don't create Atom feed, `tags`: create
+  Atom entries from proper tags in .md files, `[filename]`: the path (related to
   the project directory path) to markdown file which will be used as a source of
-  Atom feed (must have proper tags set inside). For more informations about
+  Atom feed (must have proper tags set inside). For more information about
   Atom feed tags, please see section [Configuring Pages](pages.html). Default
   value is `none`.
-* AtomFeedAmount - Number of entries in the Atom feed (if it will be created,
+* AtomFeedAmount: Number of entries in the Atom feed (if it will be created,
   please see setting above).
-* Name - The name of the site which will be created. If you have enabled
+* Name: The name of the site which will be created. If you have enabled
   creating Atom feed then it is needed. Otherwise, you can use it as a normal
   template tag.
-* Language - The ISO 639-1 language code in which the site will be created.
-* Author - the name of the author of the site. If you have enabled creating
+* Language: The ISO 639-1 language code in which the site will be created.
+* Author: the name of the author of the site. If you have enabled creating
   Atom feed, then it is needed. Otherwise, you can use it as a normal template
   tag. Default value is `Jon Doe`.
-* AuthorEmail - the email address of the author of the site. If you have
+* AuthorEmail: the email address of the author of the site. If you have
   enabled creating Atom feed, then it is needed. Otherwise, you can use it as
   a normal template tag. Default valuse is `jondoe@example.com`.
-* StartTagSeparator - any string which will be used as start mark for the
+* StartTagSeparator: any string which will be used as start mark for the
   templates tags. You may want to change it, if you want to use templates from
   other static site generators. Default value is `{%`.
-* EndTagSeparator - any string which will be used as end mark for the templates
+* EndTagSeparator: any string which will be used as end mark for the templates
   tags. You may want to change it, if you want to use templates from other
   static site generators. Default value is `%}`.
-* MarkdownComment - any string which will be used as a start mark for comments
+* MarkdownComment: any string which will be used as a start mark for comments
   in parsed markdown files. Default value is `--`
 
 <a href="#top">^ Top</a>
 
 ## <a name="tags"></a>Project wide (global) tags
 
-Project configuration file can contains project wide (global) tags, which can
-be used on each page. For more informations about global tags, please see
+Project configuration file can contain project wide (global) tags, which can
+be used on each page. For more information about global tags, please see
 section [Templates Tags](tags.html).
 
 <a href="#top">^ Top</a>
