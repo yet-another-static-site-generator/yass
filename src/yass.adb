@@ -357,15 +357,19 @@ begin
          Create_Path
            (New_Directory => To_String(Source => YassConfig.OutputDirectory));
       end if;
-      Set_Directory(To_String(YassConfig.OutputDirectory));
+      Set_Directory
+        (Directory => To_String(Source => YassConfig.OutputDirectory));
       if YassConfig.ServerEnabled then
          if not Ada.Directories.Exists
-             (To_String(YassConfig.LayoutsDirectory) & Dir_Separator &
-              "directory.html") then
-            CreateDirectoryLayout("");
+             (Name =>
+                To_String(Source => YassConfig.LayoutsDirectory) &
+                Dir_Separator & "directory.html") then
+            CreateDirectoryLayout(DirectoryName => "");
          end if;
          StartServer;
-         if YassConfig.BrowserCommand /= To_Unbounded_String("none") then
+         if YassConfig.BrowserCommand /=
+           To_Unbounded_String(Source => "none") then
+            Start_Web_Browser_Block :
             declare
                Args: constant Argument_List_Access :=
                  Argument_String_To_List(To_String(YassConfig.BrowserCommand));
@@ -381,7 +385,7 @@ begin
                   ShutdownServer;
                   return;
                end if;
-            end;
+            end Start_Web_Browser_Block;
          end if;
       else
          Put_Line("Started monitoring site changes. Press ""Q"" for quit.");
