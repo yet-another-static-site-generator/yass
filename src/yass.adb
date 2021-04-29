@@ -372,47 +372,56 @@ begin
             Start_Web_Browser_Block :
             declare
                Args: constant Argument_List_Access :=
-                 Argument_String_To_List(To_String(YassConfig.BrowserCommand));
+                 Argument_String_To_List
+                   (Arg_String =>
+                      To_String(Source => YassConfig.BrowserCommand));
             begin
-               if not Ada.Directories.Exists(Args(Args'First).all)
+               if not Ada.Directories.Exists(Name => Args(Args'First).all)
                  or else
                    Non_Blocking_Spawn
-                     (Args(Args'First).all,
-                      Args(Args'First + 1 .. Args'Last)) =
+                     (Program_Name => Args(Args'First).all,
+                      Args => Args(Args'First + 1 .. Args'Last)) =
                    Invalid_Pid then
                   Put_Line
-                    ("Can't start web browser. Please check your site configuration did it have proper value for ""BrowserCommand"" setting.");
+                    (Item =>
+                       "Can't start web browser. Please check your site configuration did it have proper value for ""BrowserCommand"" setting.");
                   ShutdownServer;
                   return;
                end if;
             end Start_Web_Browser_Block;
          end if;
       else
-         Put_Line("Started monitoring site changes. Press ""Q"" for quit.");
+         Put_Line
+           (Item => "Started monitoring site changes. Press ""Q"" for quit.");
       end if;
       MonitorSite.Start;
       MonitorConfig.Start;
-      AWS.Server.Wait(AWS.Server.Q_Key_Pressed);
+      AWS.Server.Wait(Mode => AWS.Server.Q_Key_Pressed);
       if YassConfig.ServerEnabled then
          ShutdownServer;
       else
-         Put("Stopping monitoring site changes...");
+         Put(Item => "Stopping monitoring site changes...");
       end if;
       abort MonitorSite;
       abort MonitorConfig;
-      ShowMessage("done.", Messages.Success);
+      ShowMessage(Text => "done.", MType => Messages.Success);
       -- Create new empty markdown file with selected name
-   elsif Argument(1) = "createfile" then
+   elsif Argument(Number => 1) = "createfile" then
       if Argument_Count < 2 then
-         ShowMessage("Please specify name of file to create.");
+         ShowMessage(Text => "Please specify name of file to create.");
          return;
       end if;
-      if Index(Argument(2), Containing_Directory(Current_Directory)) = 1 then
-         Work_Directory := To_Unbounded_String(Argument(2));
+      if Index
+          (Source => Argument(Number => 2),
+           Pattern => Containing_Directory(Name => Current_Directory)) =
+        1 then
+         Work_Directory :=
+           To_Unbounded_String(Source => Argument(Number => 2));
       else
          Work_Directory :=
            To_Unbounded_String
-             (Current_Directory & Dir_Separator & Argument(2));
+             (Source =>
+                Current_Directory & Dir_Separator & Argument(Number => 2));
       end if;
       if Extension(To_String(Work_Directory)) /= "md" then
          Work_Directory := Work_Directory & To_Unbounded_String(".md");
