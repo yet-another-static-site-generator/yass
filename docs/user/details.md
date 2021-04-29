@@ -39,8 +39,8 @@
 To create new site project type in the directory where the file `yass` is
 `./yass createnow [ProjectName]` for fast create of new project with default
 settings, or `./yass create [ProjectName]` for creation of new project based
-on your answers to few questions. `[ProjectName]` is the name of your site
-project. It will be the name of directory too. This command create the
+on your answers on a few questions. `[ProjectName]` is the name of your site
+project. It will be the name of directory too. This command creates the
 directory with the content:
 
     [ProjectName]
@@ -76,7 +76,7 @@ to the output directory (by default it is *_output* directory in `[ProjectName]`
 directory). Additonally, if you have enabled generating sitemaps, it will
 create one with all pages and file `robots.txt` to inform crawlers about the
 sitemap. This command preserve structure of directories and files in
-your project. Thus if you create the directory structure like this:
+your project. Thus, if you create the directory structure like this:
 
     [ProjectName]
       |-_layouts
@@ -92,10 +92,10 @@ your project. Thus if you create the directory structure like this:
       |-images
          |-newimage.png
 
-Your new site will be have that directory structure (inside the *_output*
+Your new site will be having that directory structure (inside the *_output*
 directory). Files `sitemap.xml` and `robots.txt` will be added only when
-you will be have enabled option to create sitemap. File `atom.xml` will
-be added only when you will be have enabled option to create Atom feed:
+you will be having enabled option to create sitemap. File `atom.xml` will
+be added only when you will be having enabled option to create Atom feed:
 
     index.html
     sitemap.xml
@@ -126,19 +126,19 @@ sitemaps, it will be upgraded or created too if needed, same with file
 create `atom.xml` file if needed. If you want, you can set this command to
 terminate on any error occurence, during monitoring the site. Additionally,
 you can customize how directory listing looks, by editing `directory.html`
-file in layouts directory. More informations about available tags, you can
+file in layouts directory. More information about available tags, you can
 find in [AWS API documentation]
 (https://docs.adacore.com/aws-docs/aws/apiref.html#aws-services-directory).
 
 ### Limitations
-- Monitoring does not delete files. If you delete one, the program will not
+* Monitoring does not delete files. If you delete one, the program will not
   detect it. You must stop, remove old file manually, then restart the server.
-- If you delete page which was in the sitemap, you will be need to edit the
+* If you delete page which was in the sitemap, you will be need to edit the
   sitemap manually or delete it completely with file `robots.txt` to
   regenerate list of the site pages with `build` command.
-- Same with Atom feed, if you delete page which was in feed, you will need to
+* Same with Atom feed, if you delete page which was in feed, you will need to
   edit `atom.xml` file or delete it to regenerate it with `build` command.
-- If you edit global tag (in `site.cfg` file) you will be need to stop the
+* If you edit global tag (in `site.cfg` file) you will be need to stop the
   program and rebuild whole site with `build` command, because server can
   monitor only settings changes (it will not rebuild `.md` files).
 
@@ -153,8 +153,8 @@ commands. To run it, type in directory where the file `yass` is `./yass help`.
 
 ## <a name="version"></a>Version command
 
-This command gives only short information about the program version and it
-release date. To run it, type in directory where the file `yass` is
+This command gives only short information about the program version, and its
+released date. To run it, type in directory where the file `yass` is
 `./yass version`.
 
 <a href="#top">^ Top</a>
