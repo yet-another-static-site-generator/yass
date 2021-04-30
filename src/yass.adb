@@ -423,33 +423,42 @@ begin
              (Source =>
                 Current_Directory & Dir_Separator & Argument(Number => 2));
       end if;
-      if Extension(To_String(Work_Directory)) /= "md" then
-         Work_Directory := Work_Directory & To_Unbounded_String(".md");
+      if Extension(Name => To_String(Source => Work_Directory)) /= "md" then
+         Work_Directory :=
+           Work_Directory & To_Unbounded_String(Source => ".md");
       end if;
-      if Ada.Directories.Exists(To_String(Work_Directory)) then
+      if Ada.Directories.Exists
+          (Name => To_String(Source => Work_Directory)) then
          Put_Line
-           ("Can't create file """ & To_String(Work_Directory) &
-            """. File with that name exists.");
+           (Item =>
+              "Can't create file """ & To_String(Source => Work_Directory) &
+              """. File with that name exists.");
          return;
       end if;
-      Create_Path(Containing_Directory(To_String(Work_Directory)));
-      CreateEmptyFile(To_String(Work_Directory));
+      Create_Path
+        (New_Directory =>
+           Containing_Directory(Name => To_String(Source => Work_Directory)));
+      CreateEmptyFile(FileName => To_String(Source => Work_Directory));
       ShowMessage
-        ("Empty file """ & To_String(Work_Directory) & """ was created.",
-         Messages.Success);
+        (Text =>
+           "Empty file """ & To_String(Source => Work_Directory) &
+           """ was created.",
+         MType => Messages.Success);
       -- Unknown command entered
    else
-      ShowMessage("Unknown command '" & Argument(1) & "'");
+      ShowMessage(Text => "Unknown command '" & Argument(Number => 1) & "'");
       Show_Help;
    end if;
 exception
    when An_Exception : InvalidConfigData =>
       ShowMessage
-        ("Invalid data in site config file ""site.cfg"". Invalid line:""" &
-         Exception_Message(An_Exception) & """");
+        (Text =>
+           "Invalid data in site config file ""site.cfg"". Invalid line:""" &
+           Exception_Message(X => An_Exception) & """");
    when AWS.Net.Socket_Error =>
       ShowMessage
-        ("Can't start program in server mode. Probably another program is using this same port, or you have still connected old instance of the program in your browser. Please close whole browser and try run the program again. If problem will persist, try to change port for the server in the site configuration.");
+        (Text =>
+           "Can't start program in server mode. Probably another program is using this same port, or you have still connected old instance of the program in your browser. Please close whole browser and try run the program again. If problem will persist, try to change port for the server in the site configuration.");
    when An_Exception : others =>
       declare
          ErrorFile: File_Type;
