@@ -6,10 +6,10 @@
 -- nexttext: Changelog
 -- indexlink: true
 -- details: []
--- details: General Informations
+-- details: General Information
 -- details: Adding modules to the site project
 -- details: Communication between YASS and modules
--- details: API informations
+-- details: API information
 -- details: Example module
 -- detailslink: []
 -- detailslink: general
@@ -17,10 +17,10 @@
 -- detailslink: communication
 -- detailslink: api
 -- detailslink: example
-## <a name="general"></a>General informations
+## <a name="general"></a>General information
 
 YASS can be extended with any script or other program which can be run on your
-machine. This mean, for example Bash, Perl, Python scripts or any compiled
+machine. It means, for example Bash, Perl, Python scripts or any compiled
 program, anything what can be run from terminal. Second requirement is that
 extension (called *module*) must have ability to read environment variables,
 read standard input and write to standard output, because in that ways YASS and
@@ -32,7 +32,7 @@ every site can have own set of modules to run.
 ## <a name="adding"></a>Adding modules to the site project
 
 After creating a site project, you will have directory `_modules` (with default
-setting) inside site project directory. This directory have structure:
+setting) inside site project directory. This directory has structure:
 
     [ProjectName]
       |-_modules
@@ -43,19 +43,19 @@ setting) inside site project directory. This directory have structure:
 
 Subdirectories inside `_modules` directory are places where all modules should
 be put. They names are that same like the program *hooks* for running modules
-thus you should not change names for this subdirectories.
+thus you should not change names for these subdirectories.
 
-- start: put here modules which will be run at beginning of work for commands
-  `build` and `server`. This modules will be executed only once during build or
+* start: put here modules which will be run at beginning of work for commands
+  `build` and `server`. These modules will be executed only once during build or
   regenerate the site. For command `server` this happens only after start the
   server.
-- pre: put here modules which will be run every time when the program will be
+* pre: put here modules which will be run every time when the program will be
   preparing to manipulate any file, like copying or generating HTML page from
   markdown file.
-- post: put here modules which will be run every time when the program will end
+* post: put here modules which will be run every time when the program will end
   manipulating any file, like copying or generating HTML page from markdown
   file.
-- end: put here modules which will be run after finishing files manipulation.
+* end: put here modules which will be run after finishing files manipulation.
   For command `server` it will be run after every site regeneration.
 
 Thus, if you have module `test.sh` and you want to run it every time when the
@@ -79,14 +79,14 @@ executable to run that complicated module.
 ## <a name="communication"></a>Communication between YASS and modules
 
 There are two ways for communication between the program and modules.
-- By environment variables: Before running modules in *pre* hook YASS
+* By environment variables: Before running modules in *pre* hook YASS
   is setting environment variable `YASSFILE` with full path to currently
-  modified file. Before running module in *post* hook YASS is setting
+  modified file. Also, before running module in *post* hook YASS is setting
   environment variable `YASSFILE` with full path to result file.
   Additionally, modules have access to all other environment variables
   currently set. For example to `YASSDIR` or `APPDIR` if you use AppImage
   version of the program.
-- By pipes: When the program starts the module, the program grabs input and
+* By pipes: When the program starts the module, the program grabs input and
   output of the module. Here is available very simple API to manipulate then
   template tags. To use it, module should just send proper command to default
   output and listen to the program's response on default input.
@@ -95,13 +95,13 @@ There are two ways for communication between the program and modules.
 
 ## <a name="api"></a>API informations
 
-- gettag [tagname] - this API command sent to the program, returns value of
+* gettag [tagname] - this API command sent to the program, returns value of
   `tagname` tag. If selected tag is the simple tag, then the program
   immediately value of selected tag. If selected tag is composite tag then
   the program first send amount of the values of the tag and then each value
   for this tag. If tag with selected name does not exists, the program will
   inform the module about it.
-- edittag [tagname] (tagindex) [tagvalue] - this API command sent to the
+* edittag [tagname] (tagindex) [tagvalue] - this API command sent to the
   program, sets new value for selected tag. If selected tag is the simple tag,
   then variable `tagindex` is not needed (example: `edittag name newname`).
   When selected tag is the composite tag, then variable `tagindex` is required.
@@ -109,10 +109,10 @@ There are two ways for communication between the program and modules.
   the value of the tag, it will send to module answer `Success`. If there
   will be any problem with modification, then the program will send the
   information what was wrong.
-- During *start* and *end* *hooks* there are available only global tags from
+* During *start* and *end* *hooks* there are available only global tags from
   `site.cfg` file. During *pre* and *post* *hooks* you can manipulate with page
   tags either.
-- Whole command must be one line command, it can't contains new line symbols.
+* Whole command must be one line command, it can't contains new line symbols.
 
 <a href="#top">^ Top</a>
 
