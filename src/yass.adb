@@ -460,34 +460,35 @@ exception
         (Text =>
            "Can't start program in server mode. Probably another program is using this same port, or you have still connected old instance of the program in your browser. Please close whole browser and try run the program again. If problem will persist, try to change port for the server in the site configuration.");
    when An_Exception : others =>
+      Save_Exception_Info_Block :
       declare
-         ErrorFile: File_Type;
+         Error_File: File_Type;
       begin
          if Ada.Directories.Exists("error.log") then
-            Open(ErrorFile, Append_File, "error.log");
+            Open(Error_File, Append_File, "error.log");
          else
-            Create(ErrorFile, Append_File, "error.log");
+            Create(Error_File, Append_File, "error.log");
          end if;
-         Put_Line(ErrorFile, Ada.Calendar.Formatting.Image(Clock));
-         Put_Line(ErrorFile, Version);
-         Put_Line(ErrorFile, "Exception: " & Exception_Name(An_Exception));
-         Put_Line(ErrorFile, "Message: " & Exception_Message(An_Exception));
+         Put_Line(Error_File, Ada.Calendar.Formatting.Image(Clock));
+         Put_Line(Error_File, Version);
+         Put_Line(Error_File, "Exception: " & Exception_Name(An_Exception));
+         Put_Line(Error_File, "Message: " & Exception_Message(An_Exception));
          Put_Line
-           (ErrorFile, "-------------------------------------------------");
-         Put(ErrorFile, Symbolic_Traceback(An_Exception));
+           (Error_File, "-------------------------------------------------");
+         Put(Error_File, Symbolic_Traceback(An_Exception));
          if Directory_Separator = '/' then
             Put_Line
-              (File => ErrorFile,
+              (File => Error_File,
                Item => Symbolic_Traceback(E => An_Exception));
          else
             Put_Line
-              (File => ErrorFile,
+              (File => Error_File,
                Item => Exception_Information(X => An_Exception));
          end if;
          Put_Line
-           (ErrorFile, "-------------------------------------------------");
-         Close(ErrorFile);
+           (Error_File, "-------------------------------------------------");
+         Close(Error_File);
          Put_Line
            ("Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://www.laeran.pl/repositories/yass and attach (if possible) file 'error.log' (should be in this same directory).");
-      end;
+      end Save_Exception_Info_Block;
 end Yass;
