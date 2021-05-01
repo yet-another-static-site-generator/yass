@@ -93,15 +93,15 @@ There are two ways for communication between the program and modules.
 
 <a href="#top">^ Top</a>
 
-## <a name="api"></a>API informations
+## <a name="api"></a>API information
 
-* gettag [tagname] - this API command sent to the program, returns value of
+* gettag [tagname]: this API command sent to the program, returns value of
   `tagname` tag. If selected tag is the simple tag, then the program
   immediately value of selected tag. If selected tag is composite tag then
   the program first send amount of the values of the tag and then each value
-  for this tag. If tag with selected name does not exists, the program will
+  for this tag. If tag with selected name does not exist, the program will
   inform the module about it.
-* edittag [tagname] (tagindex) [tagvalue] - this API command sent to the
+* edittag [tagname] (tagindex) [tagvalue]: this API command sent to the
   program, sets new value for selected tag. If selected tag is the simple tag,
   then variable `tagindex` is not needed (example: `edittag name newname`).
   When selected tag is the composite tag, then variable `tagindex` is required.
@@ -112,7 +112,7 @@ There are two ways for communication between the program and modules.
 * During *start* and *end* *hooks* there are available only global tags from
   `site.cfg` file. During *pre* and *post* *hooks* you can manipulate with page
   tags either.
-* Whole command must be one line command, it can't contains new line symbols.
+* Whole command must be one line command, it can't contain new line symbols.
 
 <a href="#top">^ Top</a>
 
@@ -155,7 +155,7 @@ at the end show all values of the tag "news".
 
 Save it as `showname.sh` file, give it permissions to run `chmod 744
 showname.sh` and put it in `modules/pre` directory in selected site project.
-Additionally, you been need to add or to `site.cfg` or to markdown file the
+Additionally, you have been needing to add or to `site.cfg` or to markdown file the
 composite tag `news` with at least 2 values. For example in `site.cfg`:
 
     news = []
