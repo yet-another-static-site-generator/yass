@@ -464,17 +464,25 @@ exception
       declare
          Error_File: File_Type;
       begin
-         if Ada.Directories.Exists("error.log") then
-            Open(Error_File, Append_File, "error.log");
+         if Ada.Directories.Exists(Name => "error.log") then
+            Open(File => Error_File, Mode => Append_File, Name => "error.log");
          else
-            Create(Error_File, Append_File, "error.log");
+            Create
+              (File => Error_File, Mode => Append_File, Name => "error.log");
          end if;
-         Put_Line(Error_File, Ada.Calendar.Formatting.Image(Clock));
-         Put_Line(Error_File, Version);
-         Put_Line(Error_File, "Exception: " & Exception_Name(An_Exception));
-         Put_Line(Error_File, "Message: " & Exception_Message(An_Exception));
          Put_Line
-           (Error_File, "-------------------------------------------------");
+           (File => Error_File,
+            Item => Ada.Calendar.Formatting.Image(Date => Clock));
+         Put_Line(File => Error_File, Item => Version);
+         Put_Line
+           (File => Error_File,
+            Item => "Exception: " & Exception_Name(X => An_Exception));
+         Put_Line
+           (File => Error_File,
+            Item => "Message: " & Exception_Message(X => An_Exception));
+         Put_Line
+           (File => Error_File,
+            Item => "-------------------------------------------------");
          Put(Error_File, Symbolic_Traceback(An_Exception));
          if Directory_Separator = '/' then
             Put_Line
