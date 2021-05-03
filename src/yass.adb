@@ -483,7 +483,6 @@ exception
          Put_Line
            (File => Error_File,
             Item => "-------------------------------------------------");
-         Put(Error_File, Symbolic_Traceback(An_Exception));
          if Directory_Separator = '/' then
             Put_Line
               (File => Error_File,
