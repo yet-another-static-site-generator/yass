@@ -6,21 +6,21 @@
 -- nexttext: Extending
 -- indexlink: true
 -- details: []
--- details: General Informations
+-- details: General Information
 -- details: Page configuration
 -- detailslink: []
 -- detailslink: general
 -- detailslink: configuration
-## <a name="general"></a>General informations
+## <a name="general"></a>General information
 At this moment, all configuration for each page is inside files with page
 content. They have syntax: `[CommentMark] [Key]: [Value]`. Default setting
 for the `[CommendMark]` is `--` but you can change it in `site.cfg` file.
 
-- Same as site settings, each pair must be in one line. Neither `Key` nor
+* Same as site settings, each pair must be in one line. Neither `Key` nor
   `Value` can't contains new line.
-- Settings can be added in any place of file (at beginning, between text, at
+* Settings can be added in any place of file (at beginning, between text, at
   end, etc) just they must start with new line.
-- All settings are case-sensitive.
+* All settings are case-sensitive.
 
 <a href="#top">^ Top</a>
 
@@ -34,13 +34,13 @@ informations about how sitemap parameters works, you can find at
 [Sitemaps protocol](https://www.sitemaps.org/protocol.html#xmlTagDefinitions)
 page. All sitemap settings are optional.
 
-- priority - The priority of this URL relative to other URLs on your site.
+* priority - The priority of this URL relative to other URLs on your site.
   Valid values range from `0.0` to `1.0`. This value does not affect how your
   pages are compared to pages on other sites—it only lets the search engines
   know which pages you deem most important for the crawlers.
-- changefreq - How frequently the page is likely to change, value can be:
+* changefreq - How frequently the page is likely to change, value can be:
   `always`, `hourly`, `daily`, `weekly`, `monthly`, `yearly` or `never`.
-- insitemap - optional setting. Did page should be included in sitemap. If you
+* insitemap - optional setting. Did page should be included in sitemap. If you
   want to exclude this page from the sitemap, set it to `insitemap: false`.
   Default value is `true`.
 
@@ -52,17 +52,17 @@ More informations about how Atom feeds parameters works, you can find at
 
 If you selected source of the Atom feed as `tags`:
 
-- title - Title which will be used as the Atom title entry. Required setting if
+* title - Title which will be used as the Atom title entry. Required setting if
   creating Atom feed is enabled.
-- updated - Time stamp when page (and Atom feed entry) last time was updated.
+* updated - Time stamp when page (and Atom feed entry) last time was updated.
   Must be in [RFC3339](http://www.faqs.org/rfcs/rfc3339.html) time style. This
   parameter is optional. If you not set it, the program will use time when file
   html (created from this markdown file) was last time updated.
-- author - The name of the author of the page. This parameter is optional.
-- authoremail - The email address of the author of the page. This parameter is
+* author - The name of the author of the page. This parameter is optional.
+* authoremail - The email address of the author of the page. This parameter is
   optional.
-- summary - Short summary for this page. This parameter is optional.
-- content - Content of the page in Atom feed. If you not set it, then the
+* summary - Short summary for this page. This parameter is optional.
+* content - Content of the page in Atom feed. If you not set it, then the
   program will load here markdown version of the page content. This parameter
   is optional.
 
@@ -76,22 +76,22 @@ Example of markdown file with Atom feed settings for Atom feed source as
 If you selected source of the Atom feed as `[filename]` and this markdown file
 will be used as a source for the Atom feed:
 
-- title - Composite tag (if you want to have more that one entry in the Atom
+* title - Composite tag (if you want to have more that one entry in the Atom
   feed) which will be used as the Atom entries titles. Required setting if
   creating Atom feed is enabled.
-- id - name or id of the HTML element which will be entry point for each Atom
+* id - name or id of the HTML element which will be entry point for each Atom
   entry. It will be added to the page address in Atom entries. Required
   setting for creating Atom feed from one file.
-- updated - Time stamp when selected Atom feed entry was last time updated.
+* updated - Time stamp when selected Atom feed entry was last time updated.
   Must be in [RFC3339](http://www.faqs.org/rfcs/rfc3339.html) time style.
   Required for each entry if creating Atom feed from one file is enabled.
-- author - The name of the author of selected Atom feed entry. This is
+* author - The name of the author of selected Atom feed entry. This is
   optional parameter for each entry.
-- authoremail - The email address of the author of selected Atom feed entry.
+* authoremail - The email address of the author of selected Atom feed entry.
   This is optional parameter for each entry.
-- summary - Short summary for selected Atom feed entry. This is optional
+* summary - Short summary for selected Atom feed entry. This is optional
   parameter for each entry.
-- content - Content of selected Atom feed entry. If you not set it, then the
+* content - Content of selected Atom feed entry. If you not set it, then the
   program will load here id of selected Atom feed entry. This parameter is
   optional.
 
@@ -143,7 +143,7 @@ inside `news.html` layout to show that news:
 
 One parameter is always required:
 
-- layout - the name of file (without extension) which will be used as template
+* layout - the name of file (without extension) which will be used as template
   for the page. This must be existing file from the project layouts directory.
 
 <a href="#top">^ Top</a>
