@@ -29,14 +29,14 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with AWS.Net;
 with AWS.Server;
+with AtomFeed; use AtomFeed;
 with Config; use Config;
 with Layouts; use Layouts;
-with Pages; use Pages;
-with Server; use Server;
-with Modules; use Modules;
-with Sitemaps; use Sitemaps;
-with AtomFeed; use AtomFeed;
 with Messages; use Messages;
+with Modules; use Modules;
+with Pages; use Pages;
+with Sitemaps; use Sitemaps;
+with Server; use Server;
 
 procedure Yass is
    Version: constant String := "3.0";
@@ -493,9 +493,11 @@ exception
                Item => Exception_Information(X => An_Exception));
          end if;
          Put_Line
-           (Error_File, "-------------------------------------------------");
-         Close(Error_File);
+           (File => Error_File,
+            Item => "-------------------------------------------------");
+         Close(File => Error_File);
          Put_Line
-           ("Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://www.laeran.pl/repositories/yass and attach (if possible) file 'error.log' (should be in this same directory).");
+           (Item =>
+              "Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://www.laeran.pl/repositories/yass and attach (if possible) file 'error.log' (should be in this same directory).");
       end Save_Exception_Info_Block;
 end Yass;
