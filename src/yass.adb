@@ -15,27 +15,27 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Calendar;
+with Ada.Calendar.Formatting;
 with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Directories; use Ada.Directories;
-with Ada.Calendar; use Ada.Calendar;
-with Ada.Calendar.Formatting;
-with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
-with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.Traceback.Symbolic;
 with AWS.Net;
 with AWS.Server;
-with AtomFeed; use AtomFeed;
+with AtomFeed;
 with Config; use Config;
 with Layouts; use Layouts;
 with Messages; use Messages;
-with Modules; use Modules;
+with Modules;
 with Pages; use Pages;
-with Sitemaps; use Sitemaps;
+with Sitemaps;
 with Server; use Server;
 
 procedure Yass is
@@ -52,6 +52,10 @@ procedure Yass is
    -- SOURCE
    function Build_Site(Directory_Name: String) return Boolean is
       -- ****
+      use AtomFeed;
+      use Modules;
+      use Sitemaps;
+
       Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
       Page_Table_Tags: TableTags_Container.Map :=
         TableTags_Container.Empty_Map;
@@ -462,6 +466,9 @@ exception
    when An_Exception : others =>
       Save_Exception_Info_Block :
       declare
+         use Ada.Calendar;
+         use GNAT.Traceback.Symbolic;
+
          Error_File: File_Type;
       begin
          if Ada.Directories.Exists(Name => "error.log") then
