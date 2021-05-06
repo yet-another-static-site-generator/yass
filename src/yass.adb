@@ -117,11 +117,11 @@ procedure Yass is
       -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
       StartSitemap;
       -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
-      StartAtomFeed;
+      Start_Atom_Feed;
       -- Build the site
       Build(Name => Directory_Name);
       -- Save atom feed to file or nothing if atom feed generation is disabled
-      SaveAtomFeed;
+      Save_Atom_Feed;
       -- Save sitemap to file or nothing if sitemap generation is disabled
       SaveSitemap;
       -- Load the program modules with 'end' hook

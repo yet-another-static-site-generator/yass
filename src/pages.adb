@@ -80,10 +80,10 @@ package body Pages is
          if Name = "title" then
             AtomEntries.Prepend
               (New_Item =>
-                 (EntryTitle => To_Unbounded_String(Value),
+                 (Entry_Title => To_Unbounded_String(Value),
                   Id => Null_Unbounded_String, Updated => Time_Of(1901, 1, 1),
-                  AuthorName => Null_Unbounded_String,
-                  AuthorEmail => Null_Unbounded_String,
+                  Author_Name => Null_Unbounded_String,
+                  Author_Email => Null_Unbounded_String,
                   Summary => Null_Unbounded_String,
                   Content => Null_Unbounded_String));
          elsif Name = "id" then
@@ -92,10 +92,10 @@ package body Pages is
          elsif Name = "updated" then
             AtomEntries(AtomEntries.First_Index).Updated := To_Time(Value);
          elsif Name = "author" then
-            AtomEntries(AtomEntries.First_Index).AuthorName :=
+            AtomEntries(AtomEntries.First_Index).Author_Name :=
               To_Unbounded_String(Value);
          elsif Name = "authoremail" then
-            AtomEntries(AtomEntries.First_Index).AuthorEmail :=
+            AtomEntries(AtomEntries.First_Index).Author_Email :=
               To_Unbounded_String(Value);
          elsif Name = "summary" then
             AtomEntries(AtomEntries.First_Index).Summary :=
@@ -252,7 +252,7 @@ package body Pages is
       if YassConfig.AtomFeedSource = To_Unbounded_String("tags") then
          AtomEntries(AtomEntries.First_Index).Content := Content;
       end if;
-      AddPageToFeed(NewFileName, AtomEntries);
+      Add_Page_To_Feed(NewFileName, AtomEntries);
       Set("YASSFILE", NewFileName);
       -- Load the program modules with 'post' hook
       LoadModules("post", PageTags, PageTableTags);

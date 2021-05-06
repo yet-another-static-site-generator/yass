@@ -157,15 +157,15 @@ package body Server is
          -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
          StartSitemap;
          -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
-         StartAtomFeed;
+         Start_Atom_Feed;
          loop
             SiteRebuild := False;
             -- Monitor the site project directory for changes
             MonitorDirectory(To_String(SiteDirectory));
             if SiteRebuild then
-      -- Save atom feed to file or nothing if atom feed generation is disabled
-               SaveAtomFeed;
-         -- Save sitemap to file or nothing if sitemap generation is disabled
+               -- Save atom feed to file or nothing if atom feed generation is disabled
+               Save_Atom_Feed;
+               -- Save sitemap to file or nothing if sitemap generation is disabled
                SaveSitemap;
                -- Load the program modules with 'end' hook
                LoadModules("end", PageTags, PageTableTags);

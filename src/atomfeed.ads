@@ -26,24 +26,24 @@ with Ada.Calendar; use Ada.Calendar;
 package AtomFeed is
 -- ****
 
-   -- ****t* AtomFeed/FeedEntry
+   -- ****t* AtomFeed/Feed_Entry
    -- FUNCTION
    -- Data structure for Atom entries
    -- PARAMETERS
-   -- Id          - Url of entry
-   -- EntryTitle  - Title of entry
-   -- Updated     - Update time of entry
-   -- AuthorName  - Name of author of entry
-   -- AuthorEmail - Email of author of entry
-   -- Summary     - Short summary of entry
-   -- Content     - Content of entry
+   -- Id           - Url of entry
+   -- Entry_Title  - Title of entry
+   -- Updated      - Update time of entry
+   -- Author_Name  - Name of author of entry
+   -- Author_Email - Email of author of entry
+   -- Summary      - Short summary of entry
+   -- Content      - Content of entry
    -- SOURCE
-   type FeedEntry is record
+   type Feed_Entry is record
       Id: Unbounded_String;
-      EntryTitle: Unbounded_String;
+      Entry_Title: Unbounded_String;
       Updated: Time;
-      AuthorName: Unbounded_String;
-      AuthorEmail: Unbounded_String;
+      Author_Name: Unbounded_String;
+      Author_Email: Unbounded_String;
       Summary: Unbounded_String;
       Content: Unbounded_String;
    end record;
@@ -53,7 +53,7 @@ package AtomFeed is
    -- FUNCTION
    -- Used to store Atom feed entries
    -- SOURCE
-   package FeedEntry_Container is new Vectors(Positive, FeedEntry);
+   package FeedEntry_Container is new Vectors(Positive, Feed_Entry);
    -- ****
 
    -- ****f* AtomFeed/To_Time
@@ -76,33 +76,33 @@ package AtomFeed is
    -- RESULT
    -- Converted Ada Time to HTTP date format
    -- SOURCE
-   function To_HTTP_Date(Date: Time) return String with
+   function To_HTTP_Date(Date: Time) return String with --## rule line off NAMING_CONVENTION
       Test_Case => (Name => "Test_To_HTTP_Date", Mode => Nominal);
    -- ****
 
-   -- ****f* AtomFeed/StartAtomFeed
+   -- ****f* AtomFeed/Start_Atom_Feed
    -- FUNCTION
    -- Load existing Atom feed for the site
    -- SOURCE
-   procedure StartAtomFeed;
+   procedure Start_Atom_Feed;
    -- ****
 
-   -- ****f* AtomFeed/AddPageToFeed
+   -- ****f* AtomFeed/Add_Page_To_Feed
    -- FUNCTION
-   -- Add page with full path FileName and it extracted Atom entries Entries to the site Atom feed
+   -- Add page with full path File_Name and it extracted Atom entries Entries to the site Atom feed
    -- PARAMETERS
-   -- FileName - File name of the page to add
+   -- File_Name - File name of the page to add
    -- Entries  - List of Atom feed entries
    -- SOURCE
-   procedure AddPageToFeed
-     (FileName: String; Entries: in out FeedEntry_Container.Vector);
+   procedure Add_Page_To_Feed
+     (File_Name: String; Entries: in out FeedEntry_Container.Vector);
    -- ****
 
-   -- ****f* AtomFeed/SaveAtomFeed
+   -- ****f* AtomFeed/Save_Atom_Feed
    -- FUNCTION
    -- Save Atom feed to file
    -- SOURCE
-   procedure SaveAtomFeed;
+   procedure Save_Atom_Feed;
    -- ****
 
 end AtomFeed;
