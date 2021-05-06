@@ -32,7 +32,7 @@
    for the new project.
 2. Inside newly created directory `NewSite` you can find file *index.md*, which
    later will be main page of the site and *site.cfg* which contains all basic
-   settings of the site. Add some markdown text to *index.md* file or some new
+   settings of the site. Add some Markdown text to *index.md* file or some new
    files to directory `NewSite`.
 3. When you finish editing project, type in console `./yass build NewSite`
    to build your new site. Effect of this command will be stored (by default)
