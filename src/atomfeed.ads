@@ -49,11 +49,19 @@ package AtomFeed is
    end record;
    -- ****
 
+   -- ****d* AtomFeed/Empty_Feed_Entry
+   -- FUNCTION
+   -- Empty Atom feed entry
+   -- SOURCE
+   Empty_Feed_Entry: constant Feed_Entry := (others => <>);
+   -- ****
+
    -- ****t* AtomFeed/FeedEntry_Container
    -- FUNCTION
    -- Used to store Atom feed entries
    -- SOURCE
-   package FeedEntry_Container is new Vectors(Positive, Feed_Entry);
+   package FeedEntry_Container is new Vectors(Index_Type => Positive,
+      Element_Type => Feed_Entry);
    -- ****
 
    -- ****f* AtomFeed/To_Time
@@ -76,7 +84,8 @@ package AtomFeed is
    -- RESULT
    -- Converted Ada Time to HTTP date format
    -- SOURCE
-   function To_HTTP_Date(Date: Time) return String with --## rule line off NAMING_CONVENTION
+   function To_HTTP_Date
+     (Date: Time) return String with --## rule line off NAMING_CONVENTION
       Test_Case => (Name => "Test_To_HTTP_Date", Mode => Nominal);
    -- ****
 
