@@ -17,14 +17,14 @@ Here are two types of tags:
 
 ### Global tags
 
-They are defined for whole site in *site.cfg* file. This file have standard
+They are defined for whole site in *site.cfg* file. This file has standard
 config file syntax: `[Key] = [Value]`. For example:
 
     Name = Yet Another Static Site (Generator) Documentation
 
-- Each pair must be in one line. Neither `Key` nor `Value` can't contains new
+* Each pair must be in one line. Neither `Key` nor `Value` can't contain new
   line.
-- You can add as many as you want tags to project.
+* You can add as many as you want tags to project.
 
 ### Local (page) tags
 
@@ -35,16 +35,16 @@ For example:
 
     -- title: Template Tags
 
-- Same as global tags, each pair must be in one line. Neither `Key` nor `Value`
-  can't contains new line.
-- `Key` can't have any spaces, thus `some value: text` is invalid tag and will
+* Same as global tags, each pair must be in one line. Neither `Key` nor `Value`
+  can't contain new line.
+* `Key` can't have any spaces, thus `some value: text` is invalid tag and will
   not be parsed by the program. Write instead `somevalue: text` or
   `some_value: text`.
-- Same as global tags, you can add as many as you want tags to project.
-- Tags can be added in any place of a file (at beginning, between text, at end,
+* Same as global tags, you can add as many as you want tags to project.
+* Tags can be added in any place of a file (at beginning, between text, at end,
   etc) just they must start with new line. The program can't detect tags inside
   text.
-- Whole text from a markdown file is stored in tag `Content`.
+* Whole text from a markdown file is stored in tag `Content`.
 
 ### Values of tags
 
@@ -88,7 +88,7 @@ And for local (page) tags:
 
 Main usage of composite tags is [TABLE statement](http://docs.adacore.com/aws-docs/templates_parser/template_statements.html#table-statement)
 inside templates. All rules which applies to the normal template tags also
-apply to composite tags
+apply to composite tags.
 
 <a href="#top">^ Top</a>
 
@@ -108,11 +108,11 @@ For complete documentation on how to use tags and what is available, please
 refer to [Ada Web Server Templates documentation](http://docs.adacore.com/aws-docs/templates_parser/).
 Especially:
 
-- [Tags](http://docs.adacore.com/aws-docs/templates_parser/tags.html):
+* [Tags](http://docs.adacore.com/aws-docs/templates_parser/tags.html):
   part about Filters, Attributes and Predefined Tags.
-- [Template statements](http://docs.adacore.com/aws-docs/templates_parser/template_statements.html):
+* [Template statements](http://docs.adacore.com/aws-docs/templates_parser/template_statements.html):
   whole section.
-- [Macros](http://docs.adacore.com/aws-docs/templates_parser/macros.html):
+* [Macros](http://docs.adacore.com/aws-docs/templates_parser/macros.html):
   whole section.
 
 **Note:** In YASS you will use by default `{%` to start a tag (instead of `@_`)
