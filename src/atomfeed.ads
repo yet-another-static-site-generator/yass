@@ -84,8 +84,8 @@ package AtomFeed is
    -- RESULT
    -- Converted Ada Time to HTTP date format
    -- SOURCE
-   function To_HTTP_Date
-     (Date: Time) return String with --## rule line off NAMING_CONVENTION
+   function To_HTTP_Date --## rule line off NAMING_CONVENTION
+     (Date: Time) return String with
       Test_Case => (Name => "Test_To_HTTP_Date", Mode => Nominal);
    -- ****
 
