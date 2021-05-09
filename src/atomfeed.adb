@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -31,30 +31,30 @@ with Config; use Config;
 
 package body AtomFeed is
 
-   FeedFile_Name: Unbounded_String;
+   Feed_File_Name: Unbounded_String;
    Entries_List: FeedEntry_Container.Vector;
 
    function To_Time(Date: String) return Time is
-      NewDate: Unbounded_String;
+      New_Date: Unbounded_String;
    begin
       if Date'Length > 11 then
-         NewDate := To_Unbounded_String(Date(Date'First .. Date'Last - 1));
-         Replace_Element(NewDate, 11, ' ');
+         New_Date := To_Unbounded_String(Date(Date'First .. Date'Last - 1));
+         Replace_Element(New_Date, 11, ' ');
       else
-         NewDate := To_Unbounded_String(Date & " 00:00:00");
+         New_Date := To_Unbounded_String(Date & " 00:00:00");
       end if;
-      return Ada.Calendar.Formatting.Value(To_String(NewDate));
+      return Ada.Calendar.Formatting.Value(To_String(New_Date));
    end To_Time;
 
    function To_HTTP_Date(Date: Time) return String is
-      NewDate: String := Ada.Calendar.Formatting.Image(Date) & "Z";
+      New_Date: String := Ada.Calendar.Formatting.Image(Date) & "Z";
    begin
-      NewDate(11) := 'T';
-      return NewDate;
+      New_Date(11) := 'T';
+      return New_Date;
    end To_HTTP_Date;
 
    procedure Start_Atom_Feed is
-      AtomFile: File_Input;
+      Atom_File: File_Input;
       Reader: Tree_Reader;
       NodesList, ChildrenNodes, AuthorNodes: Node_List;
       Feed: Document;
@@ -71,15 +71,15 @@ package body AtomFeed is
          "<link rel=""alternate"" type=""application/rss+xml"" title=""" &
          To_String(YassConfig.SiteName) & " Feed"" href=""" &
          To_String(YassConfig.BaseURL) & "/atom.xml"" />");
-      FeedFile_Name :=
+      Feed_File_Name :=
         YassConfig.OutputDirectory &
         To_Unbounded_String(Dir_Separator & "atom.xml");
-      if not Exists(To_String(FeedFile_Name)) then
+      if not Exists(To_String(Feed_File_Name)) then
          return;
       end if;
-      Open(To_String(FeedFile_Name), AtomFile);
-      Parse(Reader, AtomFile);
-      Close(AtomFile);
+      Open(To_String(Feed_File_Name), Atom_File);
+      Parse(Reader, Atom_File);
+      Close(Atom_File);
       Feed := Get_Tree(Reader);
       NodesList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "entry");
       for I in 0 .. Length(NodesList) - 1 loop
@@ -185,7 +185,7 @@ package body AtomFeed is
    end Add_Page_To_Feed;
 
    procedure Save_Atom_Feed is
-      AtomFile: File_Type;
+      Atom_File: File_Type;
       Feed: Document;
       NewFeed: DOM_Implementation;
       MainNode, EntryNode: DOM.Core.Element;
@@ -262,9 +262,9 @@ package body AtomFeed is
          EntriesAmount := EntriesAmount + 1;
          exit when EntriesAmount = YassConfig.AtomFeedAmount;
       end loop;
-      Create(AtomFile, Out_File, To_String(FeedFile_Name));
-      Write(Stream => Stream(AtomFile), N => Feed, Pretty_Print => True);
-      Close(AtomFile);
+      Create(Atom_File, Out_File, To_String(Feed_File_Name));
+      Write(Stream => Stream(Atom_File), N => Feed, Pretty_Print => True);
+      Close(Atom_File);
    end Save_Atom_Feed;
 
 end AtomFeed;
