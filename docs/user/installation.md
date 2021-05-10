@@ -24,7 +24,23 @@ in [AppImage documentation](https://docs.appimage.org/user-guide/run-appimages.h
 
 ## <a name="buildprogram"></a>Build from sources
 
-### Preparations
+### Docker way
+
+You can use Docker images `adabuild` and `adabuildwin64` from the project
+[Docker Ada](https://www.laeran.pl/repositories/dockerada). They contain all libraries
+and compiler needed to build the program.
+
+To build the program for Linux, download `adabuild` image and type in console:
+
+`docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuild /bin/bash -c "cd /app && gprbuild -p -P yass.gpr -XMode=release"`
+
+To build the program for Windows 64-bit, download `adabuildwin64` image and type in console:
+
+`docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuildwin64 /bin/bash -c "cd /app && gprbuild -p -P yass.gpr -XMode=release --target=x86_64-windows"`
+
+### Classic way
+
+#### Preparations
 
 To build YASS from the source you will need few things:
 
@@ -39,7 +55,7 @@ To build YASS from the source you will need few things:
   [AdaCore](https://www.adacore.com/download/more) or
   [GitHub](https://github.com/AdaCore/aws)
 
-### Build program
+#### Build program
 
 Navigate to the main directory to compile:
 
