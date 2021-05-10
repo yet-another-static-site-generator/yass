@@ -38,12 +38,14 @@ package body AtomFeed is
       New_Date: Unbounded_String;
    begin
       if Date'Length > 11 then
-         New_Date := To_Unbounded_String(Date(Date'First .. Date'Last - 1));
-         Replace_Element(New_Date, 11, ' ');
+         New_Date :=
+           To_Unbounded_String(Source => Date(Date'First .. Date'Last - 1));
+         Replace_Element(Source => New_Date, Index => 11, By => ' ');
       else
-         New_Date := To_Unbounded_String(Date & " 00:00:00");
+         New_Date := To_Unbounded_String(Source => Date & " 00:00:00");
       end if;
-      return Ada.Calendar.Formatting.Value(To_String(New_Date));
+      return Ada.Calendar.Formatting.Value
+          (Date => To_String(Source => New_Date));
    end To_Time;
 
    function To_HTTP_Date(Date: Time) return String is
@@ -56,9 +58,9 @@ package body AtomFeed is
    procedure Start_Atom_Feed is
       Atom_File: File_Input;
       Reader: Tree_Reader;
-      NodesList, ChildrenNodes, AuthorNodes: Node_List;
+      Nodes_List, Children_Nodes, Author_Nodes: Node_List;
       Feed: Document;
-      TempEntry: Feed_Entry;
+      Temp_Entry: Feed_Entry;
       DataNode, AuthorNode: DOM.Core.Element;
       ChildIndex, AuthorNodeIndex: Positive;
    begin
@@ -81,50 +83,51 @@ package body AtomFeed is
       Parse(Reader, Atom_File);
       Close(Atom_File);
       Feed := Get_Tree(Reader);
-      NodesList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "entry");
-      for I in 0 .. Length(NodesList) - 1 loop
-         TempEntry :=
+      Nodes_List := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "entry");
+      for I in 0 .. Length(Nodes_List) - 1 loop
+         Temp_Entry :=
            (Null_Unbounded_String, Null_Unbounded_String, Clock,
             Null_Unbounded_String, Null_Unbounded_String,
             Null_Unbounded_String, Null_Unbounded_String);
-         ChildrenNodes := Child_Nodes(Item(NodesList, I));
+         Children_Nodes := Child_Nodes(Item(Nodes_List, I));
          ChildIndex := 1;
-         while ChildIndex < Length(ChildrenNodes) loop
-            DataNode := Item(ChildrenNodes, ChildIndex);
+         while ChildIndex < Length(Children_Nodes) loop
+            DataNode := Item(Children_Nodes, ChildIndex);
             if Node_Name(DataNode) = "id" then
-               TempEntry.Id :=
+               Temp_Entry.Id :=
                  To_Unbounded_String(Node_Value(First_Child(DataNode)));
             elsif Node_Name(DataNode) = "title" then
-               TempEntry.Entry_Title :=
+               Temp_Entry.Entry_Title :=
                  To_Unbounded_String(Node_Value(First_Child(DataNode)));
             elsif Node_Name(DataNode) = "updated" then
-               TempEntry.Updated := To_Time(Node_Value(First_Child(DataNode)));
+               Temp_Entry.Updated :=
+                 To_Time(Node_Value(First_Child(DataNode)));
             elsif Node_Name(DataNode) = "author" then
-               AuthorNodes := Child_Nodes(DataNode);
+               Author_Nodes := Child_Nodes(DataNode);
                AuthorNodeIndex := 1;
-               while AuthorNodeIndex < Length(AuthorNodes) loop
-                  AuthorNode := Item(AuthorNodes, AuthorNodeIndex);
+               while AuthorNodeIndex < Length(Author_Nodes) loop
+                  AuthorNode := Item(Author_Nodes, AuthorNodeIndex);
                   if Node_Name(AuthorNode) = "name" then
-                     TempEntry.Author_Name :=
+                     Temp_Entry.Author_Name :=
                        To_Unbounded_String
                          (Node_Value(First_Child(AuthorNode)));
                   elsif Node_Name(AuthorNode) = "email" then
-                     TempEntry.Author_Email :=
+                     Temp_Entry.Author_Email :=
                        To_Unbounded_String
                          (Node_Value(First_Child(AuthorNode)));
                   end if;
                   AuthorNodeIndex := AuthorNodeIndex + 2;
                end loop;
             elsif Node_Name(DataNode) = "summary" then
-               TempEntry.Summary :=
+               Temp_Entry.Summary :=
                  To_Unbounded_String(Node_Value(First_Child(DataNode)));
             elsif Node_Name(DataNode) = "content" then
-               TempEntry.Content :=
+               Temp_Entry.Content :=
                  To_Unbounded_String(Node_Value(First_Child(DataNode)));
             end if;
             ChildIndex := ChildIndex + 2;
          end loop;
-         Entries_List.Append(New_Item => TempEntry);
+         Entries_List.Append(New_Item => Temp_Entry);
       end loop;
    end Start_Atom_Feed;
 
