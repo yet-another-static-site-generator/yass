@@ -49,7 +49,7 @@ package body AtomFeed is
    end To_Time;
 
    function To_HTTP_Date(Date: Time) return String is
-      New_Date: String := Ada.Calendar.Formatting.Image(Date) & "Z";
+      New_Date: String := Ada.Calendar.Formatting.Image(Date => Date) & "Z";
    begin
       New_Date(11) := 'T';
       return New_Date;
@@ -61,8 +61,8 @@ package body AtomFeed is
       Nodes_List, Children_Nodes, Author_Nodes: Node_List;
       Feed: Document;
       Temp_Entry: Feed_Entry;
-      DataNode, AuthorNode: DOM.Core.Element;
-      ChildIndex, AuthorNodeIndex: Positive;
+      Data_Node, Author_Node: DOM.Core.Element;
+      ChildIndex, Author_Node_Index: Positive;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
          SiteTags.Include("AtomLink", "");
@@ -92,38 +92,38 @@ package body AtomFeed is
          Children_Nodes := Child_Nodes(Item(Nodes_List, I));
          ChildIndex := 1;
          while ChildIndex < Length(Children_Nodes) loop
-            DataNode := Item(Children_Nodes, ChildIndex);
-            if Node_Name(DataNode) = "id" then
+            Data_Node := Item(Children_Nodes, ChildIndex);
+            if Node_Name(Data_Node) = "id" then
                Temp_Entry.Id :=
-                 To_Unbounded_String(Node_Value(First_Child(DataNode)));
-            elsif Node_Name(DataNode) = "title" then
+                 To_Unbounded_String(Node_Value(First_Child(Data_Node)));
+            elsif Node_Name(Data_Node) = "title" then
                Temp_Entry.Entry_Title :=
-                 To_Unbounded_String(Node_Value(First_Child(DataNode)));
-            elsif Node_Name(DataNode) = "updated" then
+                 To_Unbounded_String(Node_Value(First_Child(Data_Node)));
+            elsif Node_Name(Data_Node) = "updated" then
                Temp_Entry.Updated :=
-                 To_Time(Node_Value(First_Child(DataNode)));
-            elsif Node_Name(DataNode) = "author" then
-               Author_Nodes := Child_Nodes(DataNode);
-               AuthorNodeIndex := 1;
-               while AuthorNodeIndex < Length(Author_Nodes) loop
-                  AuthorNode := Item(Author_Nodes, AuthorNodeIndex);
-                  if Node_Name(AuthorNode) = "name" then
+                 To_Time(Node_Value(First_Child(Data_Node)));
+            elsif Node_Name(Data_Node) = "author" then
+               Author_Nodes := Child_Nodes(Data_Node);
+               Author_Node_Index := 1;
+               while Author_Node_Index < Length(Author_Nodes) loop
+                  Author_Node := Item(Author_Nodes, Author_Node_Index);
+                  if Node_Name(Author_Node) = "name" then
                      Temp_Entry.Author_Name :=
                        To_Unbounded_String
-                         (Node_Value(First_Child(AuthorNode)));
-                  elsif Node_Name(AuthorNode) = "email" then
+                         (Node_Value(First_Child(Author_Node)));
+                  elsif Node_Name(Author_Node) = "email" then
                      Temp_Entry.Author_Email :=
                        To_Unbounded_String
-                         (Node_Value(First_Child(AuthorNode)));
+                         (Node_Value(First_Child(Author_Node)));
                   end if;
-                  AuthorNodeIndex := AuthorNodeIndex + 2;
+                  Author_Node_Index := Author_Node_Index + 2;
                end loop;
-            elsif Node_Name(DataNode) = "summary" then
+            elsif Node_Name(Data_Node) = "summary" then
                Temp_Entry.Summary :=
-                 To_Unbounded_String(Node_Value(First_Child(DataNode)));
-            elsif Node_Name(DataNode) = "content" then
+                 To_Unbounded_String(Node_Value(First_Child(Data_Node)));
+            elsif Node_Name(Data_Node) = "content" then
                Temp_Entry.Content :=
-                 To_Unbounded_String(Node_Value(First_Child(DataNode)));
+                 To_Unbounded_String(Node_Value(First_Child(Data_Node)));
             end if;
             ChildIndex := ChildIndex + 2;
          end loop;
@@ -218,15 +218,15 @@ package body AtomFeed is
       end AddLink;
       -- Add author to parent node ParentNode with author name Name and author email Email
       procedure AddAuthor(ParentNode: DOM.Core.Element; Name, Email: String) is
-         AuthorNode: DOM.Core.Element;
+         Author_Node: DOM.Core.Element;
       begin
-         AuthorNode := Create_Element(Feed, "author");
-         AuthorNode := Append_Child(ParentNode, AuthorNode);
+         Author_Node := Create_Element(Feed, "author");
+         Author_Node := Append_Child(ParentNode, Author_Node);
          if Name'Length > 0 then
-            AddNode("name", Name, AuthorNode);
+            AddNode("name", Name, Author_Node);
          end if;
          if Email'Length > 0 then
-            AddNode("email", Email, AuthorNode);
+            AddNode("email", Email, Author_Node);
          end if;
       end AddAuthor;
    begin
