@@ -33,6 +33,7 @@
 ### Changed
 - Updated README.md
 - Updated contributing guide
+- Updated installation guide
 
 ### Fixed
 - Saving and showing crash data on Windows
