@@ -57,12 +57,12 @@ package body AtomFeed is
 
    procedure Start_Atom_Feed is
       Atom_File: File_Input;
-      Reader: Tree_Reader;
+      Reader: Tree_Reader; --## rule line off IMPROPER_INITIALIZATION
       Nodes_List, Children_Nodes, Author_Nodes: Node_List;
       Feed: Document;
       Temp_Entry: Feed_Entry;
       Data_Node, Author_Node: DOM.Core.Element;
-      ChildIndex, Author_Node_Index: Positive;
+      Child_Index, Author_Node_Index: Positive;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
          SiteTags.Include("AtomLink", "");
@@ -80,9 +80,9 @@ package body AtomFeed is
          return;
       end if;
       Open(To_String(Feed_File_Name), Atom_File);
-      Parse(Reader, Atom_File);
+      Parse(Reader, Atom_File); --## rule line off IMPROPER_INITIALIZATION
       Close(Atom_File);
-      Feed := Get_Tree(Reader);
+      Feed := Get_Tree(Reader); --## rule line off IMPROPER_INITIALIZATION
       Nodes_List := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "entry");
       for I in 0 .. Length(Nodes_List) - 1 loop
          Temp_Entry :=
@@ -90,9 +90,9 @@ package body AtomFeed is
             Null_Unbounded_String, Null_Unbounded_String,
             Null_Unbounded_String, Null_Unbounded_String);
          Children_Nodes := Child_Nodes(Item(Nodes_List, I));
-         ChildIndex := 1;
-         while ChildIndex < Length(Children_Nodes) loop
-            Data_Node := Item(Children_Nodes, ChildIndex);
+         Child_Index := 1;
+         while Child_Index < Length(Children_Nodes) loop
+            Data_Node := Item(Children_Nodes, Child_Index);
             if Node_Name(Data_Node) = "id" then
                Temp_Entry.Id :=
                  To_Unbounded_String(Node_Value(First_Child(Data_Node)));
@@ -125,7 +125,7 @@ package body AtomFeed is
                Temp_Entry.Content :=
                  To_Unbounded_String(Node_Value(First_Child(Data_Node)));
             end if;
-            ChildIndex := ChildIndex + 2;
+            Child_Index := Child_Index + 2;
          end loop;
          Entries_List.Append(New_Item => Temp_Entry);
       end loop;
