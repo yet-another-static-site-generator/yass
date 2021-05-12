@@ -231,6 +231,17 @@ package body Pages is
       -- Insert tags to template
       Insert(Tags, Assoc("Content", PageTags("Content")));
       InsertTags(SiteTags);
+      if not Exists(Tags, "CanonicalLink") then
+         Insert
+           (Tags,
+            Assoc
+              ("CanonicalLink",
+               To_String(YassConfig.BaseURL) & "/" &
+               Slice
+                 (To_Unbounded_String(NewFileName),
+                  Length(YassConfig.OutputDirectory & Dir_Separator) + 1,
+                  NewFileName'Length)));
+      end if;
       for I in PageTableTags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
       end loop;

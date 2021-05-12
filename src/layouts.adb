@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -33,6 +33,8 @@ package body Layouts is
       Put_Line(LayoutFile, "<html lang=""{%Language%}"">");
       Put_Line(LayoutFile, "<head>");
       Put_Line(LayoutFile, "<meta charset=""UTF-8"">");
+      Put_Line
+        (LayoutFile, "<link rel=""canonical"" href=""{%CanonicalLink%}"" />");
       Put_Line(LayoutFile, "@@IF@@ {%AtomLink%} /= """"");
       Put_Line(LayoutFile, "{%AtomLink%}");
       Put_Line(LayoutFile, "@@END_IF@@");
