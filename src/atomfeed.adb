@@ -57,12 +57,14 @@ package body AtomFeed is
 
    procedure Start_Atom_Feed is
       Atom_File: File_Input;
-      Reader: Tree_Reader; --## rule line off IMPROPER_INITIALIZATION
+      --## rule off IMPROPER_INITIALIZATION
+      Reader: Tree_Reader;
       Nodes_List, Children_Nodes, Author_Nodes: Node_List;
+      --## rule on IMPROPER_INITIALIZATION
       Feed: Document;
-      Temp_Entry: Feed_Entry;
+      Temp_Entry: Feed_Entry := Empty_Feed_Entry;
       Data_Node, Author_Node: DOM.Core.Element;
-      Child_Index, Author_Node_Index: Positive;
+      Child_Index, Author_Node_Index: Positive := 1;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
          SiteTags.Include("AtomLink", "");
