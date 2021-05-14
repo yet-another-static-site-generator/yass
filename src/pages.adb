@@ -376,6 +376,10 @@ package body Pages is
         (IndexFile,
          CommentMark &
          " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you will use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry. If you want to set author name for Atom feed, you must add ""author"" tag. If you want to set author email for Atom feed, you must add ""authoremail"" tag. If you want to add short entry summary, you must add tag ""summary"". Did that tags will be for whole page or for each entry depends on your Atom feed configuration.");
+      Put_Line
+        (IndexFile,
+         CommentMark &
+         " You can also specify canonical link for the page. If you don't set it here, the program will generate it automatically. To set the default canonical link for the page set tag ""CanonicalLink"". It must be a full URL (with https://).");
       Put_Line(IndexFile, CommentMark & " title: New page");
       Put_Line
         (IndexFile,
