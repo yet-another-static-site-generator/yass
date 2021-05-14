@@ -66,31 +66,46 @@ package body AtomFeed is
       Data_Node, Author_Node: DOM.Core.Element;
       Child_Index, Author_Node_Index: Positive := 1;
    begin
-      if YassConfig.AtomFeedSource = To_Unbounded_String("none") then
-         SiteTags.Include("AtomLink", "");
+      if YassConfig.AtomFeedSource = To_Unbounded_String(Source => "none") then
+         SiteTags.Include(Key => "AtomLink", New_Item => "");
          return;
       end if;
       SiteTags.Include
-        ("AtomLink",
+      (Key =>
+         "AtomLink", New_Item =>
          "<link rel=""alternate"" type=""application/rss+xml"" title=""" &
-         To_String(YassConfig.SiteName) & " Feed"" href=""" &
-         To_String(YassConfig.BaseURL) & "/atom.xml"" />");
+         To_String(Source => YassConfig.SiteName) &
+         " Feed"" href=""" &
+         To_String(Source => YassConfig.BaseURL) &
+         "/atom.xml"" />");
       Feed_File_Name :=
         YassConfig.OutputDirectory &
-        To_Unbounded_String(Dir_Separator & "atom.xml");
-      if not Exists(To_String(Feed_File_Name)) then
+        To_Unbounded_String(Source => Dir_Separator & "atom.xml");
+      if not Exists(Name => To_String(Source => Feed_File_Name)) then
          return;
       end if;
-      Open(To_String(Feed_File_Name), Atom_File);
-      Parse(Reader, Atom_File); --## rule line off IMPROPER_INITIALIZATION
-      Close(Atom_File);
-      Feed := Get_Tree(Reader); --## rule line off IMPROPER_INITIALIZATION
-      Nodes_List := DOM.Core.Documents.Get_Elements_By_Tag_Name(Feed, "entry");
+      Open
+        (Filename => To_String(Source => Feed_File_Name),
+         Input => Atom_File);
+      --## rule off IMPROPER_INITIALIZATION
+      Parse(Parser => Reader, Input => Atom_File);
+      --## rule on IMPROPER_INITIALIZATION
+      Close(Input => Atom_File);
+      Feed :=
+        Get_Tree(Read => Reader); --## rule line off IMPROPER_INITIALIZATION
+      Nodes_List :=
+        DOM.Core.Documents.Get_Elements_By_Tag_Name
+          (Doc => Feed,
+           Tag_Name => "entry");
       for I in 0 .. Length(Nodes_List) - 1 loop
          Temp_Entry :=
-           (Null_Unbounded_String, Null_Unbounded_String, Clock,
-            Null_Unbounded_String, Null_Unbounded_String,
-            Null_Unbounded_String, Null_Unbounded_String);
+           (Null_Unbounded_String,
+            Null_Unbounded_String,
+            Clock,
+            Null_Unbounded_String,
+            Null_Unbounded_String,
+            Null_Unbounded_String,
+            Null_Unbounded_String);
          Children_Nodes := Child_Nodes(Item(Nodes_List, I));
          Child_Index := 1;
          while Child_Index < Length(Children_Nodes) loop
@@ -134,9 +149,11 @@ package body AtomFeed is
    end Start_Atom_Feed;
 
    procedure Add_Page_To_Feed
-     (File_Name: String; Entries: in out FeedEntry_Container.Vector) is
+     (File_Name: String;
+      Entries: in out FeedEntry_Container.Vector) is
       Url: constant String :=
-        To_String(YassConfig.BaseURL) & "/" &
+        To_String(YassConfig.BaseURL) &
+        "/" &
         Ada.Strings.Unbounded.Slice
           (To_Unbounded_String(File_Name),
            Length(YassConfig.OutputDirectory & Dir_Separator) + 1,
@@ -145,7 +162,8 @@ package body AtomFeed is
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
         (YassConfig.AtomFeedSource /= To_Unbounded_String("tags")
-         and then Index(File_Name, To_String(YassConfig.AtomFeedSource), 1) =
+         and then
+           Index(File_Name, To_String(YassConfig.AtomFeedSource), 1) =
            0) then
          return;
       end if;
@@ -197,7 +215,8 @@ package body AtomFeed is
       EntriesAmount: Natural := 0;
    -- Add XML node NodeName with value NodeValue to parent XML node ParentNode
       procedure AddNode
-        (NodeName, NodeValue: String; ParentNode: DOM.Core.Element) is
+        (NodeName, NodeValue: String;
+         ParentNode: DOM.Core.Element) is
          FeedText: Text;
          FeedData: DOM.Core.Element;
       begin
@@ -210,7 +229,8 @@ package body AtomFeed is
       end AddNode;
       -- Add link entry to parent node ParentNode with url URL and relationship Relationship
       procedure AddLink
-        (ParentNode: DOM.Core.Element; URL, Relationship: String) is
+        (ParentNode: DOM.Core.Element;
+         URL, Relationship: String) is
          LinkNode: DOM.Core.Element;
       begin
          LinkNode := Create_Element(Feed, "link");
@@ -245,7 +265,8 @@ package body AtomFeed is
       AddNode("title", To_String(YassConfig.SiteName), MainNode);
       AddNode("updated", To_HTTP_Date(Entries_List(1).Updated), MainNode);
       AddAuthor
-        (MainNode, To_String(YassConfig.AuthorName),
+        (MainNode,
+         To_String(YassConfig.AuthorName),
          To_String(YassConfig.AuthorEmail));
       for FeedEntry of Entries_List loop
          EntryNode := Create_Element(Feed, "entry");
@@ -258,7 +279,8 @@ package body AtomFeed is
          if FeedEntry.Author_Name /= Null_Unbounded_String or
            FeedEntry.Author_Email /= Null_Unbounded_String then
             AddAuthor
-              (EntryNode, To_String(FeedEntry.Author_Name),
+              (EntryNode,
+               To_String(FeedEntry.Author_Name),
                To_String(FeedEntry.Author_Email));
          end if;
          if FeedEntry.Summary /= Null_Unbounded_String then
