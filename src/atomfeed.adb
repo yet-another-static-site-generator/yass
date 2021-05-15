@@ -97,6 +97,7 @@ package body AtomFeed is
         DOM.Core.Documents.Get_Elements_By_Tag_Name
           (Doc => Feed,
            Tag_Name => "entry");
+      Load_Atom_Entries_Loop:
       for I in 0 .. Length(Nodes_List) - 1 loop
          Temp_Entry :=
            (Null_Unbounded_String,
@@ -108,6 +109,7 @@ package body AtomFeed is
             Null_Unbounded_String);
          Children_Nodes := Child_Nodes(Item(Nodes_List, I));
          Child_Index := 1;
+         Set_Atom_Entry_Loop:
          while Child_Index < Length(Children_Nodes) loop
             Data_Node := Item(Children_Nodes, Child_Index);
             if Node_Name(Data_Node) = "id" then
@@ -143,9 +145,9 @@ package body AtomFeed is
                  To_Unbounded_String(Node_Value(First_Child(Data_Node)));
             end if;
             Child_Index := Child_Index + 2;
-         end loop;
+         end loop Set_Atom_Entry_Loop;
          Entries_List.Append(New_Item => Temp_Entry);
-      end loop;
+      end loop Load_Atom_Entries_Loop;
    end Start_Atom_Feed;
 
    procedure Add_Page_To_Feed
