@@ -98,26 +98,29 @@ package body AtomFeed is
           (Doc => Feed,
            Tag_Name => "entry");
       Load_Atom_Entries_Loop:
-      for I in 0 .. Length(Nodes_List) - 1 loop
+      for I in 0 .. Length(List => Nodes_List) - 1 loop
          Temp_Entry :=
-           (Null_Unbounded_String,
-            Null_Unbounded_String,
-            Clock,
-            Null_Unbounded_String,
-            Null_Unbounded_String,
-            Null_Unbounded_String,
-            Null_Unbounded_String);
-         Children_Nodes := Child_Nodes(Item(Nodes_List, I));
+           (Id => Null_Unbounded_String,
+            Entry_Title => Null_Unbounded_String,
+            Updated => Clock,
+            Author_Name => Null_Unbounded_String,
+            Author_Email => Null_Unbounded_String,
+            Summary => Null_Unbounded_String,
+            Content => Null_Unbounded_String);
+         Children_Nodes :=
+           Child_Nodes(N => Item(List => Nodes_List, Index => I));
          Child_Index := 1;
          Set_Atom_Entry_Loop:
-         while Child_Index < Length(Children_Nodes) loop
-            Data_Node := Item(Children_Nodes, Child_Index);
-            if Node_Name(Data_Node) = "id" then
+         while Child_Index < Length(List => Children_Nodes) loop
+            Data_Node := Item(List => Children_Nodes, Index => Child_Index);
+            if Node_Name(N => Data_Node) = "id" then
                Temp_Entry.Id :=
-                 To_Unbounded_String(Node_Value(First_Child(Data_Node)));
-            elsif Node_Name(Data_Node) = "title" then
+                 To_Unbounded_String
+                   (Source => Node_Value(N => First_Child(N => Data_Node)));
+            elsif Node_Name(N => Data_Node) = "title" then
                Temp_Entry.Entry_Title :=
-                 To_Unbounded_String(Node_Value(First_Child(Data_Node)));
+                 To_Unbounded_String
+                   (Source => Node_Value(N => First_Child(N => Data_Node)));
             elsif Node_Name(Data_Node) = "updated" then
                Temp_Entry.Updated :=
                  To_Time(Node_Value(First_Child(Data_Node)));
