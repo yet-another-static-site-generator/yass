@@ -121,12 +121,13 @@ package body AtomFeed is
                Temp_Entry.Entry_Title :=
                  To_Unbounded_String
                    (Source => Node_Value(N => First_Child(N => Data_Node)));
-            elsif Node_Name(Data_Node) = "updated" then
+            elsif Node_Name(N => Data_Node) = "updated" then
                Temp_Entry.Updated :=
-                 To_Time(Node_Value(First_Child(Data_Node)));
-            elsif Node_Name(Data_Node) = "author" then
-               Author_Nodes := Child_Nodes(Data_Node);
+                 To_Time(Date => Node_Value(N => First_Child(N => Data_Node)));
+            elsif Node_Name(N => Data_Node) = "author" then
+               Author_Nodes := Child_Nodes(N => Data_Node);
                Author_Node_Index := 1;
+               Set_Author_Node_Loop:
                while Author_Node_Index < Length(Author_Nodes) loop
                   Author_Node := Item(Author_Nodes, Author_Node_Index);
                   if Node_Name(Author_Node) = "name" then
@@ -139,7 +140,7 @@ package body AtomFeed is
                          (Node_Value(First_Child(Author_Node)));
                   end if;
                   Author_Node_Index := Author_Node_Index + 2;
-               end loop;
+               end loop Set_Author_Node_Loop;
             elsif Node_Name(Data_Node) = "summary" then
                Temp_Entry.Summary :=
                  To_Unbounded_String(Node_Value(First_Child(Data_Node)));
