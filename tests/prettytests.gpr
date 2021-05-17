@@ -1,0 +1,9 @@
+with "../yass.gpr";
+
+project PrettyTests is
+
+   for Source_Dirs use (".");
+
+   package Pretty_Printer renames Yass.Pretty_Printer;
+
+end PrettyTests;

@@ -61,6 +61,7 @@
    name: pretty
    execute:
       - gnatpp -P yass.gpr
+      - gnatpp -P tests/prettytests.gpr
    description: Pretty print yass source code
 - command:
    name: prettytests
