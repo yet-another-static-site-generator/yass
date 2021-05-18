@@ -44,8 +44,8 @@ package body AtomFeed is
       else
          New_Date := To_Unbounded_String(Source => Date & " 00:00:00");
       end if;
-      return Ada.Calendar.Formatting.Value
-          (Date => To_String(Source => New_Date));
+      return
+        Ada.Calendar.Formatting.Value(Date => To_String(Source => New_Date));
    end To_Time;
 
    function To_HTTP_Date(Date: Time) return String is
@@ -71,13 +71,11 @@ package body AtomFeed is
          return;
       end if;
       SiteTags.Include
-      (Key =>
-         "AtomLink", New_Item =>
-         "<link rel=""alternate"" type=""application/rss+xml"" title=""" &
-         To_String(Source => YassConfig.SiteName) &
-         " Feed"" href=""" &
-         To_String(Source => YassConfig.BaseURL) &
-         "/atom.xml"" />");
+        (Key => "AtomLink",
+         New_Item =>
+           "<link rel=""alternate"" type=""application/rss+xml"" title=""" &
+           To_String(Source => YassConfig.SiteName) & " Feed"" href=""" &
+           To_String(Source => YassConfig.BaseURL) & "/atom.xml"" />");
       Feed_File_Name :=
         YassConfig.OutputDirectory &
         To_Unbounded_String(Source => Dir_Separator & "atom.xml");
@@ -85,8 +83,7 @@ package body AtomFeed is
          return;
       end if;
       Open
-        (Filename => To_String(Source => Feed_File_Name),
-         Input => Atom_File);
+        (Filename => To_String(Source => Feed_File_Name), Input => Atom_File);
       --## rule off IMPROPER_INITIALIZATION
       Parse(Parser => Reader, Input => Atom_File);
       --## rule on IMPROPER_INITIALIZATION
@@ -95,22 +92,19 @@ package body AtomFeed is
         Get_Tree(Read => Reader); --## rule line off IMPROPER_INITIALIZATION
       Nodes_List :=
         DOM.Core.Documents.Get_Elements_By_Tag_Name
-          (Doc => Feed,
-           Tag_Name => "entry");
-      Load_Atom_Entries_Loop:
+          (Doc => Feed, Tag_Name => "entry");
+      Load_Atom_Entries_Loop :
       for I in 0 .. Length(List => Nodes_List) - 1 loop
          Temp_Entry :=
-           (Id => Null_Unbounded_String,
-            Entry_Title => Null_Unbounded_String,
-            Updated => Clock,
-            Author_Name => Null_Unbounded_String,
+           (Id => Null_Unbounded_String, Entry_Title => Null_Unbounded_String,
+            Updated => Clock, Author_Name => Null_Unbounded_String,
             Author_Email => Null_Unbounded_String,
             Summary => Null_Unbounded_String,
             Content => Null_Unbounded_String);
          Children_Nodes :=
            Child_Nodes(N => Item(List => Nodes_List, Index => I));
          Child_Index := 1;
-         Set_Atom_Entry_Loop:
+         Set_Atom_Entry_Loop :
          while Child_Index < Length(List => Children_Nodes) loop
             Data_Node := Item(List => Children_Nodes, Index => Child_Index);
             if Node_Name(N => Data_Node) = "id" then
@@ -127,26 +121,31 @@ package body AtomFeed is
             elsif Node_Name(N => Data_Node) = "author" then
                Author_Nodes := Child_Nodes(N => Data_Node);
                Author_Node_Index := 1;
-               Set_Author_Node_Loop:
-               while Author_Node_Index < Length(Author_Nodes) loop
-                  Author_Node := Item(Author_Nodes, Author_Node_Index);
-                  if Node_Name(Author_Node) = "name" then
+               Set_Author_Node_Loop :
+               while Author_Node_Index < Length(List => Author_Nodes) loop
+                  Author_Node :=
+                    Item(List => Author_Nodes, Index => Author_Node_Index);
+                  if Node_Name(N => Author_Node) = "name" then
                      Temp_Entry.Author_Name :=
                        To_Unbounded_String
-                         (Node_Value(First_Child(Author_Node)));
-                  elsif Node_Name(Author_Node) = "email" then
+                         (Source =>
+                            Node_Value(N => First_Child(N => Author_Node)));
+                  elsif Node_Name(N => Author_Node) = "email" then
                      Temp_Entry.Author_Email :=
                        To_Unbounded_String
-                         (Node_Value(First_Child(Author_Node)));
+                         (Source =>
+                            Node_Value(N => First_Child(N => Author_Node)));
                   end if;
                   Author_Node_Index := Author_Node_Index + 2;
                end loop Set_Author_Node_Loop;
-            elsif Node_Name(Data_Node) = "summary" then
+            elsif Node_Name(N => Data_Node) = "summary" then
                Temp_Entry.Summary :=
-                 To_Unbounded_String(Node_Value(First_Child(Data_Node)));
-            elsif Node_Name(Data_Node) = "content" then
+                 To_Unbounded_String
+                   (Source => Node_Value(N => First_Child(N => Data_Node)));
+            elsif Node_Name(N => Data_Node) = "content" then
                Temp_Entry.Content :=
-                 To_Unbounded_String(Node_Value(First_Child(Data_Node)));
+                 To_Unbounded_String
+                   (Source => Node_Value(N => First_Child(N => Data_Node)));
             end if;
             Child_Index := Child_Index + 2;
          end loop Set_Atom_Entry_Loop;
@@ -155,21 +154,19 @@ package body AtomFeed is
    end Start_Atom_Feed;
 
    procedure Add_Page_To_Feed
-     (File_Name: String;
-      Entries: in out FeedEntry_Container.Vector) is
+     (File_Name: String; Entries: in out FeedEntry_Container.Vector) is
       Url: constant String :=
-        To_String(YassConfig.BaseURL) &
-        "/" &
+        To_String(Source => YassConfig.BaseURL) & "/" &
         Ada.Strings.Unbounded.Slice
-          (To_Unbounded_String(File_Name),
-           Length(YassConfig.OutputDirectory & Dir_Separator) + 1,
-           File_Name'Length);
+          (Source => To_Unbounded_String(Source => File_Name),
+           Low =>
+             Length(Source => YassConfig.OutputDirectory & Dir_Separator) + 1,
+           High => File_Name'Length);
       DeleteIndex, EntryIndex: Natural := 0;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
         (YassConfig.AtomFeedSource /= To_Unbounded_String("tags")
-         and then
-           Index(File_Name, To_String(YassConfig.AtomFeedSource), 1) =
+         and then Index(File_Name, To_String(YassConfig.AtomFeedSource), 1) =
            0) then
          return;
       end if;
@@ -183,7 +180,7 @@ package body AtomFeed is
          elsif Index(AtomEntry.Id, Url, 1) = 0 then
             AtomEntry.Id := To_Unbounded_String(Url) & "#" & AtomEntry.Id;
          end if;
-         if AtomEntry.Updated = Time_Of(1901, 1, 1) then
+         if AtomEntry.Updated = Time_Of(1_901, 1, 1) then
             AtomEntry.Updated := Modification_Time(File_Name);
          end if;
          if AtomEntry.Content = Null_Unbounded_String then
@@ -221,8 +218,7 @@ package body AtomFeed is
       EntriesAmount: Natural := 0;
    -- Add XML node NodeName with value NodeValue to parent XML node ParentNode
       procedure AddNode
-        (NodeName, NodeValue: String;
-         ParentNode: DOM.Core.Element) is
+        (NodeName, NodeValue: String; ParentNode: DOM.Core.Element) is
          FeedText: Text;
          FeedData: DOM.Core.Element;
       begin
@@ -235,8 +231,7 @@ package body AtomFeed is
       end AddNode;
       -- Add link entry to parent node ParentNode with url URL and relationship Relationship
       procedure AddLink
-        (ParentNode: DOM.Core.Element;
-         URL, Relationship: String) is
+        (ParentNode: DOM.Core.Element; URL, Relationship: String) is
          LinkNode: DOM.Core.Element;
       begin
          LinkNode := Create_Element(Feed, "link");
@@ -271,8 +266,7 @@ package body AtomFeed is
       AddNode("title", To_String(YassConfig.SiteName), MainNode);
       AddNode("updated", To_HTTP_Date(Entries_List(1).Updated), MainNode);
       AddAuthor
-        (MainNode,
-         To_String(YassConfig.AuthorName),
+        (MainNode, To_String(YassConfig.AuthorName),
          To_String(YassConfig.AuthorEmail));
       for FeedEntry of Entries_List loop
          EntryNode := Create_Element(Feed, "entry");
@@ -285,8 +279,7 @@ package body AtomFeed is
          if FeedEntry.Author_Name /= Null_Unbounded_String or
            FeedEntry.Author_Email /= Null_Unbounded_String then
             AddAuthor
-              (EntryNode,
-               To_String(FeedEntry.Author_Name),
+              (EntryNode, To_String(FeedEntry.Author_Name),
                To_String(FeedEntry.Author_Email));
          end if;
          if FeedEntry.Summary /= Null_Unbounded_String then
