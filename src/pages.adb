@@ -81,7 +81,7 @@ package body Pages is
             AtomEntries.Prepend
               (New_Item =>
                  (Entry_Title => To_Unbounded_String(Value),
-                  Id => Null_Unbounded_String, Updated => Time_Of(1901, 1, 1),
+                  Id => Null_Unbounded_String, Updated => Time_Of(1_901, 1, 1),
                   Author_Name => Null_Unbounded_String,
                   Author_Email => Null_Unbounded_String,
                   Summary => Null_Unbounded_String,

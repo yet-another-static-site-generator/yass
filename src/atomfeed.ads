@@ -60,8 +60,8 @@ package AtomFeed is
    -- FUNCTION
    -- Used to store Atom feed entries
    -- SOURCE
-   package FeedEntry_Container is new Vectors(Index_Type => Positive,
-      Element_Type => Feed_Entry);
+   package FeedEntry_Container is new Vectors
+     (Index_Type => Positive, Element_Type => Feed_Entry);
    -- ****
 
    -- ****f* AtomFeed/To_Time

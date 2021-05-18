@@ -218,7 +218,8 @@ package body Server is
    begin
       -- Show directory listing if requested
       if Kind(To_String(YassConfig.OutputDirectory) & URI) = Directory then
-         return AWS.Response.Build
+         return
+           AWS.Response.Build
              ("text/html",
               Browse
                 (To_String(YassConfig.OutputDirectory) & URI,

@@ -79,7 +79,7 @@ package Config is
       ModulesDirectory: Unbounded_String := To_Unbounded_String("_modules");
       ExcludedFiles: Excluded_Container.Vector;
       ServerEnabled: Boolean := True;
-      ServerPort: Positive := 8888;
+      ServerPort: Positive := 8_888;
       MonitorInterval: Duration := 5.0;
       BaseURL: Unbounded_String :=
         To_Unbounded_String("http://localhost:8888");
@@ -109,8 +109,8 @@ package Config is
    -- FUNCTION
    -- Used to store AWS template tags
    -- SOURCE
-   package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps(String,
-      String, Ada.Strings.Hash, "=");
+   package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps
+     (String, String, Ada.Strings.Hash, "=");
    -- ****
 
    -- ****v* Config/SiteTags

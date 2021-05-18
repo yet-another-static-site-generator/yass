@@ -182,7 +182,7 @@ package body Config is
             end if;
          elsif FieldName = To_Unbounded_String("ServerPort") then
             YassConfig.ServerPort := Positive'Value(To_String(Value));
-            if YassConfig.ServerPort > 65535 then
+            if YassConfig.ServerPort > 65_535 then
                raise InvalidConfigData with To_String(RawData);
             end if;
          elsif FieldName = To_Unbounded_String("StopServerOnError") then
