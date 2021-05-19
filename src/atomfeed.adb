@@ -162,7 +162,7 @@ package body AtomFeed is
            Low =>
              Length(Source => YassConfig.OutputDirectory & Dir_Separator) + 1,
            High => File_Name'Length);
-      DeleteIndex, EntryIndex: Natural := 0;
+      Delete_Index, Entry_Index: Natural := 0;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
         (YassConfig.AtomFeedSource /= To_Unbounded_String("tags")
@@ -174,6 +174,7 @@ package body AtomFeed is
         and then Entries(1).Updated < Entries(2).Updated then
          Entries.Reverse_Elements;
       end if;
+      Add_Page_To_Feed_Loop :
       for AtomEntry of Entries loop
          if AtomEntry.Id = Null_Unbounded_String then
             AtomEntry.Id := To_Unbounded_String(Url);
@@ -186,28 +187,30 @@ package body AtomFeed is
          if AtomEntry.Content = Null_Unbounded_String then
             AtomEntry.Content := AtomEntry.Id;
          end if;
+         Find_Delete_Index_Loop :
          for I in Entries_List.Iterate loop
             if Entries_List(I).Entry_Title = AtomEntry.Entry_Title then
-               DeleteIndex := FeedEntry_Container.To_Index(I);
-               exit;
+               Delete_Index := FeedEntry_Container.To_Index(I);
+               exit Find_Delete_Index_Loop;
             end if;
-         end loop;
-         if DeleteIndex > 0 then
-            Entries_List.Delete(DeleteIndex);
-            DeleteIndex := 0;
+         end loop Find_Delete_Index_Loop;
+         if Delete_Index > 0 then
+            Entries_List.Delete(Delete_Index);
+            Delete_Index := 0;
          end if;
-         EntryIndex := Entries_List.First_Index;
-         while EntryIndex <= Entries_List.Last_Index loop
-            if Entries_List(EntryIndex).Updated < AtomEntry.Updated then
-               Entries_List.Insert(EntryIndex, AtomEntry);
-               exit;
+         Entry_Index := Entries_List.First_Index;
+         Move_Atom_Entries_Loop :
+         while Entry_Index <= Entries_List.Last_Index loop
+            if Entries_List(Entry_Index).Updated < AtomEntry.Updated then
+               Entries_List.Insert(Entry_Index, AtomEntry);
+               exit Move_Atom_Entries_Loop;
             end if;
-            EntryIndex := EntryIndex + 1;
-         end loop;
-         if EntryIndex > Entries_List.Last_Index then
+            Entry_Index := Entry_Index + 1;
+         end loop Move_Atom_Entries_Loop;
+         if Entry_Index > Entries_List.Last_Index then
             Entries_List.Append(New_Item => AtomEntry);
          end if;
-      end loop;
+      end loop Add_Page_To_Feed_Loop;
    end Add_Page_To_Feed;
 
    procedure Save_Atom_Feed is
