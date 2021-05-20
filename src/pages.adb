@@ -231,11 +231,11 @@ package body Pages is
       -- Insert tags to template
       Insert(Tags, Assoc("Content", PageTags("Content")));
       InsertTags(SiteTags);
-      if not Exists(Tags, "CanonicalLink") then
+      if not Exists(Tags, "canonicallink") then
          Insert
            (Tags,
             Assoc
-              ("CanonicalLink",
+              ("canonicallink",
                To_String(YassConfig.BaseURL) & "/" &
                Slice
                  (To_Unbounded_String(NewFileName),
@@ -379,7 +379,7 @@ package body Pages is
       Put_Line
         (IndexFile,
          CommentMark &
-         " You can also specify canonical link for the page. If you don't set it here, the program will generate it automatically. To set the default canonical link for the page set tag ""CanonicalLink"". It must be a full URL (with https://).");
+         " You can also specify canonical link for the page. If you don't set it here, the program will generate it automatically. To set the default canonical link for the page set tag ""canonicallink"". It must be a full URL (with https://).");
       Put_Line(IndexFile, CommentMark & " title: New page");
       Put_Line
         (IndexFile,
