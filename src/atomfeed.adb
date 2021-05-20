@@ -164,25 +164,32 @@ package body AtomFeed is
            High => File_Name'Length);
       Delete_Index, Entry_Index: Natural := 0;
    begin
-      if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
-        (YassConfig.AtomFeedSource /= To_Unbounded_String("tags")
-         and then Index(File_Name, To_String(YassConfig.AtomFeedSource), 1) =
+      if YassConfig.AtomFeedSource = To_Unbounded_String(Source => "none") or
+        (YassConfig.AtomFeedSource /= To_Unbounded_String(Source => "tags")
+         and then
+           Index
+             (Source => File_Name,
+              Pattern => To_String(Source => YassConfig.AtomFeedSource),
+              From => 1) =
            0) then
          return;
       end if;
-      if FeedEntry_Container.Length(Entries) > 1
+      if FeedEntry_Container.Length(Container => Entries) > 1
         and then Entries(1).Updated < Entries(2).Updated then
          Entries.Reverse_Elements;
       end if;
       Add_Page_To_Feed_Loop :
       for AtomEntry of Entries loop
          if AtomEntry.Id = Null_Unbounded_String then
-            AtomEntry.Id := To_Unbounded_String(Url);
-         elsif Index(AtomEntry.Id, Url, 1) = 0 then
-            AtomEntry.Id := To_Unbounded_String(Url) & "#" & AtomEntry.Id;
+            AtomEntry.Id := To_Unbounded_String(Source => Url);
+         elsif Index(Source => AtomEntry.Id, Pattern => Url, From => 1) =
+           0 then
+            AtomEntry.Id :=
+              To_Unbounded_String(Source => Url) & "#" & AtomEntry.Id;
          end if;
-         if AtomEntry.Updated = Time_Of(1_901, 1, 1) then
-            AtomEntry.Updated := Modification_Time(File_Name);
+         if AtomEntry.Updated =
+           Time_Of(Year => 1_901, Month => 1, Day => 1) then
+            AtomEntry.Updated := Modification_Time(Name => File_Name);
          end if;
          if AtomEntry.Content = Null_Unbounded_String then
             AtomEntry.Content := AtomEntry.Id;
