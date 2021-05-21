@@ -31,8 +31,19 @@ with Config; use Config;
 
 package body AtomFeed is
 
+   -- ****iv* AtomFeed/Feed_File_Name
+   -- FUNCTION
+   -- The name of the Atom feed file of the website
+   -- SOURCE
    Feed_File_Name: Unbounded_String;
+   -- ****
+
+   -- ****iv* AtomFeed/Entries_List
+   -- FUNCTION
+   -- The list of Atom entries for the website
+   -- SOURCE
    Entries_List: FeedEntry_Container.Vector;
+   -- ****
 
    function To_Time(Date: String) return Time is
       New_Date: Unbounded_String;
