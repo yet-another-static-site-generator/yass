@@ -146,4 +146,10 @@ One parameter is always required:
 * layout: the name of file (without extension) which will be used as template
   for the page. This must be existing file from the project layouts directory.
 
+Optional parameter always available for pages:
+
+* canonicallink: Set the page canonical link. It is used by search engines
+  (by some even required). If you don't set it here, the program will generate
+  it automatically. It must be a full URL (with https://).
+
 <a href="#top">^ Top</a>
