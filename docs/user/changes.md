@@ -30,6 +30,10 @@
 -- detailslink: 0.2
 -- detailslink: 0.1
 ## <a name="3.0"></a>[Unreleased]
+
+### Added
+- Creating and setting canonical links for pages
+
 ### Changed
 - Updated README.md
 - Updated contributing guide
