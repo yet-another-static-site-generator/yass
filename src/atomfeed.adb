@@ -45,6 +45,18 @@ package body AtomFeed is
    Entries_List: FeedEntry_Container.Vector;
    -- ****
 
+   -- ****if* AtomFeed/Get_Entries_List
+   -- FUNCTION
+   -- Get the current list of Atom entries for the website
+   -- RESULT
+   -- List of Atom entries for the website
+   -- SOURCE
+   function Get_Entries_List return FeedEntry_Container.Vector is
+      -- ****
+   begin
+      return Entries_List;
+   end Get_Entries_List;
+
    function To_Time(Date: String) return Time is
       New_Date: Unbounded_String;
    begin
@@ -206,7 +218,7 @@ package body AtomFeed is
             AtomEntry.Content := AtomEntry.Id;
          end if;
          Find_Delete_Index_Loop :
-         for I in Entries_List.Iterate loop
+         for I in Get_Entries_List.Iterate loop
             if Entries_List(I).Entry_Title = AtomEntry.Entry_Title then
                Delete_Index := FeedEntry_Container.To_Index(I);
                exit Find_Delete_Index_Loop;
@@ -216,16 +228,16 @@ package body AtomFeed is
             Entries_List.Delete(Delete_Index);
             Delete_Index := 0;
          end if;
-         Entry_Index := Entries_List.First_Index;
+         Entry_Index := Get_Entries_List.First_Index;
          Move_Atom_Entries_Loop :
-         while Entry_Index <= Entries_List.Last_Index loop
+         while Entry_Index <= Get_Entries_List.Last_Index loop
             if Entries_List(Entry_Index).Updated < AtomEntry.Updated then
                Entries_List.Insert(Entry_Index, AtomEntry);
                exit Move_Atom_Entries_Loop;
             end if;
             Entry_Index := Entry_Index + 1;
          end loop Move_Atom_Entries_Loop;
-         if Entry_Index > Entries_List.Last_Index then
+         if Entry_Index > Get_Entries_List.Last_Index then
             Entries_List.Append(New_Item => AtomEntry);
          end if;
       end loop Add_Page_To_Feed_Loop;
@@ -275,7 +287,7 @@ package body AtomFeed is
       end AddAuthor;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
-        FeedEntry_Container.Length(Entries_List) = 0 then
+        FeedEntry_Container.Length(Get_Entries_List) = 0 then
          return;
       end if;
       Feed := Create_Document(NewFeed);
@@ -289,7 +301,7 @@ package body AtomFeed is
       AddAuthor
         (MainNode, To_String(YassConfig.AuthorName),
          To_String(YassConfig.AuthorEmail));
-      for FeedEntry of Entries_List loop
+      for FeedEntry of Get_Entries_List loop
          EntryNode := Create_Element(Feed, "entry");
          EntryNode := Append_Child(MainNode, EntryNode);
          AddNode("id", To_String(FeedEntry.Id), EntryNode);
