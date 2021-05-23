@@ -339,11 +339,11 @@ package body Pages is
       Put_Line
         (IndexFile,
          CommentMark &
-         " You may add as many tags as you want and they can be in any place in file, not only at beginning. Tags can be 4 types: strings, boolean, numeric or composite.");
+         " You may add as many tags as you want, and they can be in any place in file, not only at beginning. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
         (IndexFile,
          CommentMark &
-         " First 3 types of tags are in Name: Value scheme. For strings it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always fall back to string value.");
+         " First 3 types of tags are in Name: Value scheme. For strings, it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always falls back to string value.");
       Put_Line
         (IndexFile,
          CommentMark &
@@ -351,7 +351,7 @@ package body Pages is
       Put_Line
         (IndexFile,
          CommentMark &
-         " For more informations about tags please check program documentation.");
+         " For more information about tags please check program documentation.");
       Put_Line
         (IndexFile,
          CommentMark &
@@ -359,15 +359,15 @@ package body Pages is
       Put_Line
         (IndexFile,
          CommentMark &
-         " priority - The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
+         " priority: The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
       Put_Line
         (IndexFile,
          CommentMark &
-         " changefreq - How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
+         " changefreq: How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
       Put_Line
         (IndexFile,
          CommentMark &
-         " For more informations how this options works, please look at the program documentation.");
+         " For more information how this options works, please look at the program documentation.");
       Put_Line
         (IndexFile,
          CommentMark &
@@ -375,7 +375,7 @@ package body Pages is
       Put_Line
         (IndexFile,
          CommentMark &
-         " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you will use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry. If you want to set author name for Atom feed, you must add ""author"" tag. If you want to set author email for Atom feed, you must add ""authoremail"" tag. If you want to add short entry summary, you must add tag ""summary"". Did that tags will be for whole page or for each entry depends on your Atom feed configuration.");
+         " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you want to use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry. If you want to set author name for Atom feed, you must add ""author"" tag. When you want to set author email for Atom feed, you must add ""authoremail"" tag. If you want to add short entry summary, you must add tag ""summary"". Do that tag will be for whole page or for each entry depends on your Atom feed configuration.");
       Put_Line
         (IndexFile,
          CommentMark &
