@@ -42,6 +42,7 @@
 ### Fixed
 - Saving and showing crash data on Windows
 - Grammar and typos in README.md and in the documentation
+- Grammar and typos in new empty file help
 
 ## <a name="2.0"></a>[2.0] - 2019-11-17
 
