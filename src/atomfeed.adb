@@ -100,6 +100,7 @@ package body AtomFeed is
       Temp_Entry: Feed_Entry := Empty_Feed_Entry;
       Data_Node, Author_Node: DOM.Core.Element;
       Child_Index, Author_Node_Index: Positive := 1;
+      Local_Entries: FeedEntry_Container.Vector;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String(Source => "none") then
          SiteTags.Include(Key => "AtomLink", New_Item => "");
@@ -184,8 +185,9 @@ package body AtomFeed is
             end if;
             Child_Index := Child_Index + 2;
          end loop Set_Atom_Entry_Loop;
-         Entries_List.Append(New_Item => Temp_Entry);
+         Local_Entries.Append(New_Item => Temp_Entry);
       end loop Load_Atom_Entries_Loop;
+      Set_Entries_List(Local_Entries);
    end Start_Atom_Feed;
 
    procedure Add_Page_To_Feed
