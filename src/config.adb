@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -68,7 +68,7 @@ package body Config is
       Put_Line(ConfigFile, "BaseURL = http://localhost:8888");
       Put_Line
         (ConfigFile,
-         "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
+         "# Source which will be used for creating Atom feed of the site. Possible values are: none: don't create atom feed, tags: create Atom entries from proper tags in .md files, [filename]: the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
       Put_Line(ConfigFile, "AtomFeedSource = none");
       Put_Line
         (ConfigFile,
@@ -119,13 +119,13 @@ package body Config is
          "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
         (ConfigFile,
-         "# First 3 types of tags are in Name = Value scheme. For strings it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always fall back to string value.");
+         "# First 3 types of tags are in Name = Value scheme. For strings, it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always falls back to string value.");
       Put_Line
         (ConfigFile,
          "# Composite tags first must be initialized with Name = [] then just add as many as you want values to it by Name = Value scheme.");
       Put_Line
         (ConfigFile,
-         "# For more informations about site.cfg file please check program documentation.");
+         "# For more information about site.cfg file please check program documentation.");
       Close(ConfigFile);
    end CreateConfig;
 
