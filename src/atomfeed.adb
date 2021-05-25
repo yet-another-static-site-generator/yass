@@ -100,7 +100,7 @@ package body AtomFeed is
       Temp_Entry: Feed_Entry := Empty_Feed_Entry;
       Data_Node, Author_Node: DOM.Core.Element;
       Child_Index, Author_Node_Index: Positive := 1;
-      Local_Entries: FeedEntry_Container.Vector;
+      Local_Entries: FeedEntry_Container.Vector := Get_Entries_List;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String(Source => "none") then
          SiteTags.Include(Key => "AtomLink", New_Item => "");
@@ -187,7 +187,7 @@ package body AtomFeed is
          end loop Set_Atom_Entry_Loop;
          Local_Entries.Append(New_Item => Temp_Entry);
       end loop Load_Atom_Entries_Loop;
-      Set_Entries_List(Local_Entries);
+      Set_Entries_List(New_List => Local_Entries);
    end Start_Atom_Feed;
 
    procedure Add_Page_To_Feed
@@ -235,22 +235,22 @@ package body AtomFeed is
          Find_Delete_Index_Loop :
          for I in Local_Entries.Iterate loop
             if Local_Entries(I).Entry_Title = AtomEntry.Entry_Title then
-               Delete_Index := FeedEntry_Container.To_Index(I);
+               Delete_Index := FeedEntry_Container.To_Index(Position => I);
                exit Find_Delete_Index_Loop;
             end if;
          end loop Find_Delete_Index_Loop;
          if Delete_Index > 0 then
-            Local_Entries.Delete(Delete_Index);
+            Local_Entries.Delete(Index => Delete_Index);
             Delete_Index := 0;
          end if;
          Entry_Index := Get_Entries_List.First_Index;
          Move_Atom_Entries_Loop :
-         while Entry_Index <= Local_Entries.Last_Index loop
-            if Local_Entries(Entry_Index).Updated < AtomEntry.Updated then
-               Local_Entries.Insert(Entry_Index, AtomEntry);
+         for I in Local_Entries.Iterate loop
+            if Local_Entries(I).Updated < AtomEntry.Updated then
+               Entry_Index := FeedEntry_Container.To_Index(I);
+               Local_Entries.Insert(I, AtomEntry);
                exit Move_Atom_Entries_Loop;
             end if;
-            Entry_Index := Entry_Index + 1;
          end loop Move_Atom_Entries_Loop;
          if Entry_Index > Local_Entries.Last_Index then
             Local_Entries.Append(New_Item => AtomEntry);
