@@ -262,43 +262,44 @@ package body AtomFeed is
    procedure Save_Atom_Feed is
       Atom_File: File_Type;
       Feed: Document;
-      NewFeed: DOM_Implementation;
-      MainNode, EntryNode: DOM.Core.Element;
-      EntriesAmount: Natural := 0;
-   -- Add XML node NodeName with value NodeValue to parent XML node ParentNode
-      procedure AddNode
-        (NodeName, NodeValue: String; ParentNode: DOM.Core.Element) is
-         FeedText: Text;
-         FeedData: DOM.Core.Element;
+      New_Feed: DOM_Implementation;
+      Main_Node, EntryNode: DOM.Core.Element;
+      Entries_Amount: Natural := 0;
+   -- Add XML node Node_Name with value Node_Value to parent XML node Parent_Node
+      procedure Add_Node
+        (Node_Name, Node_Value: String; Parent_Node: DOM.Core.Element) is
+         Feed_Text: Text;
+         Feed_Data: DOM.Core.Element;
       begin
-         FeedData := Create_Element(Feed, NodeName);
-         FeedData := Append_Child(ParentNode, FeedData);
-         FeedText := Create_Text_Node(Feed, NodeValue);
-         if Append_Child(FeedData, FeedText) /= null then
+         Feed_Data := Create_Element(Feed, Node_Name);
+         Feed_Data := Append_Child(Parent_Node, Feed_Data);
+         Feed_Text := Create_Text_Node(Feed, Node_Value);
+         if Append_Child(Feed_Data, Feed_Text) /= null then
             return;
          end if;
-      end AddNode;
-      -- Add link entry to parent node ParentNode with url URL and relationship Relationship
+      end Add_Node;
+      -- Add link entry to parent node Parent_Node with url URL and relationship Relationship
       procedure AddLink
-        (ParentNode: DOM.Core.Element; URL, Relationship: String) is
+        (Parent_Node: DOM.Core.Element; URL, Relationship: String) is
          LinkNode: DOM.Core.Element;
       begin
          LinkNode := Create_Element(Feed, "link");
-         LinkNode := Append_Child(ParentNode, LinkNode);
+         LinkNode := Append_Child(Parent_Node, LinkNode);
          Set_Attribute(LinkNode, "rel", Relationship);
          Set_Attribute(LinkNode, "href", URL);
       end AddLink;
-      -- Add author to parent node ParentNode with author name Name and author email Email
-      procedure AddAuthor(ParentNode: DOM.Core.Element; Name, Email: String) is
+      -- Add author to parent node Parent_Node with author name Name and author email Email
+      procedure AddAuthor
+        (Parent_Node: DOM.Core.Element; Name, Email: String) is
          Author_Node: DOM.Core.Element;
       begin
          Author_Node := Create_Element(Feed, "author");
-         Author_Node := Append_Child(ParentNode, Author_Node);
+         Author_Node := Append_Child(Parent_Node, Author_Node);
          if Name'Length > 0 then
-            AddNode("name", Name, Author_Node);
+            Add_Node("name", Name, Author_Node);
          end if;
          if Email'Length > 0 then
-            AddNode("email", Email, Author_Node);
+            Add_Node("email", Email, Author_Node);
          end if;
       end AddAuthor;
    begin
@@ -306,24 +307,24 @@ package body AtomFeed is
         FeedEntry_Container.Length(Get_Entries_List) = 0 then
          return;
       end if;
-      Feed := Create_Document(NewFeed);
-      MainNode := Create_Element(Feed, "feed");
-      Set_Attribute(MainNode, "xmlns", "http://www.w3.org/2005/Atom");
-      MainNode := Append_Child(Feed, MainNode);
-      AddLink(MainNode, To_String(YassConfig.BaseURL) & "/atom.xml", "self");
-      AddNode("id", To_String(YassConfig.BaseURL) & "/", MainNode);
-      AddNode("title", To_String(YassConfig.SiteName), MainNode);
-      AddNode("updated", To_HTTP_Date(Entries_List(1).Updated), MainNode);
+      Feed := Create_Document(New_Feed);
+      Main_Node := Create_Element(Feed, "feed");
+      Set_Attribute(Main_Node, "xmlns", "http://www.w3.org/2005/Atom");
+      Main_Node := Append_Child(Feed, Main_Node);
+      AddLink(Main_Node, To_String(YassConfig.BaseURL) & "/atom.xml", "self");
+      Add_Node("id", To_String(YassConfig.BaseURL) & "/", Main_Node);
+      Add_Node("title", To_String(YassConfig.SiteName), Main_Node);
+      Add_Node("updated", To_HTTP_Date(Entries_List(1).Updated), Main_Node);
       AddAuthor
-        (MainNode, To_String(YassConfig.AuthorName),
+        (Main_Node, To_String(YassConfig.AuthorName),
          To_String(YassConfig.AuthorEmail));
       for FeedEntry of Get_Entries_List loop
          EntryNode := Create_Element(Feed, "entry");
-         EntryNode := Append_Child(MainNode, EntryNode);
-         AddNode("id", To_String(FeedEntry.Id), EntryNode);
-         AddNode("title", To_String(FeedEntry.Entry_Title), EntryNode);
-         AddNode("updated", To_HTTP_Date(FeedEntry.Updated), EntryNode);
-         AddNode("content", To_String(FeedEntry.Content), EntryNode);
+         EntryNode := Append_Child(Main_Node, EntryNode);
+         Add_Node("id", To_String(FeedEntry.Id), EntryNode);
+         Add_Node("title", To_String(FeedEntry.Entry_Title), EntryNode);
+         Add_Node("updated", To_HTTP_Date(FeedEntry.Updated), EntryNode);
+         Add_Node("content", To_String(FeedEntry.Content), EntryNode);
          AddLink(EntryNode, To_String(FeedEntry.Id), "alternate");
          if FeedEntry.Author_Name /= Null_Unbounded_String or
            FeedEntry.Author_Email /= Null_Unbounded_String then
@@ -332,10 +333,10 @@ package body AtomFeed is
                To_String(FeedEntry.Author_Email));
          end if;
          if FeedEntry.Summary /= Null_Unbounded_String then
-            AddNode("summary", To_String(FeedEntry.Summary), EntryNode);
+            Add_Node("summary", To_String(FeedEntry.Summary), EntryNode);
          end if;
-         EntriesAmount := EntriesAmount + 1;
-         exit when EntriesAmount = YassConfig.AtomFeedAmount;
+         Entries_Amount := Entries_Amount + 1;
+         exit when Entries_Amount = YassConfig.AtomFeedAmount;
       end loop;
       Create(Atom_File, Out_File, To_String(Feed_File_Name));
       Write(Stream => Stream(Atom_File), N => Feed, Pretty_Print => True);
