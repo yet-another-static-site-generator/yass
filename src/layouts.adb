@@ -35,6 +35,9 @@ package body Layouts is
       Put_Line(LayoutFile, "<meta charset=""UTF-8"">");
       Put_Line
         (LayoutFile, "<link rel=""canonical"" href=""{%canonicallink%}"" />");
+      Put_Line(LayoutFile, "@@IF@@ {%author%} /= """"");
+      Put_Line(LayoutFile, "<meta name=""author"" content=""{%author%}"">");
+      Put_Line(LayoutFile, "@@END_IF@@");
       Put_Line(LayoutFile, "@@IF@@ {%AtomLink%} /= """"");
       Put_Line(LayoutFile, "{%AtomLink%}");
       Put_Line(LayoutFile, "@@END_IF@@");
