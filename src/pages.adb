@@ -359,11 +359,11 @@ package body Pages is
       Put_Line
         (IndexFile,
          CommentMark &
-         " priority: The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
+         " priority - The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
       Put_Line
         (IndexFile,
          CommentMark &
-         " changefreq: How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
+         " changefreq - How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
       Put_Line
         (IndexFile,
          CommentMark &
