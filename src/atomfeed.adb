@@ -247,8 +247,8 @@ package body AtomFeed is
          Move_Atom_Entries_Loop :
          for I in Local_Entries.Iterate loop
             if Local_Entries(I).Updated < AtomEntry.Updated then
-               Entry_Index := FeedEntry_Container.To_Index(I);
-               Local_Entries.Insert(I, AtomEntry);
+               Entry_Index := FeedEntry_Container.To_Index(Position => I);
+               Local_Entries.Insert(Before => I, New_Item => AtomEntry);
                exit Move_Atom_Entries_Loop;
             end if;
          end loop Move_Atom_Entries_Loop;
@@ -256,7 +256,7 @@ package body AtomFeed is
             Local_Entries.Append(New_Item => AtomEntry);
          end if;
       end loop Add_Page_To_Feed_Loop;
-      Set_Entries_List(Local_Entries);
+      Set_Entries_List(New_List => Local_Entries);
    end Add_Page_To_Feed;
 
    procedure Save_Atom_Feed is
@@ -271,8 +271,8 @@ package body AtomFeed is
          Feed_Text: Text;
          Feed_Data: DOM.Core.Element;
       begin
-         Feed_Data := Create_Element(Feed, Node_Name);
-         Feed_Data := Append_Child(Parent_Node, Feed_Data);
+         Feed_Data :=
+           Append_Child(Parent_Node, Create_Element(Feed, Node_Name));
          Feed_Text := Create_Text_Node(Feed, Node_Value);
          if Append_Child(Feed_Data, Feed_Text) /= null then
             return;
@@ -307,7 +307,8 @@ package body AtomFeed is
         FeedEntry_Container.Length(Get_Entries_List) = 0 then
          return;
       end if;
-      Feed := Create_Document(New_Feed);
+      Feed :=
+        Create_Document(New_Feed); --## rule line off IMPROPER_INITIALIZATION
       Main_Node := Create_Element(Feed, "feed");
       Set_Attribute(Main_Node, "xmlns", "http://www.w3.org/2005/Atom");
       Main_Node := Append_Child(Feed, Main_Node);
