@@ -242,6 +242,9 @@ package body Pages is
                   Length(YassConfig.OutputDirectory & Dir_Separator) + 1,
                   NewFileName'Length)));
       end if;
+      if not Exists(Tags, "author") then
+         Insert(Tags, Assoc("author", To_String(YassConfig.AuthorName)));
+      end if;
       for I in PageTableTags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
       end loop;
