@@ -272,9 +272,11 @@ package body AtomFeed is
          Feed_Data: DOM.Core.Element;
       begin
          Feed_Data :=
-           Append_Child(Parent_Node, Create_Element(Feed, Node_Name));
-         Feed_Text := Create_Text_Node(Feed, Node_Value);
-         if Append_Child(Feed_Data, Feed_Text) /= null then
+           Append_Child
+             (N => Parent_Node,
+              New_Child => Create_Element(Doc => Feed, Tag_Name => Node_Name));
+         Feed_Text := Create_Text_Node(Doc => Feed, Data => Node_Value);
+         if Append_Child(N => Feed_Data, New_Child => Feed_Text) /= null then
             return;
          end if;
       end Add_Node;
@@ -283,8 +285,7 @@ package body AtomFeed is
         (Parent_Node: DOM.Core.Element; Url, Relationship: String) is
          Link_Node: DOM.Core.Element;
       begin
-         Link_Node := Create_Element(Feed, "link");
-         Link_Node := Append_Child(Parent_Node, Link_Node);
+         Link_Node := Append_Child(Parent_Node, Create_Element(Feed, "link"));
          Set_Attribute(Link_Node, "rel", Relationship);
          Set_Attribute(Link_Node, "href", Url);
       end Add_Link;
