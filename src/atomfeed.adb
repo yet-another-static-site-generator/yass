@@ -285,24 +285,28 @@ package body AtomFeed is
         (Parent_Node: DOM.Core.Element; Url, Relationship: String) is
          Link_Node: DOM.Core.Element;
       begin
-         Link_Node := Append_Child(Parent_Node, Create_Element(Feed, "link"));
-         Set_Attribute(Link_Node, "rel", Relationship);
-         Set_Attribute(Link_Node, "href", Url);
+         Link_Node :=
+           Append_Child
+             (N => Parent_Node,
+              New_Child => Create_Element(Doc => Feed, Tag_Name => "link"));
+         Set_Attribute
+           (Elem => Link_Node, Name => "rel", Value => Relationship);
+         Set_Attribute(Elem => Link_Node, Name => "href", Value => Url);
       end Add_Link;
       -- Add author to parent node Parent_Node with author name Name and author email Email
-      procedure AddAuthor
+      procedure Add_Author
         (Parent_Node: DOM.Core.Element; Name, Email: String) is
          Author_Node: DOM.Core.Element;
       begin
-         Author_Node := Create_Element(Feed, "author");
-         Author_Node := Append_Child(Parent_Node, Author_Node);
+         Author_Node :=
+           Append_Child(Parent_Node, Create_Element(Feed, "author"));
          if Name'Length > 0 then
             Add_Node("name", Name, Author_Node);
          end if;
          if Email'Length > 0 then
             Add_Node("email", Email, Author_Node);
          end if;
-      end AddAuthor;
+      end Add_Author;
    begin
       if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
         FeedEntry_Container.Length(Get_Entries_List) = 0 then
@@ -317,7 +321,7 @@ package body AtomFeed is
       Add_Node("id", To_String(YassConfig.BaseURL) & "/", Main_Node);
       Add_Node("title", To_String(YassConfig.SiteName), Main_Node);
       Add_Node("updated", To_HTTP_Date(Entries_List(1).Updated), Main_Node);
-      AddAuthor
+      Add_Author
         (Main_Node, To_String(YassConfig.AuthorName),
          To_String(YassConfig.AuthorEmail));
       for FeedEntry of Get_Entries_List loop
@@ -330,7 +334,7 @@ package body AtomFeed is
          Add_Link(Entry_Node, To_String(FeedEntry.Id), "alternate");
          if FeedEntry.Author_Name /= Null_Unbounded_String or
            FeedEntry.Author_Email /= Null_Unbounded_String then
-            AddAuthor
+            Add_Author
               (Entry_Node, To_String(FeedEntry.Author_Name),
                To_String(FeedEntry.Author_Email));
          end if;
