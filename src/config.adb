@@ -56,7 +56,7 @@ package body Config is
       Put_Line(ConfigFile, "Language = en");
       Put_Line
         (ConfigFile,
-         "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
+         "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag. It is also used in setting meta tag author for all pages.");
       Put_Line(ConfigFile, "Author = John Doe");
       Put_Line
         (ConfigFile,
@@ -322,7 +322,7 @@ package body Config is
       Put_Line(ConfigFile, "Language = " & To_String(Answer));
       Put_Line
         (ConfigFile,
-         "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
+         "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag. It is also used to set meta tag author for all pages.");
       Put("Please enter the author of the new site (default - Jon Doe): ");
       Answer := To_Unbounded_String(Get_Line);
       if Answer = Null_Unbounded_String then
