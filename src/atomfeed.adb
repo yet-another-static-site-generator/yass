@@ -299,24 +299,34 @@ package body AtomFeed is
          Author_Node: DOM.Core.Element;
       begin
          Author_Node :=
-           Append_Child(Parent_Node, Create_Element(Feed, "author"));
+           Append_Child
+             (N => Parent_Node,
+              New_Child => Create_Element(Doc => Feed, Tag_Name => "author"));
          if Name'Length > 0 then
-            Add_Node("name", Name, Author_Node);
+            Add_Node
+              (Node_Name => "name", Node_Value => Name,
+               Parent_Node => Author_Node);
          end if;
          if Email'Length > 0 then
-            Add_Node("email", Email, Author_Node);
+            Add_Node
+              (Node_Name => "email", Node_Value => Email,
+               Parent_Node => Author_Node);
          end if;
       end Add_Author;
    begin
-      if YassConfig.AtomFeedSource = To_Unbounded_String("none") or
-        FeedEntry_Container.Length(Get_Entries_List) = 0 then
+      if YassConfig.AtomFeedSource = To_Unbounded_String(Source => "none") or
+        FeedEntry_Container.Length(Container => Get_Entries_List) = 0 then
          return;
       end if;
       Feed :=
-        Create_Document(New_Feed); --## rule line off IMPROPER_INITIALIZATION
-      Main_Node := Create_Element(Feed, "feed");
-      Set_Attribute(Main_Node, "xmlns", "http://www.w3.org/2005/Atom");
-      Main_Node := Append_Child(Feed, Main_Node);
+        Create_Document
+          (Implementation =>
+             New_Feed); --## rule line off IMPROPER_INITIALIZATION
+      Main_Node := Create_Element(Doc => Feed, Tag_Name => "feed");
+      Set_Attribute
+        (Elem => Main_Node, Name => "xmlns",
+         Value => "http://www.w3.org/2005/Atom");
+      Main_Node := Append_Child(N => Feed, New_Child => Main_Node);
       Add_Link(Main_Node, To_String(YassConfig.BaseURL) & "/atom.xml", "self");
       Add_Node("id", To_String(YassConfig.BaseURL) & "/", Main_Node);
       Add_Node("title", To_String(YassConfig.SiteName), Main_Node);
