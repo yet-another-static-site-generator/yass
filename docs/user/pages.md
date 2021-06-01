@@ -151,5 +151,8 @@ Optional parameter always available for pages:
 * canonicallink: Set the page canonical link. It is used by search engines
   (by some even required). If you don't set it here, the program will generate
   it automatically. It must be a full URL (with https://).
+* author: The name of the author of the page. Will be used to set meta link
+  **author**. If not set, then setting `Author` from the project configuration file
+  will be used.
 
 <a href="#top">^ Top</a>

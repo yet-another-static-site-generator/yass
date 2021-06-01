@@ -82,7 +82,8 @@ Possible settings for project:
 * Language: The ISO 639-1 language code in which the site will be created.
 * Author: the name of the author of the site. If you have enabled creating
   Atom feed, then it is needed. Otherwise, you can use it as a normal template
-  tag. Default value is `Jon Doe`.
+  tag. Default value is `Jon Doe`. It is also used in setting meta tag **author**
+  for all pages.
 * AuthorEmail: the email address of the author of the site. If you have
   enabled creating Atom feed, then it is needed. Otherwise, you can use it as
   a normal template tag. Default valuse is `jondoe@example.com`.
