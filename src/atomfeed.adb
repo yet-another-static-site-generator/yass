@@ -265,6 +265,7 @@ package body AtomFeed is
       New_Feed: DOM_Implementation; --## rule line off IMPROPER_INITIALIZATION
       Main_Node, Entry_Node: DOM.Core.Element;
       Entries_Amount: Natural := 0;
+      Local_Entries: constant FeedEntry_Container.Vector := Get_Entries_List;
    -- Add XML node Node_Name with value Node_Value to parent XML node Parent_Node
       procedure Add_Node
         (Node_Name, Node_Value: String; Parent_Node: DOM.Core.Element) is
@@ -327,14 +328,23 @@ package body AtomFeed is
         (Elem => Main_Node, Name => "xmlns",
          Value => "http://www.w3.org/2005/Atom");
       Main_Node := Append_Child(N => Feed, New_Child => Main_Node);
-      Add_Link(Main_Node, To_String(YassConfig.BaseURL) & "/atom.xml", "self");
-      Add_Node("id", To_String(YassConfig.BaseURL) & "/", Main_Node);
-      Add_Node("title", To_String(YassConfig.SiteName), Main_Node);
-      Add_Node("updated", To_HTTP_Date(Entries_List(1).Updated), Main_Node);
+      Add_Link
+        (Parent_Node => Main_Node,
+         Url => To_String(Source => YassConfig.BaseURL) & "/atom.xml",
+         Relationship => "self");
+      Add_Node
+        (Node_Name => "id",
+         Node_Value => To_String(Source => YassConfig.BaseURL) & "/",
+         Parent_Node => Main_Node);
+      Add_Node
+        (Node_Name => "title",
+         Node_Value => To_String(Source => YassConfig.SiteName),
+         Parent_Node => Main_Node);
+      Add_Node("updated", To_HTTP_Date(Local_Entries(1).Updated), Main_Node);
       Add_Author
         (Main_Node, To_String(YassConfig.AuthorName),
          To_String(YassConfig.AuthorEmail));
-      for FeedEntry of Get_Entries_List loop
+      for FeedEntry of Local_Entries loop
          Entry_Node := Create_Element(Feed, "entry");
          Entry_Node := Append_Child(Main_Node, Entry_Node);
          Add_Node("id", To_String(FeedEntry.Id), Entry_Node);
