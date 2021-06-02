@@ -33,6 +33,7 @@
 
 ### Added
 - Creating and setting canonical links for pages
+- Setting meta tag author for pages
 
 ### Changed
 - Updated README.md
