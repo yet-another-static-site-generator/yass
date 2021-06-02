@@ -340,13 +340,17 @@ package body AtomFeed is
         (Node_Name => "title",
          Node_Value => To_String(Source => YassConfig.SiteName),
          Parent_Node => Main_Node);
-      Add_Node("updated", To_HTTP_Date(Local_Entries(1).Updated), Main_Node);
+      Add_Node
+        (Node_Name => "updated",
+         Node_Value => To_HTTP_Date(Date => Local_Entries(1).Updated),
+         Parent_Node => Main_Node);
       Add_Author
-        (Main_Node, To_String(YassConfig.AuthorName),
-         To_String(YassConfig.AuthorEmail));
+        (Parent_Node => Main_Node,
+         Name => To_String(Source => YassConfig.AuthorName),
+         Email => To_String(Source => YassConfig.AuthorEmail));
+      Add_Entries_Loop :
       for FeedEntry of Local_Entries loop
-         Entry_Node := Create_Element(Feed, "entry");
-         Entry_Node := Append_Child(Main_Node, Entry_Node);
+         Entry_Node := Append_Child(Main_Node, Create_Element(Feed, "entry"));
          Add_Node("id", To_String(FeedEntry.Id), Entry_Node);
          Add_Node("title", To_String(FeedEntry.Entry_Title), Entry_Node);
          Add_Node("updated", To_HTTP_Date(FeedEntry.Updated), Entry_Node);
@@ -362,8 +366,8 @@ package body AtomFeed is
             Add_Node("summary", To_String(FeedEntry.Summary), Entry_Node);
          end if;
          Entries_Amount := Entries_Amount + 1;
-         exit when Entries_Amount = YassConfig.AtomFeedAmount;
-      end loop;
+         exit Add_Entries_Loop when Entries_Amount = YassConfig.AtomFeedAmount;
+      end loop Add_Entries_Loop;
       Create(Atom_File, Out_File, To_String(Feed_File_Name));
       Write(Stream => Stream(Atom_File), N => Feed, Pretty_Print => True);
       Close(Atom_File);
