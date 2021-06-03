@@ -52,6 +52,10 @@ package body Config is
       Put_Line(ConfigFile, "Name = New Site");
       Put_Line
         (ConfigFile,
+         "# The description of the site which will be created. Must be in one line, no new line allowed. It is used to set meta tag description (which is showed in search engines results) but only when pages don't set it. Optional setting.");
+      Put_Line(ConfigFile, "Description = My new site");
+      Put_Line
+        (ConfigFile,
          "# The ISO 639-1 language code in which the site will be created.");
       Put_Line(ConfigFile, "Language = en");
       Put_Line
@@ -310,6 +314,16 @@ package body Config is
          Answer := To_Unbounded_String("New Site");
       end if;
       Put_Line(ConfigFile, "Name = " & To_String(Answer));
+      Put_Line
+        (ConfigFile,
+         "# The description of the site which will be created. Must be in one line, no new line allowed. It is used to set meta tag description (which is showed in search engines results) but only when pages don't set it. Optional setting.");
+      Put_Line
+        ("Please enter the description of the new site (default - My new site). It is used to create meta tag for the website (which is showed in search engines results) but only if pages don't set own. Must be set in one line, no new line allowed.");
+      Answer := To_Unbounded_String(Get_Line);
+      if Answer /= Null_Unbounded_String then
+         Answer := To_Unbounded_String("My new site");
+      end if;
+      Put_Line(ConfigFile, "Description = " & To_String(Answer));
       Put_Line
         (ConfigFile,
          "# The ISO 639-1 language code in which the site will be created.");
