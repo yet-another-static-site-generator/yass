@@ -350,11 +350,25 @@ package body AtomFeed is
          Email => To_String(Source => YassConfig.AuthorEmail));
       Add_Entries_Loop :
       for FeedEntry of Local_Entries loop
-         Entry_Node := Append_Child(Main_Node, Create_Element(Feed, "entry"));
-         Add_Node("id", To_String(FeedEntry.Id), Entry_Node);
-         Add_Node("title", To_String(FeedEntry.Entry_Title), Entry_Node);
-         Add_Node("updated", To_HTTP_Date(FeedEntry.Updated), Entry_Node);
-         Add_Node("content", To_String(FeedEntry.Content), Entry_Node);
+         Entry_Node :=
+           Append_Child
+             (N => Main_Node,
+              New_Child => Create_Element(Doc => Feed, Tag_Name => "entry"));
+         Add_Node
+           (Node_Name => "id", Node_Value => To_String(Source => FeedEntry.Id),
+            Parent_Node => Entry_Node);
+         Add_Node
+           (Node_Name => "title",
+            Node_Value => To_String(Source => FeedEntry.Entry_Title),
+            Parent_Node => Entry_Node);
+         Add_Node
+           (Node_Name => "updated",
+            Node_Value => To_HTTP_Date(Date => FeedEntry.Updated),
+            Parent_Node => Entry_Node);
+         Add_Node
+           (Node_Name => "content",
+            Node_Value => To_String(Source => FeedEntry.Content),
+            Parent_Node => Entry_Node);
          Add_Link(Entry_Node, To_String(FeedEntry.Id), "alternate");
          if FeedEntry.Author_Name /= Null_Unbounded_String or
            FeedEntry.Author_Email /= Null_Unbounded_String then
