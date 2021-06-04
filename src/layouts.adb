@@ -38,6 +38,9 @@ package body Layouts is
       Put_Line(LayoutFile, "@@IF@@ {%author%} /= """"");
       Put_Line(LayoutFile, "<meta name=""author"" content=""{%author%}"">");
       Put_Line(LayoutFile, "@@END_IF@@");
+      Put_Line(LayoutFile, "@@IF@@ {%description%} /= """"");
+      Put_Line(LayoutFile, "<meta name=""description"" content=""{%description%}"">");
+      Put_Line(LayoutFile, "@@END_IF@@");
       Put_Line(LayoutFile, "@@IF@@ {%AtomLink%} /= """"");
       Put_Line(LayoutFile, "{%AtomLink%}");
       Put_Line(LayoutFile, "@@END_IF@@");

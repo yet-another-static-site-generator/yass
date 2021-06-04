@@ -245,6 +245,10 @@ package body Pages is
       if not Exists(Tags, "author") then
          Insert(Tags, Assoc("author", To_String(YassConfig.AuthorName)));
       end if;
+      if not Exists(Tags, "description")
+        and then SiteTags.Contains("Description") then
+         Insert(Tags, Assoc("description", SiteTags("Description")));
+      end if;
       for I in PageTableTags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
       end loop;
