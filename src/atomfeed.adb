@@ -369,22 +369,31 @@ package body AtomFeed is
            (Node_Name => "content",
             Node_Value => To_String(Source => FeedEntry.Content),
             Parent_Node => Entry_Node);
-         Add_Link(Entry_Node, To_String(FeedEntry.Id), "alternate");
+         Add_Link
+           (Parent_Node => Entry_Node,
+            Url => To_String(Source => FeedEntry.Id),
+            Relationship => "alternate");
          if FeedEntry.Author_Name /= Null_Unbounded_String or
            FeedEntry.Author_Email /= Null_Unbounded_String then
             Add_Author
-              (Entry_Node, To_String(FeedEntry.Author_Name),
-               To_String(FeedEntry.Author_Email));
+              (Parent_Node => Entry_Node,
+               Name => To_String(Source => FeedEntry.Author_Name),
+               Email => To_String(Source => FeedEntry.Author_Email));
          end if;
          if FeedEntry.Summary /= Null_Unbounded_String then
-            Add_Node("summary", To_String(FeedEntry.Summary), Entry_Node);
+            Add_Node
+              (Node_Name => "summary",
+               Node_Value => To_String(Source => FeedEntry.Summary),
+               Parent_Node => Entry_Node);
          end if;
          Entries_Amount := Entries_Amount + 1;
          exit Add_Entries_Loop when Entries_Amount = YassConfig.AtomFeedAmount;
       end loop Add_Entries_Loop;
-      Create(Atom_File, Out_File, To_String(Feed_File_Name));
+      Create
+        (File => Atom_File, Mode => Out_File,
+         Name => To_String(Source => Feed_File_Name));
       Write(Stream => Stream(Atom_File), N => Feed, Pretty_Print => True);
-      Close(Atom_File);
+      Close(File => Atom_File);
    end Save_Atom_Feed;
 
 end AtomFeed;
