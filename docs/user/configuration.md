@@ -79,6 +79,9 @@ Possible settings for project:
 * Name: The name of the site which will be created. If you have enabled
   creating Atom feed then it is needed. Otherwise, you can use it as a normal
   template tag.
+* Description: The description of the site. It will be used to set the default
+  pages description meta tag (it is used mostly in search engines results), but
+  only if the page doesn't set own description.
 * Language: The ISO 639-1 language code in which the site will be created.
 * Author: the name of the author of the site. If you have enabled creating
   Atom feed, then it is needed. Otherwise, you can use it as a normal template

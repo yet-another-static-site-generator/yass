@@ -154,5 +154,8 @@ Optional parameter always available for pages:
 * author: The name of the author of the page. Will be used to set meta link
   **author**. If not set, then setting `Author` from the project configuration file
   will be used.
+* description: The description of the page, visible in search results in search
+  engines. Will be used to set meta link **description**. If not set, then setting
+  `Description` from the project configuration file will be used.
 
 <a href="#top">^ Top</a>
