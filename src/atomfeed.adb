@@ -38,6 +38,18 @@ package body AtomFeed is
    Feed_File_Name: Unbounded_String;
    -- ****
 
+   -- ****if* AtomFeed/Get_Feed_File_Name
+   -- FUNCTION
+   -- Get the file name of the project's Atom feed
+   -- RESULT
+   -- The full path to the Atom feed file
+   -- SOURCE
+   function Get_Feed_File_Name return String is
+      -- ****
+   begin
+      return To_String(Source => Feed_File_Name);
+   end Get_Feed_File_Name;
+
    -- ****iv* AtomFeed/Entries_List
    -- FUNCTION
    -- The list of Atom entries for the website
@@ -115,11 +127,10 @@ package body AtomFeed is
       Feed_File_Name :=
         YassConfig.OutputDirectory &
         To_Unbounded_String(Source => Dir_Separator & "atom.xml");
-      if not Exists(Name => To_String(Source => Feed_File_Name)) then
+      if not Exists(Name => Get_Feed_File_Name) then
          return;
       end if;
-      Open
-        (Filename => To_String(Source => Feed_File_Name), Input => Atom_File);
+      Open(Filename => Get_Feed_File_Name, Input => Atom_File);
       --## rule off IMPROPER_INITIALIZATION
       Parse(Parser => Reader, Input => Atom_File);
       --## rule on IMPROPER_INITIALIZATION
@@ -389,10 +400,9 @@ package body AtomFeed is
          Entries_Amount := Entries_Amount + 1;
          exit Add_Entries_Loop when Entries_Amount = YassConfig.AtomFeedAmount;
       end loop Add_Entries_Loop;
-      Create
-        (File => Atom_File, Mode => Out_File,
-         Name => To_String(Source => Feed_File_Name));
-      Write(Stream => Stream(Atom_File), N => Feed, Pretty_Print => True);
+      Create(File => Atom_File, Mode => Out_File, Name => Get_Feed_File_Name);
+      Write
+        (Stream => Stream(File => Atom_File), N => Feed, Pretty_Print => True);
       Close(File => Atom_File);
    end Save_Atom_Feed;
 
