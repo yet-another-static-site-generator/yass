@@ -33,7 +33,8 @@
 
 ### Added
 - Creating and setting canonical links for pages
-- Setting meta tag author for pages
+- Setting meta tag author for pages and sites
+- Setting meta tag description for pages and sites
 
 ### Changed
 - Updated README.md
