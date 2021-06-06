@@ -15,18 +15,18 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Directories; use Ada.Directories;
-with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
-with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Calendar.Formatting;
+with Ada.Directories; use Ada.Directories;
+with Ada.Strings.Fixed;
+with Ada.Text_IO;
+with Ada.Text_IO.Text_Streams;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with DOM.Core; use DOM.Core;
-with DOM.Core.Elements; use DOM.Core.Elements;
 with DOM.Core.Documents; use DOM.Core.Documents;
+with DOM.Core.Elements;
 with DOM.Core.Nodes; use DOM.Core.Nodes;
-with DOM.Readers; use DOM.Readers;
-with Input_Sources.File; use Input_Sources.File;
+with DOM.Readers;
+with Input_Sources.File;
 with Config; use Config;
 
 package body AtomFeed is
@@ -103,6 +103,9 @@ package body AtomFeed is
    end To_HTTP_Date;
 
    procedure Start_Atom_Feed is
+      use DOM.Readers;
+      use Input_Sources.File;
+
       Atom_File: File_Input;
       --## rule off IMPROPER_INITIALIZATION
       Reader: Tree_Reader;
@@ -203,6 +206,8 @@ package body AtomFeed is
 
    procedure Add_Page_To_Feed
      (File_Name: String; Entries: in out FeedEntry_Container.Vector) is
+      use Ada.Strings.Fixed;
+
       Url: constant String :=
         To_String(Source => YassConfig.BaseURL) & "/" &
         Ada.Strings.Unbounded.Slice
@@ -271,6 +276,10 @@ package body AtomFeed is
    end Add_Page_To_Feed;
 
    procedure Save_Atom_Feed is
+      use Ada.Text_IO;
+      use Ada.Text_IO.Text_Streams;
+      use DOM.Core.Elements;
+
       Atom_File: File_Type;
       Feed: Document;
       New_Feed: DOM_Implementation; --## rule line off IMPROPER_INITIALIZATION
