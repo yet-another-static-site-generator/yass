@@ -34,12 +34,17 @@ package body Layouts is
       Put_Line(LayoutFile, "<head>");
       Put_Line(LayoutFile, "<meta charset=""UTF-8"">");
       Put_Line
+        (LayoutFile,
+         "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
+      Put_Line
         (LayoutFile, "<link rel=""canonical"" href=""{%canonicallink%}"" />");
       Put_Line(LayoutFile, "@@IF@@ {%author%} /= """"");
       Put_Line(LayoutFile, "<meta name=""author"" content=""{%author%}"">");
       Put_Line(LayoutFile, "@@END_IF@@");
       Put_Line(LayoutFile, "@@IF@@ {%description%} /= """"");
-      Put_Line(LayoutFile, "<meta name=""description"" content=""{%description%}"">");
+      Put_Line
+        (LayoutFile,
+         "<meta name=""description"" content=""{%description%}"">");
       Put_Line(LayoutFile, "@@END_IF@@");
       Put_Line(LayoutFile, "@@IF@@ {%AtomLink%} /= """"");
       Put_Line(LayoutFile, "{%AtomLink%}");
@@ -59,12 +64,15 @@ package body Layouts is
       Create
         (LayoutFile, Append_File,
          DirectoryName & Dir_Separator &
-         To_String(YassConfig.LayoutsDirectory) & Dir_Separator &
+         To_String(YassConfig.Layouts_Directory) & Dir_Separator &
          "directory.html");
       Put_Line(LayoutFile, "<!DOCTYPE html>");
       Put_Line(LayoutFile, "<html>");
       Put_Line(LayoutFile, "<head>");
       Put_Line(LayoutFile, "<meta charset=""UTF-8"">");
+      Put_Line
+        (LayoutFile,
+         "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
       Put_Line(LayoutFile, "</head>");
       Put_Line(LayoutFile, "<body>");
       Put_Line(LayoutFile, "@@TABLE@@");
