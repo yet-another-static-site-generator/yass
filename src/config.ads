@@ -36,56 +36,56 @@ package Config is
      (Positive, String);
    -- ****
 
-   -- ****t* Config/ParserConfig
+   -- ****t* Config/Parser_Config
    -- FUNCTION
    -- Data structure for setting for parser
    -- PARAMETERS
-   -- OutputDirectory       - Path to directory with generated site
-   -- LayoutsDirectory      - Path to directory where site layouts are
-   -- ModulesDirectory      - Path to directory where program modules for this
-   --                         site are
-   -- ExcludedFiles         - List of excluded files (and directories) from
-   --                         site
-   -- ServerEnabled         - Did web server is enabled
-   -- ServerPort            - Port on which web server listen
-   -- MonitorInterval       - Interval (in seconds) how often program should
-   --                         check for changes in site to regenerate it
-   -- BaseURL               - Base URL for site, needed mostly for creating
-   --                         sitemap
-   -- SitemapEnabled        - Did creating sitemap is enabled
-   -- AtomFeedSource        - Source of atom feed entries. Possible values
-   --                         are: none (don't create atom feed, default),
-   --                         tags (create entries from tags in markdown files)
-   --                         and [filename] (path to markdown file which will
-   --                         be used as a source of feed)
-   -- SiteName              - Name of the site, needed for atom feed
-   -- AtomFeedAmount        - Number of entries in the Atom feed of the site
-   -- MarkdownComment       - String used to mark comments in markdown files
-   -- StopServerOnError     - Did sever should go down if encounter error
-   --                         during creating site
-   -- BrowserCommand        - Command used to open web browser (if empty,
-   --                         don't open anything)
-   -- MonitorConfigInterval - Interval (in seconds) how often program should
-   --                         check for changes in site configuration to
-   --                         reconfigure it
-   -- AuthorName            - Name of author of the site, needed for atom feed
-   -- AuthorEmail           - Email address of author of the site, needed for
-   --                         atom feed
-   -- Language              - ISO code of the language of the site
+   -- Output_Directory        - Path to directory with generated site
+   -- Layouts_Directory       - Path to directory where site layouts are
+   -- Modules_Directory       - Path to directory where program modules for this
+   --                           site are
+   -- Excluded_Files          - List of excluded files (and directories) from
+   --                           site
+   -- Server_Enabled          - Did web server is enabled
+   -- Server_Port             - Port on which web server listen
+   -- Monitor_Interval        - Interval (in seconds) how often program should
+   --                           check for changes in site to regenerate it
+   -- Base_Url                - Base URL for site, needed mostly for creating
+   --                           sitemap
+   -- Sitemap_Enabled         - Did creating sitemap is enabled
+   -- Atom_Feed_Source        - Source of atom feed entries. Possible values
+   --                           are: none (don't create atom feed, default),
+   --                           tags (create entries from tags in markdown files)
+   --                           and [filename] (path to markdown file which will
+   --                           be used as a source of feed)
+   -- Site_Name               - Name of the site, needed for atom feed
+   -- AtomFeedAmount          - Number of entries in the Atom feed of the site
+   -- MarkdownComment         - String used to mark comments in markdown files
+   -- StopServerOnError       - Did sever should go down if encounter error
+   --                           during creating site
+   -- BrowserCommand          - Command used to open web browser (if empty,
+   --                           don't open anything)
+   -- MonitorConfigInterval   - Interval (in seconds) how often program should
+   --                           check for changes in site configuration to
+   --                           reconfigure it
+   -- AuthorName              - Name of author of the site, needed for atom feed
+   -- AuthorEmail             - Email address of author of the site, needed for
+   --                           atom feed
+   -- Language                - ISO code of the language of the site
    -- SOURCE
    type ParserConfig is record
-      OutputDirectory: Unbounded_String := To_Unbounded_String("_output");
-      LayoutsDirectory: Unbounded_String := To_Unbounded_String("_layouts");
-      ModulesDirectory: Unbounded_String := To_Unbounded_String("_modules");
-      ExcludedFiles: Excluded_Container.Vector;
-      ServerEnabled: Boolean := True;
-      ServerPort: Positive := 8_888;
-      MonitorInterval: Duration := 5.0;
-      BaseURL: Unbounded_String :=
+      Output_Directory: Unbounded_String := To_Unbounded_String("_output");
+      Layouts_Directory: Unbounded_String := To_Unbounded_String("_layouts");
+      Modules_Directory: Unbounded_String := To_Unbounded_String("_modules");
+      Excluded_Files: Excluded_Container.Vector;
+      Server_Enabled: Boolean := True;
+      Server_Port: Positive := 8_888;
+      Monitor_Interval: Duration := 5.0;
+      Base_Url: Unbounded_String :=
         To_Unbounded_String("http://localhost:8888");
-      SitemapEnabled: Boolean := True;
-      AtomFeedSource: Unbounded_String := To_Unbounded_String("none");
-      SiteName: Unbounded_String := To_Unbounded_String("New Site");
+      Sitemap_Enabled: Boolean := True;
+      Atom_Feed_Source: Unbounded_String := To_Unbounded_String("none");
+      Site_Name: Unbounded_String := To_Unbounded_String("New Site");
       AtomFeedAmount: Positive := 25;
       MarkdownComment: Unbounded_String := To_Unbounded_String("--");
       StopServerOnError: Boolean := False;

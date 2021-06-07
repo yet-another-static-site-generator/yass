@@ -189,11 +189,12 @@ package body Modules is
       end RunModule;
    begin
       if not Exists
-          (To_String(YassConfig.ModulesDirectory) & Dir_Separator & State) then
+          (To_String(YassConfig.Modules_Directory) & Dir_Separator &
+           State) then
          return;
       end if;
       Search
-        (To_String(YassConfig.ModulesDirectory) & Dir_Separator & State, "",
+        (To_String(YassConfig.Modules_Directory) & Dir_Separator & State, "",
          (Directory => False, others => True), RunModule'Access);
    end LoadModules;
 

@@ -50,7 +50,7 @@ package body Pages is
       PageFile: File_Type;
       Tags: Translate_Set;
       OutputDirectory: constant Unbounded_String :=
-        YassConfig.OutputDirectory &
+        YassConfig.Output_Directory &
         Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
       NewFileName: constant String :=
         To_String(OutputDirectory) & Dir_Separator &
@@ -160,7 +160,7 @@ package body Pages is
             if Index(Data, "layout:", 1) = (StartPos + 2) then
                Data := Unbounded_Slice(Data, (StartPos + 10), Length(Data));
                Layout :=
-                 YassConfig.LayoutsDirectory & Dir_Separator & Data &
+                 YassConfig.Layouts_Directory & Dir_Separator & Data &
                  To_Unbounded_String(".html");
                if not Ada.Directories.Exists(To_String(Layout)) then
                   Close(PageFile);
@@ -236,10 +236,10 @@ package body Pages is
            (Tags,
             Assoc
               ("canonicallink",
-               To_String(YassConfig.BaseURL) & "/" &
+               To_String(YassConfig.Base_Url) & "/" &
                Slice
                  (To_Unbounded_String(NewFileName),
-                  Length(YassConfig.OutputDirectory & Dir_Separator) + 1,
+                  Length(YassConfig.Output_Directory & Dir_Separator) + 1,
                   NewFileName'Length)));
       end if;
       if not Exists(Tags, "author") then
@@ -267,7 +267,7 @@ package body Pages is
            (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
       end if;
       -- Add the page to the Atom feed
-      if YassConfig.AtomFeedSource = To_Unbounded_String("tags") then
+      if YassConfig.Atom_Feed_Source = To_Unbounded_String("tags") then
          AtomEntries(AtomEntries.First_Index).Content := Content;
       end if;
       Add_Page_To_Feed(NewFileName, AtomEntries);
@@ -301,7 +301,7 @@ package body Pages is
 
    procedure CopyFile(FileName, Directory: String) is
       OutputDirectory: constant Unbounded_String :=
-        YassConfig.OutputDirectory &
+        YassConfig.Output_Directory &
         Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
       PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
       PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
@@ -413,7 +413,7 @@ package body Pages is
            and then Index(Data, "layout:", 1) = (StartPos + 2) then
             Data := Unbounded_Slice(Data, 12, Length(Data));
             Layout :=
-              YassConfig.LayoutsDirectory & Dir_Separator & Data &
+              YassConfig.Layouts_Directory & Dir_Separator & Data &
               To_Unbounded_String(".html");
             if not Ada.Directories.Exists(To_String(Layout)) then
                Close(PageFile);

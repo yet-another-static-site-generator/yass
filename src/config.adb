@@ -168,25 +168,25 @@ package body Config is
          FieldName := Head(RawData, EqualIndex - 2);
          Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
          if FieldName = To_Unbounded_String("LayoutsDirectory") then
-            YassConfig.LayoutsDirectory := Value;
+            YassConfig.Layouts_Directory := Value;
          elsif FieldName = To_Unbounded_String("OutputDirectory") then
-            YassConfig.OutputDirectory := Value;
+            YassConfig.Output_Directory := Value;
          elsif FieldName = To_Unbounded_String("ModulesDirectory") then
-            YassConfig.ModulesDirectory := Value;
+            YassConfig.Modules_Directory := Value;
          elsif FieldName = To_Unbounded_String("ExcludedFiles") then
             Create(Tokens, To_String(Value), ",");
             for I in 1 .. Slice_Count(Tokens) loop
-               YassConfig.ExcludedFiles.Append(Slice(Tokens, I));
+               YassConfig.Excluded_Files.Append(Slice(Tokens, I));
             end loop;
          elsif FieldName = To_Unbounded_String("ServerEnabled") then
             if To_Lower(To_String(Value)) = "true" then
-               YassConfig.ServerEnabled := True;
+               YassConfig.Server_Enabled := True;
             else
-               YassConfig.ServerEnabled := False;
+               YassConfig.Server_Enabled := False;
             end if;
          elsif FieldName = To_Unbounded_String("ServerPort") then
-            YassConfig.ServerPort := Positive'Value(To_String(Value));
-            if YassConfig.ServerPort > 65_535 then
+            YassConfig.Server_Port := Positive'Value(To_String(Value));
+            if YassConfig.Server_Port > 65_535 then
                raise InvalidConfigData with To_String(RawData);
             end if;
          elsif FieldName = To_Unbounded_String("StopServerOnError") then
@@ -201,36 +201,37 @@ package body Config is
                  (Value, Index(Value, "%s", 1), Index(Value, "%s", 1) + 1,
                   "http://localhost:" &
                   Trim
-                    (Positive'Image(YassConfig.ServerPort), Ada.Strings.Both));
+                    (Positive'Image(YassConfig.Server_Port),
+                     Ada.Strings.Both));
             end if;
             YassConfig.BrowserCommand := Value;
          elsif FieldName = To_Unbounded_String("MonitorInterval") then
-            YassConfig.MonitorInterval := Duration'Value(To_String(Value));
+            YassConfig.Monitor_Interval := Duration'Value(To_String(Value));
          elsif FieldName = To_Unbounded_String("MonitorConfigInterval") then
             YassConfig.MonitorConfigInterval :=
               Duration'Value(To_String(Value));
          elsif FieldName = To_Unbounded_String("BaseURL") then
-            YassConfig.BaseURL := Value;
+            YassConfig.Base_Url := Value;
             Tags_Container.Include(SiteTags, "BaseURL", To_String(Value));
          elsif FieldName = To_Unbounded_String("SitemapEnabled") then
             if To_Lower(To_String(Value)) = "true" then
-               YassConfig.SitemapEnabled := True;
+               YassConfig.Sitemap_Enabled := True;
             else
-               YassConfig.SitemapEnabled := False;
+               YassConfig.Sitemap_Enabled := False;
             end if;
          elsif FieldName = To_Unbounded_String("AtomFeedSource") then
             if Value = To_Unbounded_String("none") or
               Value = To_Unbounded_String("tags") then
-               YassConfig.AtomFeedSource := Value;
+               YassConfig.Atom_Feed_Source := Value;
             else
-               YassConfig.AtomFeedSource :=
+               YassConfig.Atom_Feed_Source :=
                  Unbounded_Slice(Value, 1, Length(Value) - 2) &
                  To_Unbounded_String("html");
             end if;
          elsif FieldName = To_Unbounded_String("AtomFeedAmount") then
             YassConfig.AtomFeedAmount := Positive'Value(To_String(Value));
          elsif FieldName = To_Unbounded_String("Name") then
-            YassConfig.SiteName := Value;
+            YassConfig.Site_Name := Value;
             Tags_Container.Include
               (SiteTags, To_String(FieldName), To_String(Value));
          elsif FieldName = To_Unbounded_String("StartTagSeparator") then
@@ -262,18 +263,18 @@ package body Config is
          <<End_Of_Loop>>
       end loop;
       Close(ConfigFile);
-      NormalizeDir(YassConfig.LayoutsDirectory);
-      NormalizeDir(YassConfig.OutputDirectory);
-      NormalizeDir(YassConfig.ModulesDirectory);
-      YassConfig.ExcludedFiles.Append(".");
-      YassConfig.ExcludedFiles.Append("..");
-      YassConfig.ExcludedFiles.Append("site.cfg");
-      YassConfig.ExcludedFiles.Append
-        (Simple_Name(To_String(YassConfig.LayoutsDirectory)));
-      YassConfig.ExcludedFiles.Append
-        (Simple_Name(To_String(YassConfig.OutputDirectory)));
-      YassConfig.ExcludedFiles.Append
-        (Simple_Name(To_String(YassConfig.ModulesDirectory)));
+      NormalizeDir(YassConfig.Layouts_Directory);
+      NormalizeDir(YassConfig.Output_Directory);
+      NormalizeDir(YassConfig.Modules_Directory);
+      YassConfig.Excluded_Files.Append(".");
+      YassConfig.Excluded_Files.Append("..");
+      YassConfig.Excluded_Files.Append("site.cfg");
+      YassConfig.Excluded_Files.Append
+        (Simple_Name(To_String(YassConfig.Layouts_Directory)));
+      YassConfig.Excluded_Files.Append
+        (Simple_Name(To_String(YassConfig.Output_Directory)));
+      YassConfig.Excluded_Files.Append
+        (Simple_Name(To_String(YassConfig.Modules_Directory)));
       SiteDirectory := To_Unbounded_String(DirectoryName);
       Set_Tag_Separators(To_String(StartTag), To_String(EndTag));
    exception
