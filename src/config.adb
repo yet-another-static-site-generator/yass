@@ -191,9 +191,9 @@ package body Config is
             end if;
          elsif FieldName = To_Unbounded_String("StopServerOnError") then
             if To_Lower(To_String(Value)) = "true" then
-               YassConfig.StopServerOnError := True;
+               YassConfig.Stop_Server_On_Error := True;
             else
-               YassConfig.StopServerOnError := False;
+               YassConfig.Stop_Server_On_Error := False;
             end if;
          elsif FieldName = To_Unbounded_String("BrowserCommand") then
             if Index(Value, "%s", 1) > 0 then
@@ -204,11 +204,11 @@ package body Config is
                     (Positive'Image(YassConfig.Server_Port),
                      Ada.Strings.Both));
             end if;
-            YassConfig.BrowserCommand := Value;
+            YassConfig.Browser_Command := Value;
          elsif FieldName = To_Unbounded_String("MonitorInterval") then
             YassConfig.Monitor_Interval := Duration'Value(To_String(Value));
          elsif FieldName = To_Unbounded_String("MonitorConfigInterval") then
-            YassConfig.MonitorConfigInterval :=
+            YassConfig.Monitor_Config_Interval :=
               Duration'Value(To_String(Value));
          elsif FieldName = To_Unbounded_String("BaseURL") then
             YassConfig.Base_Url := Value;
@@ -229,7 +229,7 @@ package body Config is
                  To_Unbounded_String("html");
             end if;
          elsif FieldName = To_Unbounded_String("AtomFeedAmount") then
-            YassConfig.AtomFeedAmount := Positive'Value(To_String(Value));
+            YassConfig.Atom_Feed_Amount := Positive'Value(To_String(Value));
          elsif FieldName = To_Unbounded_String("Name") then
             YassConfig.Site_Name := Value;
             Tags_Container.Include
@@ -239,11 +239,11 @@ package body Config is
          elsif FieldName = To_Unbounded_String("EndTagSeparator") then
             EndTag := Value;
          elsif FieldName = To_Unbounded_String("MarkdownComment") then
-            YassConfig.MarkdownComment := Value;
+            YassConfig.Markdown_Comment := Value;
          elsif FieldName = To_Unbounded_String("Author") then
-            YassConfig.AuthorName := Value;
+            YassConfig.Author_Name := Value;
          elsif FieldName = To_Unbounded_String("AuthorEmail") then
-            YassConfig.AuthorEmail := Value;
+            YassConfig.Author_Email := Value;
          elsif FieldName = To_Unbounded_String("Language") then
             YassConfig.Language := Value;
             Tags_Container.Include

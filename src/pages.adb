@@ -138,7 +138,7 @@ package body Pages is
       declare
          Data: Unbounded_String;
          StartIndex: Natural;
-         StartPos: constant Positive := Length(YassConfig.MarkdownComment);
+         StartPos: constant Positive := Length(YassConfig.Markdown_Comment);
          ValidValue: Boolean := False;
       begin
          -- Read selected markdown file
@@ -151,7 +151,7 @@ package body Pages is
                goto End_Of_Loop;
             end if;
             if Unbounded_Slice(Data, 1, StartPos) /=
-              YassConfig.MarkdownComment then
+              YassConfig.Markdown_Comment then
                Append(Content, Data);
                Append(Content, LF);
                goto End_Of_Loop;
@@ -243,7 +243,7 @@ package body Pages is
                   NewFileName'Length)));
       end if;
       if not Exists(Tags, "author") then
-         Insert(Tags, Assoc("author", To_String(YassConfig.AuthorName)));
+         Insert(Tags, Assoc("author", To_String(YassConfig.Author_Name)));
       end if;
       if not Exists(Tags, "description")
         and then SiteTags.Contains("Description") then
@@ -327,7 +327,7 @@ package body Pages is
 
    procedure CreateEmptyFile(FileName: String) is
       IndexFile: File_Type;
-      CommentMark: constant String := To_String(YassConfig.MarkdownComment);
+      CommentMark: constant String := To_String(YassConfig.Markdown_Comment);
    begin
       if Extension(FileName) /= "md" then
          Create(IndexFile, Append_File, FileName & Dir_Separator & "index.md");
@@ -402,14 +402,14 @@ package body Pages is
    function GetLayoutName(FileName: String) return String is
       PageFile: File_Type;
       Data, Layout: Unbounded_String;
-      StartPos: constant Positive := Length(YassConfig.MarkdownComment);
+      StartPos: constant Positive := Length(YassConfig.Markdown_Comment);
    begin
       Open(PageFile, In_File, FileName);
       while not End_Of_File(PageFile) loop
          Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
          if Length(Data) > 2
            and then Unbounded_Slice(Data, 1, StartPos) =
-             YassConfig.MarkdownComment
+             YassConfig.Markdown_Comment
            and then Index(Data, "layout:", 1) = (StartPos + 2) then
             Data := Unbounded_Slice(Data, 12, Length(Data));
             Layout :=

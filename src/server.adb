@@ -139,7 +139,7 @@ package body Server is
                Ada.Calendar.Formatting.Image
                  (Date => Clock, Time_Zone => UTC_Time_Offset) &
                "] " & "Site rebuilding has been interrupted.");
-            if YassConfig.StopServerOnError then
+            if YassConfig.Stop_Server_On_Error then
                if YassConfig.Server_Enabled then
                   ShutdownServer;
                   ShowMessage("done.", Success);
@@ -193,7 +193,7 @@ package body Server is
               Modification_Time
                 (To_String(SiteDirectory) & Dir_Separator & "site.cfg");
             -- Wait before next check
-            delay YassConfig.MonitorConfigInterval;
+            delay YassConfig.Monitor_Config_Interval;
             -- Update configuration if needed
             if ConfigLastModified /=
               Modification_Time

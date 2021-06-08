@@ -367,8 +367,8 @@ package body AtomFeed is
          Parent_Node => Main_Node);
       Add_Author
         (Parent_Node => Main_Node,
-         Name => To_String(Source => YassConfig.AuthorName),
-         Email => To_String(Source => YassConfig.AuthorEmail));
+         Name => To_String(Source => YassConfig.Author_Name),
+         Email => To_String(Source => YassConfig.Author_Email));
       Add_Entries_Loop :
       for FeedEntry of Local_Entries loop
          Entry_Node :=
@@ -408,7 +408,8 @@ package body AtomFeed is
                Parent_Node => Entry_Node);
          end if;
          Entries_Amount := Entries_Amount + 1;
-         exit Add_Entries_Loop when Entries_Amount = YassConfig.AtomFeedAmount;
+         exit Add_Entries_Loop when Entries_Amount =
+           YassConfig.Atom_Feed_Amount;
       end loop Add_Entries_Loop;
       Create(File => Atom_File, Mode => Out_File, Name => Get_Feed_File_Name);
       Write

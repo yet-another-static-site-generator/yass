@@ -59,21 +59,21 @@ package Config is
    --                           and [filename] (path to markdown file which will
    --                           be used as a source of feed)
    -- Site_Name               - Name of the site, needed for atom feed
-   -- AtomFeedAmount          - Number of entries in the Atom feed of the site
-   -- MarkdownComment         - String used to mark comments in markdown files
-   -- StopServerOnError       - Did sever should go down if encounter error
+   -- Atom_Feed_Amount        - Number of entries in the Atom feed of the site
+   -- Markdown_Comment        - String used to mark comments in markdown files
+   -- Stop_Server_On_Error    - Did sever should go down if encounter error
    --                           during creating site
-   -- BrowserCommand          - Command used to open web browser (if empty,
+   -- Browser_Command         - Command used to open web browser (if empty,
    --                           don't open anything)
-   -- MonitorConfigInterval   - Interval (in seconds) how often program should
+   -- Monitor_Config_Interval - Interval (in seconds) how often program should
    --                           check for changes in site configuration to
    --                           reconfigure it
-   -- AuthorName              - Name of author of the site, needed for atom feed
-   -- AuthorEmail             - Email address of author of the site, needed for
+   -- Author_Name             - Name of author of the site, needed for atom feed
+   -- Author_Email            - Email address of author of the site, needed for
    --                           atom feed
    -- Language                - ISO code of the language of the site
    -- SOURCE
-   type ParserConfig is record
+   type Parser_Config is record
       Output_Directory: Unbounded_String := To_Unbounded_String("_output");
       Layouts_Directory: Unbounded_String := To_Unbounded_String("_layouts");
       Modules_Directory: Unbounded_String := To_Unbounded_String("_modules");
@@ -86,13 +86,13 @@ package Config is
       Sitemap_Enabled: Boolean := True;
       Atom_Feed_Source: Unbounded_String := To_Unbounded_String("none");
       Site_Name: Unbounded_String := To_Unbounded_String("New Site");
-      AtomFeedAmount: Positive := 25;
-      MarkdownComment: Unbounded_String := To_Unbounded_String("--");
-      StopServerOnError: Boolean := False;
-      BrowserCommand: Unbounded_String := To_Unbounded_String("none");
-      MonitorConfigInterval: Duration := 60.0;
-      AuthorName: Unbounded_String := To_Unbounded_String("John Doe");
-      AuthorEmail: Unbounded_String :=
+      Atom_Feed_Amount: Positive := 25;
+      Markdown_Comment: Unbounded_String := To_Unbounded_String("--");
+      Stop_Server_On_Error: Boolean := False;
+      Browser_Command: Unbounded_String := To_Unbounded_String("none");
+      Monitor_Config_Interval: Duration := 60.0;
+      Author_Name: Unbounded_String := To_Unbounded_String("John Doe");
+      Author_Email: Unbounded_String :=
         To_Unbounded_String("johndoe@example.com");
       Language: Unbounded_String := To_Unbounded_String("en");
    end record;
@@ -102,7 +102,7 @@ package Config is
    -- FUNCTION
    -- Settings for the program
    -- SOURCE
-   YassConfig: ParserConfig;
+   YassConfig: Parser_Config;
    -- ****
 
    -- ****t* Config/Tags_Container

@@ -371,14 +371,14 @@ begin
             CreateDirectoryLayout(DirectoryName => "");
          end if;
          StartServer;
-         if YassConfig.BrowserCommand /=
+         if YassConfig.Browser_Command /=
            To_Unbounded_String(Source => "none") then
             Start_Web_Browser_Block :
             declare
                Args: constant Argument_List_Access :=
                  Argument_String_To_List
                    (Arg_String =>
-                      To_String(Source => YassConfig.BrowserCommand));
+                      To_String(Source => YassConfig.Browser_Command));
             begin
                if not Ada.Directories.Exists(Name => Args(Args'First).all)
                  or else
