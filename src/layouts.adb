@@ -64,7 +64,7 @@ package body Layouts is
       Create
         (LayoutFile, Append_File,
          DirectoryName & Dir_Separator &
-         To_String(YassConfig.Layouts_Directory) & Dir_Separator &
+         To_String(Yass_Config.Layouts_Directory) & Dir_Separator &
          "directory.html");
       Put_Line(LayoutFile, "<!DOCTYPE html>");
       Put_Line(LayoutFile, "<html>");

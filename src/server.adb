@@ -49,21 +49,21 @@ package body Server is
          -- Process file with full path Item: create html pages from markdown files or copy any other file if they was updated since last check.
          procedure ProcessFiles(Item: Directory_Entry_Type) is
             SiteFileName: Unbounded_String :=
-              YassConfig.Output_Directory & Dir_Separator &
+              Yass_Config.Output_Directory & Dir_Separator &
               To_Unbounded_String(Simple_Name(Item));
          begin
-            if YassConfig.Excluded_Files.Find_Index(Simple_Name(Item)) /=
+            if Yass_Config.Excluded_Files.Find_Index(Simple_Name(Item)) /=
               Excluded_Container.No_Index or
               not Ada.Directories.Exists(Full_Name(Item)) then
                return;
             end if;
             if Containing_Directory(Full_Name(Item)) /=
-              To_String(SiteDirectory) then
+              To_String(Site_Directory) then
                SiteFileName :=
-                 YassConfig.Output_Directory &
+                 Yass_Config.Output_Directory &
                  Slice
                    (To_Unbounded_String(Full_Name(Item)),
-                    Length(SiteDirectory) + 1, Full_Name(Item)'Length);
+                    Length(Site_Directory) + 1, Full_Name(Item)'Length);
             end if;
             if Extension(Simple_Name(Item)) = "md" then
                SiteFileName :=
@@ -116,7 +116,7 @@ package body Server is
          -- Go recursive with directory with full path Item.
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin
-            if YassConfig.Excluded_Files.Find_Index(Simple_Name(Item)) =
+            if Yass_Config.Excluded_Files.Find_Index(Simple_Name(Item)) =
               Excluded_Container.No_Index and
               Ada.Directories.Exists(Full_Name(Item)) then
                MonitorDirectory(Full_Name(Item));
@@ -139,8 +139,8 @@ package body Server is
                Ada.Calendar.Formatting.Image
                  (Date => Clock, Time_Zone => UTC_Time_Offset) &
                "] " & "Site rebuilding has been interrupted.");
-            if YassConfig.Stop_Server_On_Error then
-               if YassConfig.Server_Enabled then
+            if Yass_Config.Stop_Server_On_Error then
+               if Yass_Config.Server_Enabled then
                   ShutdownServer;
                   ShowMessage("done.", Success);
                end if;
@@ -161,7 +161,7 @@ package body Server is
          loop
             SiteRebuild := False;
             -- Monitor the site project directory for changes
-            MonitorDirectory(To_String(SiteDirectory));
+            MonitorDirectory(To_String(Site_Directory));
             if SiteRebuild then
                -- Save atom feed to file or nothing if atom feed generation is disabled
                Save_Atom_Feed;
@@ -176,7 +176,7 @@ package body Server is
                   "] " & "Site was rebuild.");
             end if;
             -- Wait before next check
-            delay YassConfig.Monitor_Interval;
+            delay Yass_Config.Monitor_Interval;
          end loop;
       or
          terminate;
@@ -191,19 +191,19 @@ package body Server is
          loop
             ConfigLastModified :=
               Modification_Time
-                (To_String(SiteDirectory) & Dir_Separator & "site.cfg");
+                (To_String(Site_Directory) & Dir_Separator & "site.cfg");
             -- Wait before next check
-            delay YassConfig.Monitor_Config_Interval;
+            delay Yass_Config.Monitor_Config_Interval;
             -- Update configuration if needed
             if ConfigLastModified /=
               Modification_Time
-                (To_String(SiteDirectory) & Dir_Separator & "site.cfg") then
+                (To_String(Site_Directory) & Dir_Separator & "site.cfg") then
                Put_Line
                  ("Site configuration was changed, reconfiguring the project.");
-               ParseConfig(To_String(SiteDirectory));
+               ParseConfig(To_String(Site_Directory));
                ShutdownServer;
                ShowMessage("done", Messages.Success);
-               if YassConfig.Server_Enabled then
+               if Yass_Config.Server_Enabled then
                   StartServer;
                end if;
             end if;
@@ -217,13 +217,13 @@ package body Server is
       URI: constant String := AWS.Status.URI(Request);
    begin
       -- Show directory listing if requested
-      if Kind(To_String(YassConfig.Output_Directory) & URI) = Directory then
+      if Kind(To_String(Yass_Config.Output_Directory) & URI) = Directory then
          return
            AWS.Response.Build
              ("text/html",
               Browse
-                (To_String(YassConfig.Output_Directory) & URI,
-                 To_String(YassConfig.Layouts_Directory) & Dir_Separator &
+                (To_String(Yass_Config.Output_Directory) & URI,
+                 To_String(Yass_Config.Layouts_Directory) & Dir_Separator &
                  "directory.html",
                  Request));
       end if;
@@ -234,13 +234,14 @@ package body Server is
    procedure StartServer is
    begin
       AWS.Server.Start
-        (HTTPServer, "YASS static page server", Port => YassConfig.Server_Port,
-         Callback => Callback'Access, Max_Connection => 5);
+        (HTTPServer, "YASS static page server",
+         Port => Yass_Config.Server_Port, Callback => Callback'Access,
+         Max_Connection => 5);
       Put_Line
         ("Server was started. Web address: http://localhost:" &
-         Positive'Image(YassConfig.Server_Port)
-           (Positive'Image(YassConfig.Server_Port)'First + 1 ..
-                Positive'Image(YassConfig.Server_Port)'Length) &
+         Positive'Image(Yass_Config.Server_Port)
+           (Positive'Image(Yass_Config.Server_Port)'First + 1 ..
+                Positive'Image(Yass_Config.Server_Port)'Length) &
          "/index.html Press ""Q"" for quit.");
    end StartServer;
 

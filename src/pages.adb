@@ -50,8 +50,8 @@ package body Pages is
       PageFile: File_Type;
       Tags: Translate_Set;
       OutputDirectory: constant Unbounded_String :=
-        YassConfig.Output_Directory &
-        Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
+        Yass_Config.Output_Directory &
+        Delete(To_Unbounded_String(Directory), 1, Length(Site_Directory));
       NewFileName: constant String :=
         To_String(OutputDirectory) & Dir_Separator &
         Ada.Directories.Base_Name(FileName) & ".html";
@@ -138,7 +138,7 @@ package body Pages is
       declare
          Data: Unbounded_String;
          StartIndex: Natural;
-         StartPos: constant Positive := Length(YassConfig.Markdown_Comment);
+         StartPos: constant Positive := Length(Yass_Config.Markdown_Comment);
          ValidValue: Boolean := False;
       begin
          -- Read selected markdown file
@@ -151,7 +151,7 @@ package body Pages is
                goto End_Of_Loop;
             end if;
             if Unbounded_Slice(Data, 1, StartPos) /=
-              YassConfig.Markdown_Comment then
+              Yass_Config.Markdown_Comment then
                Append(Content, Data);
                Append(Content, LF);
                goto End_Of_Loop;
@@ -160,7 +160,7 @@ package body Pages is
             if Index(Data, "layout:", 1) = (StartPos + 2) then
                Data := Unbounded_Slice(Data, (StartPos + 10), Length(Data));
                Layout :=
-                 YassConfig.Layouts_Directory & Dir_Separator & Data &
+                 Yass_Config.Layouts_Directory & Dir_Separator & Data &
                  To_Unbounded_String(".html");
                if not Ada.Directories.Exists(To_String(Layout)) then
                   Close(PageFile);
@@ -230,24 +230,24 @@ package body Pages is
       LoadModules("pre", PageTags, PageTableTags);
       -- Insert tags to template
       Insert(Tags, Assoc("Content", PageTags("Content")));
-      InsertTags(SiteTags);
+      InsertTags(Site_Tags);
       if not Exists(Tags, "canonicallink") then
          Insert
            (Tags,
             Assoc
               ("canonicallink",
-               To_String(YassConfig.Base_Url) & "/" &
+               To_String(Yass_Config.Base_Url) & "/" &
                Slice
                  (To_Unbounded_String(NewFileName),
-                  Length(YassConfig.Output_Directory & Dir_Separator) + 1,
+                  Length(Yass_Config.Output_Directory & Dir_Separator) + 1,
                   NewFileName'Length)));
       end if;
       if not Exists(Tags, "author") then
-         Insert(Tags, Assoc("author", To_String(YassConfig.Author_Name)));
+         Insert(Tags, Assoc("author", To_String(Yass_Config.Author_Name)));
       end if;
       if not Exists(Tags, "description")
-        and then SiteTags.Contains("Description") then
-         Insert(Tags, Assoc("description", SiteTags("Description")));
+        and then Site_Tags.Contains("Description") then
+         Insert(Tags, Assoc("description", Site_Tags("Description")));
       end if;
       for I in PageTableTags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
@@ -267,7 +267,7 @@ package body Pages is
            (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
       end if;
       -- Add the page to the Atom feed
-      if YassConfig.Atom_Feed_Source = To_Unbounded_String("tags") then
+      if Yass_Config.Atom_Feed_Source = To_Unbounded_String("tags") then
          AtomEntries(AtomEntries.First_Index).Content := Content;
       end if;
       Add_Page_To_Feed(NewFileName, AtomEntries);
@@ -301,8 +301,8 @@ package body Pages is
 
    procedure CopyFile(FileName, Directory: String) is
       OutputDirectory: constant Unbounded_String :=
-        YassConfig.Output_Directory &
-        Delete(To_Unbounded_String(Directory), 1, Length(SiteDirectory));
+        Yass_Config.Output_Directory &
+        Delete(To_Unbounded_String(Directory), 1, Length(Site_Directory));
       PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
       PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
    begin
@@ -327,7 +327,7 @@ package body Pages is
 
    procedure CreateEmptyFile(FileName: String) is
       IndexFile: File_Type;
-      CommentMark: constant String := To_String(YassConfig.Markdown_Comment);
+      CommentMark: constant String := To_String(Yass_Config.Markdown_Comment);
    begin
       if Extension(FileName) /= "md" then
          Create(IndexFile, Append_File, FileName & Dir_Separator & "index.md");
@@ -402,18 +402,18 @@ package body Pages is
    function GetLayoutName(FileName: String) return String is
       PageFile: File_Type;
       Data, Layout: Unbounded_String;
-      StartPos: constant Positive := Length(YassConfig.Markdown_Comment);
+      StartPos: constant Positive := Length(Yass_Config.Markdown_Comment);
    begin
       Open(PageFile, In_File, FileName);
       while not End_Of_File(PageFile) loop
          Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
          if Length(Data) > 2
            and then Unbounded_Slice(Data, 1, StartPos) =
-             YassConfig.Markdown_Comment
+             Yass_Config.Markdown_Comment
            and then Index(Data, "layout:", 1) = (StartPos + 2) then
             Data := Unbounded_Slice(Data, 12, Length(Data));
             Layout :=
-              YassConfig.Layouts_Directory & Dir_Separator & Data &
+              Yass_Config.Layouts_Directory & Dir_Separator & Data &
               To_Unbounded_String(".html");
             if not Ada.Directories.Exists(To_String(Layout)) then
                Close(PageFile);

@@ -98,11 +98,11 @@ package Config is
    end record;
    -- ****
 
-   -- ****v* Config/YassConfig
+   -- ****v* Config/Yass_Config
    -- FUNCTION
    -- Settings for the program
    -- SOURCE
-   YassConfig: Parser_Config;
+   Yass_Config: Parser_Config;
    -- ****
 
    -- ****t* Config/Tags_Container
@@ -113,18 +113,18 @@ package Config is
      (String, String, Ada.Strings.Hash, "=");
    -- ****
 
-   -- ****v* Config/SiteTags
+   -- ****v* Config/Site_Tags
    -- FUNCTION
    -- Site tags (like title, author, etc)
    -- SOURCE
-   SiteTags: Tags_Container.Map;
+   Site_Tags: Tags_Container.Map;
    -- ****
 
-   -- ****v* Config/SiteDirectory
+   -- ****v* Config/Site_Directory
    -- FUNCTION
    -- Directory where site files are
    -- SOURCE
-   SiteDirectory: Unbounded_String;
+   Site_Directory: Unbounded_String;
    -- ****
 
    -- ****t* Config/TableTags_Container

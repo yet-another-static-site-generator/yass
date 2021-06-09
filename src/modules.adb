@@ -41,7 +41,7 @@ package body Modules is
          function TagExist return Tag_Types is
             use Tags_Container;
          begin
-            if Contains(SiteTags, To_String(TagName)) then
+            if Contains(Site_Tags, To_String(TagName)) then
                return GlobalTag;
             elsif TableTags_Container.Contains
                 (GlobalTableTags, To_String(TagName)) then
@@ -149,7 +149,7 @@ package body Modules is
                         "Tag with name """ & To_String(TagName) &
                         """ doesn't exists.");
                   when GlobalTag =>
-                     Send(Module, SiteTags(To_String(TagName)));
+                     Send(Module, Site_Tags(To_String(TagName)));
                   when GlobalTableTag =>
                      SendTableTag(GlobalTableTags);
                   when PageTag =>
@@ -167,7 +167,7 @@ package body Modules is
                         "Tag with name """ & To_String(TagName) &
                         """ don't exists.");
                   when GlobalTag =>
-                     EditTag(SiteTags);
+                     EditTag(Site_Tags);
                   when GlobalTableTag =>
                      EditTableTag(GlobalTableTags);
                   when PageTag =>
@@ -189,12 +189,12 @@ package body Modules is
       end RunModule;
    begin
       if not Exists
-          (To_String(YassConfig.Modules_Directory) & Dir_Separator &
+          (To_String(Yass_Config.Modules_Directory) & Dir_Separator &
            State) then
          return;
       end if;
       Search
-        (To_String(YassConfig.Modules_Directory) & Dir_Separator & State, "",
+        (To_String(Yass_Config.Modules_Directory) & Dir_Separator & State, "",
          (Directory => False, others => True), RunModule'Access);
    end LoadModules;
 

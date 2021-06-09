@@ -42,11 +42,11 @@ package body Sitemaps is
       NewSitemap: DOM_Implementation;
       NodesList: Node_List;
    begin
-      if not YassConfig.Sitemap_Enabled then
+      if not Yass_Config.Sitemap_Enabled then
          return;
       end if;
       FileName :=
-        YassConfig.Output_Directory &
+        Yass_Config.Output_Directory &
         To_Unbounded_String(Dir_Separator & "sitemap.xml");
       -- Load existing sitemap data
       if Exists(To_String(FileName)) then
@@ -72,10 +72,10 @@ package body Sitemaps is
    procedure AddPageToSitemap
      (FileName, ChangeFrequency, PagePriority: String) is
       Url: constant String :=
-        To_String(YassConfig.Base_Url) & "/" &
+        To_String(Yass_Config.Base_Url) & "/" &
         Slice
           (To_Unbounded_String(FileName),
-           Length(YassConfig.Output_Directory & Dir_Separator) + 1,
+           Length(Yass_Config.Output_Directory & Dir_Separator) + 1,
            FileName'Length);
       URLsList, ChildrenList: Node_List;
       Added, FrequencyUpdated, PriorityUpdated: Boolean := False;
@@ -84,7 +84,7 @@ package body Sitemaps is
       URLText: Text;
       LastModified: constant String := To_HTTP_Date(Clock);
    begin
-      if not YassConfig.Sitemap_Enabled then
+      if not Yass_Config.Sitemap_Enabled then
          return;
       end if;
       URLsList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "loc");
@@ -171,7 +171,7 @@ package body Sitemaps is
    procedure SaveSitemap is
       SitemapFile: File_Type;
    begin
-      if not YassConfig.Sitemap_Enabled then
+      if not Yass_Config.Sitemap_Enabled then
          return;
       end if;
       -- If the sitemap file not exists - create or open existing robot.txt file and append address to the sitemap
@@ -191,7 +191,7 @@ package body Sitemaps is
          end if;
          Put_Line
            (SitemapFile,
-            "Sitemap: " & To_String(YassConfig.Base_Url) & "/sitemap.xml");
+            "Sitemap: " & To_String(Yass_Config.Base_Url) & "/sitemap.xml");
          Close(SitemapFile);
       end if;
       -- Save the sitemap to the file

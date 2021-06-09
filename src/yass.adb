@@ -64,7 +64,7 @@ procedure Yass is
          -- Process file with full path Item: create html pages from markdown files or copy any other file.
          procedure Process_Files(Item: Directory_Entry_Type) is
          begin
-            if YassConfig.Excluded_Files.Find_Index
+            if Yass_Config.Excluded_Files.Find_Index
                 (Item => Simple_Name(Directory_Entry => Item)) /=
               Excluded_Container.No_Index or
               not Ada.Directories.Exists
@@ -88,7 +88,7 @@ procedure Yass is
          -- Go recursive with directory with full path Item.
          procedure Process_Directories(Item: Directory_Entry_Type) is
          begin
-            if YassConfig.Excluded_Files.Find_Index
+            if Yass_Config.Excluded_Files.Find_Index
                 (Item => Simple_Name(Directory_Entry => Item)) =
               Excluded_Container.No_Index and
               Ada.Directories.Exists
@@ -357,28 +357,29 @@ begin
       end if;
       ParseConfig(DirectoryName => To_String(Source => Work_Directory));
       if not Ada.Directories.Exists
-          (Name => To_String(Source => YassConfig.Output_Directory)) then
+          (Name => To_String(Source => Yass_Config.Output_Directory)) then
          Create_Path
-           (New_Directory => To_String(Source => YassConfig.Output_Directory));
+           (New_Directory =>
+              To_String(Source => Yass_Config.Output_Directory));
       end if;
       Set_Directory
-        (Directory => To_String(Source => YassConfig.Output_Directory));
-      if YassConfig.Server_Enabled then
+        (Directory => To_String(Source => Yass_Config.Output_Directory));
+      if Yass_Config.Server_Enabled then
          if not Ada.Directories.Exists
              (Name =>
-                To_String(Source => YassConfig.Layouts_Directory) &
+                To_String(Source => Yass_Config.Layouts_Directory) &
                 Dir_Separator & "directory.html") then
             CreateDirectoryLayout(DirectoryName => "");
          end if;
          StartServer;
-         if YassConfig.Browser_Command /=
+         if Yass_Config.Browser_Command /=
            To_Unbounded_String(Source => "none") then
             Start_Web_Browser_Block :
             declare
                Args: constant Argument_List_Access :=
                  Argument_String_To_List
                    (Arg_String =>
-                      To_String(Source => YassConfig.Browser_Command));
+                      To_String(Source => Yass_Config.Browser_Command));
             begin
                if not Ada.Directories.Exists(Name => Args(Args'First).all)
                  or else
@@ -401,7 +402,7 @@ begin
       MonitorSite.Start;
       MonitorConfig.Start;
       AWS.Server.Wait(Mode => AWS.Server.Q_Key_Pressed);
-      if YassConfig.Server_Enabled then
+      if Yass_Config.Server_Enabled then
          ShutdownServer;
       else
          Put(Item => "Stopping monitoring site changes...");
