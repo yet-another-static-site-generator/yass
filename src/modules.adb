@@ -44,7 +44,7 @@ package body Modules is
             if Contains(Site_Tags, To_String(TagName)) then
                return GlobalTag;
             elsif TableTags_Container.Contains
-                (GlobalTableTags, To_String(TagName)) then
+                (Global_Table_Tags, To_String(TagName)) then
                return GlobalTableTag;
             end if;
             if PageTags = Tags_Container.Empty_Map then
@@ -151,7 +151,7 @@ package body Modules is
                   when GlobalTag =>
                      Send(Module, Site_Tags(To_String(TagName)));
                   when GlobalTableTag =>
-                     SendTableTag(GlobalTableTags);
+                     SendTableTag(Global_Table_Tags);
                   when PageTag =>
                      Send(Module, PageTags(To_String(TagName)));
                   when PageTableTag =>
@@ -169,7 +169,7 @@ package body Modules is
                   when GlobalTag =>
                      EditTag(Site_Tags);
                   when GlobalTableTag =>
-                     EditTableTag(GlobalTableTags);
+                     EditTableTag(Global_Table_Tags);
                   when PageTag =>
                      EditTag(PageTags);
                   when PageTableTag =>

@@ -252,8 +252,8 @@ package body Pages is
       for I in PageTableTags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
       end loop;
-      for I in GlobalTableTags.Iterate loop
-         Insert(Tags, Assoc(TableTags_Container.Key(I), GlobalTableTags(I)));
+      for I in Global_Table_Tags.Iterate loop
+         Insert(Tags, Assoc(TableTags_Container.Key(I), Global_Table_Tags(I)));
       end loop;
       InsertTags(PageTags);
       -- Create HTML file in outputdirectory

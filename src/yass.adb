@@ -253,10 +253,10 @@ procedure Yass is
          end loop Create_Directories_Loop;
       end Create_Directories_Block;
       if Argument(Number => 1) = "create" then
-         CreateInteractiveConfig
-           (DirectoryName => To_String(Source => Work_Directory));
+         Create_Interactive_Config
+           (Directory_Name => To_String(Source => Work_Directory));
       else
-         CreateConfig(DirectoryName => To_String(Source => Work_Directory));
+         Create_Config(Directory_Name => To_String(Source => Work_Directory));
       end if;
       CreateLayout(DirectoryName => To_String(Source => Work_Directory));
       CreateDirectoryLayout
@@ -343,7 +343,7 @@ begin
           (Message => "from where page will be created.", Exist => False) then
          return;
       end if;
-      ParseConfig(DirectoryName => To_String(Source => Work_Directory));
+      Parse_Config(Directory_Name => To_String(Source => Work_Directory));
       if Build_Site(Directory_Name => To_String(Source => Work_Directory)) then
          ShowMessage(Text => "Site was build.", MType => Messages.Success);
       else
@@ -355,7 +355,7 @@ begin
           (Message => "from where site will be served.", Exist => False) then
          return;
       end if;
-      ParseConfig(DirectoryName => To_String(Source => Work_Directory));
+      Parse_Config(Directory_Name => To_String(Source => Work_Directory));
       if not Ada.Directories.Exists
           (Name => To_String(Source => Yass_Config.Output_Directory)) then
          Create_Path
@@ -455,7 +455,7 @@ begin
       Show_Help;
    end if;
 exception
-   when An_Exception : InvalidConfigData =>
+   when An_Exception : Invalid_Config_Data =>
       ShowMessage
         (Text =>
            "Invalid data in site config file ""site.cfg"". Invalid line:""" &

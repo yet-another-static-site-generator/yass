@@ -200,7 +200,7 @@ package body Server is
                 (To_String(Site_Directory) & Dir_Separator & "site.cfg") then
                Put_Line
                  ("Site configuration was changed, reconfiguring the project.");
-               ParseConfig(To_String(Site_Directory));
+               Parse_Config(To_String(Site_Directory));
                ShutdownServer;
                ShowMessage("done", Messages.Success);
                if Yass_Config.Server_Enabled then

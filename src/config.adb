@@ -25,11 +25,11 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 package body Config is
 
-   procedure CreateConfig(DirectoryName: String) is
+   procedure Create_Config(Directory_Name: String) is
       ConfigFile: File_Type;
    begin
       Create
-        (ConfigFile, Append_File, DirectoryName & Dir_Separator & "site.cfg");
+        (ConfigFile, Append_File, Directory_Name & Dir_Separator & "site.cfg");
       Put_Line
         (ConfigFile,
          "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
@@ -131,9 +131,9 @@ package body Config is
         (ConfigFile,
          "# For more information about site.cfg file please check program documentation.");
       Close(ConfigFile);
-   end CreateConfig;
+   end Create_Config;
 
-   procedure ParseConfig(DirectoryName: String) is
+   procedure Parse_Config(Directory_Name: String) is
       ConfigFile: File_Type;
       RawData, FieldName, Value: Unbounded_String;
       EqualIndex: Natural;
@@ -144,18 +144,18 @@ package body Config is
       begin
          if Dir_Separator = '/' and then Element(DirectoryPath, 1) /= '/' then
             DirectoryPath :=
-              To_Unbounded_String(DirectoryName & Dir_Separator) &
+              To_Unbounded_String(Directory_Name & Dir_Separator) &
               DirectoryPath;
          elsif Element(DirectoryPath, 2) /= ':' then
             DirectoryPath :=
-              To_Unbounded_String(DirectoryName & Dir_Separator) &
+              To_Unbounded_String(Directory_Name & Dir_Separator) &
               DirectoryPath;
          end if;
       end NormalizeDir;
    begin
       Site_Tags.Clear;
-      GlobalTableTags.Clear;
-      Open(ConfigFile, In_File, DirectoryName & "/site.cfg");
+      Global_Table_Tags.Clear;
+      Open(ConfigFile, In_File, Directory_Name & "/site.cfg");
       while not End_Of_File(ConfigFile) loop
          RawData := To_Unbounded_String(Encode(Get_Line(ConfigFile)));
          if Length(RawData) = 0 or else Element(RawData, 1) = '#' then
@@ -163,7 +163,7 @@ package body Config is
          end if;
          EqualIndex := Index(RawData, "=");
          if EqualIndex = 0 then
-            raise InvalidConfigData with To_String(RawData);
+            raise Invalid_Config_Data with To_String(RawData);
          end if;
          FieldName := Head(RawData, EqualIndex - 2);
          Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
@@ -187,7 +187,7 @@ package body Config is
          elsif FieldName = To_Unbounded_String("ServerPort") then
             Yass_Config.Server_Port := Positive'Value(To_String(Value));
             if Yass_Config.Server_Port > 65_535 then
-               raise InvalidConfigData with To_String(RawData);
+               raise Invalid_Config_Data with To_String(RawData);
             end if;
          elsif FieldName = To_Unbounded_String("StopServerOnError") then
             if To_Lower(To_String(Value)) = "true" then
@@ -250,12 +250,12 @@ package body Config is
               (Site_Tags, To_String(FieldName), To_String(Value));
          elsif Value = To_Unbounded_String("[]") then
             TableTags_Container.Include
-              (GlobalTableTags, To_String(FieldName), +"");
-            Clear(GlobalTableTags(To_String(FieldName)));
+              (Global_Table_Tags, To_String(FieldName), +"");
+            Clear(Global_Table_Tags(To_String(FieldName)));
          elsif TableTags_Container.Contains
-             (GlobalTableTags, To_String(FieldName)) then
-            GlobalTableTags(To_String(FieldName)) :=
-              GlobalTableTags(To_String(FieldName)) & Value;
+             (Global_Table_Tags, To_String(FieldName)) then
+            Global_Table_Tags(To_String(FieldName)) :=
+              Global_Table_Tags(To_String(FieldName)) & Value;
          else
             Tags_Container.Include
               (Site_Tags, To_String(FieldName), To_String(Value));
@@ -275,19 +275,19 @@ package body Config is
         (Simple_Name(To_String(Yass_Config.Output_Directory)));
       Yass_Config.Excluded_Files.Append
         (Simple_Name(To_String(Yass_Config.Modules_Directory)));
-      Site_Directory := To_Unbounded_String(DirectoryName);
+      Site_Directory := To_Unbounded_String(Directory_Name);
       Set_Tag_Separators(To_String(StartTag), To_String(EndTag));
    exception
       when others =>
-         raise InvalidConfigData with To_String(RawData);
-   end ParseConfig;
+         raise Invalid_Config_Data with To_String(RawData);
+   end Parse_Config;
 
-   procedure CreateInteractiveConfig(DirectoryName: String) is
+   procedure Create_Interactive_Config(Directory_Name: String) is
       ConfigFile: File_Type;
       Answer: Unbounded_String;
    begin
       Create
-        (ConfigFile, Append_File, DirectoryName & Dir_Separator & "site.cfg");
+        (ConfigFile, Append_File, Directory_Name & Dir_Separator & "site.cfg");
       Put_Line
         (ConfigFile,
          "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
@@ -560,6 +560,6 @@ package body Config is
         (ConfigFile,
          "# For more informations about site.cfg file please check program documentation.");
       Close(ConfigFile);
-   end CreateInteractiveConfig;
+   end Create_Interactive_Config;
 
 end Config;

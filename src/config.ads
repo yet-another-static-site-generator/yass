@@ -135,50 +135,50 @@ package Config is
      (String, Vector_Tag, Ada.Strings.Hash, "=");
    -- ****
 
-   -- ****v* Config/GlobalTableTags
+   -- ****v* Config/Global_Table_Tags
    -- FUNCTION
    -- Global table tags, used in @@TABLE@@ statement
    -- SOURCE
-   GlobalTableTags: TableTags_Container.Map;
+   Global_Table_Tags: TableTags_Container.Map;
    -- ****
 
-   -- ****e* Config/InvalidConfigData
+   -- ****e* Config/Invalid_Config_Data
    -- FUNCTION
    -- Raised when invalid data found in site config file
    -- SOURCE
-   InvalidConfigData: exception;
+   Invalid_Config_Data: exception;
    -- ****
 
-   -- ****f* Config/CreateConfig
+   -- ****f* Config/Create_Config
    -- FUNCTION
    -- Create default config in directory with full path DirectoryName
    -- PARAMETERS
-   -- DirectoryName - Full path to the directory where config file will be
-   --                 created
+   -- Directory_Name - Full path to the directory where config file will be
+   --                  created
    -- SOURCE
-   procedure CreateConfig(DirectoryName: String);
+   procedure Create_Config(Directory_Name: String);
    -- ****
 
-   -- ****f* Config/ParseConfig
+   -- ****f* Config/Parse_Config
    -- FUNCTION
    -- Parse config file and set all settings and tags for site in directory
    -- with full path DirectoryName
    -- PARAMETERS
-   -- DirectoryName - Full path to the directory from which config file will
-   --                 be parsed
+   -- Directory_Name - Full path to the directory from which config file will
+   --                  be parsed
    -- SOURCE
-   procedure ParseConfig(DirectoryName: String);
+   procedure Parse_Config(Directory_Name: String);
    -- ****
 
-   -- ****f* Config/CreateInteractiveConfig
+   -- ****f* Config/Create_Interactive_Config
    -- FUNCTION
    -- Create configuration file based on the user answers to the program
    -- questions
    -- PARAMETERS
-   -- DirectoryName - Full path to the directory where config file will be
-   --                 created
+   -- Directory_Name - Full path to the directory where config file will be
+   --                  created
    -- SOURCE
-   procedure CreateInteractiveConfig(DirectoryName: String);
+   procedure Create_Interactive_Config(Directory_Name: String);
    -- ****
 
 end Config;
