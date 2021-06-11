@@ -33,7 +33,7 @@ package Config is
    -- Used to store list of excluded files
    -- SOURCE
    package Excluded_Container is new Ada.Containers.Indefinite_Vectors
-     (Positive, String);
+     (Index_Type => Positive, Element_Type => String);
    -- ****
 
    -- ****t* Config/Parser_Config
@@ -74,28 +74,42 @@ package Config is
    -- Language                - ISO code of the language of the site
    -- SOURCE
    type Parser_Config is record
-      Output_Directory: Unbounded_String := To_Unbounded_String("_output");
-      Layouts_Directory: Unbounded_String := To_Unbounded_String("_layouts");
-      Modules_Directory: Unbounded_String := To_Unbounded_String("_modules");
+      Output_Directory: Unbounded_String :=
+        To_Unbounded_String(Source => "_output");
+      Layouts_Directory: Unbounded_String :=
+        To_Unbounded_String(Source => "_layouts");
+      Modules_Directory: Unbounded_String :=
+        To_Unbounded_String(Source => "_modules");
       Excluded_Files: Excluded_Container.Vector;
       Server_Enabled: Boolean := True;
       Server_Port: Positive := 8_888;
       Monitor_Interval: Duration := 5.0;
       Base_Url: Unbounded_String :=
-        To_Unbounded_String("http://localhost:8888");
+        To_Unbounded_String(Source => "http://localhost:8888");
       Sitemap_Enabled: Boolean := True;
-      Atom_Feed_Source: Unbounded_String := To_Unbounded_String("none");
-      Site_Name: Unbounded_String := To_Unbounded_String("New Site");
+      Atom_Feed_Source: Unbounded_String :=
+        To_Unbounded_String(Source => "none");
+      Site_Name: Unbounded_String := To_Unbounded_String(Source => "New Site");
       Atom_Feed_Amount: Positive := 25;
-      Markdown_Comment: Unbounded_String := To_Unbounded_String("--");
+      Markdown_Comment: Unbounded_String :=
+        To_Unbounded_String(Source => "--");
       Stop_Server_On_Error: Boolean := False;
-      Browser_Command: Unbounded_String := To_Unbounded_String("none");
+      Browser_Command: Unbounded_String :=
+        To_Unbounded_String(Source => "none");
       Monitor_Config_Interval: Duration := 60.0;
-      Author_Name: Unbounded_String := To_Unbounded_String("John Doe");
+      Author_Name: Unbounded_String :=
+        To_Unbounded_String(Source => "John Doe");
       Author_Email: Unbounded_String :=
-        To_Unbounded_String("johndoe@example.com");
-      Language: Unbounded_String := To_Unbounded_String("en");
+        To_Unbounded_String(Source => "johndoe@example.com");
+      Language: Unbounded_String := To_Unbounded_String(Source => "en");
    end record;
+   -- ****
+
+   -- ****d* Config/Default_Parser_Configuration
+   -- FUNCTION
+   -- Default parser configuration values
+   -- SOURCE
+   Default_Parser_Configuration: constant Parser_Config := (others => <>);
    -- ****
 
    -- ****v* Config/Yass_Config
@@ -110,7 +124,8 @@ package Config is
    -- Used to store AWS template tags
    -- SOURCE
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps
-     (String, String, Ada.Strings.Hash, "=");
+     (Key_Type => String, Element_Type => String, Hash => Ada.Strings.Hash,
+      Equivalent_Keys => "=");
    -- ****
 
    -- ****v* Config/Site_Tags
@@ -132,7 +147,8 @@ package Config is
    -- Used to store AWS template table tags
    -- SOURCE
    package TableTags_Container is new Ada.Containers.Indefinite_Hashed_Maps
-     (String, Vector_Tag, Ada.Strings.Hash, "=");
+     (Key_Type => String, Element_Type => Vector_Tag, Hash => Ada.Strings.Hash,
+      Equivalent_Keys => "=");
    -- ****
 
    -- ****v* Config/Global_Table_Tags
