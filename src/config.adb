@@ -26,115 +26,116 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 package body Config is
 
    procedure Create_Config(Directory_Name: String) is
-      ConfigFile: File_Type;
+      Config_File: File_Type;
    begin
       Create
-        (ConfigFile, Append_File, Directory_Name & Dir_Separator & "site.cfg");
+        (Config_File, Append_File,
+         Directory_Name & Dir_Separator & "site.cfg");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
-      Put_Line(ConfigFile, "LayoutsDirectory = _layouts");
+      Put_Line(Config_File, "LayoutsDirectory = _layouts");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Directory in which will be placed generated site. May be absolute or relative to project directory.");
-      Put_Line(ConfigFile, "OutputDirectory = _output");
+      Put_Line(Config_File, "OutputDirectory = _output");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Directory in which will be placed program modules used to generate the site. May be absolute or relative to project directory.");
-      Put_Line(ConfigFile, "ModulesDirectory = _modules");
+      Put_Line(Config_File, "ModulesDirectory = _modules");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# List of excluded files and directories from list of sources used to generating the site. All paths must be relative to the project directory. If you exclude directory, it whole content will be excluded too. Layouts, modules and output directories are excluded by default.");
-      Put_Line(ConfigFile, "ExcludedFiles = .git,.gitignore,tags");
+      Put_Line(Config_File, "ExcludedFiles = .git,.gitignore,tags");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
-      Put_Line(ConfigFile, "Name = New Site");
+      Put_Line(Config_File, "Name = New Site");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# The description of the site which will be created. Must be in one line, no new line allowed. It is used to set meta tag description (which is showed in search engines results) but only when pages don't set it. Optional setting.");
-      Put_Line(ConfigFile, "Description = My new site");
+      Put_Line(Config_File, "Description = My new site");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# The ISO 639-1 language code in which the site will be created.");
-      Put_Line(ConfigFile, "Language = en");
+      Put_Line(Config_File, "Language = en");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag. It is also used in setting meta tag author for all pages.");
-      Put_Line(ConfigFile, "Author = John Doe");
+      Put_Line(Config_File, "Author = John Doe");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
-      Put_Line(ConfigFile, "AuthorEmail = johndoe@example.com");
+      Put_Line(Config_File, "AuthorEmail = johndoe@example.com");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
-      Put_Line(ConfigFile, "BaseURL = http://localhost:8888");
+      Put_Line(Config_File, "BaseURL = http://localhost:8888");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Source which will be used for creating Atom feed of the site. Possible values are: none: don't create atom feed, tags: create Atom entries from proper tags in .md files, [filename]: the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
-      Put_Line(ConfigFile, "AtomFeedSource = none");
+      Put_Line(Config_File, "AtomFeedSource = none");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
-      Put_Line(ConfigFile, "AtomFeedAmount = 25");
+      Put_Line(Config_File, "AtomFeedAmount = 25");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
-      Put_Line(ConfigFile, "SitemapEnabled = true");
+      Put_Line(Config_File, "SitemapEnabled = true");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
-      Put_Line(ConfigFile, "ServerEnabled = true");
+      Put_Line(Config_File, "ServerEnabled = true");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
-      Put_Line(ConfigFile, "ServerPort = 8888");
+      Put_Line(Config_File, "ServerPort = 8888");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
-      Put_Line(ConfigFile, "StopServerOnError = false");
+      Put_Line(Config_File, "StopServerOnError = false");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
-      Put_Line(ConfigFile, "BrowserCommand = none");
+      Put_Line(Config_File, "BrowserCommand = none");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
-      Put_Line(ConfigFile, "MonitorInterval = 5");
+      Put_Line(Config_File, "MonitorInterval = 5");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
-      Put_Line(ConfigFile, "MonitorConfigInterval = 60");
+      Put_Line(Config_File, "MonitorConfigInterval = 60");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-      Put_Line(ConfigFile, "StartTagSeparator = {%");
+      Put_Line(Config_File, "StartTagSeparator = {%");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-      Put_Line(ConfigFile, "EndTagSeparator = %}");
+      Put_Line(Config_File, "EndTagSeparator = %}");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# String used to mark comments in markdown files which will be parsed.");
-      Put_Line(ConfigFile, "MarkdownComment = --");
+      Put_Line(Config_File, "MarkdownComment = --");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# First 3 types of tags are in Name = Value scheme. For strings, it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always falls back to string value.");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Composite tags first must be initialized with Name = [] then just add as many as you want values to it by Name = Value scheme.");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# For more information about site.cfg file please check program documentation.");
-      Close(ConfigFile);
+      Close(Config_File);
    end Create_Config;
 
    procedure Parse_Config(Directory_Name: String) is
-      ConfigFile: File_Type;
+      Config_File: File_Type;
       RawData, FieldName, Value: Unbounded_String;
       EqualIndex: Natural;
       Tokens: Slice_Set;
@@ -155,9 +156,9 @@ package body Config is
    begin
       Site_Tags.Clear;
       Global_Table_Tags.Clear;
-      Open(ConfigFile, In_File, Directory_Name & "/site.cfg");
-      while not End_Of_File(ConfigFile) loop
-         RawData := To_Unbounded_String(Encode(Get_Line(ConfigFile)));
+      Open(Config_File, In_File, Directory_Name & "/site.cfg");
+      while not End_Of_File(Config_File) loop
+         RawData := To_Unbounded_String(Encode(Get_Line(Config_File)));
          if Length(RawData) = 0 or else Element(RawData, 1) = '#' then
             goto End_Of_Loop;
          end if;
@@ -262,7 +263,7 @@ package body Config is
          end if;
          <<End_Of_Loop>>
       end loop;
-      Close(ConfigFile);
+      Close(Config_File);
       NormalizeDir(Yass_Config.Layouts_Directory);
       NormalizeDir(Yass_Config.Output_Directory);
       NormalizeDir(Yass_Config.Modules_Directory);
@@ -283,29 +284,30 @@ package body Config is
    end Parse_Config;
 
    procedure Create_Interactive_Config(Directory_Name: String) is
-      ConfigFile: File_Type;
+      Config_File: File_Type;
       Answer: Unbounded_String;
    begin
       Create
-        (ConfigFile, Append_File, Directory_Name & Dir_Separator & "site.cfg");
+        (Config_File, Append_File,
+         Directory_Name & Dir_Separator & "site.cfg");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
-      Put_Line(ConfigFile, "LayoutsDirectory = _layouts");
+      Put_Line(Config_File, "LayoutsDirectory = _layouts");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Directory in which will be placed generated site. May be absolute or relative to project directory.");
-      Put_Line(ConfigFile, "OutputDirectory = _output");
+      Put_Line(Config_File, "OutputDirectory = _output");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Directory in which will be placed program modules used to generate the site. May be absolute or relative to project directory.");
-      Put_Line(ConfigFile, "ModulesDirectory = _modules");
+      Put_Line(Config_File, "ModulesDirectory = _modules");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# List of excluded files and directories from list of sources used to generating the site. All paths must be relative to the project directory. If you exclude directory, it whole content will be excluded too. Layouts, modules and output directories are excluded by default.");
-      Put_Line(ConfigFile, "ExcludedFiles = .git,.gitignore,tags");
+      Put_Line(Config_File, "ExcludedFiles = .git,.gitignore,tags");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
       Put_Line
         ("Now we ask you some questions about your new site. You can always change it later by modifying the site configuration file. If you just press Enter as a answer, default value will be used.");
@@ -314,9 +316,9 @@ package body Config is
       if Answer = Null_Unbounded_String then
          Answer := To_Unbounded_String("New Site");
       end if;
-      Put_Line(ConfigFile, "Name = " & To_String(Answer));
+      Put_Line(Config_File, "Name = " & To_String(Answer));
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# The description of the site which will be created. Must be in one line, no new line allowed. It is used to set meta tag description (which is showed in search engines results) but only when pages don't set it. Optional setting.");
       Put_Line
         ("Please enter the description of the new site (default - My new site). It is used to create meta tag for the website (which is showed in search engines results) but only if pages don't set own. Must be set in one line, no new line allowed.");
@@ -324,9 +326,9 @@ package body Config is
       if Answer /= Null_Unbounded_String then
          Answer := To_Unbounded_String("My new site");
       end if;
-      Put_Line(ConfigFile, "Description = " & To_String(Answer));
+      Put_Line(Config_File, "Description = " & To_String(Answer));
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# The ISO 639-1 language code in which the site will be created.");
       Put
         ("Please enter language code in which the new site will be written (default - en): ");
@@ -334,18 +336,18 @@ package body Config is
       if Answer = Null_Unbounded_String then
          Answer := To_Unbounded_String("en");
       end if;
-      Put_Line(ConfigFile, "Language = " & To_String(Answer));
+      Put_Line(Config_File, "Language = " & To_String(Answer));
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag. It is also used to set meta tag author for all pages.");
       Put("Please enter the author of the new site (default - Jon Doe): ");
       Answer := To_Unbounded_String(Get_Line);
       if Answer = Null_Unbounded_String then
          Answer := To_Unbounded_String("Jon Doe");
       end if;
-      Put_Line(ConfigFile, "Author = " & To_String(Answer));
+      Put_Line(Config_File, "Author = " & To_String(Answer));
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
       Put
         ("Please enter the contact email for the new site (default - jondoe@example.com): ");
@@ -353,9 +355,9 @@ package body Config is
       if Answer = Null_Unbounded_String then
          Answer := To_Unbounded_String("jondoe@example.com");
       end if;
-      Put_Line(ConfigFile, "AuthorEmail = " & To_String(Answer));
+      Put_Line(Config_File, "AuthorEmail = " & To_String(Answer));
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
       Put
         ("Please enter base URL of the new site (default - http://localhost:8888): ");
@@ -363,9 +365,9 @@ package body Config is
       if Answer = Null_Unbounded_String then
          Answer := To_Unbounded_String("http://localhost:8888");
       end if;
-      Put_Line(ConfigFile, "BaseURL = " & To_String(Answer));
+      Put_Line(Config_File, "BaseURL = " & To_String(Answer));
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
       Put
         ("Do you want to create Atom feed for the new site? If yes, you must specify source for the feed: tags - create Atom entries from proper tags in Markdown files, filename - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside). If you press Enter, creating Atom feed will be disabled (default - none): ");
@@ -373,7 +375,7 @@ package body Config is
       if Answer = Null_Unbounded_String then
          Answer := To_Unbounded_String("none");
       end if;
-      Put_Line(ConfigFile, "AtomFeedSource = " & To_String(Answer));
+      Put_Line(Config_File, "AtomFeedSource = " & To_String(Answer));
       if Answer /= To_Unbounded_String("none") then
          Put
            ("How much maximum entries should be in the Atom feed? Recommended valuese are between 10 and 50 (default - 25): ");
@@ -385,11 +387,11 @@ package body Config is
          Answer := To_Unbounded_String("25");
       end if;
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
-      Put_Line(ConfigFile, "AtomFeedAmount = " & To_String(Answer));
+      Put_Line(Config_File, "AtomFeedAmount = " & To_String(Answer));
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
       Put
         ("Do you want to create sitemap file for the new site? (default - yes): ");
@@ -397,9 +399,9 @@ package body Config is
       if Answer = To_Unbounded_String("yes") or
         Answer = To_Unbounded_String("y") or
         Answer = Null_Unbounded_String then
-         Put_Line(ConfigFile, "SitemapEnabled = true");
+         Put_Line(Config_File, "SitemapEnabled = true");
       else
-         Put_Line(ConfigFile, "SitemapEnabled = false");
+         Put_Line(Config_File, "SitemapEnabled = false");
       end if;
       Put
         ("Do you want to set more technical options (like configuring build-in web server)? (default - no): ");
@@ -407,7 +409,7 @@ package body Config is
       if Answer = To_Unbounded_String("yes") or
         Answer = To_Unbounded_String("y") then
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
          Put
            ("Should the program start web server when monitoring for changes in the site? (default - yes): ");
@@ -415,13 +417,13 @@ package body Config is
          if Answer = To_Unbounded_String("yes") or
            Answer = To_Unbounded_String("y") or
            Answer = Null_Unbounded_String then
-            Put_Line(ConfigFile, "ServerEnabled = true");
+            Put_Line(Config_File, "ServerEnabled = true");
          else
-            Put_Line(ConfigFile, "ServerEnabled = false");
+            Put_Line(Config_File, "ServerEnabled = false");
          end if;
-         Put_Line(ConfigFile, "ServerEnabled = " & To_String(Answer));
+         Put_Line(Config_File, "ServerEnabled = " & To_String(Answer));
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
          Put
            ("On which port should the web server listening? Possible values are from 1 to 65535. Ports below 1025 require root privileges. (default - 8888): ");
@@ -429,21 +431,21 @@ package body Config is
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("8888");
          end if;
-         Put_Line(ConfigFile, "ServerPort = " & To_String(Answer));
+         Put_Line(Config_File, "ServerPort = " & To_String(Answer));
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
          Put
            ("Should whole monitoring option stop if encounter any error during the site creation? (default - no): ");
          Answer := To_Unbounded_String(Get_Line);
          if Answer = To_Unbounded_String("yes") or
            Answer = To_Unbounded_String("y") then
-            Put_Line(ConfigFile, "StopServerOnError = true");
+            Put_Line(Config_File, "StopServerOnError = true");
          else
-            Put_Line(ConfigFile, "StopServerOnError = false");
+            Put_Line(Config_File, "StopServerOnError = false");
          end if;
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
          Put
            ("Full path to the web broser which will be started when the program starts in server mode. (default - none): ");
@@ -451,9 +453,9 @@ package body Config is
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("none");
          end if;
-         Put_Line(ConfigFile, "BrowserCommand = " & To_String(Answer));
+         Put_Line(Config_File, "BrowserCommand = " & To_String(Answer));
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
          Put
            ("How often, in seconds, the program should check for changes in the site files? (default - 5): ");
@@ -461,9 +463,9 @@ package body Config is
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("5");
          end if;
-         Put_Line(ConfigFile, "MonitorInterval = " & To_String(Answer));
+         Put_Line(Config_File, "MonitorInterval = " & To_String(Answer));
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
          Put
            ("How often, in seconds, the program should check for changes in the site configuration file? (default - 60): ");
@@ -471,32 +473,32 @@ package body Config is
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("60");
          end if;
-         Put_Line(ConfigFile, "MonitorConfigInterval = " & To_String(Answer));
+         Put_Line(Config_File, "MonitorConfigInterval = " & To_String(Answer));
       else
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
-         Put_Line(ConfigFile, "ServerEnabled = true");
+         Put_Line(Config_File, "ServerEnabled = true");
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
-         Put_Line(ConfigFile, "ServerPort = 8888");
+         Put_Line(Config_File, "ServerPort = 8888");
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
-         Put_Line(ConfigFile, "StopServerOnError = false");
+         Put_Line(Config_File, "StopServerOnError = false");
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
-         Put_Line(ConfigFile, "BrowserCommand = none");
+         Put_Line(Config_File, "BrowserCommand = none");
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
-         Put_Line(ConfigFile, "MonitorInterval = 5");
+         Put_Line(Config_File, "MonitorInterval = 5");
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
-         Put_Line(ConfigFile, "MonitorConfigInterval = 60");
+         Put_Line(Config_File, "MonitorConfigInterval = 60");
       end if;
       Put
         ("Do you want to set options related to compatybility with other static sites generators? (default - no): ");
@@ -504,7 +506,7 @@ package body Config is
       if Answer = To_Unbounded_String("yes") or
         Answer = To_Unbounded_String("y") then
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
          Put
            ("What mark should be used as a start for template tag? (default, without quotes - ""{%""): ");
@@ -512,9 +514,9 @@ package body Config is
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("{%");
          end if;
-         Put_Line(ConfigFile, "StartTagSeparator = " & To_String(Answer));
+         Put_Line(Config_File, "StartTagSeparator = " & To_String(Answer));
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
          Put
            ("What mark should be used as an end for template tag? (default, without quotes - ""%}""): ");
@@ -522,9 +524,9 @@ package body Config is
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("%}");
          end if;
-         Put_Line(ConfigFile, "EndTagSeparator = " & To_String(Answer));
+         Put_Line(Config_File, "EndTagSeparator = " & To_String(Answer));
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# String used to mark comments in markdown files which will be parsed.");
          Put
            ("What mark should be used as a start for the comment line in Markdown files? (default, without quotes - ""--""): ");
@@ -532,34 +534,34 @@ package body Config is
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("--");
          end if;
-         Put_Line(ConfigFile, "MarkdownComment = " & To_String(Answer));
+         Put_Line(Config_File, "MarkdownComment = " & To_String(Answer));
       else
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-         Put_Line(ConfigFile, "StartTagSeparator = {%");
+         Put_Line(Config_File, "StartTagSeparator = {%");
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-         Put_Line(ConfigFile, "EndTagSeparator = %}");
+         Put_Line(Config_File, "EndTagSeparator = %}");
          Put_Line
-           (ConfigFile,
+           (Config_File,
             "# String used to mark comments in markdown files which will be parsed.");
-         Put_Line(ConfigFile, "MarkdownComment = --");
+         Put_Line(Config_File, "MarkdownComment = --");
       end if;
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# First 3 types of tags are in Name = Value scheme. For strings it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always fall back to string value.");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# Composite tags first must be initialized with Name = [] then just add as many as you want values to it by Name = Value scheme.");
       Put_Line
-        (ConfigFile,
+        (Config_File,
          "# For more informations about site.cfg file please check program documentation.");
-      Close(ConfigFile);
+      Close(Config_File);
    end Create_Interactive_Config;
 
 end Config;
