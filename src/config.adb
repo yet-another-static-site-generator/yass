@@ -29,27 +29,33 @@ package body Config is
       Config_File: File_Type;
    begin
       Create
-        (Config_File, Append_File,
-         Directory_Name & Dir_Separator & "site.cfg");
+        (File => Config_File, Mode => Append_File,
+         Name => Directory_Name & Dir_Separator & "site.cfg");
       Put_Line
-        (Config_File,
-         "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
-      Put_Line(Config_File, "LayoutsDirectory = _layouts");
+        (File => Config_File,
+         Item =>
+           "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
+      Put_Line(File => Config_File, Item => "LayoutsDirectory = _layouts");
       Put_Line
-        (Config_File,
-         "# Directory in which will be placed generated site. May be absolute or relative to project directory.");
-      Put_Line(Config_File, "OutputDirectory = _output");
+        (File => Config_File,
+         Item =>
+           "# Directory in which will be placed generated site. May be absolute or relative to project directory.");
+      Put_Line(File => Config_File, Item => "OutputDirectory = _output");
       Put_Line
-        (Config_File,
-         "# Directory in which will be placed program modules used to generate the site. May be absolute or relative to project directory.");
-      Put_Line(Config_File, "ModulesDirectory = _modules");
+        (File => Config_File,
+         Item =>
+           "# Directory in which will be placed program modules used to generate the site. May be absolute or relative to project directory.");
+      Put_Line(File => Config_File, Item => "ModulesDirectory = _modules");
       Put_Line
-        (Config_File,
-         "# List of excluded files and directories from list of sources used to generating the site. All paths must be relative to the project directory. If you exclude directory, it whole content will be excluded too. Layouts, modules and output directories are excluded by default.");
-      Put_Line(Config_File, "ExcludedFiles = .git,.gitignore,tags");
+        (File => Config_File,
+         Item =>
+           "# List of excluded files and directories from list of sources used to generating the site. All paths must be relative to the project directory. If you exclude directory, it whole content will be excluded too. Layouts, modules and output directories are excluded by default.");
       Put_Line
-        (Config_File,
-         "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
+        (File => Config_File, Item => "ExcludedFiles = .git,.gitignore,tags");
+      Put_Line
+        (File => Config_File,
+         Item =>
+           "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
       Put_Line(Config_File, "Name = New Site");
       Put_Line
         (Config_File,
