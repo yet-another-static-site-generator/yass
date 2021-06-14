@@ -56,26 +56,32 @@ package body Config is
         (File => Config_File,
          Item =>
            "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
-      Put_Line(Config_File, "Name = New Site");
+      Put_Line(File => Config_File, Item => "Name = New Site");
       Put_Line
-        (Config_File,
-         "# The description of the site which will be created. Must be in one line, no new line allowed. It is used to set meta tag description (which is showed in search engines results) but only when pages don't set it. Optional setting.");
-      Put_Line(Config_File, "Description = My new site");
+        (File => Config_File,
+         Item =>
+           "# The description of the site which will be created. Must be in one line, no new line allowed. It is used to set meta tag description (which is showed in search engines results) but only when pages don't set it. Optional setting.");
+      Put_Line(File => Config_File, Item => "Description = My new site");
       Put_Line
-        (Config_File,
-         "# The ISO 639-1 language code in which the site will be created.");
-      Put_Line(Config_File, "Language = en");
+        (File => Config_File,
+         Item =>
+           "# The ISO 639-1 language code in which the site will be created.");
+      Put_Line(File => Config_File, Item => "Language = en");
       Put_Line
-        (Config_File,
-         "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag. It is also used in setting meta tag author for all pages.");
-      Put_Line(Config_File, "Author = John Doe");
+        (File => Config_File,
+         Item =>
+           "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag. It is also used in setting meta tag author for all pages.");
+      Put_Line(File => Config_File, Item => "Author = John Doe");
       Put_Line
-        (Config_File,
-         "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
-      Put_Line(Config_File, "AuthorEmail = johndoe@example.com");
+        (File => Config_File,
+         Item =>
+           "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
       Put_Line
-        (Config_File,
-         "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
+        (File => Config_File, Item => "AuthorEmail = johndoe@example.com");
+      Put_Line
+        (File => Config_File,
+         Item =>
+           "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
       Put_Line(Config_File, "BaseURL = http://localhost:8888");
       Put_Line
         (Config_File,
