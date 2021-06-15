@@ -82,26 +82,31 @@ package body Config is
         (File => Config_File,
          Item =>
            "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
-      Put_Line(Config_File, "BaseURL = http://localhost:8888");
+      Put_Line(File => Config_File, Item => "BaseURL = http://localhost:8888");
       Put_Line
-        (Config_File,
-         "# Source which will be used for creating Atom feed of the site. Possible values are: none: don't create atom feed, tags: create Atom entries from proper tags in .md files, [filename]: the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
-      Put_Line(Config_File, "AtomFeedSource = none");
+        (File => Config_File,
+         Item =>
+           "# Source which will be used for creating Atom feed of the site. Possible values are: none: don't create atom feed, tags: create Atom entries from proper tags in .md files, [filename]: the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
+      Put_Line(File => Config_File, Item => "AtomFeedSource = none");
       Put_Line
-        (Config_File,
-         "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
-      Put_Line(Config_File, "AtomFeedAmount = 25");
+        (File => Config_File,
+         Item =>
+           "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
+      Put_Line(File => Config_File, Item => "AtomFeedAmount = 25");
       Put_Line
-        (Config_File,
-         "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
-      Put_Line(Config_File, "SitemapEnabled = true");
+        (File => Config_File,
+         Item =>
+           "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
+      Put_Line(File => Config_File, Item => "SitemapEnabled = true");
       Put_Line
-        (Config_File,
-         "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
-      Put_Line(Config_File, "ServerEnabled = true");
+        (File => Config_File,
+         Item =>
+           "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
+      Put_Line(File => Config_File, Item => "ServerEnabled = true");
       Put_Line
-        (Config_File,
-         "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
+        (File => Config_File,
+         Item =>
+           "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
       Put_Line(Config_File, "ServerPort = 8888");
       Put_Line
         (Config_File,
