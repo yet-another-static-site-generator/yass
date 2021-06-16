@@ -26,7 +26,7 @@ with Ada.Calendar; use Ada.Calendar;
 package AtomFeed is
 -- ****
 
-   -- ****t* AtomFeed/Feed_Entry
+   -- ****t* AtomFeed/AtomFeed.Feed_Entry
    -- FUNCTION
    -- Data structure for Atom entries
    -- PARAMETERS
@@ -49,14 +49,14 @@ package AtomFeed is
    end record;
    -- ****
 
-   -- ****d* AtomFeed/Empty_Feed_Entry
+   -- ****d* AtomFeed/AtomFeed.Empty_Feed_Entry
    -- FUNCTION
    -- Empty Atom feed entry
    -- SOURCE
    Empty_Feed_Entry: constant Feed_Entry := (others => <>);
    -- ****
 
-   -- ****t* AtomFeed/FeedEntry_Container
+   -- ****t* AtomFeed/AtomFeed.FeedEntry_Container
    -- FUNCTION
    -- Used to store Atom feed entries
    -- SOURCE
@@ -64,7 +64,7 @@ package AtomFeed is
      (Index_Type => Positive, Element_Type => Feed_Entry);
    -- ****
 
-   -- ****f* AtomFeed/To_Time
+   -- ****f* AtomFeed/AtomFeed.To_Time
    -- FUNCTION
    -- Convert HTTP date to Ada format
    -- PARAMETERS
@@ -76,7 +76,7 @@ package AtomFeed is
       Test_Case => (Name => "Test_To_Date", Mode => Nominal);
    -- ****
 
-   -- ****f* AtomFeed/To_HTTP_Date
+   -- ****f* AtomFeed/AtomFeed.To_HTTP_Date
    -- FUNCTION
    -- Convert Ada Time to HTTP date format
    -- PARAMETERS
@@ -89,14 +89,14 @@ package AtomFeed is
       Test_Case => (Name => "Test_To_HTTP_Date", Mode => Nominal);
    -- ****
 
-   -- ****f* AtomFeed/Start_Atom_Feed
+   -- ****f* AtomFeed/AtomFeed.Start_Atom_Feed
    -- FUNCTION
    -- Load existing Atom feed for the site
    -- SOURCE
    procedure Start_Atom_Feed;
    -- ****
 
-   -- ****f* AtomFeed/Add_Page_To_Feed
+   -- ****f* AtomFeed/AtomFeed.Add_Page_To_Feed
    -- FUNCTION
    -- Add page with full path File_Name and it extracted Atom entries Entries to the site Atom feed
    -- PARAMETERS
@@ -107,7 +107,7 @@ package AtomFeed is
      (File_Name: String; Entries: in out FeedEntry_Container.Vector);
    -- ****
 
-   -- ****f* AtomFeed/Save_Atom_Feed
+   -- ****f* AtomFeed/AtomFeed.Save_Atom_Feed
    -- FUNCTION
    -- Save Atom feed to file
    -- SOURCE
