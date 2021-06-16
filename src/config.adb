@@ -107,26 +107,31 @@ package body Config is
         (File => Config_File,
          Item =>
            "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
-      Put_Line(Config_File, "ServerPort = 8888");
+      Put_Line(File => Config_File, Item => "ServerPort = 8888");
       Put_Line
-        (Config_File,
-         "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
-      Put_Line(Config_File, "StopServerOnError = false");
+        (File => Config_File,
+         Item =>
+           "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
+      Put_Line(File => Config_File, Item => "StopServerOnError = false");
       Put_Line
-        (Config_File,
-         "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
-      Put_Line(Config_File, "BrowserCommand = none");
+        (File => Config_File,
+         Item =>
+           "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
+      Put_Line(File => Config_File, Item => "BrowserCommand = none");
       Put_Line
-        (Config_File,
-         "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
-      Put_Line(Config_File, "MonitorInterval = 5");
+        (File => Config_File,
+         Item =>
+           "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
+      Put_Line(File => Config_File, Item => "MonitorInterval = 5");
       Put_Line
-        (Config_File,
-         "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
-      Put_Line(Config_File, "MonitorConfigInterval = 60");
+        (File => Config_File,
+         Item =>
+           "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
+      Put_Line(File => Config_File, Item => "MonitorConfigInterval = 60");
       Put_Line
-        (Config_File,
-         "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+        (File => Config_File,
+         Item =>
+           "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
       Put_Line(Config_File, "StartTagSeparator = {%");
       Put_Line
         (Config_File,
