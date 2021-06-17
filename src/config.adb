@@ -132,34 +132,40 @@ package body Config is
         (File => Config_File,
          Item =>
            "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-      Put_Line(Config_File, "StartTagSeparator = {%");
+      Put_Line(File => Config_File, Item => "StartTagSeparator = {%");
       Put_Line
-        (Config_File,
-         "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-      Put_Line(Config_File, "EndTagSeparator = %}");
+        (File => Config_File,
+         Item =>
+           "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+      Put_Line(File => Config_File, Item => "EndTagSeparator = %}");
       Put_Line
-        (Config_File,
-         "# String used to mark comments in markdown files which will be parsed.");
-      Put_Line(Config_File, "MarkdownComment = --");
+        (File => Config_File,
+         Item =>
+           "# String used to mark comments in markdown files which will be parsed.");
+      Put_Line(File => Config_File, Item => "MarkdownComment = --");
       Put_Line
-        (Config_File,
-         "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
+        (File => Config_File,
+         Item =>
+           "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
-        (Config_File,
-         "# First 3 types of tags are in Name = Value scheme. For strings, it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always falls back to string value.");
+        (File => Config_File,
+         Item =>
+           "# First 3 types of tags are in Name = Value scheme. For strings, it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always falls back to string value.");
       Put_Line
-        (Config_File,
-         "# Composite tags first must be initialized with Name = [] then just add as many as you want values to it by Name = Value scheme.");
+        (File => Config_File,
+         Item =>
+           "# Composite tags first must be initialized with Name = [] then just add as many as you want values to it by Name = Value scheme.");
       Put_Line
-        (Config_File,
-         "# For more information about site.cfg file please check program documentation.");
-      Close(Config_File);
+        (File => Config_File,
+         Item =>
+           "# For more information about site.cfg file please check program documentation.");
+      Close(File => Config_File);
    end Create_Config;
 
    procedure Parse_Config(Directory_Name: String) is
       Config_File: File_Type;
       RawData, FieldName, Value: Unbounded_String;
-      EqualIndex: Natural;
+      EqualIndex: Natural := 0;
       Tokens: Slice_Set;
       StartTag: Unbounded_String := To_Unbounded_String("{%");
       EndTag: Unbounded_String := To_Unbounded_String("%}");
