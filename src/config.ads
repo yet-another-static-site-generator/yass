@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -28,7 +28,7 @@ with AWS.Templates; use AWS.Templates;
 package Config is
 -- ****
 
-   -- ****t* Config/Excluded_Container
+   -- ****t* Config/Config.Excluded_Container
    -- FUNCTION
    -- Used to store list of excluded files
    -- SOURCE
@@ -36,7 +36,7 @@ package Config is
      (Index_Type => Positive, Element_Type => String);
    -- ****
 
-   -- ****t* Config/Parser_Config
+   -- ****t* Config/Config.Parser_Config
    -- FUNCTION
    -- Data structure for setting for parser
    -- PARAMETERS
@@ -105,21 +105,21 @@ package Config is
    end record;
    -- ****
 
-   -- ****d* Config/Default_Parser_Configuration
+   -- ****d* Config/Config.Default_Parser_Configuration
    -- FUNCTION
    -- Default parser configuration values
    -- SOURCE
    Default_Parser_Configuration: constant Parser_Config := (others => <>);
    -- ****
 
-   -- ****v* Config/Yass_Config
+   -- ****v* Config/Config.Yass_Config
    -- FUNCTION
    -- Settings for the program
    -- SOURCE
    Yass_Config: Parser_Config;
    -- ****
 
-   -- ****t* Config/Tags_Container
+   -- ****t* Config/Config.Tags_Container
    -- FUNCTION
    -- Used to store AWS template tags
    -- SOURCE
@@ -128,21 +128,21 @@ package Config is
       Equivalent_Keys => "=");
    -- ****
 
-   -- ****v* Config/Site_Tags
+   -- ****v* Config/Config.Site_Tags
    -- FUNCTION
    -- Site tags (like title, author, etc)
    -- SOURCE
    Site_Tags: Tags_Container.Map;
    -- ****
 
-   -- ****v* Config/Site_Directory
+   -- ****v* Config/Config.Site_Directory
    -- FUNCTION
    -- Directory where site files are
    -- SOURCE
    Site_Directory: Unbounded_String;
    -- ****
 
-   -- ****t* Config/TableTags_Container
+   -- ****t* Config/Config.TableTags_Container
    -- FUNCTION
    -- Used to store AWS template table tags
    -- SOURCE
@@ -151,21 +151,21 @@ package Config is
       Equivalent_Keys => "=");
    -- ****
 
-   -- ****v* Config/Global_Table_Tags
+   -- ****v* Config/Config.Global_Table_Tags
    -- FUNCTION
    -- Global table tags, used in @@TABLE@@ statement
    -- SOURCE
    Global_Table_Tags: TableTags_Container.Map;
    -- ****
 
-   -- ****e* Config/Invalid_Config_Data
+   -- ****e* Config/Config.Invalid_Config_Data
    -- FUNCTION
    -- Raised when invalid data found in site config file
    -- SOURCE
    Invalid_Config_Data: exception;
    -- ****
 
-   -- ****f* Config/Create_Config
+   -- ****f* Config/Config.Create_Config
    -- FUNCTION
    -- Create default config in directory with full path DirectoryName
    -- PARAMETERS
@@ -175,7 +175,7 @@ package Config is
    procedure Create_Config(Directory_Name: String);
    -- ****
 
-   -- ****f* Config/Parse_Config
+   -- ****f* Config/Config.Parse_Config
    -- FUNCTION
    -- Parse config file and set all settings and tags for site in directory
    -- with full path DirectoryName
@@ -186,7 +186,7 @@ package Config is
    procedure Parse_Config(Directory_Name: String);
    -- ****
 
-   -- ****f* Config/Create_Interactive_Config
+   -- ****f* Config/Config.Create_Interactive_Config
    -- FUNCTION
    -- Create configuration file based on the user answers to the program
    -- questions
