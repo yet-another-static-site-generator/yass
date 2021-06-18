@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -22,7 +22,7 @@
 package Layouts is
 -- ****
 
-   -- ****f* Layouts/CreateLayout
+   -- ****f* Layouts/Layouts.CreateLayout
    -- FUNCTION
    -- Create default site layouts in directory with full path DirectoryName
    -- PARAMETERS
@@ -32,7 +32,7 @@ package Layouts is
    procedure CreateLayout(DirectoryName: String);
    -- ****
 
-   -- ****f* Layouts/CreateDirectoryLayout
+   -- ****f* Layouts/Layouts.CreateDirectoryLayout
    -- FUNCTION
    -- Create default layout for directory listing for web server in layouts
    -- directory with full path DirectoryName
