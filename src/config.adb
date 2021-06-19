@@ -164,7 +164,7 @@ package body Config is
 
    procedure Parse_Config(Directory_Name: String) is
       Config_File: File_Type;
-      Raw_Data, Field_Name, Value: Unbounded_String;
+      Raw_Data, Field_Name, Value: Unbounded_String := Null_Unbounded_String;
       Equal_Index: Natural := 0;
       Tokens: Slice_Set;
       Start_Tag: Unbounded_String := To_Unbounded_String("{%");
@@ -185,6 +185,7 @@ package body Config is
       Site_Tags.Clear;
       Global_Table_Tags.Clear;
       Open(Config_File, In_File, Directory_Name & "/site.cfg");
+      Load_Configuration_Loop:
       while not End_Of_File(Config_File) loop
          Raw_Data := To_Unbounded_String(Encode(Get_Line(Config_File)));
          if Length(Raw_Data) = 0 or else Element(Raw_Data, 1) = '#' then
@@ -290,7 +291,7 @@ package body Config is
               (Site_Tags, To_String(Field_Name), To_String(Value));
          end if;
          <<End_Of_Loop>>
-      end loop;
+      end loop Load_Configuration_Loop;
       Close(Config_File);
       Normalize_Dir(Yass_Config.Layouts_Directory);
       Normalize_Dir(Yass_Config.Output_Directory);
