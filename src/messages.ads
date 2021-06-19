@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20,14 +20,14 @@
 package Messages is
 -- ****
 
-   -- ****t* Messages/Messages_Types
+   -- ****t* Messages/Messages.Messages_Types
    -- FUNCTION
    -- Types of messages: Normal, Error or Success
    -- SOURCE
    type Messages_Types is (Normal, Error, Success);
    -- ****
 
-   -- ****f* Messages/ShowMessage
+   -- ****f* Messages/Messages.ShowMessage
    -- FUNCTION
    -- Show selected message to the user.
    -- PARAMETERS
