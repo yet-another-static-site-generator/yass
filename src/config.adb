@@ -166,7 +166,7 @@ package body Config is
       Config_File: File_Type;
       Raw_Data, Field_Name, Value: Unbounded_String := Null_Unbounded_String;
       Equal_Index: Natural := 0;
-      Tokens: Slice_Set;
+      Tokens: Slice_Set; --## rule line off IMPROPER_INITIALIZATION
       Start_Tag: Unbounded_String := To_Unbounded_String("{%");
       End_Tag: Unbounded_String := To_Unbounded_String("%}");
       procedure Normalize_Dir(Directory_Path: in out Unbounded_String) is
@@ -185,7 +185,7 @@ package body Config is
       Site_Tags.Clear;
       Global_Table_Tags.Clear;
       Open(Config_File, In_File, Directory_Name & "/site.cfg");
-      Load_Configuration_Loop:
+      Load_Configuration_Loop :
       while not End_Of_File(Config_File) loop
          Raw_Data := To_Unbounded_String(Encode(Get_Line(Config_File)));
          if Length(Raw_Data) = 0 or else Element(Raw_Data, 1) = '#' then
