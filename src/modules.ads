@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -24,7 +24,7 @@ with Config; use Config;
 package Modules is
 -- ****
 
-   -- ****f* Modules/LoadModules
+   -- ****f* Modules/Modules.LoadModules
    -- FUNCTION
    -- Load all modules for selected state: start, pre, post, end. PageTags and
    -- PageTableTags will be empty in all states except pre and post for
