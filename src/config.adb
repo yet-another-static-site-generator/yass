@@ -167,31 +167,37 @@ package body Config is
       Raw_Data, Field_Name, Value: Unbounded_String := Null_Unbounded_String;
       Equal_Index: Natural := 0;
       Tokens: Slice_Set; --## rule line off IMPROPER_INITIALIZATION
-      Start_Tag: Unbounded_String := To_Unbounded_String("{%");
-      End_Tag: Unbounded_String := To_Unbounded_String("%}");
+      Start_Tag: Unbounded_String := To_Unbounded_String(Source => "{%");
+      End_Tag: Unbounded_String := To_Unbounded_String(Source => "%}");
       procedure Normalize_Dir(Directory_Path: in out Unbounded_String) is
       begin
-         if Dir_Separator = '/' and then Element(Directory_Path, 1) /= '/' then
+         if Dir_Separator = '/'
+           and then Element(Source => Directory_Path, Index => 1) /= '/' then
             Directory_Path :=
-              To_Unbounded_String(Directory_Name & Dir_Separator) &
+              To_Unbounded_String(Source => Directory_Name & Dir_Separator) &
               Directory_Path;
-         elsif Element(Directory_Path, 2) /= ':' then
+         elsif Element(Source => Directory_Path, Index => 2) /= ':' then
             Directory_Path :=
-              To_Unbounded_String(Directory_Name & Dir_Separator) &
+              To_Unbounded_String(Source => Directory_Name & Dir_Separator) &
               Directory_Path;
          end if;
       end Normalize_Dir;
    begin
       Site_Tags.Clear;
       Global_Table_Tags.Clear;
-      Open(Config_File, In_File, Directory_Name & "/site.cfg");
+      Open
+        (File => Config_File, Mode => In_File,
+         Name => Directory_Name & "/site.cfg");
       Load_Configuration_Loop :
-      while not End_Of_File(Config_File) loop
-         Raw_Data := To_Unbounded_String(Encode(Get_Line(Config_File)));
-         if Length(Raw_Data) = 0 or else Element(Raw_Data, 1) = '#' then
+      while not End_Of_File(File => Config_File) loop
+         Raw_Data :=
+           To_Unbounded_String
+             (Source => Encode(Item => Get_Line(File => Config_File)));
+         if Length(Source => Raw_Data) = 0
+           or else Element(Source => Raw_Data, Index => 1) = '#' then
             goto End_Of_Loop;
          end if;
-         Equal_Index := Index(Raw_Data, "=");
+         Equal_Index := Index(Source => Raw_Data, Pattern => "=");
          if Equal_Index = 0 then
             raise Invalid_Config_Data with To_String(Raw_Data);
          end if;
