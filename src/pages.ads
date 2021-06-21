@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -22,14 +22,14 @@
 package Pages is
 -- ****
 
-   -- ****e* Pages/GenerateSiteException
+   -- ****e* Pages/Pages.GenerateSiteException
    -- FUNCTION
    -- Raised when generating site was interrupted
    -- SOURCE
    GenerateSiteException: exception;
    -- ****
 
-   -- ****f* Pages/CreatePage
+   -- ****f* Pages/Pages.CreatePage
    -- FUNCTION
    -- Create page from file with full path FileName in directory with full
    -- path Directory
@@ -41,7 +41,7 @@ package Pages is
    procedure CreatePage(FileName, Directory: String);
    -- ****
 
-   -- ****f* Pages/CopyFile
+   -- ****f* Pages/Pages.CopyFile
    -- FUNCTION
    -- Copy file with full path FileName to proper location in site output
    -- directory with full path Directory
@@ -52,7 +52,7 @@ package Pages is
    procedure CopyFile(FileName, Directory: String);
    -- ****
 
-   -- ****f* Pages/CreateEmptyFile
+   -- ****f* Pages/Pages.CreateEmptyFile
    -- FUNCTION
    -- Create empty markdown file with default tags and with full path FileName
    -- PARAMETERS
@@ -61,7 +61,7 @@ package Pages is
    procedure CreateEmptyFile(FileName: String);
    -- ****
 
-   -- ****f* Pages/GetLayoutName
+   -- ****f* Pages/Pages.GetLayoutName
    -- FUNCTION
    -- Get name of layout used in the page with full path FileName
    -- PARAMETERS
