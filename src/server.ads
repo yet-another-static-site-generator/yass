@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -22,7 +22,7 @@
 package Server is
 -- ****
 
-   -- ****a* Server/MonitorSite
+   -- ****a* Server/Server.MonitorSite
    -- FUNCTION
    -- Task for monitor changes in the site files and regenerate them
    -- SOURCE
@@ -31,7 +31,7 @@ package Server is
    end MonitorSite;
    -- ****
 
-   -- ****a* Server/MonitorConfig
+   -- ****a* Server/Server.MonitorConfig
    -- FUNCTION
    -- Task for monitor changes in the site config file and reload config if
    -- needed
@@ -41,14 +41,14 @@ package Server is
    end MonitorConfig;
    -- ****
 
-   -- ****f* Server/StartServer
+   -- ****f* Server/Server.StartServer
    -- FUNCTION
    -- Start the web server
    -- SOURCE
    procedure StartServer;
    -- ****
 
-   -- ****f* Server/ShutdownServer
+   -- ****f* Server/Server.ShutdownServer
    -- FUNCTION
    -- Shutdown the web server
    -- SOURCE
