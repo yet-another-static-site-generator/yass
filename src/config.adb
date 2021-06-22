@@ -199,21 +199,28 @@ package body Config is
          end if;
          Equal_Index := Index(Source => Raw_Data, Pattern => "=");
          if Equal_Index = 0 then
-            raise Invalid_Config_Data with To_String(Raw_Data);
+            raise Invalid_Config_Data with To_String(Source => Raw_Data);
          end if;
-         Field_Name := Head(Raw_Data, Equal_Index - 2);
-         Value := Tail(Raw_Data, (Length(Raw_Data) - Equal_Index - 1));
-         if Field_Name = To_Unbounded_String("LayoutsDirectory") then
+         Field_Name := Head(Source => Raw_Data, Count => Equal_Index - 2);
+         Value :=
+           Tail
+             (Source => Raw_Data,
+              Count => Length(Source => Raw_Data) - Equal_Index - 1);
+         if Field_Name = To_Unbounded_String(Source => "LayoutsDirectory") then
             Yass_Config.Layouts_Directory := Value;
-         elsif Field_Name = To_Unbounded_String("OutputDirectory") then
+         elsif Field_Name =
+           To_Unbounded_String(Source => "OutputDirectory") then
             Yass_Config.Output_Directory := Value;
-         elsif Field_Name = To_Unbounded_String("ModulesDirectory") then
+         elsif Field_Name =
+           To_Unbounded_String(Source => "ModulesDirectory") then
             Yass_Config.Modules_Directory := Value;
-         elsif Field_Name = To_Unbounded_String("ExcludedFiles") then
-            Create(Tokens, To_String(Value), ",");
-            for I in 1 .. Slice_Count(Tokens) loop
-               Yass_Config.Excluded_Files.Append(Slice(Tokens, I));
-            end loop;
+         elsif Field_Name = To_Unbounded_String(Source => "ExcludedFiles") then
+            Create(Tokens, To_String(Source => Value), ",");
+            Add_Excluded_Files_Loop :
+            for I in 1 .. Slice_Count(S => Tokens) loop
+               Yass_Config.Excluded_Files.Append
+                 (New_Item => Slice(S => Tokens, Index => I));
+            end loop Add_Excluded_Files_Loop;
          elsif Field_Name = To_Unbounded_String("ServerEnabled") then
             if To_Lower(To_String(Value)) = "true" then
                Yass_Config.Server_Enabled := True;
