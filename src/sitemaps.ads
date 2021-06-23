@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -22,14 +22,14 @@
 package Sitemaps is
 -- ****
 
-   -- ****f* Sitemaps/StartSitemap
+   -- ****f* Sitemaps/Sitemaps.StartSitemap
    -- FUNCTION
    -- Create new or load existing sitemap for the site
    -- SOURCE
    procedure StartSitemap;
    -- ****
 
-   -- ****f* Sitemaps/AddPageToSitemap
+   -- ****f* Sitemaps/Sitemaps.AddPageToSitemap
    -- FUNCTION
    -- Add selected page with full path FileName, it ChangeFrequency and
    -- PagePriority to the sitemap
@@ -42,7 +42,7 @@ package Sitemaps is
    procedure AddPageToSitemap(FileName, ChangeFrequency, PagePriority: String);
    -- ****
 
-   -- ****f* Sitemaps/SaveSitemap
+   -- ****f* Sitemaps/Sitemaps.SaveSitemap
    -- FUNCTION
    -- Save site map to file
    -- SOURCE
