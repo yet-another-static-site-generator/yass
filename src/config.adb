@@ -222,22 +222,16 @@ package body Config is
                  (New_Item => Slice(S => Tokens, Index => I));
             end loop Add_Excluded_Files_Loop;
          elsif Field_Name = To_Unbounded_String("ServerEnabled") then
-            if To_Lower(To_String(Value)) = "true" then
-               Yass_Config.Server_Enabled := True;
-            else
-               Yass_Config.Server_Enabled := False;
-            end if;
+            Yass_Config.Server_Enabled :=
+              (if To_Lower(To_String(Value)) = "true" then True else False);
          elsif Field_Name = To_Unbounded_String("ServerPort") then
             Yass_Config.Server_Port := Positive'Value(To_String(Value));
             if Yass_Config.Server_Port > 65_535 then
                raise Invalid_Config_Data with To_String(Raw_Data);
             end if;
          elsif Field_Name = To_Unbounded_String("StopServerOnError") then
-            if To_Lower(To_String(Value)) = "true" then
-               Yass_Config.Stop_Server_On_Error := True;
-            else
-               Yass_Config.Stop_Server_On_Error := False;
-            end if;
+            Yass_Config.Stop_Server_On_Error :=
+              (if To_Lower(To_String(Value)) = "true" then True else False);
          elsif Field_Name = To_Unbounded_String("BrowserCommand") then
             if Index(Value, "%s", 1) > 0 then
                Replace_Slice
@@ -257,11 +251,8 @@ package body Config is
             Yass_Config.Base_Url := Value;
             Tags_Container.Include(Site_Tags, "BaseURL", To_String(Value));
          elsif Field_Name = To_Unbounded_String("SitemapEnabled") then
-            if To_Lower(To_String(Value)) = "true" then
-               Yass_Config.Sitemap_Enabled := True;
-            else
-               Yass_Config.Sitemap_Enabled := False;
-            end if;
+            Yass_Config.Sitemap_Enabled :=
+              (if To_Lower(To_String(Value)) = "true" then True else False);
          elsif Field_Name = To_Unbounded_String("AtomFeedSource") then
             if Value = To_Unbounded_String("none") or
               Value = To_Unbounded_String("tags") then
