@@ -42,7 +42,7 @@ procedure Yass is
    Version: constant String := "3.0";
    Work_Directory: Unbounded_String := Null_Unbounded_String;
 
-   -- ****if* YASS/Build_Site
+   -- ****if* YASS/YASS.Build_Site
    -- FUNCTION
    -- Build the site from directory
    -- PARAMETERS
@@ -134,7 +134,7 @@ procedure Yass is
          return False;
    end Build_Site;
 
-   -- ****if* YASS/Valid_Arguments
+   -- ****if* YASS/YASS.Valid_Arguments
    -- FUNCTION
    -- Validate arguments which user was entered when started the program and
    -- set Work_Directory for the program.
@@ -194,7 +194,7 @@ procedure Yass is
       return True;
    end Valid_Arguments;
 
-   -- ****if* YASS/Show_Help
+   -- ****if* YASS/YASS.Show_Help
    -- FUNCTION
    -- Show the program help - list of available commands
    -- SOURCE
