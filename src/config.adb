@@ -215,31 +215,44 @@ package body Config is
            To_Unbounded_String(Source => "ModulesDirectory") then
             Yass_Config.Modules_Directory := Value;
          elsif Field_Name = To_Unbounded_String(Source => "ExcludedFiles") then
-            Create(Tokens, To_String(Source => Value), ",");
+            Create
+              (S => Tokens, From => To_String(Source => Value),
+               Separators => ",");
             Add_Excluded_Files_Loop :
             for I in 1 .. Slice_Count(S => Tokens) loop
                Yass_Config.Excluded_Files.Append
                  (New_Item => Slice(S => Tokens, Index => I));
             end loop Add_Excluded_Files_Loop;
-         elsif Field_Name = To_Unbounded_String("ServerEnabled") then
+         elsif Field_Name = To_Unbounded_String(Source => "ServerEnabled") then
             Yass_Config.Server_Enabled :=
-              (if To_Lower(To_String(Value)) = "true" then True else False);
-         elsif Field_Name = To_Unbounded_String("ServerPort") then
-            Yass_Config.Server_Port := Positive'Value(To_String(Value));
+              (if To_Lower(Item => To_String(Source => Value)) = "true" then
+                 True
+               else False);
+         elsif Field_Name = To_Unbounded_String(Source => "ServerPort") then
+            Yass_Config.Server_Port :=
+              Positive'Value(To_String(Source => Value));
             if Yass_Config.Server_Port > 65_535 then
-               raise Invalid_Config_Data with To_String(Raw_Data);
+               raise Invalid_Config_Data with To_String(Source => Raw_Data);
             end if;
-         elsif Field_Name = To_Unbounded_String("StopServerOnError") then
+         elsif Field_Name =
+           To_Unbounded_String(Source => "StopServerOnError") then
             Yass_Config.Stop_Server_On_Error :=
-              (if To_Lower(To_String(Value)) = "true" then True else False);
-         elsif Field_Name = To_Unbounded_String("BrowserCommand") then
-            if Index(Value, "%s", 1) > 0 then
+              (if To_Lower(Item => To_String(Source => Value)) = "true" then
+                 True
+               else False);
+         elsif Field_Name =
+           To_Unbounded_String(Source => "BrowserCommand") then
+            if Index(Source => Value, Pattern => "%s", From => 1) > 0 then
                Replace_Slice
-                 (Value, Index(Value, "%s", 1), Index(Value, "%s", 1) + 1,
-                  "http://localhost:" &
-                  Trim
-                    (Positive'Image(Yass_Config.Server_Port),
-                     Ada.Strings.Both));
+                 (Source => Value,
+                  Low => Index(Source => Value, Pattern => "%s", From => 1),
+                  High =>
+                    Index(Source => Value, Pattern => "%s", From => 1) + 1,
+                  By =>
+                    "http://localhost:" &
+                    Trim
+                      (Source => Positive'Image(Yass_Config.Server_Port),
+                       Side => Ada.Strings.Left));
             end if;
             Yass_Config.Browser_Command := Value;
          elsif Field_Name = To_Unbounded_String("MonitorInterval") then
