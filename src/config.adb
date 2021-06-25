@@ -255,28 +255,40 @@ package body Config is
                        Side => Ada.Strings.Left));
             end if;
             Yass_Config.Browser_Command := Value;
-         elsif Field_Name = To_Unbounded_String("MonitorInterval") then
-            Yass_Config.Monitor_Interval := Duration'Value(To_String(Value));
-         elsif Field_Name = To_Unbounded_String("MonitorConfigInterval") then
+         elsif Field_Name =
+           To_Unbounded_String(Source => "MonitorInterval") then
+            Yass_Config.Monitor_Interval :=
+              Duration'Value(To_String(Source => Value));
+         elsif Field_Name =
+           To_Unbounded_String(Source => "MonitorConfigInterval") then
             Yass_Config.Monitor_Config_Interval :=
-              Duration'Value(To_String(Value));
-         elsif Field_Name = To_Unbounded_String("BaseURL") then
+              Duration'Value(To_String(Source => Value));
+         elsif Field_Name = To_Unbounded_String(Source => "BaseURL") then
             Yass_Config.Base_Url := Value;
-            Tags_Container.Include(Site_Tags, "BaseURL", To_String(Value));
-         elsif Field_Name = To_Unbounded_String("SitemapEnabled") then
+            Site_Tags.Include
+              (Key => "BaseURL", New_Item => To_String(Source => Value));
+         elsif Field_Name =
+           To_Unbounded_String(Source => "SitemapEnabled") then
             Yass_Config.Sitemap_Enabled :=
-              (if To_Lower(To_String(Value)) = "true" then True else False);
-         elsif Field_Name = To_Unbounded_String("AtomFeedSource") then
-            if Value = To_Unbounded_String("none") or
-              Value = To_Unbounded_String("tags") then
+              (if To_Lower(Item => To_String(Source => Value)) = "true" then
+                 True
+               else False);
+         elsif Field_Name =
+           To_Unbounded_String(Source => "AtomFeedSource") then
+            if Value in To_Unbounded_String(Source => "none") |
+                  To_Unbounded_String(Source => "tags") then
                Yass_Config.Atom_Feed_Source := Value;
             else
                Yass_Config.Atom_Feed_Source :=
-                 Unbounded_Slice(Value, 1, Length(Value) - 2) &
-                 To_Unbounded_String("html");
+                 Unbounded_Slice
+                   (Source => Value, Low => 1,
+                    High => Length(Source => Value) - 2) &
+                 To_Unbounded_String(Source => "html");
             end if;
-         elsif Field_Name = To_Unbounded_String("AtomFeedAmount") then
-            Yass_Config.Atom_Feed_Amount := Positive'Value(To_String(Value));
+         elsif Field_Name =
+           To_Unbounded_String(Source => "AtomFeedAmount") then
+            Yass_Config.Atom_Feed_Amount :=
+              Positive'Value(To_String(Source => Value));
          elsif Field_Name = To_Unbounded_String("Name") then
             Yass_Config.Site_Name := Value;
             Tags_Container.Include
