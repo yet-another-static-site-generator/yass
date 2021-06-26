@@ -289,28 +289,33 @@ package body Config is
            To_Unbounded_String(Source => "AtomFeedAmount") then
             Yass_Config.Atom_Feed_Amount :=
               Positive'Value(To_String(Source => Value));
-         elsif Field_Name = To_Unbounded_String("Name") then
+         elsif Field_Name = To_Unbounded_String(Source => "Name") then
             Yass_Config.Site_Name := Value;
-            Tags_Container.Include
-              (Site_Tags, To_String(Field_Name), To_String(Value));
-         elsif Field_Name = To_Unbounded_String("Start_TagSeparator") then
+            Site_Tags.Include
+              (Key => To_String(Source => Field_Name),
+               New_Item => To_String(Source => Value));
+         elsif Field_Name =
+           To_Unbounded_String(Source => "Start_TagSeparator") then
             Start_Tag := Value;
-         elsif Field_Name = To_Unbounded_String("EndTagSeparator") then
+         elsif Field_Name =
+           To_Unbounded_String(Source => "EndTagSeparator") then
             End_Tag := Value;
-         elsif Field_Name = To_Unbounded_String("MarkdownComment") then
+         elsif Field_Name =
+           To_Unbounded_String(Source => "MarkdownComment") then
             Yass_Config.Markdown_Comment := Value;
-         elsif Field_Name = To_Unbounded_String("Author") then
+         elsif Field_Name = To_Unbounded_String(Source => "Author") then
             Yass_Config.Author_Name := Value;
-         elsif Field_Name = To_Unbounded_String("AuthorEmail") then
+         elsif Field_Name = To_Unbounded_String(Source => "AuthorEmail") then
             Yass_Config.Author_Email := Value;
-         elsif Field_Name = To_Unbounded_String("Language") then
+         elsif Field_Name = To_Unbounded_String(Source => "Language") then
             Yass_Config.Language := Value;
-            Tags_Container.Include
-              (Site_Tags, To_String(Field_Name), To_String(Value));
-         elsif Value = To_Unbounded_String("[]") then
-            TableTags_Container.Include
-              (Global_Table_Tags, To_String(Field_Name), +"");
-            Clear(Global_Table_Tags(To_String(Field_Name)));
+            Site_Tags.Include
+              (Key => To_String(Source => Field_Name),
+               New_Item => To_String(Source => Value));
+         elsif Value = To_Unbounded_String(Source => "[]") then
+            Global_Table_Tags.Include
+              (Key => To_String(Source => Field_Name), New_Item => +"");
+            Clear(T => Global_Table_Tags(To_String(Source => Field_Name)));
          elsif TableTags_Container.Contains
              (Global_Table_Tags, To_String(Field_Name)) then
             Global_Table_Tags(To_String(Field_Name)) :=
