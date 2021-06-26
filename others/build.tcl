@@ -27,12 +27,14 @@ if {$target != "x86_64-linux-gnu" && $target != "x86_64-windows"} {
 # Set the directory where the release will be created
 if {$target == "x86_64-linux-gnu"} {
    set releasedir usr
+   set os Unix
 } else {
    set releasedir release
+   set os Windows
 }
 
 exec gprclean -P yass.gpr --target=$target >@stdout
-exec gprbuild -p -P yass.gpr -XMode=release --target=$target >@stdout
+exec gprbuild -p -P yass.gpr -XMode=release -XOS=$os --target=$target >@stdout
 puts -nonewline {Copying files and directories ... }
 if {$target == "x86_64-linux-gnu"} {
    file mkdir $releasedir/share/doc/yass
