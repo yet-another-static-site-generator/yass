@@ -316,25 +316,28 @@ package body Config is
             Global_Table_Tags.Include
               (Key => To_String(Source => Field_Name), New_Item => +"");
             Clear(T => Global_Table_Tags(To_String(Source => Field_Name)));
-         elsif TableTags_Container.Contains
-             (Global_Table_Tags, To_String(Field_Name)) then
-            Global_Table_Tags(To_String(Field_Name)) :=
-              Global_Table_Tags(To_String(Field_Name)) & Value;
+         elsif Global_Table_Tags.Contains
+             (Key => To_String(Source => Field_Name)) then
+            Global_Table_Tags(To_String(Source => Field_Name)) :=
+              Global_Table_Tags(To_String(Source => Field_Name)) & Value;
          else
-            Tags_Container.Include
-              (Site_Tags, To_String(Field_Name), To_String(Value));
+            Site_Tags.Include
+              (Key => To_String(Source => Field_Name),
+               New_Item => To_String(Source => Value));
          end if;
          <<End_Of_Loop>>
       end loop Load_Configuration_Loop;
-      Close(Config_File);
-      Normalize_Dir(Yass_Config.Layouts_Directory);
-      Normalize_Dir(Yass_Config.Output_Directory);
-      Normalize_Dir(Yass_Config.Modules_Directory);
-      Yass_Config.Excluded_Files.Append(".");
-      Yass_Config.Excluded_Files.Append("..");
-      Yass_Config.Excluded_Files.Append("site.cfg");
+      Close(File => Config_File);
+      Normalize_Dir(Directory_Path => Yass_Config.Layouts_Directory);
+      Normalize_Dir(Directory_Path => Yass_Config.Output_Directory);
+      Normalize_Dir(Directory_Path => Yass_Config.Modules_Directory);
+      Yass_Config.Excluded_Files.Append(New_Item => ".");
+      Yass_Config.Excluded_Files.Append(New_Item => "..");
+      Yass_Config.Excluded_Files.Append(New_Item => "site.cfg");
       Yass_Config.Excluded_Files.Append
-        (Simple_Name(To_String(Yass_Config.Layouts_Directory)));
+        (New_Item =>
+           Simple_Name
+             (Name => To_String(Source => Yass_Config.Layouts_Directory)));
       Yass_Config.Excluded_Files.Append
         (Simple_Name(To_String(Yass_Config.Output_Directory)));
       Yass_Config.Excluded_Files.Append
