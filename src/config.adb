@@ -339,14 +339,20 @@ package body Config is
            Simple_Name
              (Name => To_String(Source => Yass_Config.Layouts_Directory)));
       Yass_Config.Excluded_Files.Append
-        (Simple_Name(To_String(Yass_Config.Output_Directory)));
+        (New_Item =>
+           Simple_Name
+             (Name => To_String(Source => Yass_Config.Output_Directory)));
       Yass_Config.Excluded_Files.Append
-        (Simple_Name(To_String(Yass_Config.Modules_Directory)));
-      Site_Directory := To_Unbounded_String(Directory_Name);
-      Set_Tag_Separators(To_String(Start_Tag), To_String(End_Tag));
+        (New_Item =>
+           Simple_Name
+             (Name => To_String(Source => Yass_Config.Modules_Directory)));
+      Site_Directory := To_Unbounded_String(Source => Directory_Name);
+      Set_Tag_Separators
+        (Start_With => To_String(Source => Start_Tag),
+         Stop_With => To_String(Source => End_Tag));
    exception
       when others =>
-         raise Invalid_Config_Data with To_String(Raw_Data);
+         raise Invalid_Config_Data with To_String(Source => Raw_Data);
    end Parse_Config;
 
    procedure Create_Interactive_Config(Directory_Name: String) is
@@ -354,15 +360,17 @@ package body Config is
       Answer: Unbounded_String;
    begin
       Create
-        (Config_File, Append_File,
-         Directory_Name & Dir_Separator & "site.cfg");
+        (File => Config_File, Mode => Append_File,
+         Name => Directory_Name & Dir_Separator & "site.cfg");
       Put_Line
-        (Config_File,
-         "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
-      Put_Line(Config_File, "LayoutsDirectory = _layouts");
+        (File => Config_File,
+         Item =>
+           "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
+      Put_Line(File => Config_File, Item => "LayoutsDirectory = _layouts");
       Put_Line
-        (Config_File,
-         "# Directory in which will be placed generated site. May be absolute or relative to project directory.");
+        (File => Config_File,
+         Item =>
+           "# Directory in which will be placed generated site. May be absolute or relative to project directory.");
       Put_Line(Config_File, "OutputDirectory = _output");
       Put_Line
         (Config_File,
