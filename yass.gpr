@@ -50,7 +50,8 @@ project yass is
             for Default_Switches ("ada") use ("-O2",
                "-ffunction-sections",
                "-fdata-sections",
-               "-s");
+               "-s",
+               "-flto");
          when "analyze" =>
             for Default_Switches ("ada") use ("-pg",
                "-fprofile-arcs",
@@ -59,7 +60,11 @@ project yass is
     end Compiler;
 
     package Linker is
-      Release_Switches := ("-Wl,--gc-sections", "-s", "-O2", "-lcmark");
+      Release_Switches := ("-Wl,--gc-sections",
+         "-s",
+         "-O2",
+         "-lcmark",
+         "-flto");
       case Mode is
          when "debug" =>
             for Default_Switches ("ada") use ("-no-pie", "-lcmark");
