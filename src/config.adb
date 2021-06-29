@@ -371,29 +371,38 @@ package body Config is
         (File => Config_File,
          Item =>
            "# Directory in which will be placed generated site. May be absolute or relative to project directory.");
-      Put_Line(Config_File, "OutputDirectory = _output");
+      Put_Line(File => Config_File, Item => "OutputDirectory = _output");
       Put_Line
-        (Config_File,
-         "# Directory in which will be placed program modules used to generate the site. May be absolute or relative to project directory.");
-      Put_Line(Config_File, "ModulesDirectory = _modules");
+        (File => Config_File,
+         Item =>
+           "# Directory in which will be placed program modules used to generate the site. May be absolute or relative to project directory.");
+      Put_Line(File => Config_File, Item => "ModulesDirectory = _modules");
       Put_Line
-        (Config_File,
-         "# List of excluded files and directories from list of sources used to generating the site. All paths must be relative to the project directory. If you exclude directory, it whole content will be excluded too. Layouts, modules and output directories are excluded by default.");
-      Put_Line(Config_File, "ExcludedFiles = .git,.gitignore,tags");
+        (File => Config_File,
+         Item =>
+           "# List of excluded files and directories from list of sources used to generating the site. All paths must be relative to the project directory. If you exclude directory, it whole content will be excluded too. Layouts, modules and output directories are excluded by default.");
       Put_Line
-        (Config_File,
-         "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
+        (File => Config_File, Item => "ExcludedFiles = .git,.gitignore,tags");
       Put_Line
-        ("Now we ask you some questions about your new site. You can always change it later by modifying the site configuration file. If you just press Enter as a answer, default value will be used.");
-      Put("Please enter the name of the new site (default - New Site): ");
-      Answer := To_Unbounded_String(Get_Line);
+        (File => Config_File,
+         Item =>
+           "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
+      Put_Line
+        (Item =>
+           "Now we ask you some questions about your new site. You can always change it later by modifying the site configuration file. If you just press Enter as a answer, default value will be used.");
+      Put
+        (Item =>
+           "Please enter the name of the new site (default - New Site): ");
+      Answer := To_Unbounded_String(Source => Get_Line);
       if Answer = Null_Unbounded_String then
-         Answer := To_Unbounded_String("New Site");
+         Answer := To_Unbounded_String(Source => "New Site");
       end if;
-      Put_Line(Config_File, "Name = " & To_String(Answer));
       Put_Line
-        (Config_File,
-         "# The description of the site which will be created. Must be in one line, no new line allowed. It is used to set meta tag description (which is showed in search engines results) but only when pages don't set it. Optional setting.");
+        (File => Config_File, Item => "Name = " & To_String(Source => Answer));
+      Put_Line
+        (File => Config_File,
+         Item =>
+           "# The description of the site which will be created. Must be in one line, no new line allowed. It is used to set meta tag description (which is showed in search engines results) but only when pages don't set it. Optional setting.");
       Put_Line
         ("Please enter the description of the new site (default - My new site). It is used to create meta tag for the website (which is showed in search engines results) but only if pages don't set own. Must be set in one line, no new line allowed.");
       Answer := To_Unbounded_String(Get_Line);
