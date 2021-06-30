@@ -404,31 +404,43 @@ package body Config is
          Item =>
            "# The description of the site which will be created. Must be in one line, no new line allowed. It is used to set meta tag description (which is showed in search engines results) but only when pages don't set it. Optional setting.");
       Put_Line
-        ("Please enter the description of the new site (default - My new site). It is used to create meta tag for the website (which is showed in search engines results) but only if pages don't set own. Must be set in one line, no new line allowed.");
-      Answer := To_Unbounded_String(Get_Line);
+        (Item =>
+           "Please enter the description of the new site (default - My new site). It is used to create meta tag for the website (which is showed in search engines results) but only if pages don't set own. Must be set in one line, no new line allowed.");
+      Answer := To_Unbounded_String(Source => Get_Line);
       if Answer /= Null_Unbounded_String then
-         Answer := To_Unbounded_String("My new site");
+         Answer := To_Unbounded_String(Source => "My new site");
       end if;
-      Put_Line(Config_File, "Description = " & To_String(Answer));
       Put_Line
-        (Config_File,
-         "# The ISO 639-1 language code in which the site will be created.");
+        (File => Config_File,
+         Item => "Description = " & To_String(Source => Answer));
+      Put_Line
+        (File => Config_File,
+         Item =>
+           "# The ISO 639-1 language code in which the site will be created.");
       Put
-        ("Please enter language code in which the new site will be written (default - en): ");
-      Answer := To_Unbounded_String(Get_Line);
+        (Item =>
+           "Please enter language code in which the new site will be written (default - en): ");
+      Answer := To_Unbounded_String(Source => Get_Line);
       if Answer = Null_Unbounded_String then
-         Answer := To_Unbounded_String("en");
+         Answer := To_Unbounded_String(Source => "en");
       end if;
-      Put_Line(Config_File, "Language = " & To_String(Answer));
       Put_Line
-        (Config_File,
-         "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag. It is also used to set meta tag author for all pages.");
-      Put("Please enter the author of the new site (default - Jon Doe): ");
-      Answer := To_Unbounded_String(Get_Line);
+        (File => Config_File,
+         Item => "Language = " & To_String(Source => Answer));
+      Put_Line
+        (File => Config_File,
+         Item =>
+           "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag. It is also used to set meta tag author for all pages.");
+      Put
+        (Item =>
+           "Please enter the author of the new site (default - Jon Doe): ");
+      Answer := To_Unbounded_String(Source => Get_Line);
       if Answer = Null_Unbounded_String then
-         Answer := To_Unbounded_String("Jon Doe");
+         Answer := To_Unbounded_String(Source => "Jon Doe");
       end if;
-      Put_Line(Config_File, "Author = " & To_String(Answer));
+      Put_Line
+        (File => Config_File,
+         Item => "Author = " & To_String(Source => Answer));
       Put_Line
         (Config_File,
          "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
