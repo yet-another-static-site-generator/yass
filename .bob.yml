@@ -48,8 +48,8 @@
 - command:
    name: windows
    execute:
-      - sudo docker run --rm -w /app -v $1:/app ghcr.io/thindil/adabuildwin64:10 /bin/bash others/build.tcl x86_64-windows
-   description: Build yass release for Windows on Linux, required argument is full path to the program source code
+      - sudo docker run --rm -w /app -v $PWD:/app ghcr.io/thindil/adabuildwin64:10 /bin/bash others/build.tcl x86_64-windows
+   description: Build yass release for Windows on Linux
    flags:
       - unixonly
 - command:
