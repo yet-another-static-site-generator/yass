@@ -442,31 +442,41 @@ package body Config is
         (File => Config_File,
          Item => "Author = " & To_String(Source => Answer));
       Put_Line
-        (Config_File,
-         "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
+        (File => Config_File,
+         Item =>
+           "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
       Put
-        ("Please enter the contact email for the new site (default - jondoe@example.com): ");
-      Answer := To_Unbounded_String(Get_Line);
+        (Item =>
+           "Please enter the contact email for the new site (default - jondoe@example.com): ");
+      Answer := To_Unbounded_String(Source => Get_Line);
       if Answer = Null_Unbounded_String then
-         Answer := To_Unbounded_String("jondoe@example.com");
+         Answer := To_Unbounded_String(Source => "jondoe@example.com");
       end if;
-      Put_Line(Config_File, "AuthorEmail = " & To_String(Answer));
       Put_Line
-        (Config_File,
-         "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
+        (File => Config_File,
+         Item => "AuthorEmail = " & To_String(Source => Answer));
+      Put_Line
+        (File => Config_File,
+         Item =>
+           "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
       Put
-        ("Please enter base URL of the new site (default - http://localhost:8888): ");
-      Answer := To_Unbounded_String(Get_Line);
+        (Item =>
+           "Please enter base URL of the new site (default - http://localhost:8888): ");
+      Answer := To_Unbounded_String(Source => Get_Line);
       if Answer = Null_Unbounded_String then
-         Answer := To_Unbounded_String("http://localhost:8888");
+         Answer := To_Unbounded_String(Source => "http://localhost:8888");
       end if;
-      Put_Line(Config_File, "BaseURL = " & To_String(Answer));
       Put_Line
-        (Config_File,
-         "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
+        (File => Config_File,
+         Item => "BaseURL = " & To_String(Source => Answer));
+      Put_Line
+        (File => Config_File,
+         Item =>
+           "# Source which will be used for creating Atom feed of the site. Possible values are: none - don't create atom feed, tags - create Atom entries from proper tags in .md files, [filename] - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
       Put
-        ("Do you want to create Atom feed for the new site? If yes, you must specify source for the feed: tags - create Atom entries from proper tags in Markdown files, filename - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside). If you press Enter, creating Atom feed will be disabled (default - none): ");
-      Answer := To_Unbounded_String(Get_Line);
+        (Item =>
+           "Do you want to create Atom feed for the new site? If yes, you must specify source for the feed: tags - create Atom entries from proper tags in Markdown files, filename - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside). If you press Enter, creating Atom feed will be disabled (default - none): ");
+      Answer := To_Unbounded_String(Source => Get_Line);
       if Answer = Null_Unbounded_String then
          Answer := To_Unbounded_String("none");
       end if;
