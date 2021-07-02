@@ -478,32 +478,39 @@ package body Config is
            "Do you want to create Atom feed for the new site? If yes, you must specify source for the feed: tags - create Atom entries from proper tags in Markdown files, filename - the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside). If you press Enter, creating Atom feed will be disabled (default - none): ");
       Answer := To_Unbounded_String(Source => Get_Line);
       if Answer = Null_Unbounded_String then
-         Answer := To_Unbounded_String("none");
+         Answer := To_Unbounded_String(Source => "none");
       end if;
-      Put_Line(Config_File, "AtomFeedSource = " & To_String(Answer));
-      if Answer /= To_Unbounded_String("none") then
-         Put
-           ("How much maximum entries should be in the Atom feed? Recommended valuese are between 10 and 50 (default - 25): ");
-         Answer := To_Unbounded_String(Get_Line);
-         if Answer = Null_Unbounded_String then
-            Answer := To_Unbounded_String("25");
-         end if;
+      Put_Line
+        (File => Config_File,
+         Item => "AtomFeedSource = " & To_String(Source => Answer));
+      if Answer = To_Unbounded_String(Source => "none") then
+         Answer := To_Unbounded_String(Source => "25");
       else
-         Answer := To_Unbounded_String("25");
+         Put
+           (Item =>
+              "How much maximum entries should be in the Atom feed? Recommended valuese are between 10 and 50 (default - 25): ");
+         Answer := To_Unbounded_String(Source => Get_Line);
+         if Answer = Null_Unbounded_String then
+            Answer := To_Unbounded_String(Source => "25");
+         end if;
       end if;
       Put_Line
-        (Config_File,
-         "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
-      Put_Line(Config_File, "AtomFeedAmount = " & To_String(Answer));
+        (File => Config_File,
+         Item =>
+           "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
       Put_Line
-        (Config_File,
-         "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
+        (File => Config_File,
+         Item => "AtomFeedAmount = " & To_String(Source => Answer));
+      Put_Line
+        (File => Config_File,
+         Item =>
+           "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
       Put
-        ("Do you want to create sitemap file for the new site? (default - yes): ");
-      Answer := To_Unbounded_String(Get_Line);
-      if Answer = To_Unbounded_String("yes") or
-        Answer = To_Unbounded_String("y") or
-        Answer = Null_Unbounded_String then
+        (Item =>
+           "Do you want to create sitemap file for the new site? (default - yes): ");
+      Answer := To_Unbounded_String(Source => Get_Line);
+      if Answer in To_Unbounded_String(Source => "yes") |
+            To_Unbounded_String(Source => "y") | Null_Unbounded_String then
          Put_Line(Config_File, "SitemapEnabled = true");
       else
          Put_Line(Config_File, "SitemapEnabled = false");
