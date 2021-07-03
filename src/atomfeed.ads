@@ -73,6 +73,7 @@ package AtomFeed is
    -- Converted HTTP date to Ada Time
    -- SOURCE
    function To_Time(Date: String) return Time with
+      Pre => Date'Length > 0,
       Test_Case => (Name => "Test_To_Date", Mode => Nominal);
    -- ****
 
@@ -86,6 +87,7 @@ package AtomFeed is
    -- SOURCE
    function To_HTTP_Date --## rule line off NAMING_CONVENTION
      (Date: Time) return String with
+      Post => To_HTTP_Date'Result'Length > 0,
       Test_Case => (Name => "Test_To_HTTP_Date", Mode => Nominal);
    -- ****
 
@@ -101,10 +103,11 @@ package AtomFeed is
    -- Add page with full path File_Name and it extracted Atom entries Entries to the site Atom feed
    -- PARAMETERS
    -- File_Name - File name of the page to add
-   -- Entries  - List of Atom feed entries
+   -- Entries   - List of Atom feed entries
    -- SOURCE
    procedure Add_Page_To_Feed
-     (File_Name: String; Entries: in out FeedEntry_Container.Vector);
+     (File_Name: String; Entries: in out FeedEntry_Container.Vector) with
+      Pre => File_Name'Length > 0;
    -- ****
 
    -- ****f* AtomFeed/AtomFeed.Save_Atom_Feed
