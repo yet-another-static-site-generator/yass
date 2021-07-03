@@ -511,32 +511,37 @@ package body Config is
       Answer := To_Unbounded_String(Source => Get_Line);
       if Answer in To_Unbounded_String(Source => "yes") |
             To_Unbounded_String(Source => "y") | Null_Unbounded_String then
-         Put_Line(Config_File, "SitemapEnabled = true");
+         Put_Line(File => Config_File, Item => "SitemapEnabled = true");
       else
-         Put_Line(Config_File, "SitemapEnabled = false");
+         Put_Line(File => Config_File, Item => "SitemapEnabled = false");
       end if;
       Put
-        ("Do you want to set more technical options (like configuring build-in web server)? (default - no): ");
-      Answer := To_Unbounded_String(Get_Line);
-      if Answer = To_Unbounded_String("yes") or
-        Answer = To_Unbounded_String("y") then
+        (Item =>
+           "Do you want to set more technical options (like configuring build-in web server)? (default - no): ");
+      Answer := To_Unbounded_String(Source => Get_Line);
+      if Answer in To_Unbounded_String(Source => "yes") |
+            To_Unbounded_String(Source => "y") then
          Put_Line
-           (Config_File,
-            "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
+           (File => Config_File,
+            Item =>
+              "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
          Put
-           ("Should the program start web server when monitoring for changes in the site? (default - yes): ");
-         Answer := To_Unbounded_String(Get_Line);
-         if Answer = To_Unbounded_String("yes") or
-           Answer = To_Unbounded_String("y") or
-           Answer = Null_Unbounded_String then
-            Put_Line(Config_File, "ServerEnabled = true");
+           (Item =>
+              "Should the program start web server when monitoring for changes in the site? (default - yes): ");
+         Answer := To_Unbounded_String(Source => Get_Line);
+         if Answer in To_Unbounded_String(Source => "yes") |
+               To_Unbounded_String(Source => "y") | Null_Unbounded_String then
+            Put_Line(File => Config_File, Item => "ServerEnabled = true");
          else
-            Put_Line(Config_File, "ServerEnabled = false");
+            Put_Line(File => Config_File, Item => "ServerEnabled = false");
          end if;
-         Put_Line(Config_File, "ServerEnabled = " & To_String(Answer));
          Put_Line
-           (Config_File,
-            "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
+           (File => Config_File,
+            Item => "ServerEnabled = " & To_String(Source => Answer));
+         Put_Line
+           (File => Config_File,
+            Item =>
+              "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
          Put
            ("On which port should the web server listening? Possible values are from 1 to 65535. Ports below 1025 require root privileges. (default - 8888): ");
          Answer := To_Unbounded_String(Get_Line);
