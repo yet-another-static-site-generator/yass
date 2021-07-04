@@ -543,30 +543,37 @@ package body Config is
             Item =>
               "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
          Put
-           ("On which port should the web server listening? Possible values are from 1 to 65535. Ports below 1025 require root privileges. (default - 8888): ");
-         Answer := To_Unbounded_String(Get_Line);
+           (Item =>
+              "On which port should the web server listening? Possible values are from 1 to 65535. Ports below 1025 require root privileges. (default - 8888): ");
+         Answer := To_Unbounded_String(Source => Get_Line);
          if Answer = Null_Unbounded_String then
-            Answer := To_Unbounded_String("8888");
+            Answer := To_Unbounded_String(Source => "8888");
          end if;
-         Put_Line(Config_File, "ServerPort = " & To_String(Answer));
          Put_Line
-           (Config_File,
-            "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
+           (File => Config_File,
+            Item => "ServerPort = " & To_String(Source => Answer));
+         Put_Line
+           (File => Config_File,
+            Item =>
+              "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
          Put
-           ("Should whole monitoring option stop if encounter any error during the site creation? (default - no): ");
-         Answer := To_Unbounded_String(Get_Line);
-         if Answer = To_Unbounded_String("yes") or
-           Answer = To_Unbounded_String("y") then
-            Put_Line(Config_File, "StopServerOnError = true");
+           (Item =>
+              "Should whole monitoring option stop if encounter any error during the site creation? (default - no): ");
+         Answer := To_Unbounded_String(Source => Get_Line);
+         if Answer in To_Unbounded_String(Source => "yes") |
+               To_Unbounded_String(Source => "y") then
+            Put_Line(File => Config_File, Item => "StopServerOnError = true");
          else
-            Put_Line(Config_File, "StopServerOnError = false");
+            Put_Line(File => Config_File, Item => "StopServerOnError = false");
          end if;
          Put_Line
-           (Config_File,
-            "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
+           (File => Config_File,
+            Item =>
+              "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
          Put
-           ("Full path to the web broser which will be started when the program starts in server mode. (default - none): ");
-         Answer := To_Unbounded_String(Get_Line);
+           (Item =>
+              "Full path to the web broser which will be started when the program starts in server mode. (default - none): ");
+         Answer := To_Unbounded_String(Source => Get_Line);
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("none");
          end if;
