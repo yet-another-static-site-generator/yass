@@ -172,7 +172,8 @@ package Config is
    -- Directory_Name - Full path to the directory where config file will be
    --                  created
    -- SOURCE
-   procedure Create_Config(Directory_Name: String);
+   procedure Create_Config(Directory_Name: String) with
+      Pre => Directory_Name'Length > 0;
    -- ****
 
    -- ****f* Config/Config.Parse_Config
@@ -183,7 +184,8 @@ package Config is
    -- Directory_Name - Full path to the directory from which config file will
    --                  be parsed
    -- SOURCE
-   procedure Parse_Config(Directory_Name: String);
+   procedure Parse_Config(Directory_Name: String) with
+      Pre => Directory_Name'Length > 0;
    -- ****
 
    -- ****f* Config/Config.Create_Interactive_Config
@@ -194,7 +196,8 @@ package Config is
    -- Directory_Name - Full path to the directory where config file will be
    --                  created
    -- SOURCE
-   procedure Create_Interactive_Config(Directory_Name: String);
+   procedure Create_Interactive_Config(Directory_Name: String) with
+      Pre => Directory_Name'Length > 0;
    -- ****
 
 end Config;
