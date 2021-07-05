@@ -29,7 +29,8 @@ package Layouts is
    -- DirectoryName - Full path to the directory where default layout will be
    --                 created
    -- SOURCE
-   procedure CreateLayout(DirectoryName: String);
+   procedure CreateLayout(DirectoryName: String) with
+      Pre => DirectoryName'Length > 0;
    -- ****
 
    -- ****f* Layouts/Layouts.CreateDirectoryLayout
@@ -39,7 +40,8 @@ package Layouts is
    -- PARAMETERS
    -- DirectoryName - Full path to the directory where layout will be created
    -- SOURCE
-   procedure CreateDirectoryLayout(DirectoryName: String);
+   procedure CreateDirectoryLayout(DirectoryName: String) with
+      Pre => DirectoryName'Length > 0;
    -- ****
 
 end Layouts;
