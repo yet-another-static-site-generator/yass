@@ -575,29 +575,39 @@ package body Config is
               "Full path to the web broser which will be started when the program starts in server mode. (default - none): ");
          Answer := To_Unbounded_String(Source => Get_Line);
          if Answer = Null_Unbounded_String then
-            Answer := To_Unbounded_String("none");
+            Answer := To_Unbounded_String(Source => "none");
          end if;
-         Put_Line(Config_File, "BrowserCommand = " & To_String(Answer));
          Put_Line
-           (Config_File,
-            "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
-         Put
-           ("How often, in seconds, the program should check for changes in the site files? (default - 5): ");
-         Answer := To_Unbounded_String(Get_Line);
-         if Answer = Null_Unbounded_String then
-            Answer := To_Unbounded_String("5");
-         end if;
-         Put_Line(Config_File, "MonitorInterval = " & To_String(Answer));
+           (File => Config_File,
+            Item => "BrowserCommand = " & To_String(Source => Answer));
          Put_Line
-           (Config_File,
-            "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
+           (File => Config_File,
+            Item =>
+              "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
          Put
-           ("How often, in seconds, the program should check for changes in the site configuration file? (default - 60): ");
-         Answer := To_Unbounded_String(Get_Line);
+           (Item =>
+              "How often, in seconds, the program should check for changes in the site files? (default - 5): ");
+         Answer := To_Unbounded_String(Source => Get_Line);
          if Answer = Null_Unbounded_String then
-            Answer := To_Unbounded_String("60");
+            Answer := To_Unbounded_String(Source => "5");
          end if;
-         Put_Line(Config_File, "MonitorConfigInterval = " & To_String(Answer));
+         Put_Line
+           (File => Config_File,
+            Item => "MonitorInterval = " & To_String(Source => Answer));
+         Put_Line
+           (File => Config_File,
+            Item =>
+              "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
+         Put
+           (Item =>
+              "How often, in seconds, the program should check for changes in the site configuration file? (default - 60): ");
+         Answer := To_Unbounded_String(Source => Get_Line);
+         if Answer = Null_Unbounded_String then
+            Answer := To_Unbounded_String(Source => "60");
+         end if;
+         Put_Line
+           (File => Config_File,
+            Item => "MonitorConfigInterval = " & To_String(Source => Answer));
       else
          Put_Line
            (Config_File,
