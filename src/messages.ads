@@ -24,7 +24,8 @@ package Messages is
    -- FUNCTION
    -- Types of messages: Normal, Error or Success
    -- SOURCE
-   type Messages_Types is (Normal, Error, Success);
+   type Messages_Types is (Normal, Error, Success) with
+      Default_Value => Error;
    -- ****
 
    -- ****f* Messages/Messages.ShowMessage
@@ -34,7 +35,8 @@ package Messages is
    -- Text  - Text to show to the user
    -- MType - Type of message. Default is Error
    -- SOURCE
-   procedure ShowMessage(Text: String; MType: Messages_Types := Error);
+   procedure ShowMessage(Text: String; MType: Messages_Types := Error) with
+      Pre => Text'Length > 0;
    -- ****
 
 end Messages;
