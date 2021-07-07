@@ -36,7 +36,8 @@ package Modules is
    -- SOURCE
    procedure LoadModules
      (State: String; PageTags: in out Tags_Container.Map;
-      PageTableTags: in out TableTags_Container.Map);
+      PageTableTags: in out TableTags_Container.Map) with
+      Pre => State'Length > 0;
    -- ****
 
 end Modules;
