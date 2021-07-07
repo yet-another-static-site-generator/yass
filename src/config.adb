@@ -635,31 +635,39 @@ package body Config is
               "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
          Put_Line(File => Config_File, Item => "MonitorInterval = 5");
          Put_Line
-           (Config_File,
-            "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
-         Put_Line(Config_File, "MonitorConfigInterval = 60");
+           (File => Config_File,
+            Item =>
+              "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
+         Put_Line(File => Config_File, Item => "MonitorConfigInterval = 60");
       end if;
       Put
-        ("Do you want to set options related to compatybility with other static sites generators? (default - no): ");
-      Answer := To_Unbounded_String(Get_Line);
-      if Answer = To_Unbounded_String("yes") or
-        Answer = To_Unbounded_String("y") then
+        (Item =>
+           "Do you want to set options related to compatybility with other static sites generators? (default - no): ");
+      Answer := To_Unbounded_String(Source => Get_Line);
+      if Answer in To_Unbounded_String(Source => "yes") |
+            To_Unbounded_String(Source => "y") then
          Put_Line
-           (Config_File,
-            "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+           (File => Config_File,
+            Item =>
+              "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
          Put
-           ("What mark should be used as a start for template tag? (default, without quotes - ""{%""): ");
-         Answer := To_Unbounded_String(Get_Line);
+           (Item =>
+              "What mark should be used as a start for template tag? (default, without quotes - ""{%""): ");
+         Answer := To_Unbounded_String(Source => Get_Line);
          if Answer = Null_Unbounded_String then
-            Answer := To_Unbounded_String("{%");
+            Answer := To_Unbounded_String(Source => "{%");
          end if;
-         Put_Line(Config_File, "StartTagSeparator = " & To_String(Answer));
          Put_Line
-           (Config_File,
-            "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+           (File => Config_File,
+            Item => "StartTagSeparator = " & To_String(Source => Answer));
+         Put_Line
+           (File => Config_File,
+            Item =>
+              "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
          Put
-           ("What mark should be used as an end for template tag? (default, without quotes - ""%}""): ");
-         Answer := To_Unbounded_String(Get_Line);
+           (Item =>
+              "What mark should be used as an end for template tag? (default, without quotes - ""%}""): ");
+         Answer := To_Unbounded_String(Source => Get_Line);
          if Answer = Null_Unbounded_String then
             Answer := To_Unbounded_String("%}");
          end if;
