@@ -669,28 +669,36 @@ package body Config is
               "What mark should be used as an end for template tag? (default, without quotes - ""%}""): ");
          Answer := To_Unbounded_String(Source => Get_Line);
          if Answer = Null_Unbounded_String then
-            Answer := To_Unbounded_String("%}");
+            Answer := To_Unbounded_String(Source => "%}");
          end if;
-         Put_Line(Config_File, "EndTagSeparator = " & To_String(Answer));
          Put_Line
-           (Config_File,
-            "# String used to mark comments in markdown files which will be parsed.");
+           (File => Config_File,
+            Item => "EndTagSeparator = " & To_String(Source => Answer));
+         Put_Line
+           (File => Config_File,
+            Item =>
+              "# String used to mark comments in markdown files which will be parsed.");
          Put
-           ("What mark should be used as a start for the comment line in Markdown files? (default, without quotes - ""--""): ");
-         Answer := To_Unbounded_String(Get_Line);
+           (Item =>
+              "What mark should be used as a start for the comment line in Markdown files? (default, without quotes - ""--""): ");
+         Answer := To_Unbounded_String(Source => Get_Line);
          if Answer = Null_Unbounded_String then
-            Answer := To_Unbounded_String("--");
+            Answer := To_Unbounded_String(Source => "--");
          end if;
-         Put_Line(Config_File, "MarkdownComment = " & To_String(Answer));
+         Put_Line
+           (File => Config_File,
+            Item => "MarkdownComment = " & To_String(Source => Answer));
       else
          Put_Line
-           (Config_File,
-            "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-         Put_Line(Config_File, "StartTagSeparator = {%");
+           (File => Config_File,
+            Item =>
+              "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+         Put_Line(File => Config_File, Item => "StartTagSeparator = {%");
          Put_Line
-           (Config_File,
-            "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-         Put_Line(Config_File, "EndTagSeparator = %}");
+           (File => Config_File,
+            Item =>
+              "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
+         Put_Line(File => Config_File, Item => "EndTagSeparator = %}");
          Put_Line
            (Config_File,
             "# String used to mark comments in markdown files which will be parsed.");
