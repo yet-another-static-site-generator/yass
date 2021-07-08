@@ -38,7 +38,8 @@ package Pages is
    -- Directory - Full path to the directory where newly create HTML file will
    --             be added
    -- SOURCE
-   procedure CreatePage(FileName, Directory: String);
+   procedure CreatePage(FileName, Directory: String) with
+      Pre => FileName'Length > 0 and Directory'Length > 0;
    -- ****
 
    -- ****f* Pages/Pages.CopyFile
@@ -49,7 +50,8 @@ package Pages is
    -- FileName  - Full path to the file which will be copied
    -- Directory - Full path to the directory where file will be added
    -- SOURCE
-   procedure CopyFile(FileName, Directory: String);
+   procedure CopyFile(FileName, Directory: String) with
+      Pre => FileName'Length > 0 and Directory'Length > 0;
    -- ****
 
    -- ****f* Pages/Pages.CreateEmptyFile
@@ -58,7 +60,8 @@ package Pages is
    -- PARAMETERS
    -- FileName - Full path to the Markdown file which will be created
    -- SOURCE
-   procedure CreateEmptyFile(FileName: String);
+   procedure CreateEmptyFile(FileName: String) with
+      Pre => FileName'Length > 0;
    -- ****
 
    -- ****f* Pages/Pages.GetLayoutName
@@ -69,7 +72,8 @@ package Pages is
    -- RESULT
    -- Name of the layout used by the file
    -- SOURCE
-   function GetLayoutName(FileName: String) return String;
+   function GetLayoutName(FileName: String) return String with
+      Pre => FileName'Length > 0;
    -- ****
 
 end Pages;
