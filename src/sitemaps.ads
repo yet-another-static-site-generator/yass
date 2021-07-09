@@ -39,7 +39,9 @@ package Sitemaps is
    -- ChangeFrequency - How often selected page will change
    -- PagePriority    - Priority for the page
    -- SOURCE
-   procedure AddPageToSitemap(FileName, ChangeFrequency, PagePriority: String);
+   procedure AddPageToSitemap
+     (FileName, ChangeFrequency, PagePriority: String) with
+      Pre => FileName'Length > 0;
    -- ****
 
    -- ****f* Sitemaps/Sitemaps.SaveSitemap
