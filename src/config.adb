@@ -16,11 +16,11 @@
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
-with Ada.Characters.Handling; use Ada.Characters.Handling;
-with Ada.Directories; use Ada.Directories;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with GNAT.String_Split; use GNAT.String_Split;
+with Ada.Strings.UTF_Encoding.Strings;
+with Ada.Characters.Handling;
+with Ada.Directories;
+with Ada.Strings.Fixed;
+with GNAT.String_Split;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 package body Config is
@@ -163,6 +163,12 @@ package body Config is
    end Create_Config;
 
    procedure Parse_Config(Directory_Name: String) is
+      use Ada.Strings.UTF_Encoding.Strings;
+      use Ada.Characters.Handling;
+      use Ada.Directories;
+      use Ada.Strings.Fixed;
+      use GNAT.String_Split;
+
       Config_File: File_Type;
       Raw_Data, Field_Name, Value: Unbounded_String := Null_Unbounded_String;
       Equal_Index: Natural := 0;
@@ -700,23 +706,28 @@ package body Config is
               "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
          Put_Line(File => Config_File, Item => "EndTagSeparator = %}");
          Put_Line
-           (Config_File,
-            "# String used to mark comments in markdown files which will be parsed.");
-         Put_Line(Config_File, "MarkdownComment = --");
+           (File => Config_File,
+            Item =>
+              "# String used to mark comments in markdown files which will be parsed.");
+         Put_Line(File => Config_File, Item => "MarkdownComment = --");
       end if;
       Put_Line
-        (Config_File,
-         "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
+        (File => Config_File,
+         Item =>
+           "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
-        (Config_File,
-         "# First 3 types of tags are in Name = Value scheme. For strings it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always fall back to string value.");
+        (File => Config_File,
+         Item =>
+           "# First 3 types of tags are in Name = Value scheme. For strings it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always fall back to string value.");
       Put_Line
-        (Config_File,
-         "# Composite tags first must be initialized with Name = [] then just add as many as you want values to it by Name = Value scheme.");
+        (File => Config_File,
+         Item =>
+           "# Composite tags first must be initialized with Name = [] then just add as many as you want values to it by Name = Value scheme.");
       Put_Line
-        (Config_File,
-         "# For more informations about site.cfg file please check program documentation.");
-      Close(Config_File);
+        (File => Config_File,
+         Item =>
+           "# For more informations about site.cfg file please check program documentation.");
+      Close(File => Config_File);
    end Create_Interactive_Config;
 
 end Config;
