@@ -22,26 +22,25 @@
 package Layouts is
 -- ****
 
-   -- ****f* Layouts/Layouts.CreateLayout
+   -- ****f* Layouts/Layouts.Create_Layout
    -- FUNCTION
    -- Create default site layouts in directory with full path DirectoryName
    -- PARAMETERS
-   -- DirectoryName - Full path to the directory where default layout will be
+   -- Directory_Name - Full path to the directory where default layout will be
    --                 created
    -- SOURCE
-   procedure CreateLayout(DirectoryName: String) with
-      Pre => DirectoryName'Length > 0;
+   procedure Create_Layout(Directory_Name: String) with
+      Pre => Directory_Name'Length > 0;
    -- ****
 
-   -- ****f* Layouts/Layouts.CreateDirectoryLayout
+   -- ****f* Layouts/Layouts.Create_Directory_Layout
    -- FUNCTION
    -- Create default layout for directory listing for web server in layouts
    -- directory with full path DirectoryName
    -- PARAMETERS
-   -- DirectoryName - Full path to the directory where layout will be created
+   -- Directory_Name - Full path to the directory where layout will be created
    -- SOURCE
-   procedure CreateDirectoryLayout(DirectoryName: String) with
-      Pre => DirectoryName'Length > 0;
+   procedure Create_Directory_Layout(Directory_Name: String);
    -- ****
 
 end Layouts;

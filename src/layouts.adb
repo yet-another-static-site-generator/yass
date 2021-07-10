@@ -22,12 +22,12 @@ with Config; use Config;
 
 package body Layouts is
 
-   procedure CreateLayout(DirectoryName: String) is
+   procedure Create_Layout(Directory_Name: String) is
       LayoutFile: File_Type;
    begin
       Create
         (LayoutFile, Append_File,
-         DirectoryName & Dir_Separator & "_layouts" & Dir_Separator &
+         Directory_Name & Dir_Separator & "_layouts" & Dir_Separator &
          "default.html");
       Put_Line(LayoutFile, "<!DOCTYPE html>");
       Put_Line(LayoutFile, "<html lang=""{%Language%}"">");
@@ -56,14 +56,14 @@ package body Layouts is
       Put_Line(LayoutFile, "</body>");
       Put_Line(LayoutFile, "</html>");
       Close(LayoutFile);
-   end CreateLayout;
+   end Create_Layout;
 
-   procedure CreateDirectoryLayout(DirectoryName: String) is
+   procedure Create_Directory_Layout(Directory_Name: String) is
       LayoutFile: File_Type;
    begin
       Create
         (LayoutFile, Append_File,
-         DirectoryName & Dir_Separator &
+         Directory_Name & Dir_Separator &
          To_String(Yass_Config.Layouts_Directory) & Dir_Separator &
          "directory.html");
       Put_Line(LayoutFile, "<!DOCTYPE html>");
@@ -81,6 +81,6 @@ package body Layouts is
       Put_Line(LayoutFile, "</body>");
       Put_Line(LayoutFile, "</html>");
       Close(LayoutFile);
-   end CreateDirectoryLayout;
+   end Create_Directory_Layout;
 
 end Layouts;
