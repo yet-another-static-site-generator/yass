@@ -50,7 +50,9 @@ procedure Yass is
    -- RESULT
    -- Returns True if the site was build, otherwise False.
    -- SOURCE
-   function Build_Site(Directory_Name: String) return Boolean is
+   function Build_Site(Directory_Name: String) return Boolean with
+      Pre => Directory_Name'Length > 0
+   is
       -- ****
       use AtomFeed;
       use Modules;
@@ -60,7 +62,9 @@ procedure Yass is
       Page_Table_Tags: TableTags_Container.Map :=
         TableTags_Container.Empty_Map;
       -- Build the site from directory with full path Name
-      procedure Build(Name: String) is
+      procedure Build(Name: String) with
+         Pre => Name'Length > 0
+      is
          -- Process file with full path Item: create html pages from markdown files or copy any other file.
          procedure Process_Files(Item: Directory_Entry_Type) is
          begin
@@ -145,7 +149,10 @@ procedure Yass is
    -- RESULT
    -- Returns True if entered arguments are valid, otherwise False.
    -- SOURCE
-   function Valid_Arguments(Message: String; Exist: Boolean) return Boolean is
+   function Valid_Arguments
+     (Message: String; Exist: Boolean) return Boolean with
+      Pre => Message'Length > 0
+   is
    -- ****
    begin
       -- User does not entered name of the site project directory
@@ -258,9 +265,9 @@ procedure Yass is
       else
          Create_Config(Directory_Name => To_String(Source => Work_Directory));
       end if;
-      CreateLayout(DirectoryName => To_String(Source => Work_Directory));
-      CreateDirectoryLayout
-        (DirectoryName => To_String(Source => Work_Directory));
+      Create_Layout(Directory_Name => To_String(Source => Work_Directory));
+      Create_Directory_Layout
+        (Directory_Name => To_String(Source => Work_Directory));
       CreateEmptyFile(FileName => To_String(Source => Work_Directory));
       ShowMessage
         (Text =>
@@ -369,7 +376,7 @@ begin
              (Name =>
                 To_String(Source => Yass_Config.Layouts_Directory) &
                 Dir_Separator & "directory.html") then
-            CreateDirectoryLayout(DirectoryName => "");
+            Create_Directory_Layout(Directory_Name => "");
          end if;
          StartServer;
          if Yass_Config.Browser_Command /=
