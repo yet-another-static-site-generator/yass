@@ -173,7 +173,8 @@ package Config is
    --                  created
    -- SOURCE
    procedure Create_Config(Directory_Name: String) with
-      Pre => Directory_Name'Length > 0;
+      Pre => Directory_Name'Length > 0,
+      Test_Case => (Name => "Test_Create_Config", Mode => Nominal);
    -- ****
 
    -- ****f* Config/Config.Parse_Config

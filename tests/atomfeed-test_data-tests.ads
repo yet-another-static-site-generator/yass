@@ -10,11 +10,11 @@ package AtomFeed.Test_Data.Tests is
      .Test with
    null record;
 
-   procedure Test_To_Time_e953f5_8a629f(Gnattest_T: in out Test);
-   --  atomfeed.ads:67:4:To_Time:Test_To_Date
+   procedure Test_To_Time_e953f5_b6f0f8(Gnattest_T: in out Test);
+   --  atomfeed.ads:75:4:To_Time:Test_To_Date
 
-   procedure Test_To_HTTP_Date_2bd5b1_bcc90f(Gnattest_T: in out Test);
-   --  atomfeed.ads:79:4:To_HTTP_Date:Test_To_HTTP_Date
+   procedure Test_To_HTTP_Date_2bd5b1_0b38f7(Gnattest_T: in out Test);
+   --  atomfeed.ads:88:4:To_HTTP_Date:Test_To_HTTP_Date
 
 end AtomFeed.Test_Data.Tests;
 --  end read only

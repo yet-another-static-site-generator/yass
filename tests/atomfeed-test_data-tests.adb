@@ -31,10 +31,10 @@ package body AtomFeed.Test_Data.Tests is
 --  begin read only
 --  end read only
 --  begin read only
-   function Wrap_Test_To_Time_e953f5_8a629f(Date: String) return Time is
+   function Wrap_Test_To_Time_e953f5_b6f0f8(Date: String) return Time is
    begin
       begin
-         pragma Assert(True);
+         pragma Assert(Date'Length > 0);
          null;
       exception
          when System.Assertions.Assert_Failure =>
@@ -43,7 +43,7 @@ package body AtomFeed.Test_Data.Tests is
                "req_sloc(atomfeed.ads:0):Test_To_Date test requirement violated");
       end;
       declare
-         Test_To_Time_e953f5_8a629f_Result: constant Time :=
+         Test_To_Time_e953f5_b6f0f8_Result: constant Time :=
            GNATtest_Generated.GNATtest_Standard.AtomFeed.To_Time(Date);
       begin
          begin
@@ -55,19 +55,19 @@ package body AtomFeed.Test_Data.Tests is
                  (False,
                   "ens_sloc(atomfeed.ads:0:):Test_To_Date test commitment violated");
          end;
-         return Test_To_Time_e953f5_8a629f_Result;
+         return Test_To_Time_e953f5_b6f0f8_Result;
       end;
-   end Wrap_Test_To_Time_e953f5_8a629f;
+   end Wrap_Test_To_Time_e953f5_b6f0f8;
 --  end read only
 
 --  begin read only
    procedure Test_To_Time_test_to_date(Gnattest_T: in out Test);
-   procedure Test_To_Time_e953f5_8a629f(Gnattest_T: in out Test) renames
+   procedure Test_To_Time_e953f5_b6f0f8(Gnattest_T: in out Test) renames
      Test_To_Time_test_to_date;
 --  id:2.2/e953f5f4ae1398fb/To_Time/1/0/test_to_date/
    procedure Test_To_Time_test_to_date(Gnattest_T: in out Test) is
       function To_Time(Date: String) return Time renames
-        Wrap_Test_To_Time_e953f5_8a629f;
+        Wrap_Test_To_Time_e953f5_b6f0f8;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
@@ -86,7 +86,7 @@ package body AtomFeed.Test_Data.Tests is
 --  end read only
 
 --  begin read only
-   function Wrap_Test_To_HTTP_Date_2bd5b1_bcc90f(Date: Time) return String is
+   function Wrap_Test_To_HTTP_Date_2bd5b1_0b38f7(Date: Time) return String is
    begin
       begin
          pragma Assert(True);
@@ -98,11 +98,11 @@ package body AtomFeed.Test_Data.Tests is
                "req_sloc(atomfeed.ads:0):Test_To_HTTP_Date test requirement violated");
       end;
       declare
-         Test_To_HTTP_Date_2bd5b1_bcc90f_Result: constant String :=
+         Test_To_HTTP_Date_2bd5b1_0b38f7_Result: constant String :=
            GNATtest_Generated.GNATtest_Standard.AtomFeed.To_HTTP_Date(Date);
       begin
          begin
-            pragma Assert(True);
+            pragma Assert(Test_To_HTTP_Date_2bd5b1_0b38f7_Result'Length > 0);
             null;
          exception
             when System.Assertions.Assert_Failure =>
@@ -110,19 +110,19 @@ package body AtomFeed.Test_Data.Tests is
                  (False,
                   "ens_sloc(atomfeed.ads:0:):Test_To_HTTP_Date test commitment violated");
          end;
-         return Test_To_HTTP_Date_2bd5b1_bcc90f_Result;
+         return Test_To_HTTP_Date_2bd5b1_0b38f7_Result;
       end;
-   end Wrap_Test_To_HTTP_Date_2bd5b1_bcc90f;
+   end Wrap_Test_To_HTTP_Date_2bd5b1_0b38f7;
 --  end read only
 
 --  begin read only
    procedure Test_To_HTTP_Date_test_to_http_date(Gnattest_T: in out Test);
-   procedure Test_To_HTTP_Date_2bd5b1_bcc90f(Gnattest_T: in out Test) renames
+   procedure Test_To_HTTP_Date_2bd5b1_0b38f7(Gnattest_T: in out Test) renames
      Test_To_HTTP_Date_test_to_http_date;
 --  id:2.2/2bd5b10ba8625102/To_HTTP_Date/1/0/test_to_http_date/
    procedure Test_To_HTTP_Date_test_to_http_date(Gnattest_T: in out Test) is
       function To_HTTP_Date(Date: Time) return String renames
-        Wrap_Test_To_HTTP_Date_2bd5b1_bcc90f;
+        Wrap_Test_To_HTTP_Date_2bd5b1_0b38f7;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);

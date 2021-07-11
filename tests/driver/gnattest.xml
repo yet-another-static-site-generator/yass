@@ -3,14 +3,14 @@
       <test_unit target_file="atomfeed-test_data-tests.ads">
          <setup file="atomfeed-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="atomfeed-test_data.adb" name="Tear_Down" line="14"  column="4"/>
-         <tested name="To_Time" line="67" column="13">
-            <test_case name="Test_To_Date" line="68" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="70" column="1" name="Test_To_Time_e953f5_8a629f" timestamp="2021-04-11 06:16:05"/>
+         <tested name="To_Time" line="75" column="13">
+            <test_case name="Test_To_Date" line="77" column="7">
+               <test file="atomfeed-test_data-tests.adb" line="72" column="1" name="Test_To_Time_e953f5_b6f0f8" timestamp="modified"/>
             </test_case>
          </tested>
-         <tested name="To_HTTP_Date" line="79" column="13">
-            <test_case name="Test_To_HTTP_Date" line="80" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="122" column="1" name="Test_To_HTTP_Date_2bd5b1_bcc90f" timestamp="2021-04-11 06:16:05"/>
+         <tested name="To_HTTP_Date" line="88" column="13">
+            <test_case name="Test_To_HTTP_Date" line="91" column="7">
+               <test file="atomfeed-test_data-tests.adb" line="127" column="1" name="Test_To_HTTP_Date_2bd5b1_0b38f7" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
@@ -19,6 +19,37 @@
       <test_unit target_file="atomfeed-test_data-tests-feedentry_container-test_data-tests.ads">
          <setup file="atomfeed-test_data-tests-feedentry_container-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="atomfeed-test_data-tests-feedentry_container-test_data.adb" name="Tear_Down" line="14"  column="4"/>
+         <dangling>
+         </dangling>
+      </test_unit>
+   </unit>
+   <unit source_file="config.ads">
+      <test_unit target_file="config-test_data-tests.ads">
+         <setup file="config-test_data.adb" name="Set_Up" line="8"  column="4"/>
+         <teardown file="config-test_data.adb" name="Tear_Down" line="14"  column="4"/>
+         <tested name="Create_Config" line="175" column="14">
+            <test_case name="Test_Create_Config" line="177" column="7">
+               <test file="config-test_data-tests.adb" line="66" column="1" name="Test_Create_Config_683023_fc325a" timestamp="2021-07-10 06:16:38"/>
+            </test_case>
+         </tested>
+         <dangling>
+         </dangling>
+      </test_unit>
+      <test_unit target_file="config-test_data-tests-excluded_container-test_data-tests.ads">
+         <setup file="config-test_data-tests-excluded_container-test_data.adb" name="Set_Up" line="8"  column="4"/>
+         <teardown file="config-test_data-tests-excluded_container-test_data.adb" name="Tear_Down" line="14"  column="4"/>
+         <dangling>
+         </dangling>
+      </test_unit>
+      <test_unit target_file="config-test_data-tests-tags_container-test_data-tests.ads">
+         <setup file="config-test_data-tests-tags_container-test_data.adb" name="Set_Up" line="8"  column="4"/>
+         <teardown file="config-test_data-tests-tags_container-test_data.adb" name="Tear_Down" line="14"  column="4"/>
+         <dangling>
+         </dangling>
+      </test_unit>
+      <test_unit target_file="config-test_data-tests-tabletags_container-test_data-tests.ads">
+         <setup file="config-test_data-tests-tabletags_container-test_data.adb" name="Set_Up" line="8"  column="4"/>
+         <teardown file="config-test_data-tests-tabletags_container-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <dangling>
          </dangling>
       </test_unit>

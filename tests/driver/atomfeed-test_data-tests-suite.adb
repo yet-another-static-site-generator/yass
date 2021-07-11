@@ -14,23 +14,23 @@ package body AtomFeed.Test_Data.Tests.Suite is
 
    Result : aliased AUnit.Test_Suites.Test_Suite;
 
-   Case_1_1_Test_To_Time_e953f5_8a629f : aliased Runner_1.Test_Case;
-   Case_2_1_Test_To_HTTP_Date_2bd5b1_bcc90f : aliased Runner_1.Test_Case;
+   Case_1_1_Test_To_Time_e953f5_b6f0f8 : aliased Runner_1.Test_Case;
+   Case_2_1_Test_To_HTTP_Date_2bd5b1_0b38f7 : aliased Runner_1.Test_Case;
 
    function Suite return AUnit.Test_Suites.Access_Test_Suite is
    begin
 
       Runner_1.Create
-        (Case_1_1_Test_To_Time_e953f5_8a629f,
-         "atomfeed.ads:68:7:",
-         Test_To_Time_e953f5_8a629f'Access);
+        (Case_1_1_Test_To_Time_e953f5_b6f0f8,
+         "atomfeed.ads:77:7:",
+         Test_To_Time_e953f5_b6f0f8'Access);
       Runner_1.Create
-        (Case_2_1_Test_To_HTTP_Date_2bd5b1_bcc90f,
-         "atomfeed.ads:80:7:",
-         Test_To_HTTP_Date_2bd5b1_bcc90f'Access);
+        (Case_2_1_Test_To_HTTP_Date_2bd5b1_0b38f7,
+         "atomfeed.ads:91:7:",
+         Test_To_HTTP_Date_2bd5b1_0b38f7'Access);
 
-      Add_Test (Result'Access, Case_1_1_Test_To_Time_e953f5_8a629f'Access);
-      Add_Test (Result'Access, Case_2_1_Test_To_HTTP_Date_2bd5b1_bcc90f'Access);
+      Add_Test (Result'Access, Case_1_1_Test_To_Time_e953f5_b6f0f8'Access);
+      Add_Test (Result'Access, Case_2_1_Test_To_HTTP_Date_2bd5b1_0b38f7'Access);
 
       return Result'Access;
 
