@@ -23,64 +23,64 @@ with Config; use Config;
 package body Layouts is
 
    procedure Create_Layout(Directory_Name: String) is
-      LayoutFile: File_Type;
+      Layout_File: File_Type;
    begin
       Create
-        (LayoutFile, Append_File,
+        (Layout_File, Append_File,
          Directory_Name & Dir_Separator & "_layouts" & Dir_Separator &
          "default.html");
-      Put_Line(LayoutFile, "<!DOCTYPE html>");
-      Put_Line(LayoutFile, "<html lang=""{%Language%}"">");
-      Put_Line(LayoutFile, "<head>");
-      Put_Line(LayoutFile, "<meta charset=""UTF-8"">");
+      Put_Line(Layout_File, "<!DOCTYPE html>");
+      Put_Line(Layout_File, "<html lang=""{%Language%}"">");
+      Put_Line(Layout_File, "<head>");
+      Put_Line(Layout_File, "<meta charset=""UTF-8"">");
       Put_Line
-        (LayoutFile,
+        (Layout_File,
          "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
       Put_Line
-        (LayoutFile, "<link rel=""canonical"" href=""{%canonicallink%}"" />");
-      Put_Line(LayoutFile, "@@IF@@ {%author%} /= """"");
-      Put_Line(LayoutFile, "<meta name=""author"" content=""{%author%}"">");
-      Put_Line(LayoutFile, "@@END_IF@@");
-      Put_Line(LayoutFile, "@@IF@@ {%description%} /= """"");
+        (Layout_File, "<link rel=""canonical"" href=""{%canonicallink%}"" />");
+      Put_Line(Layout_File, "@@IF@@ {%author%} /= """"");
+      Put_Line(Layout_File, "<meta name=""author"" content=""{%author%}"">");
+      Put_Line(Layout_File, "@@END_IF@@");
+      Put_Line(Layout_File, "@@IF@@ {%description%} /= """"");
       Put_Line
-        (LayoutFile,
+        (Layout_File,
          "<meta name=""description"" content=""{%description%}"">");
-      Put_Line(LayoutFile, "@@END_IF@@");
-      Put_Line(LayoutFile, "@@IF@@ {%AtomLink%} /= """"");
-      Put_Line(LayoutFile, "{%AtomLink%}");
-      Put_Line(LayoutFile, "@@END_IF@@");
-      Put_Line(LayoutFile, "<title>{%Name%}</title>");
-      Put_Line(LayoutFile, "</head>");
-      Put_Line(LayoutFile, "<body>");
-      Put_Line(LayoutFile, "{%Content%}");
-      Put_Line(LayoutFile, "</body>");
-      Put_Line(LayoutFile, "</html>");
-      Close(LayoutFile);
+      Put_Line(Layout_File, "@@END_IF@@");
+      Put_Line(Layout_File, "@@IF@@ {%AtomLink%} /= """"");
+      Put_Line(Layout_File, "{%AtomLink%}");
+      Put_Line(Layout_File, "@@END_IF@@");
+      Put_Line(Layout_File, "<title>{%Name%}</title>");
+      Put_Line(Layout_File, "</head>");
+      Put_Line(Layout_File, "<body>");
+      Put_Line(Layout_File, "{%Content%}");
+      Put_Line(Layout_File, "</body>");
+      Put_Line(Layout_File, "</html>");
+      Close(Layout_File);
    end Create_Layout;
 
    procedure Create_Directory_Layout(Directory_Name: String) is
-      LayoutFile: File_Type;
+      Layout_File: File_Type;
    begin
       Create
-        (LayoutFile, Append_File,
+        (Layout_File, Append_File,
          Directory_Name & Dir_Separator &
          To_String(Yass_Config.Layouts_Directory) & Dir_Separator &
          "directory.html");
-      Put_Line(LayoutFile, "<!DOCTYPE html>");
-      Put_Line(LayoutFile, "<html>");
-      Put_Line(LayoutFile, "<head>");
-      Put_Line(LayoutFile, "<meta charset=""UTF-8"">");
+      Put_Line(Layout_File, "<!DOCTYPE html>");
+      Put_Line(Layout_File, "<html>");
+      Put_Line(Layout_File, "<head>");
+      Put_Line(Layout_File, "<meta charset=""UTF-8"">");
       Put_Line
-        (LayoutFile,
+        (Layout_File,
          "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
-      Put_Line(LayoutFile, "</head>");
-      Put_Line(LayoutFile, "<body>");
-      Put_Line(LayoutFile, "@@TABLE@@");
-      Put_Line(LayoutFile, "<a href=""{%NAME_V%}"">{%NAME_V%}</a><br />");
-      Put_Line(LayoutFile, "@@END_TABLE@@");
-      Put_Line(LayoutFile, "</body>");
-      Put_Line(LayoutFile, "</html>");
-      Close(LayoutFile);
+      Put_Line(Layout_File, "</head>");
+      Put_Line(Layout_File, "<body>");
+      Put_Line(Layout_File, "@@TABLE@@");
+      Put_Line(Layout_File, "<a href=""{%NAME_V%}"">{%NAME_V%}</a><br />");
+      Put_Line(Layout_File, "@@END_TABLE@@");
+      Put_Line(Layout_File, "</body>");
+      Put_Line(Layout_File, "</html>");
+      Close(Layout_File);
    end Create_Directory_Layout;
 
 end Layouts;
