@@ -26,21 +26,26 @@ package body Layouts is
       Layout_File: File_Type;
    begin
       Create
-        (Layout_File, Append_File,
-         Directory_Name & Dir_Separator & "_layouts" & Dir_Separator &
-         "default.html");
-      Put_Line(Layout_File, "<!DOCTYPE html>");
-      Put_Line(Layout_File, "<html lang=""{%Language%}"">");
-      Put_Line(Layout_File, "<head>");
-      Put_Line(Layout_File, "<meta charset=""UTF-8"">");
+        (File => Layout_File, Mode => Append_File,
+         Name =>
+           Directory_Name & Dir_Separator & "_layouts" & Dir_Separator &
+           "default.html");
+      Put_Line(File => Layout_File, Item => "<!DOCTYPE html>");
+      Put_Line(File => Layout_File, Item => "<html lang=""{%Language%}"">");
+      Put_Line(File => Layout_File, Item => "<head>");
+      Put_Line(File => Layout_File, Item => "<meta charset=""UTF-8"">");
       Put_Line
-        (Layout_File,
-         "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
+        (File => Layout_File,
+         Item =>
+           "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
       Put_Line
-        (Layout_File, "<link rel=""canonical"" href=""{%canonicallink%}"" />");
-      Put_Line(Layout_File, "@@IF@@ {%author%} /= """"");
-      Put_Line(Layout_File, "<meta name=""author"" content=""{%author%}"">");
-      Put_Line(Layout_File, "@@END_IF@@");
+        (File => Layout_File,
+         Item => "<link rel=""canonical"" href=""{%canonicallink%}"" />");
+      Put_Line(File => Layout_File, Item => "@@IF@@ {%author%} /= """"");
+      Put_Line
+        (File => Layout_File,
+         Item => "<meta name=""author"" content=""{%author%}"">");
+      Put_Line(File => Layout_File, Item => "@@END_IF@@");
       Put_Line(Layout_File, "@@IF@@ {%description%} /= """"");
       Put_Line
         (Layout_File,
