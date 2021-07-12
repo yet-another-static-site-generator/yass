@@ -167,7 +167,7 @@ package Config is
 
    -- ****f* Config/Config.Create_Config
    -- FUNCTION
-   -- Create default config in directory with full path DirectoryName
+   -- Create default config in directory with full path Directory_Name
    -- PARAMETERS
    -- Directory_Name - Full path to the directory where config file will be
    --                  created
@@ -180,7 +180,7 @@ package Config is
    -- ****f* Config/Config.Parse_Config
    -- FUNCTION
    -- Parse config file and set all settings and tags for site in directory
-   -- with full path DirectoryName
+   -- with full path Directory_Name
    -- PARAMETERS
    -- Directory_Name - Full path to the directory from which config file will
    --                  be parsed
