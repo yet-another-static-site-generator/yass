@@ -186,7 +186,8 @@ package Config is
    --                  be parsed
    -- SOURCE
    procedure Parse_Config(Directory_Name: String) with
-      Pre => Directory_Name'Length > 0;
+      Pre => Directory_Name'Length > 0,
+      Test_Case => (Name => "Test_Parse_Config", Mode => Nominal);
    -- ****
 
    -- ****f* Config/Config.Create_Interactive_Config

@@ -29,7 +29,12 @@
          <teardown file="config-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="Create_Config" line="175" column="14">
             <test_case name="Test_Create_Config" line="177" column="7">
-               <test file="config-test_data-tests.adb" line="66" column="1" name="Test_Create_Config_683023_fc325a" timestamp="2021-07-10 06:16:38"/>
+               <test file="config-test_data-tests.adb" line="68" column="1" name="Test_Create_Config_683023_fc325a" timestamp="modified"/>
+            </test_case>
+         </tested>
+         <tested name="Parse_Config" line="188" column="14">
+            <test_case name="Test_Parse_Config" line="190" column="7">
+               <test file="config-test_data-tests.adb" line="117" column="1" name="Test_Parse_Config_31244b_3aea6e" timestamp="2021-07-12 05:27:17"/>
             </test_case>
          </tested>
          <dangling>

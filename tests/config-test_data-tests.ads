@@ -13,5 +13,8 @@ package Config.Test_Data.Tests is
    procedure Test_Create_Config_683023_fc325a(Gnattest_T: in out Test);
    --  config.ads:175:4:Create_Config:Test_Create_Config
 
+   procedure Test_Parse_Config_31244b_3aea6e(Gnattest_T: in out Test);
+   --  config.ads:188:4:Parse_Config:Test_Parse_Config
+
 end Config.Test_Data.Tests;
 --  end read only
