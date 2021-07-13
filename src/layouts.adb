@@ -46,17 +46,17 @@ package body Layouts is
         (File => Layout_File,
          Item => "<meta name=""author"" content=""{%author%}"">");
       Put_Line(File => Layout_File, Item => "@@END_IF@@");
-      Put_Line(Layout_File, "@@IF@@ {%description%} /= """"");
+      Put_Line(File => Layout_File, Item => "@@IF@@ {%description%} /= """"");
       Put_Line
-        (Layout_File,
-         "<meta name=""description"" content=""{%description%}"">");
-      Put_Line(Layout_File, "@@END_IF@@");
-      Put_Line(Layout_File, "@@IF@@ {%AtomLink%} /= """"");
-      Put_Line(Layout_File, "{%AtomLink%}");
-      Put_Line(Layout_File, "@@END_IF@@");
-      Put_Line(Layout_File, "<title>{%Name%}</title>");
-      Put_Line(Layout_File, "</head>");
-      Put_Line(Layout_File, "<body>");
+        (File => Layout_File,
+         Item => "<meta name=""description"" content=""{%description%}"">");
+      Put_Line(File => Layout_File, Item => "@@END_IF@@");
+      Put_Line(File => Layout_File, Item => "@@IF@@ {%AtomLink%} /= """"");
+      Put_Line(File => Layout_File, Item => "{%AtomLink%}");
+      Put_Line(File => Layout_File, Item => "@@END_IF@@");
+      Put_Line(File => Layout_File, Item => "<title>{%Name%}</title>");
+      Put_Line(File => Layout_File, Item => "</head>");
+      Put_Line(File => Layout_File, Item => "<body>");
       Put_Line(Layout_File, "{%Content%}");
       Put_Line(Layout_File, "</body>");
       Put_Line(Layout_File, "</html>");
