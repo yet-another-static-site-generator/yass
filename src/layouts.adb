@@ -57,27 +57,29 @@ package body Layouts is
       Put_Line(File => Layout_File, Item => "<title>{%Name%}</title>");
       Put_Line(File => Layout_File, Item => "</head>");
       Put_Line(File => Layout_File, Item => "<body>");
-      Put_Line(Layout_File, "{%Content%}");
-      Put_Line(Layout_File, "</body>");
-      Put_Line(Layout_File, "</html>");
-      Close(Layout_File);
+      Put_Line(File => Layout_File, Item => "{%Content%}");
+      Put_Line(File => Layout_File, Item => "</body>");
+      Put_Line(File => Layout_File, Item => "</html>");
+      Close(File => Layout_File);
    end Create_Layout;
 
    procedure Create_Directory_Layout(Directory_Name: String) is
       Layout_File: File_Type;
    begin
       Create
-        (Layout_File, Append_File,
-         Directory_Name & Dir_Separator &
-         To_String(Yass_Config.Layouts_Directory) & Dir_Separator &
-         "directory.html");
-      Put_Line(Layout_File, "<!DOCTYPE html>");
-      Put_Line(Layout_File, "<html>");
-      Put_Line(Layout_File, "<head>");
-      Put_Line(Layout_File, "<meta charset=""UTF-8"">");
+        (File => Layout_File, Mode => Append_File,
+         Name =>
+           Directory_Name & Dir_Separator &
+           To_String(Source => Yass_Config.Layouts_Directory) & Dir_Separator &
+           "directory.html");
+      Put_Line(File => Layout_File, Item => "<!DOCTYPE html>");
+      Put_Line(File => Layout_File, Item => "<html>");
+      Put_Line(File => Layout_File, Item => "<head>");
+      Put_Line(File => Layout_File, Item => "<meta charset=""UTF-8"">");
       Put_Line
-        (Layout_File,
-         "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
+        (File => Layout_File,
+         Item =>
+           "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
       Put_Line(Layout_File, "</head>");
       Put_Line(Layout_File, "<body>");
       Put_Line(Layout_File, "@@TABLE@@");
