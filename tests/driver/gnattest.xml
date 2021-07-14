@@ -34,7 +34,7 @@
          </tested>
          <tested name="Parse_Config" line="188" column="14">
             <test_case name="Test_Parse_Config" line="190" column="7">
-               <test file="config-test_data-tests.adb" line="117" column="1" name="Test_Parse_Config_31244b_3aea6e" timestamp="2021-07-12 05:27:17"/>
+               <test file="config-test_data-tests.adb" line="117" column="1" name="Test_Parse_Config_31244b_3aea6e" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
@@ -55,6 +55,19 @@
       <test_unit target_file="config-test_data-tests-tabletags_container-test_data-tests.ads">
          <setup file="config-test_data-tests-tabletags_container-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="config-test_data-tests-tabletags_container-test_data.adb" name="Tear_Down" line="14"  column="4"/>
+         <dangling>
+         </dangling>
+      </test_unit>
+   </unit>
+   <unit source_file="layouts.ads">
+      <test_unit target_file="layouts-test_data-tests.ads">
+         <setup file="layouts-test_data.adb" name="Set_Up" line="8"  column="4"/>
+         <teardown file="layouts-test_data.adb" name="Tear_Down" line="14"  column="4"/>
+         <tested name="Create_Layout" line="32" column="14">
+            <test_case name="Test_Create_Layout" line="34" column="7">
+               <test file="layouts-test_data-tests.adb" line="66" column="1" name="Test_Create_Layout_c5b31b_63f314" timestamp="2021-07-13 06:06:10"/>
+            </test_case>
+         </tested>
          <dangling>
          </dangling>
       </test_unit>
