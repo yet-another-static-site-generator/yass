@@ -41,7 +41,9 @@ package Layouts is
    -- PARAMETERS
    -- Directory_Name - Full path to the directory where layout will be created
    -- SOURCE
-   procedure Create_Directory_Layout(Directory_Name: String);
+   procedure Create_Directory_Layout(Directory_Name: String) with
+      Test_Case => (Name => "Test_Create_Directory_Layout",
+       Mode => Robustness);
    -- ****
 
 end Layouts;

@@ -81,6 +81,41 @@ package body Layouts.Test_Data.Tests is
 --  end read only
 
 --  begin read only
+   procedure Wrap_Test_Create_Directory_Layout_00199c_0f2a92
+     (Directory_Name: String) is
+   begin
+      GNATtest_Generated.GNATtest_Standard.Layouts.Create_Directory_Layout
+        (Directory_Name);
+   end Wrap_Test_Create_Directory_Layout_00199c_0f2a92;
+--  end read only
+
+--  begin read only
+   procedure Test_Create_Directory_Layout_test_create_directory_layout
+     (Gnattest_T: in out Test);
+   procedure Test_Create_Directory_Layout_00199c_0f2a92
+     (Gnattest_T: in out Test) renames
+     Test_Create_Directory_Layout_test_create_directory_layout;
+--  id:2.2/00199c94c82a9cc4/Create_Directory_Layout/1/0/test_create_directory_layout/
+   procedure Test_Create_Directory_Layout_test_create_directory_layout
+     (Gnattest_T: in out Test) is
+      procedure Create_Directory_Layout(Directory_Name: String) renames
+        Wrap_Test_Create_Directory_Layout_00199c_0f2a92;
+--  end read only
+
+      pragma Unreferenced(Gnattest_T);
+
+   begin
+
+      Create_Directory_Layout(".");
+      Assert
+        (Exists("_layouts/directory.html"),
+         "Failed to create the default directory layout for the project.");
+
+--  begin read only
+   end Test_Create_Directory_Layout_test_create_directory_layout;
+--  end read only
+
+--  begin read only
 --  id:2.2/02/
 --
 --  This section can be used to add elaboration code for the global state.

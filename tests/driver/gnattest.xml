@@ -65,7 +65,12 @@
          <teardown file="layouts-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="Create_Layout" line="32" column="14">
             <test_case name="Test_Create_Layout" line="34" column="7">
-               <test file="layouts-test_data-tests.adb" line="66" column="1" name="Test_Create_Layout_c5b31b_63f314" timestamp="2021-07-13 06:06:10"/>
+               <test file="layouts-test_data-tests.adb" line="68" column="1" name="Test_Create_Layout_c5b31b_63f314" timestamp="modified"/>
+            </test_case>
+         </tested>
+         <tested name="Create_Directory_Layout" line="44" column="14">
+            <test_case name="Test_Create_Directory_Layout" line="45" column="7">
+               <test file="layouts-test_data-tests.adb" line="98" column="1" name="Test_Create_Directory_Layout_00199c_0f2a92" timestamp="2021-07-14 06:16:24"/>
             </test_case>
          </tested>
          <dangling>
