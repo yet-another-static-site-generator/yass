@@ -80,13 +80,15 @@ package body Layouts is
         (File => Layout_File,
          Item =>
            "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
-      Put_Line(Layout_File, "</head>");
-      Put_Line(Layout_File, "<body>");
-      Put_Line(Layout_File, "@@TABLE@@");
-      Put_Line(Layout_File, "<a href=""{%NAME_V%}"">{%NAME_V%}</a><br />");
-      Put_Line(Layout_File, "@@END_TABLE@@");
-      Put_Line(Layout_File, "</body>");
-      Put_Line(Layout_File, "</html>");
+      Put_Line(File => Layout_File, Item => "</head>");
+      Put_Line(File => Layout_File, Item => "<body>");
+      Put_Line(File => Layout_File, Item => "@@TABLE@@");
+      Put_Line
+        (File => Layout_File,
+         Item => "<a href=""{%NAME_V%}"">{%NAME_V%}</a><br />");
+      Put_Line(File => Layout_File, Item => "@@END_TABLE@@");
+      Put_Line(File => Layout_File, Item => "</body>");
+      Put_Line(File => Layout_File, Item => "</html>");
       Close(Layout_File);
    end Create_Directory_Layout;
 
