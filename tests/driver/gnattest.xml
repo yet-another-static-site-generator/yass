@@ -70,7 +70,20 @@
          </tested>
          <tested name="Create_Directory_Layout" line="44" column="14">
             <test_case name="Test_Create_Directory_Layout" line="45" column="7">
-               <test file="layouts-test_data-tests.adb" line="98" column="1" name="Test_Create_Directory_Layout_00199c_0f2a92" timestamp="2021-07-14 06:16:24"/>
+               <test file="layouts-test_data-tests.adb" line="98" column="1" name="Test_Create_Directory_Layout_00199c_0f2a92" timestamp="modified"/>
+            </test_case>
+         </tested>
+         <dangling>
+         </dangling>
+      </test_unit>
+   </unit>
+   <unit source_file="messages.ads">
+      <test_unit target_file="messages-test_data-tests.ads">
+         <setup file="messages-test_data.adb" name="Set_Up" line="8"  column="4"/>
+         <teardown file="messages-test_data.adb" name="Tear_Down" line="14"  column="4"/>
+         <tested name="ShowMessage" line="38" column="14">
+            <test_case name="Test_Show_Message" line="40" column="7">
+               <test file="messages-test_data-tests.adb" line="66" column="1" name="Test_ShowMessage_e90f4a_ce41f3" timestamp="2021-07-15 05:29:39"/>
             </test_case>
          </tested>
          <dangling>

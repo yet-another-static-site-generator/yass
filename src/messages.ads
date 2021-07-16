@@ -36,7 +36,8 @@ package Messages is
    -- MType - Type of message. Default is Error
    -- SOURCE
    procedure ShowMessage(Text: String; MType: Messages_Types := Error) with
-      Pre => Text'Length > 0;
+      Pre => Text'Length > 0,
+      Test_Case => (Name => "Test_Show_Message", Mode => Nominal);
    -- ****
 
 end Messages;
