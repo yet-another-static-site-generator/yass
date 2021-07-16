@@ -16,9 +16,9 @@
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with Config; use Config;
+with Config;
 
 package body Layouts is
 
@@ -64,6 +64,9 @@ package body Layouts is
    end Create_Layout;
 
    procedure Create_Directory_Layout(Directory_Name: String) is
+      use Ada.Strings.Unbounded;
+      use Config;
+
       Layout_File: File_Type;
    begin
       Create
@@ -89,7 +92,7 @@ package body Layouts is
       Put_Line(File => Layout_File, Item => "@@END_TABLE@@");
       Put_Line(File => Layout_File, Item => "</body>");
       Put_Line(File => Layout_File, Item => "</html>");
-      Close(Layout_File);
+      Close(File => Layout_File);
    end Create_Directory_Layout;
 
 end Layouts;
