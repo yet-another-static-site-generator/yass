@@ -183,7 +183,7 @@ package body Modules is
          Close(Module);
       exception
          when Invalid_Process =>
-            ShowMessage("Module " & Full_Name(Item) & " failed to execute.");
+            Show_Message("Module " & Full_Name(Item) & " failed to execute.");
          when Process_Died =>
             null;
       end RunModule;

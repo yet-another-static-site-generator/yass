@@ -157,7 +157,7 @@ procedure Yass is
    begin
       -- User does not entered name of the site project directory
       if Argument_Count < 2 then
-         ShowMessage(Text => "Please specify directory name " & Message);
+         Show_Message(Text => "Please specify directory name " & Message);
          return False;
       end if;
       -- Assign Work_Directory
@@ -177,11 +177,11 @@ procedure Yass is
       if Ada.Directories.Exists(Name => To_String(Source => Work_Directory)) =
         Exist then
          if Exist then
-            ShowMessage
+            Show_Message
               (Text =>
                  "Directory with that name exists, please specify another.");
          else
-            ShowMessage
+            Show_Message
               (Text =>
                  "Directory with that name not exists, please specify existing site directory.");
          end if;
@@ -193,7 +193,7 @@ procedure Yass is
           (Name =>
              To_String(Source => Work_Directory) & Dir_Separator &
              "site.cfg") then
-         ShowMessage
+         Show_Message
            (Text =>
               "Selected directory don't have file ""site.cfg"". Please specify proper directory.");
          return False;
@@ -269,12 +269,12 @@ procedure Yass is
       Create_Directory_Layout
         (Directory_Name => To_String(Source => Work_Directory));
       CreateEmptyFile(FileName => To_String(Source => Work_Directory));
-      ShowMessage
+      Show_Message
         (Text =>
            "New page in directory """ & Argument(Number => 2) &
            """ was created. Edit """ & Argument(Number => 2) & Dir_Separator &
            "site.cfg"" file to set data for your new site.",
-         MType => Messages.Success);
+         Message_Type => Messages.SUCCESS);
    end Create;
 
 begin
@@ -332,7 +332,7 @@ begin
          Readme_File: File_Type;
       begin
          if not Ada.Directories.Exists(Name => Readme_Name) then
-            ShowMessage(Text => "Can't find file " & Readme_Name);
+            Show_Message(Text => "Can't find file " & Readme_Name);
             return;
          end if;
          Open(File => Readme_File, Mode => In_File, Name => Readme_Name);
@@ -352,9 +352,10 @@ begin
       end if;
       Parse_Config(Directory_Name => To_String(Source => Work_Directory));
       if Build_Site(Directory_Name => To_String(Source => Work_Directory)) then
-         ShowMessage(Text => "Site was build.", MType => Messages.Success);
+         Show_Message
+           (Text => "Site was build.", Message_Type => Messages.SUCCESS);
       else
-         ShowMessage(Text => "Site building has been interrupted.");
+         Show_Message(Text => "Site building has been interrupted.");
       end if;
       -- Start server to monitor changes in selected site project
    elsif Argument(Number => 1) = "server" then
@@ -416,11 +417,11 @@ begin
       end if;
       abort MonitorSite;
       abort MonitorConfig;
-      ShowMessage(Text => "done.", MType => Messages.Success);
+      Show_Message(Text => "done.", Message_Type => Messages.SUCCESS);
       -- Create new empty markdown file with selected name
    elsif Argument(Number => 1) = "createfile" then
       if Argument_Count < 2 then
-         ShowMessage(Text => "Please specify name of file to create.");
+         Show_Message(Text => "Please specify name of file to create.");
          return;
       end if;
       if Index
@@ -451,24 +452,24 @@ begin
         (New_Directory =>
            Containing_Directory(Name => To_String(Source => Work_Directory)));
       CreateEmptyFile(FileName => To_String(Source => Work_Directory));
-      ShowMessage
+      Show_Message
         (Text =>
            "Empty file """ & To_String(Source => Work_Directory) &
            """ was created.",
-         MType => Messages.Success);
+         Message_Type => Messages.SUCCESS);
       -- Unknown command entered
    else
-      ShowMessage(Text => "Unknown command '" & Argument(Number => 1) & "'");
+      Show_Message(Text => "Unknown command '" & Argument(Number => 1) & "'");
       Show_Help;
    end if;
 exception
    when An_Exception : Invalid_Config_Data =>
-      ShowMessage
+      Show_Message
         (Text =>
            "Invalid data in site config file ""site.cfg"". Invalid line:""" &
            Exception_Message(X => An_Exception) & """");
    when AWS.Net.Socket_Error =>
-      ShowMessage
+      Show_Message
         (Text =>
            "Can't start program in server mode. Probably another program is using this same port, or you have still connected old instance of the program in your browser. Please close whole browser and try run the program again. If problem will persist, try to change port for the server in the site configuration.");
    when An_Exception : others =>

@@ -134,7 +134,7 @@ package body Server is
             ProcessDirectories'Access);
       exception
          when GenerateSiteException =>
-            ShowMessage
+            Show_Message
               ("[" &
                Ada.Calendar.Formatting.Image
                  (Date => Clock, Time_Zone => UTC_Time_Offset) &
@@ -142,10 +142,10 @@ package body Server is
             if Yass_Config.Stop_Server_On_Error then
                if Yass_Config.Server_Enabled then
                   ShutdownServer;
-                  ShowMessage("done.", Success);
+                  Show_Message("done.", SUCCESS);
                end if;
-               ShowMessage
-                 ("Stopping monitoring site changes...done.", Success);
+               Show_Message
+                 ("Stopping monitoring site changes...done.", SUCCESS);
                OS_Exit(0);
             end if;
       end MonitorDirectory;
@@ -202,7 +202,7 @@ package body Server is
                  ("Site configuration was changed, reconfiguring the project.");
                Parse_Config(To_String(Site_Directory));
                ShutdownServer;
-               ShowMessage("done", Messages.Success);
+               Show_Message("done", Messages.SUCCESS);
                if Yass_Config.Server_Enabled then
                   StartServer;
                end if;

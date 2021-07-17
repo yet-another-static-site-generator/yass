@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -18,23 +18,24 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Messages is
 
-   procedure ShowMessage(Text: String; MType: Messages_Types := Error) is
+   procedure Show_Message
+     (Text: String; Message_Type: Messages_Types := Default_Message_Type) is
    begin
       -- Change text color in terminal if needed
-      case MType is
-         when Error =>
+      case Message_Type is
+         when ERROR =>
             Put(ESC & "[31m");
-         when Success =>
+         when SUCCESS =>
             Put(ESC & "[32m");
-         when Normal =>
+         when NORMAL =>
             null;
       end case;
       Put(Text);
       -- Reset text color in terminal if needed
-      if MType /= Normal then
+      if Message_Type /= NORMAL then
          Put(ESC & "[0m");
       end if;
       New_Line;
-   end ShowMessage;
+   end Show_Message;
 
 end Messages;
