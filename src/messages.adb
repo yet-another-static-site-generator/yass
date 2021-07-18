@@ -13,27 +13,29 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Characters.Latin_1;
+with Ada.Text_IO;
 
 package body Messages is
 
    procedure Show_Message
      (Text: String; Message_Type: Messages_Types := Default_Message_Type) is
+      use Ada.Characters.Latin_1;
+      use Ada.Text_IO;
    begin
       -- Change text color in terminal if needed
       case Message_Type is
          when ERROR =>
-            Put(ESC & "[31m");
+            Put(Item => ESC & "[31m");
          when SUCCESS =>
-            Put(ESC & "[32m");
+            Put(Item => ESC & "[32m");
          when NORMAL =>
             null;
       end case;
-      Put(Text);
+      Put(Item => Text);
       -- Reset text color in terminal if needed
       if Message_Type /= NORMAL then
-         Put(ESC & "[0m");
+         Put(Item => ESC & "[0m");
       end if;
       New_Line;
    end Show_Message;
