@@ -10,8 +10,8 @@ package Messages.Test_Data.Tests is
      .Test with
    null record;
 
-   procedure Test_ShowMessage_e90f4a_ce41f3(Gnattest_T: in out Test);
-   --  messages.ads:38:4:ShowMessage:Test_Show_Message
+   procedure Test_Show_Message_b0ef3e_ce41f3(Gnattest_T: in out Test);
+   --  messages.ads:45:4:Show_Message:Test_Show_Message
 
 end Messages.Test_Data.Tests;
 --  end read only

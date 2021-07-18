@@ -3,7 +3,7 @@
 --  Such changes will be kept during further regeneration of this file.
 --  All code placed outside of test routine bodies will be lost. The
 --  code intended to set up and tear down the test environment should be
---  placed into Messages.Test_Data.
+--  placed into Modules.Test_Data.
 
 with AUnit.Assertions; use AUnit.Assertions;
 with System.Assertions;
@@ -17,7 +17,7 @@ with System.Assertions;
 
 --  begin read only
 --  end read only
-package body Messages.Test_Data.Tests is
+package body Modules.Test_Data.Tests is
 
 --  begin read only
 --  id:2.2/01/
@@ -29,20 +29,21 @@ package body Messages.Test_Data.Tests is
 --  begin read only
 --  end read only
 --  begin read only
-   procedure Wrap_Test_Show_Message_b0ef3e_ce41f3
-     (Text: String; Message_Type: Messages_Types := Default_Message_Type) is
+   procedure Wrap_Test_LoadModules_26f2e0_c25e19
+     (State: String; PageTags: in out Tags_Container.Map;
+      PageTableTags: in out TableTags_Container.Map) is
    begin
       begin
-         pragma Assert(Text'Length > 0);
+         pragma Assert(State'Length > 0);
          null;
       exception
          when System.Assertions.Assert_Failure =>
             AUnit.Assertions.Assert
               (False,
-               "req_sloc(messages.ads:0):Test_Show_Message test requirement violated");
+               "req_sloc(modules.ads:0):Test_Load_Modules test requirement violated");
       end;
-      GNATtest_Generated.GNATtest_Standard.Messages.Show_Message
-        (Text, Message_Type);
+      GNATtest_Generated.GNATtest_Standard.Modules.LoadModules
+        (State, PageTags, PageTableTags);
       begin
          pragma Assert(True);
          null;
@@ -50,34 +51,35 @@ package body Messages.Test_Data.Tests is
          when System.Assertions.Assert_Failure =>
             AUnit.Assertions.Assert
               (False,
-               "ens_sloc(messages.ads:0:):Test_Show_Message test commitment violated");
+               "ens_sloc(modules.ads:0:):Test_Load_Modules test commitment violated");
       end;
-   end Wrap_Test_Show_Message_b0ef3e_ce41f3;
+   end Wrap_Test_LoadModules_26f2e0_c25e19;
 --  end read only
 
 --  begin read only
-   procedure Test_Show_Message_test_show_message(Gnattest_T: in out Test);
-   procedure Test_Show_Message_b0ef3e_ce41f3(Gnattest_T: in out Test) renames
-     Test_Show_Message_test_show_message;
---  id:2.2/b0ef3ea444439e3e/Show_Message/1/0/test_show_message/
-   procedure Test_Show_Message_test_show_message(Gnattest_T: in out Test) is
-      procedure Show_Message
-        (Text: String;
-         Message_Type: Messages_Types := Default_Message_Type) renames
-        Wrap_Test_Show_Message_b0ef3e_ce41f3;
+   procedure Test_LoadModules_test_load_modules(Gnattest_T: in out Test);
+   procedure Test_LoadModules_26f2e0_c25e19(Gnattest_T: in out Test) renames
+     Test_LoadModules_test_load_modules;
+--  id:2.2/26f2e049f616ac60/LoadModules/1/0/test_load_modules/
+   procedure Test_LoadModules_test_load_modules(Gnattest_T: in out Test) is
+      procedure LoadModules
+        (State: String; PageTags: in out Tags_Container.Map;
+         PageTableTags: in out TableTags_Container.Map) renames
+        Wrap_Test_LoadModules_26f2e0_c25e19;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
+      Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
+      Page_Table_Tags: TableTags_Container.Map :=
+        TableTags_Container.Empty_Map;
 
    begin
 
-      Show_Message("Test error message.");
-      Show_Message("Test normal message.", NORMAL);
-      Show_Message("Test success message.", SUCCESS);
+      LoadModules("start", Page_Tags, Page_Table_Tags);
       Assert(True, "This test can only crash.");
 
 --  begin read only
-   end Test_Show_Message_test_show_message;
+   end Test_LoadModules_test_load_modules;
 --  end read only
 
 --  begin read only
@@ -90,4 +92,4 @@ begin
    null;
 --  begin read only
 --  end read only
-end Messages.Test_Data.Tests;
+end Modules.Test_Data.Tests;
