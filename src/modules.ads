@@ -24,19 +24,19 @@ with Config; use Config;
 package Modules is
 -- ****
 
-   -- ****f* Modules/Modules.LoadModules
+   -- ****f* Modules/Modules.Load_Modules
    -- FUNCTION
    -- Load all modules for selected state: start, pre, post, end. PageTags and
    -- PageTableTags will be empty in all states except pre and post for
    -- markdown files.
    -- PARAMETERS
-   -- State         - State of the program in which module are loaded
-   -- PageTags      - All current processed page tags with their contents
-   -- PageTableTags - All current processed page table tags with their contents
+   -- State           - State of the program in which module are loaded
+   -- Page_Tags       - All current processed page tags with their contents
+   -- Page_Table_Tags - All current processed page table tags with their contents
    -- SOURCE
-   procedure LoadModules
-     (State: String; PageTags: in out Tags_Container.Map;
-      PageTableTags: in out TableTags_Container.Map) with
+   procedure Load_Modules
+     (State: String; Page_Tags: in out Tags_Container.Map;
+      Page_Table_Tags: in out TableTags_Container.Map) with
       Pre => State'Length > 0,
       Test_Case => (Name => "Test_Load_Modules", Mode => Nominal);
    -- ****
