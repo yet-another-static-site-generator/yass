@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -227,7 +227,7 @@ package body Pages is
            (cmark_markdown_to_html
               (New_String(To_String(Content)), size_t(Length(Content)), 0)));
       -- Load the program modules with 'pre' hook
-      LoadModules("pre", PageTags, PageTableTags);
+      Load_Modules("pre", PageTags, PageTableTags);
       -- Insert tags to template
       Insert(Tags, Assoc("Content", PageTags("Content")));
       InsertTags(Site_Tags);
@@ -273,7 +273,7 @@ package body Pages is
       Add_Page_To_Feed(NewFileName, AtomEntries);
       Set("YASSFILE", NewFileName);
       -- Load the program modules with 'post' hook
-      LoadModules("post", PageTags, PageTableTags);
+      Load_Modules("post", PageTags, PageTableTags);
    exception
       when An_Exception : LayoutNotFound =>
          Put_Line
@@ -307,7 +307,7 @@ package body Pages is
       PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
    begin
       -- Load the program modules with 'pre' hook
-      LoadModules("pre", PageTags, PageTableTags);
+      Load_Modules("pre", PageTags, PageTableTags);
       -- Copy the file to output directory
       Create_Path(To_String(OutputDirectory));
       Copy_File
@@ -322,7 +322,7 @@ package body Pages is
         ("YASSFILE",
          To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
       -- Load the program modules with 'post' hook
-      LoadModules("post", PageTags, PageTableTags);
+      Load_Modules("post", PageTags, PageTableTags);
    end CopyFile;
 
    procedure CreateEmptyFile(FileName: String) is

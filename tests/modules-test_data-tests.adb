@@ -29,9 +29,9 @@ package body Modules.Test_Data.Tests is
 --  begin read only
 --  end read only
 --  begin read only
-   procedure Wrap_Test_LoadModules_26f2e0_c25e19
-     (State: String; PageTags: in out Tags_Container.Map;
-      PageTableTags: in out TableTags_Container.Map) is
+   procedure Wrap_Test_Load_Modules_944a26_c25e19
+     (State: String; Page_Tags: in out Tags_Container.Map;
+      Page_Table_Tags: in out TableTags_Container.Map) is
    begin
       begin
          pragma Assert(State'Length > 0);
@@ -42,8 +42,8 @@ package body Modules.Test_Data.Tests is
               (False,
                "req_sloc(modules.ads:0):Test_Load_Modules test requirement violated");
       end;
-      GNATtest_Generated.GNATtest_Standard.Modules.LoadModules
-        (State, PageTags, PageTableTags);
+      GNATtest_Generated.GNATtest_Standard.Modules.Load_Modules
+        (State, Page_Tags, Page_Table_Tags);
       begin
          pragma Assert(True);
          null;
@@ -53,19 +53,19 @@ package body Modules.Test_Data.Tests is
               (False,
                "ens_sloc(modules.ads:0:):Test_Load_Modules test commitment violated");
       end;
-   end Wrap_Test_LoadModules_26f2e0_c25e19;
+   end Wrap_Test_Load_Modules_944a26_c25e19;
 --  end read only
 
 --  begin read only
-   procedure Test_LoadModules_test_load_modules(Gnattest_T: in out Test);
-   procedure Test_LoadModules_26f2e0_c25e19(Gnattest_T: in out Test) renames
-     Test_LoadModules_test_load_modules;
---  id:2.2/26f2e049f616ac60/LoadModules/1/0/test_load_modules/
-   procedure Test_LoadModules_test_load_modules(Gnattest_T: in out Test) is
-      procedure LoadModules
-        (State: String; PageTags: in out Tags_Container.Map;
-         PageTableTags: in out TableTags_Container.Map) renames
-        Wrap_Test_LoadModules_26f2e0_c25e19;
+   procedure Test_Load_Modules_test_load_modules(Gnattest_T: in out Test);
+   procedure Test_Load_Modules_944a26_c25e19(Gnattest_T: in out Test) renames
+     Test_Load_Modules_test_load_modules;
+--  id:2.2/944a2653cbe1fa78/Load_Modules/1/0/test_load_modules/
+   procedure Test_Load_Modules_test_load_modules(Gnattest_T: in out Test) is
+      procedure Load_Modules
+        (State: String; Page_Tags: in out Tags_Container.Map;
+         Page_Table_Tags: in out TableTags_Container.Map) renames
+        Wrap_Test_Load_Modules_944a26_c25e19;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
@@ -75,11 +75,11 @@ package body Modules.Test_Data.Tests is
 
    begin
 
-      LoadModules("start", Page_Tags, Page_Table_Tags);
+      Load_Modules("start", Page_Tags, Page_Table_Tags);
       Assert(True, "This test can only crash.");
 
 --  begin read only
-   end Test_LoadModules_test_load_modules;
+   end Test_Load_Modules_test_load_modules;
 --  end read only
 
 --  begin read only

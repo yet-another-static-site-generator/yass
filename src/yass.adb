@@ -115,9 +115,9 @@ procedure Yass is
       end Build;
    begin
       -- Load the program modules with 'start' hook
-      LoadModules
-        (State => "start", PageTags => Page_Tags,
-         PageTableTags => Page_Table_Tags);
+      Load_Modules
+        (State => "start", Page_Tags => Page_Tags,
+         Page_Table_Tags => Page_Table_Tags);
       -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
       StartSitemap;
       -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
@@ -129,9 +129,9 @@ procedure Yass is
       -- Save sitemap to file or nothing if sitemap generation is disabled
       SaveSitemap;
       -- Load the program modules with 'end' hook
-      LoadModules
-        (State => "end", PageTags => Page_Tags,
-         PageTableTags => Page_Table_Tags);
+      Load_Modules
+        (State => "end", Page_Tags => Page_Tags,
+         Page_Table_Tags => Page_Table_Tags);
       return True;
    exception
       when GenerateSiteException =>

@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -153,7 +153,7 @@ package body Server is
       select
          accept Start;
          -- Load the program modules with 'start' hook
-         LoadModules("start", PageTags, PageTableTags);
+         Load_Modules("start", PageTags, PageTableTags);
          -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
          StartSitemap;
          -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
@@ -168,7 +168,7 @@ package body Server is
                -- Save sitemap to file or nothing if sitemap generation is disabled
                SaveSitemap;
                -- Load the program modules with 'end' hook
-               LoadModules("end", PageTags, PageTableTags);
+               Load_Modules("end", PageTags, PageTableTags);
                Put_Line
                  ("[" &
                   Ada.Calendar.Formatting.Image

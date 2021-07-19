@@ -83,11 +83,10 @@
          <teardown file="messages-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="Show_Message" line="45" column="14">
             <test_case name="Test_Show_Message" line="48" column="7">
-               <test file="messages-test_data-tests.adb" line="66" column="1" name="Test_Show_Message_b0ef3e_ce41f3" timestamp="2021-07-16 06:04:21"/>
+               <test file="messages-test_data-tests.adb" line="66" column="1" name="Test_Show_Message_b0ef3e_ce41f3" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
-            <test file="messages-test_data-tests.adb" line="86" column="1"/>
          </dangling>
       </test_unit>
    </unit>
@@ -95,12 +94,13 @@
       <test_unit target_file="modules-test_data-tests.ads">
          <setup file="modules-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="modules-test_data.adb" name="Tear_Down" line="14"  column="4"/>
-         <tested name="LoadModules" line="37" column="14">
+         <tested name="Load_Modules" line="37" column="14">
             <test_case name="Test_Load_Modules" line="41" column="7">
-               <test file="modules-test_data-tests.adb" line="66" column="1" name="Test_LoadModules_26f2e0_c25e19" timestamp="modified"/>
+               <test file="modules-test_data-tests.adb" line="66" column="1" name="Test_Load_Modules_944a26_c25e19" timestamp="2021-07-18 06:09:03"/>
             </test_case>
          </tested>
          <dangling>
+            <test file="modules-test_data-tests.adb" line="86" column="1"/>
          </dangling>
       </test_unit>
    </unit>

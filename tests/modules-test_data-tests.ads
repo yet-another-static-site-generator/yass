@@ -10,8 +10,8 @@ package Modules.Test_Data.Tests is
      .Test with
    null record;
 
-   procedure Test_LoadModules_26f2e0_c25e19(Gnattest_T: in out Test);
-   --  modules.ads:37:4:LoadModules:Test_Load_Modules
+   procedure Test_Load_Modules_944a26_c25e19(Gnattest_T: in out Test);
+   --  modules.ads:37:4:Load_Modules:Test_Load_Modules
 
 end Modules.Test_Data.Tests;
 --  end read only

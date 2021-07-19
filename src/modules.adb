@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -26,9 +26,9 @@ with Messages; use Messages;
 
 package body Modules is
 
-   procedure LoadModules
-     (State: String; PageTags: in out Tags_Container.Map;
-      PageTableTags: in out TableTags_Container.Map) is
+   procedure Load_Modules
+     (State: String; Page_Tags: in out Tags_Container.Map;
+      Page_Table_Tags: in out TableTags_Container.Map) is
       -- Run executable file with Item as full path name
       procedure RunModule(Item: Directory_Entry_Type) is
          Module: Process_Descriptor;
@@ -47,13 +47,13 @@ package body Modules is
                 (Global_Table_Tags, To_String(TagName)) then
                return GlobalTableTag;
             end if;
-            if PageTags = Tags_Container.Empty_Map then
+            if Page_Tags = Tags_Container.Empty_Map then
                return NoTag;
             end if;
-            if Contains(PageTags, To_String(TagName)) then
+            if Contains(Page_Tags, To_String(TagName)) then
                return PageTag;
             elsif TableTags_Container.Contains
-                (PageTableTags, To_String(TagName)) then
+                (Page_Table_Tags, To_String(TagName)) then
                return PageTableTag;
             end if;
             return NoTag;
@@ -153,9 +153,9 @@ package body Modules is
                   when GlobalTableTag =>
                      SendTableTag(Global_Table_Tags);
                   when PageTag =>
-                     Send(Module, PageTags(To_String(TagName)));
+                     Send(Module, Page_Tags(To_String(TagName)));
                   when PageTableTag =>
-                     SendTableTag(PageTableTags);
+                     SendTableTag(Page_Table_Tags);
                end case;
                -- Edit value of selected tag with new value from the module
             elsif Slice(Text, 1, 7) = "edittag" then
@@ -171,9 +171,9 @@ package body Modules is
                   when GlobalTableTag =>
                      EditTableTag(Global_Table_Tags);
                   when PageTag =>
-                     EditTag(PageTags);
+                     EditTag(Page_Tags);
                   when PageTableTag =>
-                     EditTableTag(PageTableTags);
+                     EditTableTag(Page_Table_Tags);
                end case;
             else
                Put_Line(To_String(Text));
@@ -196,6 +196,6 @@ package body Modules is
       Search
         (To_String(Yass_Config.Modules_Directory) & Dir_Separator & State, "",
          (Directory => False, others => True), RunModule'Access);
-   end LoadModules;
+   end Load_Modules;
 
 end Modules;
