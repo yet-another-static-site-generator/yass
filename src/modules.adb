@@ -30,37 +30,38 @@ package body Modules is
      (State: String; Page_Tags: in out Tags_Container.Map;
       Page_Table_Tags: in out TableTags_Container.Map) is
       -- Run executable file with Item as full path name
-      procedure RunModule(Item: Directory_Entry_Type) is
+      procedure Run_Module(Item: Directory_Entry_Type) is
          Module: Process_Descriptor;
          Finished: Boolean := False;
          Result: Expect_Match;
-         Text, TagName: Unbounded_String;
+         Text, Tag_Name: Unbounded_String;
          type Tag_Types is
-           (NoTag, GlobalTag, GlobalTableTag, PageTag, PageTableTag);
+           (NOTAG, GLOBALTAG, GLOBALTABLETAG, PAGETAG, PAGETABLETAG);
          -- Check if tag with selected name exists and return it type
-         function TagExist return Tag_Types is
+         function Tag_Exist return Tag_Types is
             use Tags_Container;
          begin
-            if Contains(Site_Tags, To_String(TagName)) then
-               return GlobalTag;
+            if Contains(Site_Tags, To_String(Tag_Name)) then
+               return GLOBALTAG;
             elsif TableTags_Container.Contains
-                (Global_Table_Tags, To_String(TagName)) then
-               return GlobalTableTag;
+                (Global_Table_Tags, To_String(Tag_Name)) then
+               return GLOBALTABLETAG;
             end if;
             if Page_Tags = Tags_Container.Empty_Map then
-               return NoTag;
+               return NOTAG;
             end if;
-            if Contains(Page_Tags, To_String(TagName)) then
-               return PageTag;
+            if Contains(Page_Tags, To_String(Tag_Name)) then
+               return PAGETAG;
             elsif TableTags_Container.Contains
-                (Page_Table_Tags, To_String(TagName)) then
-               return PageTableTag;
+                (Page_Table_Tags, To_String(Tag_Name)) then
+               return PAGETABLETAG;
             end if;
-            return NoTag;
-         end TagExist;
-         -- Send to the module values for selected composite tag in TableTags list of tags. First response contains amount of values.
+            return NOTAG;
+         end Tag_Exist;
+         -- Send to the module values for selected composite tag in TableTags list of tags.
+         -- First response contains amount of values.
          procedure SendTableTag(TableTags: TableTags_Container.Map) is
-            Key: constant String := To_String(TagName);
+            Key: constant String := To_String(Tag_Name);
          begin
             Send(Module, Natural'Image(Size(TableTags(Key))));
             for I in 1 .. Size(TableTags(Key)) loop
@@ -69,7 +70,7 @@ package body Modules is
          end SendTableTag;
          -- Edit selected simple tag in selected Tags list of tags.
          procedure EditTag(Tags: in out Tags_Container.Map) is
-            Key: constant String := To_String(TagName);
+            Key: constant String := To_String(Tag_Name);
          begin
             if Tags_Container.Contains(Tags, Key) then
                Tags_Container.Exclude(Tags, Key);
@@ -85,7 +86,7 @@ package body Modules is
             TempTag: Vector_Tag;
             TableIndex: Integer;
          begin
-            StartIndex := Length(TagName) + 9;
+            StartIndex := Length(Tag_Name) + 9;
             TagIndex :=
               Unbounded_Slice
                 (Text, Index(Text, " ", StartIndex) + 1,
@@ -95,26 +96,26 @@ package body Modules is
               Unbounded_Slice
                 (Text, Index(Text, " ", StartIndex) + 1, Length(Text));
             TableIndex := Integer'Value(To_String(TagIndex));
-            if TableIndex <= Size(TableTags(To_String(TagName))) and
+            if TableIndex <= Size(TableTags(To_String(Tag_Name))) and
               TableIndex > 0 then
                TempTag := +"";
-               for I in 1 .. Size(TableTags(To_String(TagName))) loop
+               for I in 1 .. Size(TableTags(To_String(Tag_Name))) loop
                   if TableIndex = I then
                      TempTag := TempTag & To_String(TagValue);
                   else
                      TempTag :=
                        TempTag &
-                       AWS.Templates.Item(TableTags(To_String(TagName)), I);
+                       AWS.Templates.Item(TableTags(To_String(Tag_Name)), I);
                   end if;
                end loop;
-               TableTags(To_String(TagName)) := TempTag;
+               TableTags(To_String(Tag_Name)) := TempTag;
                Send(Module, "Success");
                -- Invalid tag index in tags list
             else
                Send
                  (Module,
                   "Index """ & To_String(TagIndex) & """ is not in tag """ &
-                  To_String(TagName) & """ index range.");
+                  To_String(Tag_Name) & """ index range.");
             end if;
          end EditTableTag;
       begin
@@ -141,38 +142,38 @@ package body Modules is
             end if;
             -- Send value of selected tag to the module
             if Slice(Text, 1, 6) = "gettag" then
-               TagName := Unbounded_Slice(Text, 8, Length(Text));
-               case TagExist is
-                  when NoTag =>
+               Tag_Name := Unbounded_Slice(Text, 8, Length(Text));
+               case Tag_Exist is
+                  when NOTAG =>
                      Send
                        (Module,
-                        "Tag with name """ & To_String(TagName) &
+                        "Tag with name """ & To_String(Tag_Name) &
                         """ doesn't exists.");
-                  when GlobalTag =>
-                     Send(Module, Site_Tags(To_String(TagName)));
-                  when GlobalTableTag =>
+                  when GLOBALTAG =>
+                     Send(Module, Site_Tags(To_String(Tag_Name)));
+                  when GLOBALTABLETAG =>
                      SendTableTag(Global_Table_Tags);
-                  when PageTag =>
-                     Send(Module, Page_Tags(To_String(TagName)));
-                  when PageTableTag =>
+                  when PAGETAG =>
+                     Send(Module, Page_Tags(To_String(Tag_Name)));
+                  when PAGETABLETAG =>
                      SendTableTag(Page_Table_Tags);
                end case;
                -- Edit value of selected tag with new value from the module
             elsif Slice(Text, 1, 7) = "edittag" then
-               TagName := Unbounded_Slice(Text, 9, Index(Text, " ", 10) - 1);
-               case TagExist is
-                  when NoTag =>
+               Tag_Name := Unbounded_Slice(Text, 9, Index(Text, " ", 10) - 1);
+               case Tag_Exist is
+                  when NOTAG =>
                      Send
                        (Module,
-                        "Tag with name """ & To_String(TagName) &
+                        "Tag with name """ & To_String(Tag_Name) &
                         """ don't exists.");
-                  when GlobalTag =>
+                  when GLOBALTAG =>
                      EditTag(Site_Tags);
-                  when GlobalTableTag =>
+                  when GLOBALTABLETAG =>
                      EditTableTag(Global_Table_Tags);
-                  when PageTag =>
+                  when PAGETAG =>
                      EditTag(Page_Tags);
-                  when PageTableTag =>
+                  when PAGETABLETAG =>
                      EditTableTag(Page_Table_Tags);
                end case;
             else
@@ -186,7 +187,7 @@ package body Modules is
             Show_Message("Module " & Full_Name(Item) & " failed to execute.");
          when Process_Died =>
             null;
-      end RunModule;
+      end Run_Module;
    begin
       if not Exists
           (To_String(Yass_Config.Modules_Directory) & Dir_Separator &
@@ -195,7 +196,7 @@ package body Modules is
       end if;
       Search
         (To_String(Yass_Config.Modules_Directory) & Dir_Separator & State, "",
-         (Directory => False, others => True), RunModule'Access);
+         (Directory => False, others => True), Run_Module'Access);
    end Load_Modules;
 
 end Modules;
