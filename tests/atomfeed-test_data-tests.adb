@@ -16,6 +16,7 @@ with System.Assertions;
 --  end read only
 
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
+with Config; use Config;
 
 --  begin read only
 --  end read only
@@ -135,6 +136,40 @@ package body AtomFeed.Test_Data.Tests is
 
 --  begin read only
    end Test_To_HTTP_Date_test_to_http_date;
+--  end read only
+
+--  begin read only
+   procedure Wrap_Test_Start_Atom_Feed_2493ea_0ccbf2 is
+   begin
+      GNATtest_Generated.GNATtest_Standard.AtomFeed.Start_Atom_Feed;
+   end Wrap_Test_Start_Atom_Feed_2493ea_0ccbf2;
+--  end read only
+
+--  begin read only
+   procedure Test_Start_Atom_Feed_test_start_atom_feed
+     (Gnattest_T: in out Test);
+   procedure Test_Start_Atom_Feed_2493ea_0ccbf2
+     (Gnattest_T: in out Test) renames
+     Test_Start_Atom_Feed_test_start_atom_feed;
+--  id:2.2/2493ea2ede4511ae/Start_Atom_Feed/1/0/test_start_atom_feed/
+   procedure Test_Start_Atom_Feed_test_start_atom_feed
+     (Gnattest_T: in out Test) is
+      procedure Start_Atom_Feed renames
+        Wrap_Test_Start_Atom_Feed_2493ea_0ccbf2;
+--  end read only
+
+      pragma Unreferenced(Gnattest_T);
+
+   begin
+
+      Yass_Config.Atom_Feed_Source := To_Unbounded_String(Source => "tags");
+      Start_Atom_Feed;
+      Assert
+        (Site_Tags("AtomLink") /= "",
+         "Failed to start atom feed for the project");
+
+--  begin read only
+   end Test_Start_Atom_Feed_test_start_atom_feed;
 --  end read only
 
 --  begin read only

@@ -13,6 +13,11 @@
                <test file="atomfeed-test_data-tests.adb" line="127" column="1" name="Test_To_HTTP_Date_2bd5b1_0b38f7" timestamp="modified"/>
             </test_case>
          </tested>
+         <tested name="Start_Atom_Feed" line="98" column="14">
+            <test_case name="Test_Start_Atom_Feed" line="99" column="7">
+               <test file="atomfeed-test_data-tests.adb" line="155" column="1" name="Test_Start_Atom_Feed_2493ea_0ccbf2" timestamp="2021-07-19 07:53:17"/>
+            </test_case>
+         </tested>
          <dangling>
          </dangling>
       </test_unit>
@@ -96,11 +101,10 @@
          <teardown file="modules-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="Load_Modules" line="37" column="14">
             <test_case name="Test_Load_Modules" line="41" column="7">
-               <test file="modules-test_data-tests.adb" line="66" column="1" name="Test_Load_Modules_944a26_c25e19" timestamp="2021-07-18 06:09:03"/>
+               <test file="modules-test_data-tests.adb" line="66" column="1" name="Test_Load_Modules_944a26_c25e19" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
-            <test file="modules-test_data-tests.adb" line="86" column="1"/>
          </dangling>
       </test_unit>
    </unit>

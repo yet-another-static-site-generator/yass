@@ -95,7 +95,8 @@ package AtomFeed is
    -- FUNCTION
    -- Load existing Atom feed for the site
    -- SOURCE
-   procedure Start_Atom_Feed;
+   procedure Start_Atom_Feed with
+      Test_Case => (Name => "Test_Start_Atom_Feed", Mode => Robustness);
    -- ****
 
    -- ****f* AtomFeed/AtomFeed.Add_Page_To_Feed

@@ -16,5 +16,8 @@ package AtomFeed.Test_Data.Tests is
    procedure Test_To_HTTP_Date_2bd5b1_0b38f7(Gnattest_T: in out Test);
    --  atomfeed.ads:88:4:To_HTTP_Date:Test_To_HTTP_Date
 
+   procedure Test_Start_Atom_Feed_2493ea_0ccbf2(Gnattest_T: in out Test);
+   --  atomfeed.ads:98:4:Start_Atom_Feed:Test_Start_Atom_Feed
+
 end AtomFeed.Test_Data.Tests;
 --  end read only
