@@ -33,8 +33,8 @@ package body Modules is
       procedure Run_Module(Item: Directory_Entry_Type) is
          Module: Process_Descriptor;
          Finished: Boolean := False;
-         Result: Expect_Match;
-         Text, Tag_Name: Unbounded_String;
+         Result: Expect_Match := 0;
+         Text, Tag_Name: Unbounded_String := Null_Unbounded_String;
          type Tag_Types is
            (NOTAG, GLOBALTAG, GLOBALTABLETAG, PAGETAG, PAGETABLETAG);
          -- Check if tag with selected name exists and return it type
@@ -60,14 +60,14 @@ package body Modules is
          end Tag_Exist;
          -- Send to the module values for selected composite tag in TableTags list of tags.
          -- First response contains amount of values.
-         procedure SendTableTag(TableTags: TableTags_Container.Map) is
+         procedure Send_Table_Tag(Table_Tags: TableTags_Container.Map) is
             Key: constant String := To_String(Tag_Name);
          begin
-            Send(Module, Natural'Image(Size(TableTags(Key))));
-            for I in 1 .. Size(TableTags(Key)) loop
-               Send(Module, AWS.Templates.Item(TableTags(Key), I));
+            Send(Module, Natural'Image(Size(Table_Tags(Key))));
+            for I in 1 .. Size(Table_Tags(Key)) loop
+               Send(Module, AWS.Templates.Item(Table_Tags(Key), I));
             end loop;
-         end SendTableTag;
+         end Send_Table_Tag;
          -- Edit selected simple tag in selected Tags list of tags.
          procedure EditTag(Tags: in out Tags_Container.Map) is
             Key: constant String := To_String(Tag_Name);
@@ -152,11 +152,11 @@ package body Modules is
                   when GLOBALTAG =>
                      Send(Module, Site_Tags(To_String(Tag_Name)));
                   when GLOBALTABLETAG =>
-                     SendTableTag(Global_Table_Tags);
+                     Send_Table_Tag(Global_Table_Tags);
                   when PAGETAG =>
                      Send(Module, Page_Tags(To_String(Tag_Name)));
                   when PAGETABLETAG =>
-                     SendTableTag(Page_Table_Tags);
+                     Send_Table_Tag(Page_Table_Tags);
                end case;
                -- Edit value of selected tag with new value from the module
             elsif Slice(Text, 1, 7) = "edittag" then
