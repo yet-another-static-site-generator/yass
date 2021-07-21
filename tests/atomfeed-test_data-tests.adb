@@ -173,6 +173,60 @@ package body AtomFeed.Test_Data.Tests is
 --  end read only
 
 --  begin read only
+   procedure Wrap_Test_Add_Page_To_Feed_467d32_84581a
+     (File_Name: String; Entries: in out FeedEntry_Container.Vector) is
+   begin
+      begin
+         pragma Assert(File_Name'Length > 0);
+         null;
+      exception
+         when System.Assertions.Assert_Failure =>
+            AUnit.Assertions.Assert
+              (False,
+               "req_sloc(atomfeed.ads:0):Test_Add_Page_To_Feed test requirement violated");
+      end;
+      GNATtest_Generated.GNATtest_Standard.AtomFeed.Add_Page_To_Feed
+        (File_Name, Entries);
+      begin
+         pragma Assert(True);
+         null;
+      exception
+         when System.Assertions.Assert_Failure =>
+            AUnit.Assertions.Assert
+              (False,
+               "ens_sloc(atomfeed.ads:0:):Test_Add_Page_To_Feed test commitment violated");
+      end;
+   end Wrap_Test_Add_Page_To_Feed_467d32_84581a;
+--  end read only
+
+--  begin read only
+   procedure Test_Add_Page_To_Feed_test_add_page_to_feed
+     (Gnattest_T: in out Test);
+   procedure Test_Add_Page_To_Feed_467d32_84581a
+     (Gnattest_T: in out Test) renames
+     Test_Add_Page_To_Feed_test_add_page_to_feed;
+--  id:2.2/467d32f242a7dd76/Add_Page_To_Feed/1/0/test_add_page_to_feed/
+   procedure Test_Add_Page_To_Feed_test_add_page_to_feed
+     (Gnattest_T: in out Test) is
+      procedure Add_Page_To_Feed
+        (File_Name: String; Entries: in out FeedEntry_Container.Vector) renames
+        Wrap_Test_Add_Page_To_Feed_467d32_84581a;
+--  end read only
+
+      pragma Unreferenced(Gnattest_T);
+      Feeds: FeedEntry_Container.Vector;
+
+   begin
+
+      Feeds.Append((Id => To_Unbounded_String("myid"), others => <>));
+      Add_Page_To_Feed("mypage.md", Feeds);
+      Assert(True, "This test can only crash.");
+
+--  begin read only
+   end Test_Add_Page_To_Feed_test_add_page_to_feed;
+--  end read only
+
+--  begin read only
 --  id:2.2/02/
 --
 --  This section can be used to add elaboration code for the global state.

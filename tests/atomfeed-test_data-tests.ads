@@ -19,5 +19,8 @@ package AtomFeed.Test_Data.Tests is
    procedure Test_Start_Atom_Feed_2493ea_0ccbf2(Gnattest_T: in out Test);
    --  atomfeed.ads:98:4:Start_Atom_Feed:Test_Start_Atom_Feed
 
+   procedure Test_Add_Page_To_Feed_467d32_84581a(Gnattest_T: in out Test);
+   --  atomfeed.ads:109:4:Add_Page_To_Feed:Test_Add_Page_To_Feed
+
 end AtomFeed.Test_Data.Tests;
 --  end read only
