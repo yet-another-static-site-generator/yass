@@ -22,5 +22,8 @@ package AtomFeed.Test_Data.Tests is
    procedure Test_Add_Page_To_Feed_467d32_84581a(Gnattest_T: in out Test);
    --  atomfeed.ads:109:4:Add_Page_To_Feed:Test_Add_Page_To_Feed
 
+   procedure Test_Save_Atom_Feed_73b303_2e8e31(Gnattest_T: in out Test);
+   --  atomfeed.ads:119:4:Save_Atom_Feed:Test_Save_Atom_Feed
+
 end AtomFeed.Test_Data.Tests;
 --  end read only

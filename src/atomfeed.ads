@@ -116,7 +116,8 @@ package AtomFeed is
    -- FUNCTION
    -- Save Atom feed to file
    -- SOURCE
-   procedure Save_Atom_Feed;
+   procedure Save_Atom_Feed with
+      Test_Case => (Name => "Test_Save_Atom_Feed", Mode => Robustness);
    -- ****
 
 end AtomFeed;

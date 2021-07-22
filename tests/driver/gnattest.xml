@@ -20,7 +20,12 @@
          </tested>
          <tested name="Add_Page_To_Feed" line="109" column="14">
             <test_case name="Test_Add_Page_To_Feed" line="112" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="206" column="1" name="Test_Add_Page_To_Feed_467d32_84581a" timestamp="2021-07-20 06:08:45"/>
+               <test file="atomfeed-test_data-tests.adb" line="206" column="1" name="Test_Add_Page_To_Feed_467d32_84581a" timestamp="modified"/>
+            </test_case>
+         </tested>
+         <tested name="Save_Atom_Feed" line="119" column="14">
+            <test_case name="Test_Save_Atom_Feed" line="120" column="7">
+               <test file="atomfeed-test_data-tests.adb" line="235" column="1" name="Test_Save_Atom_Feed_73b303_2e8e31" timestamp="2021-07-21 05:39:44"/>
             </test_case>
          </tested>
          <dangling>

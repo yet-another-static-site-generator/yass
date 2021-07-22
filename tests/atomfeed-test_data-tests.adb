@@ -16,6 +16,8 @@ with System.Assertions;
 --  end read only
 
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
+with Ada.Directories; use Ada.Directories;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Config; use Config;
 
 --  begin read only
@@ -224,6 +226,41 @@ package body AtomFeed.Test_Data.Tests is
 
 --  begin read only
    end Test_Add_Page_To_Feed_test_add_page_to_feed;
+--  end read only
+
+--  begin read only
+   procedure Wrap_Test_Save_Atom_Feed_73b303_2e8e31 is
+   begin
+      GNATtest_Generated.GNATtest_Standard.AtomFeed.Save_Atom_Feed;
+   end Wrap_Test_Save_Atom_Feed_73b303_2e8e31;
+--  end read only
+
+--  begin read only
+   procedure Test_Save_Atom_Feed_test_save_atom_feed(Gnattest_T: in out Test);
+   procedure Test_Save_Atom_Feed_73b303_2e8e31(Gnattest_T: in out Test) renames
+     Test_Save_Atom_Feed_test_save_atom_feed;
+--  id:2.2/73b303330fe0df08/Save_Atom_Feed/1/0/test_save_atom_feed/
+   procedure Test_Save_Atom_Feed_test_save_atom_feed
+     (Gnattest_T: in out Test) is
+      procedure Save_Atom_Feed renames Wrap_Test_Save_Atom_Feed_73b303_2e8e31;
+--  end read only
+
+      pragma Unreferenced(Gnattest_T);
+
+   begin
+
+      Create_Path(To_String(Yass_Config.Output_Directory));
+      Save_Atom_Feed;
+      Assert
+        (Exists
+           (To_String(Yass_Config.Output_Directory) & Dir_Separator &
+            "atom.xml"),
+         "Failed to save the project Atom feed to file.");
+      Delete_File
+        (To_String(Yass_Config.Output_Directory) & Dir_Separator & "atom.xml");
+
+--  begin read only
+   end Test_Save_Atom_Feed_test_save_atom_feed;
 --  end read only
 
 --  begin read only
