@@ -41,19 +41,19 @@ package body Modules is
          function Tag_Exist return Tag_Types is
             use Tags_Container;
          begin
-            if Contains(Site_Tags, To_String(Tag_Name)) then
+            if Site_Tags.Contains(Key => To_String(Source => Tag_Name)) then
                return GLOBALTAG;
-            elsif TableTags_Container.Contains
-                (Global_Table_Tags, To_String(Tag_Name)) then
+            elsif Global_Table_Tags.Contains
+                (Key => To_String(Source => Tag_Name)) then
                return GLOBALTABLETAG;
             end if;
             if Page_Tags = Tags_Container.Empty_Map then
                return NOTAG;
             end if;
-            if Contains(Page_Tags, To_String(Tag_Name)) then
+            if Page_Tags.Contains(Key => To_String(Source => Tag_Name)) then
                return PAGETAG;
-            elsif TableTags_Container.Contains
-                (Page_Table_Tags, To_String(Tag_Name)) then
+            elsif Page_Table_Tags.Contains
+                (Key => To_String(Source => Tag_Name)) then
                return PAGETABLETAG;
             end if;
             return NOTAG;
@@ -61,12 +61,17 @@ package body Modules is
          -- Send to the module values for selected composite tag in TableTags list of tags.
          -- First response contains amount of values.
          procedure Send_Table_Tag(Table_Tags: TableTags_Container.Map) is
-            Key: constant String := To_String(Tag_Name);
+            Key: constant String := To_String(Source => Tag_Name);
          begin
-            Send(Module, Natural'Image(Size(Table_Tags(Key))));
+            Send
+              (Descriptor => Module,
+               Str => Natural'Image(Size(Table_Tags(Key))));
+            Send_Table_Tags_Loop :
             for I in 1 .. Size(Table_Tags(Key)) loop
-               Send(Module, AWS.Templates.Item(Table_Tags(Key), I));
-            end loop;
+               Send
+                 (Descriptor => Module,
+                  Str => AWS.Templates.Item(T => Table_Tags(Key), N => I));
+            end loop Send_Table_Tags_Loop;
          end Send_Table_Tag;
          -- Edit selected simple tag in selected Tags list of tags.
          procedure EditTag(Tags: in out Tags_Container.Map) is
