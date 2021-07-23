@@ -65,16 +65,16 @@ package body Modules is
          begin
             Send
               (Descriptor => Module,
-               Str => Natural'Image(Size(Table_Tags(Key))));
+               Str => Natural'Image(Size(T => Table_Tags(Key))));
             Send_Table_Tags_Loop :
-            for I in 1 .. Size(Table_Tags(Key)) loop
+            for I in 1 .. Size(T => Table_Tags(Key)) loop
                Send
                  (Descriptor => Module,
                   Str => AWS.Templates.Item(T => Table_Tags(Key), N => I));
             end loop Send_Table_Tags_Loop;
          end Send_Table_Tag;
          -- Edit selected simple tag in selected Tags list of tags.
-         procedure EditTag(Tags: in out Tags_Container.Map) is
+         procedure Edit_Tag(Tags: in out Tags_Container.Map) is
             Key: constant String := To_String(Tag_Name);
          begin
             if Tags_Container.Contains(Tags, Key) then
@@ -83,7 +83,7 @@ package body Modules is
             Tags_Container.Include
               (Tags, Key, Slice(Text, Index(Text, " ", 10) + 1, Length(Text)));
             Send(Module, "Success");
-         end EditTag;
+         end Edit_Tag;
    -- Edit selected composite tag in selected TableTags list of composite tags.
          procedure EditTableTag(TableTags: in out TableTags_Container.Map) is
             StartIndex: Positive;
@@ -164,7 +164,7 @@ package body Modules is
                      Send_Table_Tag(Page_Table_Tags);
                end case;
                -- Edit value of selected tag with new value from the module
-            elsif Slice(Text, 1, 7) = "edittag" then
+            elsif Slice(Text, 1, 7) = "Edit_Tag" then
                Tag_Name := Unbounded_Slice(Text, 9, Index(Text, " ", 10) - 1);
                case Tag_Exist is
                   when NOTAG =>
@@ -173,11 +173,11 @@ package body Modules is
                         "Tag with name """ & To_String(Tag_Name) &
                         """ don't exists.");
                   when GLOBALTAG =>
-                     EditTag(Site_Tags);
+                     Edit_Tag(Site_Tags);
                   when GLOBALTABLETAG =>
                      EditTableTag(Global_Table_Tags);
                   when PAGETAG =>
-                     EditTag(Page_Tags);
+                     Edit_Tag(Page_Tags);
                   when PAGETABLETAG =>
                      EditTableTag(Page_Table_Tags);
                end case;
