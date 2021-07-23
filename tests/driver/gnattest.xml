@@ -5,27 +5,27 @@
          <teardown file="atomfeed-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="To_Time" line="75" column="13">
             <test_case name="Test_To_Date" line="77" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="73" column="1" name="Test_To_Time_e953f5_b6f0f8" timestamp="modified"/>
+               <test file="atomfeed-test_data-tests.adb" line="75" column="1" name="Test_To_Time_e953f5_b6f0f8" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="To_HTTP_Date" line="88" column="13">
             <test_case name="Test_To_HTTP_Date" line="91" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="128" column="1" name="Test_To_HTTP_Date_2bd5b1_0b38f7" timestamp="modified"/>
+               <test file="atomfeed-test_data-tests.adb" line="130" column="1" name="Test_To_HTTP_Date_2bd5b1_0b38f7" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="Start_Atom_Feed" line="98" column="14">
             <test_case name="Test_Start_Atom_Feed" line="99" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="156" column="1" name="Test_Start_Atom_Feed_2493ea_0ccbf2" timestamp="modified"/>
+               <test file="atomfeed-test_data-tests.adb" line="158" column="1" name="Test_Start_Atom_Feed_2493ea_0ccbf2" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="Add_Page_To_Feed" line="109" column="14">
             <test_case name="Test_Add_Page_To_Feed" line="112" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="206" column="1" name="Test_Add_Page_To_Feed_467d32_84581a" timestamp="modified"/>
+               <test file="atomfeed-test_data-tests.adb" line="208" column="1" name="Test_Add_Page_To_Feed_467d32_84581a" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="Save_Atom_Feed" line="119" column="14">
             <test_case name="Test_Save_Atom_Feed" line="120" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="235" column="1" name="Test_Save_Atom_Feed_73b303_2e8e31" timestamp="2021-07-21 05:39:44"/>
+               <test file="atomfeed-test_data-tests.adb" line="237" column="1" name="Test_Save_Atom_Feed_73b303_2e8e31" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
@@ -112,6 +112,19 @@
          <tested name="Load_Modules" line="37" column="14">
             <test_case name="Test_Load_Modules" line="41" column="7">
                <test file="modules-test_data-tests.adb" line="66" column="1" name="Test_Load_Modules_944a26_c25e19" timestamp="modified"/>
+            </test_case>
+         </tested>
+         <dangling>
+         </dangling>
+      </test_unit>
+   </unit>
+   <unit source_file="pages.ads">
+      <test_unit target_file="pages-test_data-tests.ads">
+         <setup file="pages-test_data.adb" name="Set_Up" line="8"  column="4"/>
+         <teardown file="pages-test_data.adb" name="Tear_Down" line="14"  column="4"/>
+         <tested name="CreatePage" line="41" column="14">
+            <test_case name="Test_Create_Page" line="43" column="7">
+               <test file="pages-test_data-tests.adb" line="66" column="1" name="Test_CreatePage_8e91e0_6a6713" timestamp="2021-07-22 06:20:23"/>
             </test_case>
          </tested>
          <dangling>

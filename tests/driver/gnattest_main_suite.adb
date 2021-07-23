@@ -7,6 +7,7 @@ with Config.Test_Data.Tests.Suite;
 with Layouts.Test_Data.Tests.Suite;
 with Messages.Test_Data.Tests.Suite;
 with Modules.Test_Data.Tests.Suite;
+with Pages.Test_Data.Tests.Suite;
 
 package body Gnattest_Main_Suite is
 
@@ -20,6 +21,7 @@ package body Gnattest_Main_Suite is
       Add_Test (Result'Access, Layouts.Test_Data.Tests.Suite.Suite);
       Add_Test (Result'Access, Messages.Test_Data.Tests.Suite.Suite);
       Add_Test (Result'Access, Modules.Test_Data.Tests.Suite.Suite);
+      Add_Test (Result'Access, Pages.Test_Data.Tests.Suite.Suite);
 
       return Result'Access;
 

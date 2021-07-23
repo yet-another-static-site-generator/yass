@@ -39,7 +39,8 @@ package Pages is
    --             be added
    -- SOURCE
    procedure CreatePage(FileName, Directory: String) with
-      Pre => FileName'Length > 0 and Directory'Length > 0;
+      Pre => FileName'Length > 0 and Directory'Length > 0,
+      Test_Case => (Name => "Test_Create_Page", Mode => Nominal);
    -- ****
 
    -- ****f* Pages/Pages.CopyFile
