@@ -220,8 +220,12 @@ package body AtomFeed.Test_Data.Tests is
 
    begin
 
-      Feeds.Append((Id => To_Unbounded_String("myid"), others => <>));
-      Add_Page_To_Feed("mypage.md", Feeds);
+      Feeds.Append
+        ((Id => To_Unbounded_String("myid"),
+          Entry_Title => To_Unbounded_String("my entry"),
+          Updated => Ada.Calendar.Time_Of(2_021, 1, 1), others => <>));
+      Add_Page_To_Feed
+        (To_String(Yass_Config.Output_Directory) & "/test.html", Feeds);
       Assert(True, "This test can only crash.");
 
 --  begin read only
