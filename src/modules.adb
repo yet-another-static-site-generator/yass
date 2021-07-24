@@ -75,14 +75,20 @@ package body Modules is
          end Send_Table_Tag;
          -- Edit selected simple tag in selected Tags list of tags.
          procedure Edit_Tag(Tags: in out Tags_Container.Map) is
-            Key: constant String := To_String(Tag_Name);
+            Key: constant String := To_String(Source => Tag_Name);
          begin
-            if Tags_Container.Contains(Tags, Key) then
-               Tags_Container.Exclude(Tags, Key);
+            if Tags.Contains(Key => Key) then
+               Tags.Exclude(Key => Key);
             end if;
-            Tags_Container.Include
-              (Tags, Key, Slice(Text, Index(Text, " ", 10) + 1, Length(Text)));
-            Send(Module, "Success");
+            Tags.Include
+              (Key => Key,
+               New_Item =>
+                 Slice
+                   (Source => Text,
+                    Low =>
+                      Index(Source => Text, Pattern => " ", From => 10) + 1,
+                    High => Length(Source => Text)));
+            Send(Descriptor => Module, Str => "Success");
          end Edit_Tag;
    -- Edit selected composite tag in selected TableTags list of composite tags.
          procedure EditTableTag(TableTags: in out TableTags_Container.Map) is
