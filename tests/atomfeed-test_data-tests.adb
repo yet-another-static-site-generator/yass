@@ -260,8 +260,6 @@ package body AtomFeed.Test_Data.Tests is
            (To_String(Yass_Config.Output_Directory) & Dir_Separator &
             "atom.xml"),
          "Failed to save the project Atom feed to file.");
-      Delete_File
-        (To_String(Yass_Config.Output_Directory) & Dir_Separator & "atom.xml");
 
 --  begin read only
    end Test_Save_Atom_Feed_test_save_atom_feed;
