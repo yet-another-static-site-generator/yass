@@ -58,7 +58,7 @@ package body Modules is
             end if;
             return NOTAG;
          end Tag_Exist;
-         -- Send to the module values for selected composite tag in TableTags list of tags.
+         -- Send to the module values for selected composite tag in Table_Tags list of tags.
          -- First response contains amount of values.
          procedure Send_Table_Tag(Table_Tags: TableTags_Container.Map) is
             Key: constant String := To_String(Source => Tag_Name);
@@ -90,45 +90,46 @@ package body Modules is
                     High => Length(Source => Text)));
             Send(Descriptor => Module, Str => "Success");
          end Edit_Tag;
-   -- Edit selected composite tag in selected TableTags list of composite tags.
-         procedure EditTableTag(TableTags: in out TableTags_Container.Map) is
-            StartIndex: Positive;
-            TagValue, TagIndex: Unbounded_String;
-            TempTag: Vector_Tag;
-            TableIndex: Integer;
+   -- Edit selected composite tag in selected Table_Tags list of composite tags.
+         procedure Edit_Table_Tag
+           (Table_Tags: in out TableTags_Container.Map) is
+            Start_Index: Positive;
+            Tag_Value, Tag_Index: Unbounded_String;
+            Temp_Tag: Vector_Tag;
+            Table_Index: Integer;
          begin
-            StartIndex := Length(Tag_Name) + 9;
-            TagIndex :=
+            Start_Index := Length(Tag_Name) + 9;
+            Tag_Index :=
               Unbounded_Slice
-                (Text, Index(Text, " ", StartIndex) + 1,
-                 Index(Text, " ", StartIndex + 1) - 1);
-            StartIndex := StartIndex + Length(TagIndex);
-            TagValue :=
+                (Text, Index(Text, " ", Start_Index) + 1,
+                 Index(Text, " ", Start_Index + 1) - 1);
+            Start_Index := Start_Index + Length(Tag_Index);
+            Tag_Value :=
               Unbounded_Slice
-                (Text, Index(Text, " ", StartIndex) + 1, Length(Text));
-            TableIndex := Integer'Value(To_String(TagIndex));
-            if TableIndex <= Size(TableTags(To_String(Tag_Name))) and
-              TableIndex > 0 then
-               TempTag := +"";
-               for I in 1 .. Size(TableTags(To_String(Tag_Name))) loop
-                  if TableIndex = I then
-                     TempTag := TempTag & To_String(TagValue);
+                (Text, Index(Text, " ", Start_Index) + 1, Length(Text));
+            Table_Index := Integer'Value(To_String(Tag_Index));
+            if Table_Index <= Size(Table_Tags(To_String(Tag_Name))) and
+              Table_Index > 0 then
+               Temp_Tag := +"";
+               for I in 1 .. Size(Table_Tags(To_String(Tag_Name))) loop
+                  if Table_Index = I then
+                     Temp_Tag := Temp_Tag & To_String(Tag_Value);
                   else
-                     TempTag :=
-                       TempTag &
-                       AWS.Templates.Item(TableTags(To_String(Tag_Name)), I);
+                     Temp_Tag :=
+                       Temp_Tag &
+                       AWS.Templates.Item(Table_Tags(To_String(Tag_Name)), I);
                   end if;
                end loop;
-               TableTags(To_String(Tag_Name)) := TempTag;
+               Table_Tags(To_String(Tag_Name)) := Temp_Tag;
                Send(Module, "Success");
                -- Invalid tag index in tags list
             else
                Send
                  (Module,
-                  "Index """ & To_String(TagIndex) & """ is not in tag """ &
+                  "Index """ & To_String(Tag_Index) & """ is not in tag """ &
                   To_String(Tag_Name) & """ index range.");
             end if;
-         end EditTableTag;
+         end Edit_Table_Tag;
       begin
          if not Is_Executable_File(Full_Name(Item)) then
             return;
@@ -181,11 +182,11 @@ package body Modules is
                   when GLOBALTAG =>
                      Edit_Tag(Site_Tags);
                   when GLOBALTABLETAG =>
-                     EditTableTag(Global_Table_Tags);
+                     Edit_Table_Tag(Global_Table_Tags);
                   when PAGETAG =>
                      Edit_Tag(Page_Tags);
                   when PAGETABLETAG =>
-                     EditTableTag(Page_Table_Tags);
+                     Edit_Table_Tag(Page_Table_Tags);
                end case;
             else
                Put_Line(To_String(Text));
