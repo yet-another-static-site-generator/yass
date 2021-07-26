@@ -17,6 +17,7 @@ with System.Assertions;
 
 with Ada.Directories; use Ada.Directories;
 with Config; use Config;
+with Sitemaps; use Sitemaps;
 
 --  begin read only
 --  end read only
@@ -71,13 +72,12 @@ package body Pages.Test_Data.Tests is
 
    begin
 
-      Yass_Config.Sitemap_Enabled := False;
+      StartSitemap;
       CreateEmptyFile("test.md");
       CreatePage("test.md", ".");
       Assert
         (Exists("_output/test.html"),
          "Failed to create a new HTML page from Markdown file.");
-      Yass_Config.Sitemap_Enabled := True;
 
 --  begin read only
    end Test_CreatePage_test_create_page;
