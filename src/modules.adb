@@ -95,7 +95,7 @@ package body Modules is
            (Table_Tags: in out TableTags_Container.Map) is
             Start_Index: Positive;
             Tag_Value, Tag_Index: Unbounded_String;
-            Temp_Tag: Vector_Tag;
+            Temp_Tag: Vector_Tag; --## rule line off IMPROPER_INITIALIZATION
             Table_Index: Integer;
          begin
             Start_Index := Length(Tag_Name) + 9;
@@ -103,7 +103,9 @@ package body Modules is
               Unbounded_Slice
                 (Text, Index(Text, " ", Start_Index) + 1,
                  Index(Text, " ", Start_Index + 1) - 1);
+            --## rule off ASSIGNMENTS
             Start_Index := Start_Index + Length(Tag_Index);
+            --## rule on ASSIGNMENTS
             Tag_Value :=
               Unbounded_Slice
                 (Text, Index(Text, " ", Start_Index) + 1, Length(Text));
