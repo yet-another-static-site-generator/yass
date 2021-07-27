@@ -98,19 +98,31 @@ package body Modules is
             Temp_Tag: Vector_Tag; --## rule line off IMPROPER_INITIALIZATION
             Table_Index: Integer;
          begin
-            Start_Index := Length(Tag_Name) + 9;
+            Start_Index := Length(Source => Tag_Name) + 9;
             Tag_Index :=
               Unbounded_Slice
-                (Text, Index(Text, " ", Start_Index) + 1,
-                 Index(Text, " ", Start_Index + 1) - 1);
+                (Source => Text,
+                 Low =>
+                   Index(Source => Text, Pattern => " ", From => Start_Index) +
+                   1,
+                 High =>
+                   Index
+                     (Source => Text, Pattern => " ",
+                      From => Start_Index + 1) -
+                   1);
             --## rule off ASSIGNMENTS
-            Start_Index := Start_Index + Length(Tag_Index);
+            Start_Index := Start_Index + Length(Source => Tag_Index);
             --## rule on ASSIGNMENTS
             Tag_Value :=
               Unbounded_Slice
-                (Text, Index(Text, " ", Start_Index) + 1, Length(Text));
-            Table_Index := Integer'Value(To_String(Tag_Index));
-            if Table_Index <= Size(Table_Tags(To_String(Tag_Name))) and
+                (Source => Text,
+                 Low =>
+                   Index(Source => Text, Pattern => " ", From => Start_Index) +
+                   1,
+                 High => Length(Source => Text));
+            Table_Index := Integer'Value(To_String(Source => Tag_Index));
+            if Table_Index <=
+              Size(T => Table_Tags(To_String(Source => Tag_Name))) and
               Table_Index > 0 then
                Temp_Tag := +"";
                for I in 1 .. Size(Table_Tags(To_String(Tag_Name))) loop
