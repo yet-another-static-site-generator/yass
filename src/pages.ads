@@ -52,7 +52,8 @@ package Pages is
    -- Directory - Full path to the directory where file will be added
    -- SOURCE
    procedure CopyFile(FileName, Directory: String) with
-      Pre => FileName'Length > 0 and Directory'Length > 0;
+      Pre => FileName'Length > 0 and Directory'Length > 0,
+      Test_Case => (Name => "Test_Copy_File", Mode => Nominal);
    -- ****
 
    -- ****f* Pages/Pages.CreateEmptyFile

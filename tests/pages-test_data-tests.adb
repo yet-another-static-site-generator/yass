@@ -84,6 +84,54 @@ package body Pages.Test_Data.Tests is
 --  end read only
 
 --  begin read only
+   procedure Wrap_Test_CopyFile_1a0ae8_88695c(FileName, Directory: String) is
+   begin
+      begin
+         pragma Assert(FileName'Length > 0 and Directory'Length > 0);
+         null;
+      exception
+         when System.Assertions.Assert_Failure =>
+            AUnit.Assertions.Assert
+              (False,
+               "req_sloc(pages.ads:0):Test_Copy_File test requirement violated");
+      end;
+      GNATtest_Generated.GNATtest_Standard.Pages.CopyFile(FileName, Directory);
+      begin
+         pragma Assert(True);
+         null;
+      exception
+         when System.Assertions.Assert_Failure =>
+            AUnit.Assertions.Assert
+              (False,
+               "ens_sloc(pages.ads:0:):Test_Copy_File test commitment violated");
+      end;
+   end Wrap_Test_CopyFile_1a0ae8_88695c;
+--  end read only
+
+--  begin read only
+   procedure Test_CopyFile_test_copy_file(Gnattest_T: in out Test);
+   procedure Test_CopyFile_1a0ae8_88695c(Gnattest_T: in out Test) renames
+     Test_CopyFile_test_copy_file;
+--  id:2.2/1a0ae87d2933d598/CopyFile/1/0/test_copy_file/
+   procedure Test_CopyFile_test_copy_file(Gnattest_T: in out Test) is
+      procedure CopyFile(FileName, Directory: String) renames
+        Wrap_Test_CopyFile_1a0ae8_88695c;
+--  end read only
+
+      pragma Unreferenced(Gnattest_T);
+
+   begin
+
+      CopyFile("test.md", ".");
+      Assert
+        (Exists("_output/test.md"),
+         "Failed to copy file to output directory.");
+
+--  begin read only
+   end Test_CopyFile_test_copy_file;
+--  end read only
+
+--  begin read only
 --  id:2.2/02/
 --
 --  This section can be used to add elaboration code for the global state.
