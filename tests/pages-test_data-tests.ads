@@ -16,5 +16,8 @@ package Pages.Test_Data.Tests is
    procedure Test_CopyFile_1a0ae8_88695c(Gnattest_T: in out Test);
    --  pages.ads:54:4:CopyFile:Test_Copy_File
 
+   procedure Test_CreateEmptyFile_7571dc_f14a1f(Gnattest_T: in out Test);
+   --  pages.ads:65:4:CreateEmptyFile:Test_Create_Empty_File
+
 end Pages.Test_Data.Tests;
 --  end read only

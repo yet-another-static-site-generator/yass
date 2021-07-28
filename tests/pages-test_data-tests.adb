@@ -132,6 +132,56 @@ package body Pages.Test_Data.Tests is
 --  end read only
 
 --  begin read only
+   procedure Wrap_Test_CreateEmptyFile_7571dc_f14a1f(FileName: String) is
+   begin
+      begin
+         pragma Assert(FileName'Length > 0);
+         null;
+      exception
+         when System.Assertions.Assert_Failure =>
+            AUnit.Assertions.Assert
+              (False,
+               "req_sloc(pages.ads:0):Test_Create_Empty_File test requirement violated");
+      end;
+      GNATtest_Generated.GNATtest_Standard.Pages.CreateEmptyFile(FileName);
+      begin
+         pragma Assert(True);
+         null;
+      exception
+         when System.Assertions.Assert_Failure =>
+            AUnit.Assertions.Assert
+              (False,
+               "ens_sloc(pages.ads:0:):Test_Create_Empty_File test commitment violated");
+      end;
+   end Wrap_Test_CreateEmptyFile_7571dc_f14a1f;
+--  end read only
+
+--  begin read only
+   procedure Test_CreateEmptyFile_test_create_empty_file
+     (Gnattest_T: in out Test);
+   procedure Test_CreateEmptyFile_7571dc_f14a1f
+     (Gnattest_T: in out Test) renames
+     Test_CreateEmptyFile_test_create_empty_file;
+--  id:2.2/7571dcb65e3d6ae8/CreateEmptyFile/1/0/test_create_empty_file/
+   procedure Test_CreateEmptyFile_test_create_empty_file
+     (Gnattest_T: in out Test) is
+      procedure CreateEmptyFile(FileName: String) renames
+        Wrap_Test_CreateEmptyFile_7571dc_f14a1f;
+--  end read only
+
+      pragma Unreferenced(Gnattest_T);
+
+   begin
+
+      CreateEmptyFile("mynewfile.md");
+      Assert(Exists("mynewfile.md"), "Failed to create empty Markdown file.");
+      Delete_File("mynewfile.md");
+
+--  begin read only
+   end Test_CreateEmptyFile_test_create_empty_file;
+--  end read only
+
+--  begin read only
 --  id:2.2/02/
 --
 --  This section can be used to add elaboration code for the global state.

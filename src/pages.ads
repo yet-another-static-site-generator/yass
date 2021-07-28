@@ -63,7 +63,8 @@ package Pages is
    -- FileName - Full path to the Markdown file which will be created
    -- SOURCE
    procedure CreateEmptyFile(FileName: String) with
-      Pre => FileName'Length > 0;
+      Pre => FileName'Length > 0,
+      Test_Case => (Name => "Test_Create_Empty_File", Mode => Nominal);
    -- ****
 
    -- ****f* Pages/Pages.GetLayoutName
