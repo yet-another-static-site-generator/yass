@@ -125,32 +125,41 @@ package body Modules is
               Size(T => Table_Tags(To_String(Source => Tag_Name))) and
               Table_Index > 0 then
                Temp_Tag := +"";
-               for I in 1 .. Size(Table_Tags(To_String(Tag_Name))) loop
+               Set_Tags_Loop :
+               for I in
+                 1 .. Size(T => Table_Tags(To_String(Source => Tag_Name))) loop
                   if Table_Index = I then
-                     Temp_Tag := Temp_Tag & To_String(Tag_Value);
+                     Temp_Tag := Temp_Tag & To_String(Source => Tag_Value);
                   else
                      Temp_Tag :=
                        Temp_Tag &
-                       AWS.Templates.Item(Table_Tags(To_String(Tag_Name)), I);
+                       AWS.Templates.Item
+                         (T => Table_Tags(To_String(Source => Tag_Name)),
+                          N => I);
                   end if;
-               end loop;
-               Table_Tags(To_String(Tag_Name)) := Temp_Tag;
-               Send(Module, "Success");
+               end loop Set_Tags_Loop;
+               Table_Tags(To_String(Source => Tag_Name)) := Temp_Tag;
+               Send(Descriptor => Module, Str => "Success");
                -- Invalid tag index in tags list
             else
                Send
-                 (Module,
-                  "Index """ & To_String(Tag_Index) & """ is not in tag """ &
-                  To_String(Tag_Name) & """ index range.");
+                 (Descriptor => Module,
+                  Str =>
+                    "Index """ & To_String(Source => Tag_Index) &
+                    """ is not in tag """ & To_String(Source => Tag_Name) &
+                    """ index range.");
             end if;
          end Edit_Table_Tag;
       begin
-         if not Is_Executable_File(Full_Name(Item)) then
+         if not Is_Executable_File
+             (Name => Full_Name(Directory_Entry => Item)) then
             return;
          end if;
          -- Spawn selected module
          Non_Blocking_Spawn
-           (Module, Full_Name(Item), Argument_String_To_List("").all);
+           (Descriptor => Module,
+            Command => Full_Name(Directory_Entry => Item),
+            Args => Argument_String_To_List(Arg_String => "").all);
          while not Finished loop
             -- Wait for the response from the module
             Expect(Module, Result, ".+", 1_000);
