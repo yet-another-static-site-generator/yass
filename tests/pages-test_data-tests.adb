@@ -182,6 +182,60 @@ package body Pages.Test_Data.Tests is
 --  end read only
 
 --  begin read only
+   function Wrap_Test_GetLayoutName_5a4eaf_630566
+     (FileName: String) return String is
+   begin
+      begin
+         pragma Assert(FileName'Length > 0);
+         null;
+      exception
+         when System.Assertions.Assert_Failure =>
+            AUnit.Assertions.Assert
+              (False,
+               "req_sloc(pages.ads:0):Test_Get_Layout_Name test requirement violated");
+      end;
+      declare
+         Test_GetLayoutName_5a4eaf_630566_Result: constant String :=
+           GNATtest_Generated.GNATtest_Standard.Pages.GetLayoutName(FileName);
+      begin
+         begin
+            pragma Assert(True);
+            null;
+         exception
+            when System.Assertions.Assert_Failure =>
+               AUnit.Assertions.Assert
+                 (False,
+                  "ens_sloc(pages.ads:0:):Test_Get_Layout_Name test commitment violated");
+         end;
+         return Test_GetLayoutName_5a4eaf_630566_Result;
+      end;
+   end Wrap_Test_GetLayoutName_5a4eaf_630566;
+--  end read only
+
+--  begin read only
+   procedure Test_GetLayoutName_test_get_layout_name(Gnattest_T: in out Test);
+   procedure Test_GetLayoutName_5a4eaf_630566(Gnattest_T: in out Test) renames
+     Test_GetLayoutName_test_get_layout_name;
+--  id:2.2/5a4eaf0a2a73252b/GetLayoutName/1/0/test_get_layout_name/
+   procedure Test_GetLayoutName_test_get_layout_name
+     (Gnattest_T: in out Test) is
+      function GetLayoutName(FileName: String) return String renames
+        Wrap_Test_GetLayoutName_5a4eaf_630566;
+--  end read only
+
+      pragma Unreferenced(Gnattest_T);
+
+   begin
+
+      Assert
+        (GetLayoutName("test.md") = "./_layouts/default.html",
+         "Failed to get the path to the selected layout.");
+
+--  begin read only
+   end Test_GetLayoutName_test_get_layout_name;
+--  end read only
+
+--  begin read only
 --  id:2.2/02/
 --
 --  This section can be used to add elaboration code for the global state.

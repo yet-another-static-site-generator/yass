@@ -134,7 +134,12 @@
          </tested>
          <tested name="CreateEmptyFile" line="65" column="14">
             <test_case name="Test_Create_Empty_File" line="67" column="7">
-               <test file="pages-test_data-tests.adb" line="170" column="1" name="Test_CreateEmptyFile_7571dc_f14a1f" timestamp="2021-07-27 04:51:35"/>
+               <test file="pages-test_data-tests.adb" line="170" column="1" name="Test_CreateEmptyFile_7571dc_f14a1f" timestamp="modified"/>
+            </test_case>
+         </tested>
+         <tested name="GetLayoutName" line="78" column="13">
+            <test_case name="Test_Get_Layout_Name" line="80" column="7">
+               <test file="pages-test_data-tests.adb" line="222" column="1" name="Test_GetLayoutName_5a4eaf_630566" timestamp="2021-07-28 05:25:26"/>
             </test_case>
          </tested>
          <dangling>

@@ -76,7 +76,8 @@ package Pages is
    -- Name of the layout used by the file
    -- SOURCE
    function GetLayoutName(FileName: String) return String with
-      Pre => FileName'Length > 0;
+      Pre => FileName'Length > 0,
+      Test_Case => (Name => "Test_Get_Layout_Name", Mode => Nominal);
    -- ****
 
 end Pages;

@@ -19,5 +19,8 @@ package Pages.Test_Data.Tests is
    procedure Test_CreateEmptyFile_7571dc_f14a1f(Gnattest_T: in out Test);
    --  pages.ads:65:4:CreateEmptyFile:Test_Create_Empty_File
 
+   procedure Test_GetLayoutName_5a4eaf_630566(Gnattest_T: in out Test);
+   --  pages.ads:78:4:GetLayoutName:Test_Get_Layout_Name
+
 end Pages.Test_Data.Tests;
 --  end read only
