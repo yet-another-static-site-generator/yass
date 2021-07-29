@@ -160,17 +160,21 @@ package body Modules is
            (Descriptor => Module,
             Command => Full_Name(Directory_Entry => Item),
             Args => Argument_String_To_List(Arg_String => "").all);
+         Read_Response_Loop :
          while not Finished loop
             -- Wait for the response from the module
             Expect(Module, Result, ".+", 1_000);
-            if Result = Expect_Timeout then
-               Finished := True;
-               goto End_Of_Loop;
-            elsif Result > 1 then
-               goto End_Of_Loop;
-            end if;
+            case Result is
+               when 1 =>
+                  null;
+               when Expect_Timeout =>
+                  Finished := True;
+                  goto End_Of_Loop;
+               when others =>
+                  goto End_Of_Loop;
+            end case;
             Text := To_Unbounded_String(Expect_Out_Match(Module));
-            exit when Text = To_Unbounded_String("done");
+            exit Read_Response_Loop when Text = To_Unbounded_String("done");
             if Length(Text) < 7 then
                Put_Line(To_String(Text));
                goto End_Of_Loop;
@@ -215,7 +219,7 @@ package body Modules is
                Put_Line(To_String(Text));
             end if;
             <<End_Of_Loop>>
-         end loop;
+         end loop Read_Response_Loop;
          Close(Module);
       exception
          when Invalid_Process =>
