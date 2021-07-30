@@ -163,7 +163,9 @@ package body Modules is
          Read_Response_Loop :
          while not Finished loop
             -- Wait for the response from the module
-            Expect(Module, Result, ".+", 1_000);
+            Expect
+              (Descriptor => Module, Result => Result, Regexp => ".+",
+               Timeout => 1_000);
             case Result is
                when 1 =>
                   null;
@@ -173,21 +175,27 @@ package body Modules is
                when others =>
                   goto End_Of_Loop;
             end case;
-            Text := To_Unbounded_String(Expect_Out_Match(Module));
-            exit Read_Response_Loop when Text = To_Unbounded_String("done");
-            if Length(Text) < 7 then
-               Put_Line(To_String(Text));
+            Text :=
+              To_Unbounded_String
+                (Source => Expect_Out_Match(Descriptor => Module));
+            exit Read_Response_Loop when Text =
+              To_Unbounded_String(Source => "done");
+            if Length(Source => Text) < 7 then
+               Put_Line(To_String(Source => Text));
                goto End_Of_Loop;
             end if;
             -- Send value of selected tag to the module
-            if Slice(Text, 1, 6) = "gettag" then
-               Tag_Name := Unbounded_Slice(Text, 8, Length(Text));
+            if Slice(Source => Text, Low => 1, High => 6) = "gettag" then
+               Tag_Name :=
+                 Unbounded_Slice
+                   (Source => Text, Low => 8, High => Length(Source => Text));
                case Tag_Exist is
                   when NOTAG =>
                      Send
-                       (Module,
-                        "Tag with name """ & To_String(Tag_Name) &
-                        """ doesn't exists.");
+                       (Descriptor => Module,
+                        Str =>
+                          "Tag with name """ & To_String(Source => Tag_Name) &
+                          """ doesn't exists.");
                   when GLOBALTAG =>
                      Send(Module, Site_Tags(To_String(Tag_Name)));
                   when GLOBALTABLETAG =>
