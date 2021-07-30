@@ -139,7 +139,20 @@
          </tested>
          <tested name="GetLayoutName" line="78" column="13">
             <test_case name="Test_Get_Layout_Name" line="80" column="7">
-               <test file="pages-test_data-tests.adb" line="222" column="1" name="Test_GetLayoutName_5a4eaf_630566" timestamp="2021-07-28 05:25:26"/>
+               <test file="pages-test_data-tests.adb" line="222" column="1" name="Test_GetLayoutName_5a4eaf_630566" timestamp="modified"/>
+            </test_case>
+         </tested>
+         <dangling>
+         </dangling>
+      </test_unit>
+   </unit>
+   <unit source_file="sitemaps.ads">
+      <test_unit target_file="sitemaps-test_data-tests.ads">
+         <setup file="sitemaps-test_data.adb" name="Set_Up" line="8"  column="4"/>
+         <teardown file="sitemaps-test_data.adb" name="Tear_Down" line="14"  column="4"/>
+         <tested name="StartSitemap" line="29" column="14">
+            <test_case name="Test_Start_Sitemap" line="30" column="7">
+               <test file="sitemaps-test_data-tests.adb" line="46" column="1" name="Test_StartSitemap_351b30_223cc9" timestamp="2021-07-29 05:11:38"/>
             </test_case>
          </tested>
          <dangling>

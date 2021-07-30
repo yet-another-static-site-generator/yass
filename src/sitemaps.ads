@@ -26,7 +26,8 @@ package Sitemaps is
    -- FUNCTION
    -- Create new or load existing sitemap for the site
    -- SOURCE
-   procedure StartSitemap;
+   procedure StartSitemap with
+      Test_Case => (Name => "Test_Start_Sitemap", Mode => Robustness);
    -- ****
 
    -- ****f* Sitemaps/Sitemaps.AddPageToSitemap
