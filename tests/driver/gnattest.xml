@@ -152,7 +152,12 @@
          <teardown file="sitemaps-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="StartSitemap" line="29" column="14">
             <test_case name="Test_Start_Sitemap" line="30" column="7">
-               <test file="sitemaps-test_data-tests.adb" line="46" column="1" name="Test_StartSitemap_351b30_223cc9" timestamp="2021-07-29 05:11:38"/>
+               <test file="sitemaps-test_data-tests.adb" line="46" column="1" name="Test_StartSitemap_351b30_223cc9" timestamp="modified"/>
+            </test_case>
+         </tested>
+         <tested name="AddPageToSitemap" line="43" column="14">
+            <test_case name="Test_Add_Page_To_Sitemap" line="46" column="7">
+               <test file="sitemaps-test_data-tests.adb" line="73" column="1" name="Test_AddPageToSitemap_afae92_d33b30" timestamp="2021-07-30 06:04:06"/>
             </test_case>
          </tested>
          <dangling>

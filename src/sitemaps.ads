@@ -42,7 +42,8 @@ package Sitemaps is
    -- SOURCE
    procedure AddPageToSitemap
      (FileName, ChangeFrequency, PagePriority: String) with
-      Pre => FileName'Length > 0;
+      Pre => FileName'Length > 0,
+      Test_Case => (Name => "Test_Add_Page_To_Sitemap", Mode => Robustness);
    -- ****
 
    -- ****f* Sitemaps/Sitemaps.SaveSitemap
