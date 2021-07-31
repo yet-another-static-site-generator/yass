@@ -181,7 +181,7 @@ package body Modules is
             exit Read_Response_Loop when Text =
               To_Unbounded_String(Source => "done");
             if Length(Source => Text) < 7 then
-               Put_Line(To_String(Source => Text));
+               Put_Line(Item => To_String(Source => Text));
                goto End_Of_Loop;
             end if;
             -- Send value of selected tag to the module
@@ -197,23 +197,32 @@ package body Modules is
                           "Tag with name """ & To_String(Source => Tag_Name) &
                           """ doesn't exists.");
                   when GLOBALTAG =>
-                     Send(Module, Site_Tags(To_String(Tag_Name)));
+                     Send
+                       (Descriptor => Module,
+                        Str => Site_Tags(To_String(Source => Tag_Name)));
                   when GLOBALTABLETAG =>
-                     Send_Table_Tag(Global_Table_Tags);
+                     Send_Table_Tag(Table_Tags => Global_Table_Tags);
                   when PAGETAG =>
-                     Send(Module, Page_Tags(To_String(Tag_Name)));
+                     Send
+                       (Descriptor => Module,
+                        Str => Page_Tags(To_String(Source => Tag_Name)));
                   when PAGETABLETAG =>
-                     Send_Table_Tag(Page_Table_Tags);
+                     Send_Table_Tag(Table_Tags => Page_Table_Tags);
                end case;
                -- Edit value of selected tag with new value from the module
-            elsif Slice(Text, 1, 7) = "Edit_Tag" then
-               Tag_Name := Unbounded_Slice(Text, 9, Index(Text, " ", 10) - 1);
+            elsif Slice(Source => Text, Low => 1, High => 7) = "Edit_Tag" then
+               Tag_Name :=
+                 Unbounded_Slice
+                   (Source => Text, Low => 9,
+                    High =>
+                      Index(Source => Text, Pattern => " ", From => 10) - 1);
                case Tag_Exist is
                   when NOTAG =>
                      Send
-                       (Module,
-                        "Tag with name """ & To_String(Tag_Name) &
-                        """ don't exists.");
+                       (Descriptor => Module,
+                        Str =>
+                          "Tag with name """ & To_String(Source => Tag_Name) &
+                          """ don't exists.");
                   when GLOBALTAG =>
                      Edit_Tag(Site_Tags);
                   when GLOBALTABLETAG =>
