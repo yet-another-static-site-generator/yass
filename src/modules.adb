@@ -36,7 +36,9 @@ package body Modules is
          Result: Expect_Match := 0;
          Text, Tag_Name: Unbounded_String := Null_Unbounded_String;
          type Tag_Types is
-           (NOTAG, GLOBALTAG, GLOBALTABLETAG, PAGETAG, PAGETABLETAG);
+           (NOTAG, GLOBALTAG, GLOBALTABLETAG, PAGETAG, PAGETABLETAG) with
+            Default_Value => NOTAG;
+         Empty_Tag: constant Tag_Types := NOTAG;
          -- Check if tag with selected name exists and return it type
          function Tag_Exist return Tag_Types is
             use Tags_Container;
@@ -48,7 +50,7 @@ package body Modules is
                return GLOBALTABLETAG;
             end if;
             if Page_Tags = Tags_Container.Empty_Map then
-               return NOTAG;
+               return Empty_Tag;
             end if;
             if Page_Tags.Contains(Key => To_String(Source => Tag_Name)) then
                return PAGETAG;
@@ -56,7 +58,7 @@ package body Modules is
                 (Key => To_String(Source => Tag_Name)) then
                return PAGETABLETAG;
             end if;
-            return NOTAG;
+            return Empty_Tag;
          end Tag_Exist;
          -- Send to the module values for selected composite tag in Table_Tags list of tags.
          -- First response contains amount of values.
@@ -190,7 +192,7 @@ package body Modules is
                  Unbounded_Slice
                    (Source => Text, Low => 8, High => Length(Source => Text));
                case Tag_Exist is
-                  when NOTAG =>
+                  when Empty_Tag =>
                      Send
                        (Descriptor => Module,
                         Str =>
@@ -217,30 +219,33 @@ package body Modules is
                     High =>
                       Index(Source => Text, Pattern => " ", From => 10) - 1);
                case Tag_Exist is
-                  when NOTAG =>
+                  when Empty_Tag =>
                      Send
                        (Descriptor => Module,
                         Str =>
                           "Tag with name """ & To_String(Source => Tag_Name) &
                           """ don't exists.");
                   when GLOBALTAG =>
-                     Edit_Tag(Site_Tags);
+                     Edit_Tag(Tags => Site_Tags);
                   when GLOBALTABLETAG =>
-                     Edit_Table_Tag(Global_Table_Tags);
+                     Edit_Table_Tag(Table_Tags => Global_Table_Tags);
                   when PAGETAG =>
-                     Edit_Tag(Page_Tags);
+                     Edit_Tag(Tags => Page_Tags);
                   when PAGETABLETAG =>
-                     Edit_Table_Tag(Page_Table_Tags);
+                     Edit_Table_Tag(Table_Tags => Page_Table_Tags);
                end case;
             else
-               Put_Line(To_String(Text));
+               Put_Line(Item => To_String(Source => Text));
             end if;
             <<End_Of_Loop>>
          end loop Read_Response_Loop;
-         Close(Module);
+         Close(Descriptor => Module);
       exception
          when Invalid_Process =>
-            Show_Message("Module " & Full_Name(Item) & " failed to execute.");
+            Show_Message
+              (Text =>
+                 "Module " & Full_Name(Directory_Entry => Item) &
+                 " failed to execute.");
          when Process_Died =>
             null;
       end Run_Module;
