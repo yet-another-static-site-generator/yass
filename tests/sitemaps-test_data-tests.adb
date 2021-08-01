@@ -15,6 +15,11 @@ with System.Assertions;
 --
 --  end read only
 
+with Ada.Directories; use Ada.Directories;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with Config; use Config;
+
 --  begin read only
 --  end read only
 package body Sitemaps.Test_Data.Tests is
@@ -87,6 +92,36 @@ package body Sitemaps.Test_Data.Tests is
 
 --  begin read only
    end Test_AddPageToSitemap_test_add_page_to_sitemap;
+--  end read only
+
+--  begin read only
+   procedure Wrap_Test_SaveSitemap_8a2373_7f961d is
+   begin
+      GNATtest_Generated.GNATtest_Standard.Sitemaps.SaveSitemap;
+   end Wrap_Test_SaveSitemap_8a2373_7f961d;
+--  end read only
+
+--  begin read only
+   procedure Test_SaveSitemap_test_save_sitemap(Gnattest_T: in out Test);
+   procedure Test_SaveSitemap_8a2373_7f961d(Gnattest_T: in out Test) renames
+     Test_SaveSitemap_test_save_sitemap;
+--  id:2.2/8a2373146aca9803/SaveSitemap/1/0/test_save_sitemap/
+   procedure Test_SaveSitemap_test_save_sitemap(Gnattest_T: in out Test) is
+      procedure SaveSitemap renames Wrap_Test_SaveSitemap_8a2373_7f961d;
+--  end read only
+
+      pragma Unreferenced(Gnattest_T);
+
+   begin
+
+      SaveSitemap;
+      Assert
+        (Exists
+           (To_String(Yass_Config.Output_Directory) & Dir_Separator &
+            "sitemap.xml"), "Failed to create the sitemap file.");
+
+--  begin read only
+   end Test_SaveSitemap_test_save_sitemap;
 --  end read only
 
 --  begin read only

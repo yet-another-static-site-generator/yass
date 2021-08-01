@@ -157,7 +157,12 @@
          </tested>
          <tested name="AddPageToSitemap" line="43" column="14">
             <test_case name="Test_Add_Page_To_Sitemap" line="46" column="7">
-               <test file="sitemaps-test_data-tests.adb" line="73" column="1" name="Test_AddPageToSitemap_afae92_d33b30" timestamp="2021-07-30 06:04:06"/>
+               <test file="sitemaps-test_data-tests.adb" line="73" column="1" name="Test_AddPageToSitemap_afae92_d33b30" timestamp="modified"/>
+            </test_case>
+         </tested>
+         <tested name="SaveSitemap" line="53" column="14">
+            <test_case name="Test_Save_Sitemap" line="54" column="7">
+               <test file="sitemaps-test_data-tests.adb" line="100" column="1" name="Test_SaveSitemap_8a2373_7f961d" timestamp="2021-07-31 05:53:18"/>
             </test_case>
          </tested>
          <dangling>

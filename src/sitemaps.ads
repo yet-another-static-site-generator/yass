@@ -50,7 +50,8 @@ package Sitemaps is
    -- FUNCTION
    -- Save site map to file
    -- SOURCE
-   procedure SaveSitemap;
+   procedure SaveSitemap with
+      Test_Case => (Name => "Test_Save_Sitemap", Mode => Robustness);
    -- ****
 
 end Sitemaps;

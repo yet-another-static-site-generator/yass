@@ -16,5 +16,8 @@ package Sitemaps.Test_Data.Tests is
    procedure Test_AddPageToSitemap_afae92_d33b30(Gnattest_T: in out Test);
    --  sitemaps.ads:43:4:AddPageToSitemap:Test_Add_Page_To_Sitemap
 
+   procedure Test_SaveSitemap_8a2373_7f961d(Gnattest_T: in out Test);
+   --  sitemaps.ads:53:4:SaveSitemap:Test_Save_Sitemap
+
 end Sitemaps.Test_Data.Tests;
 --  end read only
