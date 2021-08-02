@@ -15,22 +15,32 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Directories; use Ada.Directories;
-with Ada.Text_IO; use Ada.Text_IO;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.Expect; use GNAT.Expect;
-with AWS.Templates; use AWS.Templates;
-with Messages; use Messages;
+with Ada.Strings.Unbounded;
+with Ada.Directories;
+with Ada.Text_IO;
+with GNAT.Directory_Operations;
+with GNAT.OS_Lib;
+with GNAT.Expect;
+with AWS.Templates;
+with Messages;
 
 package body Modules is
 
    procedure Load_Modules
      (State: String; Page_Tags: in out Tags_Container.Map;
       Page_Table_Tags: in out TableTags_Container.Map) is
+      use Ada.Strings.Unbounded;
+      use Ada.Directories;
+      use GNAT.Directory_Operations;
+
       -- Run executable file with Item as full path name
       procedure Run_Module(Item: Directory_Entry_Type) is
+         use Ada.Text_IO;
+         use GNAT.OS_Lib;
+         use GNAT.Expect;
+         use AWS.Templates;
+         use Messages;
+
          Module: Process_Descriptor;
          Finished: Boolean := False;
          Result: Expect_Match := 0;
@@ -251,13 +261,17 @@ package body Modules is
       end Run_Module;
    begin
       if not Exists
-          (To_String(Yass_Config.Modules_Directory) & Dir_Separator &
-           State) then
+          (Name =>
+             To_String(Source => Yass_Config.Modules_Directory) &
+             Dir_Separator & State) then
          return;
       end if;
       Search
-        (To_String(Yass_Config.Modules_Directory) & Dir_Separator & State, "",
-         (Directory => False, others => True), Run_Module'Access);
+        (Directory =>
+           To_String(Source => Yass_Config.Modules_Directory) & Dir_Separator &
+           State,
+         Pattern => "", Filter => (Directory => False, others => True),
+         Process => Run_Module'Access);
    end Load_Modules;
 
 end Modules;
