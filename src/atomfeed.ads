@@ -41,7 +41,7 @@ package AtomFeed is
    type Feed_Entry is record
       Id: Unbounded_String;
       Entry_Title: Unbounded_String;
-      Updated: Time;
+      Updated: Time := Clock;
       Author_Name: Unbounded_String;
       Author_Email: Unbounded_String;
       Summary: Unbounded_String;
