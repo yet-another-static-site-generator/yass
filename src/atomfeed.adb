@@ -137,21 +137,15 @@ package body AtomFeed is
       Open(Filename => Get_Feed_File_Name, Input => Atom_File);
       --## rule off IMPROPER_INITIALIZATION
       Parse(Parser => Reader, Input => Atom_File);
-      --## rule on IMPROPER_INITIALIZATION
       Close(Input => Atom_File);
-      Feed :=
-        Get_Tree(Read => Reader); --## rule line off IMPROPER_INITIALIZATION
+      Feed := Get_Tree(Read => Reader);
+      --## rule on IMPROPER_INITIALIZATION
       Nodes_List :=
         DOM.Core.Documents.Get_Elements_By_Tag_Name
           (Doc => Feed, Tag_Name => "entry");
       Load_Atom_Entries_Loop :
       for I in 0 .. Length(List => Nodes_List) - 1 loop
-         Temp_Entry :=
-           (Id => Null_Unbounded_String, Entry_Title => Null_Unbounded_String,
-            Updated => Clock, Author_Name => Null_Unbounded_String,
-            Author_Email => Null_Unbounded_String,
-            Summary => Null_Unbounded_String,
-            Content => Null_Unbounded_String);
+         Temp_Entry := Empty_Feed_Entry;
          Children_Nodes :=
            Child_Nodes(N => Item(List => Nodes_List, Index => I));
          Child_Index := 1;
