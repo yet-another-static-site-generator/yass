@@ -45,16 +45,16 @@ package body Pages is
       Convention => C,
       External_Name => "cmark_markdown_to_html";
 
-   procedure CreatePage(FileName, Directory: String) is
+   procedure Create_Page(File_Name, Directory: String) is
       Layout, Content, ChangeFrequency, PagePriority: Unbounded_String;
       PageFile: File_Type;
       Tags: Translate_Set;
       OutputDirectory: constant Unbounded_String :=
         Yass_Config.Output_Directory &
         Delete(To_Unbounded_String(Directory), 1, Length(Site_Directory));
-      NewFileName: constant String :=
+      NewFile_Name: constant String :=
         To_String(OutputDirectory) & Dir_Separator &
-        Ada.Directories.Base_Name(FileName) & ".html";
+        Ada.Directories.Base_Name(File_Name) & ".html";
       PageTags: Tags_Container.Map;
       PageTableTags: TableTags_Container.Map;
       FrequencyValues: constant array(Positive range <>) of Unbounded_String :=
@@ -142,7 +142,7 @@ package body Pages is
          ValidValue: Boolean := False;
       begin
          -- Read selected markdown file
-         Open(PageFile, In_File, FileName);
+         Open(PageFile, In_File, File_Name);
          while not End_Of_File(PageFile) loop
             Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
             if Length(Data) < 3 then
@@ -165,7 +165,7 @@ package body Pages is
                if not Ada.Directories.Exists(To_String(Layout)) then
                   Close(PageFile);
                   raise LayoutNotFound
-                    with FileName & """. Selected layout file """ &
+                    with File_Name & """. Selected layout file """ &
                     To_String(Layout);
                end if;
                -- Set update frequency for the page in the sitemap
@@ -238,9 +238,9 @@ package body Pages is
               ("canonicallink",
                To_String(Yass_Config.Base_Url) & "/" &
                Slice
-                 (To_Unbounded_String(NewFileName),
+                 (To_Unbounded_String(NewFile_Name),
                   Length(Yass_Config.Output_Directory & Dir_Separator) + 1,
-                  NewFileName'Length)));
+                  NewFile_Name'Length)));
       end if;
       if not Exists(Tags, "author") then
          Insert(Tags, Assoc("author", To_String(Yass_Config.Author_Name)));
@@ -258,20 +258,20 @@ package body Pages is
       InsertTags(PageTags);
       -- Create HTML file in outputdirectory
       Create_Path(To_String(OutputDirectory));
-      Create(PageFile, Append_File, NewFileName);
+      Create(PageFile, Append_File, NewFile_Name);
       Put(PageFile, Decode(Parse(To_String(Layout), Tags)));
       Close(PageFile);
       -- Add the page to the sitemap
       if InSitemap then
          AddPageToSitemap
-           (NewFileName, To_String(ChangeFrequency), To_String(PagePriority));
+           (NewFile_Name, To_String(ChangeFrequency), To_String(PagePriority));
       end if;
       -- Add the page to the Atom feed
       if Yass_Config.Atom_Feed_Source = To_Unbounded_String("tags") then
          AtomEntries(AtomEntries.First_Index).Content := Content;
       end if;
-      Add_Page_To_Feed(NewFileName, AtomEntries);
-      Set("YASSFILE", NewFileName);
+      Add_Page_To_Feed(NewFile_Name, AtomEntries);
+      Set("YASSFILE", NewFile_Name);
       -- Load the program modules with 'post' hook
       Load_Modules("post", PageTags, PageTableTags);
    exception
@@ -279,27 +279,27 @@ package body Pages is
          Put_Line
            ("Can't parse """ & Exception_Message(An_Exception) &
             """ does not exists.");
-         raise GenerateSiteException;
+         raise Generate_Site_Exception;
       when An_Exception : Template_Error =>
          Put_Line(Exception_Message(An_Exception));
-         if Ada.Directories.Exists(NewFileName) then
+         if Ada.Directories.Exists(NewFile_Name) then
             Close(PageFile);
-            Delete_File(NewFileName);
+            Delete_File(NewFile_Name);
          end if;
-         raise GenerateSiteException;
+         raise Generate_Site_Exception;
       when An_Exception : SitemapInvalidValue =>
          Put_Line
-           ("Can't parse """ & FileName & """. " &
+           ("Can't parse """ & File_Name & """. " &
             Exception_Message(An_Exception));
-         raise GenerateSiteException;
+         raise Generate_Site_Exception;
       when An_Exception : InvalidValue =>
          Put_Line
-           ("Can't parse """ & FileName & """. Invalid value for tag: " &
+           ("Can't parse """ & File_Name & """. Invalid value for tag: " &
             Exception_Message(An_Exception));
-         raise GenerateSiteException;
-   end CreatePage;
+         raise Generate_Site_Exception;
+   end Create_Page;
 
-   procedure CopyFile(FileName, Directory: String) is
+   procedure Copy_File(File_Name, Directory: String) is
       OutputDirectory: constant Unbounded_String :=
         Yass_Config.Output_Directory &
         Delete(To_Unbounded_String(Directory), 1, Length(Site_Directory));
@@ -310,29 +310,31 @@ package body Pages is
       Load_Modules("pre", PageTags, PageTableTags);
       -- Copy the file to output directory
       Create_Path(To_String(OutputDirectory));
-      Copy_File
-        (FileName,
-         To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
-      if Extension(FileName) = "html" then
+      Ada.Directories.Copy_File
+        (File_Name,
+         To_String(OutputDirectory) & Dir_Separator & Simple_Name(File_Name));
+      if Extension(File_Name) = "html" then
          AddPageToSitemap
-           (To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName),
+           (To_String(OutputDirectory) & Dir_Separator &
+            Simple_Name(File_Name),
             "", "");
       end if;
       Set
         ("YASSFILE",
-         To_String(OutputDirectory) & Dir_Separator & Simple_Name(FileName));
+         To_String(OutputDirectory) & Dir_Separator & Simple_Name(File_Name));
       -- Load the program modules with 'post' hook
       Load_Modules("post", PageTags, PageTableTags);
-   end CopyFile;
+   end Copy_File;
 
-   procedure CreateEmptyFile(FileName: String) is
+   procedure Create_Empty_File(File_Name: String) is
       IndexFile: File_Type;
       CommentMark: constant String := To_String(Yass_Config.Markdown_Comment);
    begin
-      if Extension(FileName) /= "md" then
-         Create(IndexFile, Append_File, FileName & Dir_Separator & "index.md");
+      if Extension(File_Name) /= "md" then
+         Create
+           (IndexFile, Append_File, File_Name & Dir_Separator & "index.md");
       else
-         Create(IndexFile, Append_File, FileName);
+         Create(IndexFile, Append_File, File_Name);
       end if;
       Put_Line
         (IndexFile,
@@ -397,14 +399,14 @@ package body Pages is
          CommentMark &
          " You can without problem delete all this comments from this file.");
       Close(IndexFile);
-   end CreateEmptyFile;
+   end Create_Empty_File;
 
-   function GetLayoutName(FileName: String) return String is
+   function Get_Layout_Name(File_Name: String) return String is
       PageFile: File_Type;
       Data, Layout: Unbounded_String;
       StartPos: constant Positive := Length(Yass_Config.Markdown_Comment);
    begin
-      Open(PageFile, In_File, FileName);
+      Open(PageFile, In_File, File_Name);
       while not End_Of_File(PageFile) loop
          Data := To_Unbounded_String(Encode(Get_Line(PageFile)));
          if Length(Data) > 2
@@ -418,7 +420,7 @@ package body Pages is
             if not Ada.Directories.Exists(To_String(Layout)) then
                Close(PageFile);
                raise LayoutNotFound
-                 with FileName & """. Selected layout file """ &
+                 with File_Name & """. Selected layout file """ &
                  To_String(Layout);
             end if;
             Close(PageFile);
@@ -427,6 +429,6 @@ package body Pages is
       end loop;
       Close(PageFile);
       return "";
-   end GetLayoutName;
+   end Get_Layout_Name;
 
 end Pages;

@@ -76,9 +76,9 @@ package body Server is
             if not Ada.Directories.Exists(To_String(SiteFileName)) then
                Set("YASSFILE", Full_Name(Item));
                if Extension(Simple_Name(Item)) = "md" then
-                  CreatePage(Full_Name(Item), Name);
+                  Create_Page(Full_Name(Item), Name);
                else
-                  CopyFile(Full_Name(Item), Name);
+                  Pages.Copy_File(Full_Name(Item), Name);
                end if;
                Put_Line
                  ("[" &
@@ -89,10 +89,10 @@ package body Server is
             elsif Extension(Simple_Name(Item)) = "md" then
                if Modification_Time(Full_Name(Item)) >
                  Modification_Time(To_String(SiteFileName)) or
-                 Modification_Time(GetLayoutName(Full_Name(Item))) >
+                 Modification_Time(Get_Layout_Name(Full_Name(Item))) >
                    Modification_Time(To_String(SiteFileName)) then
                   Set("YASSFILE", Full_Name(Item));
-                  CreatePage(Full_Name(Item), Name);
+                  Create_Page(Full_Name(Item), Name);
                   Put_Line
                     ("[" &
                      Ada.Calendar.Formatting.Image
@@ -104,7 +104,7 @@ package body Server is
             elsif Modification_Time(Full_Name(Item)) >
               Modification_Time(To_String(SiteFileName)) then
                Set("YASSFILE", Full_Name(Item));
-               CopyFile(Full_Name(Item), Name);
+               Pages.Copy_File(Full_Name(Item), Name);
                Put_Line
                  ("[" &
                   Ada.Calendar.Formatting.Image
@@ -133,7 +133,7 @@ package body Server is
            (Name, "", (Directory => True, others => False),
             ProcessDirectories'Access);
       exception
-         when GenerateSiteException =>
+         when Generate_Site_Exception =>
             Show_Message
               ("[" &
                Ada.Calendar.Formatting.Image

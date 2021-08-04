@@ -80,12 +80,12 @@ procedure Yass is
                Value => Full_Name(Directory_Entry => Item));
             if Extension(Name => Simple_Name(Directory_Entry => Item)) =
               "md" then
-               CreatePage
-                 (FileName => Full_Name(Directory_Entry => Item),
+               Create_Page
+                 (File_Name => Full_Name(Directory_Entry => Item),
                   Directory => Name);
             else
-               CopyFile
-                 (FileName => Full_Name(Directory_Entry => Item),
+               Copy_File
+                 (File_Name => Full_Name(Directory_Entry => Item),
                   Directory => Name);
             end if;
          end Process_Files;
@@ -134,7 +134,7 @@ procedure Yass is
          Page_Table_Tags => Page_Table_Tags);
       return True;
    exception
-      when GenerateSiteException =>
+      when Generate_Site_Exception =>
          return False;
    end Build_Site;
 
@@ -268,7 +268,7 @@ procedure Yass is
       Create_Layout(Directory_Name => To_String(Source => Work_Directory));
       Create_Directory_Layout
         (Directory_Name => To_String(Source => Work_Directory));
-      CreateEmptyFile(FileName => To_String(Source => Work_Directory));
+      Create_Empty_File(File_Name => To_String(Source => Work_Directory));
       Show_Message
         (Text =>
            "New page in directory """ & Argument(Number => 2) &
@@ -451,7 +451,7 @@ begin
       Create_Path
         (New_Directory =>
            Containing_Directory(Name => To_String(Source => Work_Directory)));
-      CreateEmptyFile(FileName => To_String(Source => Work_Directory));
+      Create_Empty_File(File_Name => To_String(Source => Work_Directory));
       Show_Message
         (Text =>
            "Empty file """ & To_String(Source => Work_Directory) &
