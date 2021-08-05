@@ -118,7 +118,8 @@ package body Sitemaps.Test_Data.Tests is
       Assert
         (Exists
            (To_String(Yass_Config.Output_Directory) & Dir_Separator &
-            "sitemap.xml"), "Failed to create the sitemap file.");
+            "sitemap.xml"),
+         "Failed to create the sitemap file.");
 
 --  begin read only
    end Test_SaveSitemap_test_save_sitemap;

@@ -33,10 +33,11 @@ package body Pages.Test_Data.Tests is
 --  begin read only
 --  end read only
 --  begin read only
-   procedure Wrap_Test_CreatePage_8e91e0_6a6713(FileName, Directory: String) is
+   procedure Wrap_Test_Create_Page_93a400_dc01ab
+     (File_Name, Directory: String) is
    begin
       begin
-         pragma Assert(FileName'Length > 0 and Directory'Length > 0);
+         pragma Assert(File_Name'Length > 0 and Directory'Length > 0);
          null;
       exception
          when System.Assertions.Assert_Failure =>
@@ -44,8 +45,8 @@ package body Pages.Test_Data.Tests is
               (False,
                "req_sloc(pages.ads:0):Test_Create_Page test requirement violated");
       end;
-      GNATtest_Generated.GNATtest_Standard.Pages.CreatePage
-        (FileName, Directory);
+      GNATtest_Generated.GNATtest_Standard.Pages.Create_Page
+        (File_Name, Directory);
       begin
          pragma Assert(True);
          null;
@@ -55,17 +56,17 @@ package body Pages.Test_Data.Tests is
               (False,
                "ens_sloc(pages.ads:0:):Test_Create_Page test commitment violated");
       end;
-   end Wrap_Test_CreatePage_8e91e0_6a6713;
+   end Wrap_Test_Create_Page_93a400_dc01ab;
 --  end read only
 
 --  begin read only
-   procedure Test_CreatePage_test_create_page(Gnattest_T: in out Test);
-   procedure Test_CreatePage_8e91e0_6a6713(Gnattest_T: in out Test) renames
-     Test_CreatePage_test_create_page;
---  id:2.2/8e91e0bf6f60a68d/CreatePage/1/0/test_create_page/
-   procedure Test_CreatePage_test_create_page(Gnattest_T: in out Test) is
-      procedure CreatePage(FileName, Directory: String) renames
-        Wrap_Test_CreatePage_8e91e0_6a6713;
+   procedure Test_Create_Page_test_create_page(Gnattest_T: in out Test);
+   procedure Test_Create_Page_93a400_dc01ab(Gnattest_T: in out Test) renames
+     Test_Create_Page_test_create_page;
+--  id:2.2/93a4003e12046daf/Create_Page/1/0/test_create_page/
+   procedure Test_Create_Page_test_create_page(Gnattest_T: in out Test) is
+      procedure Create_Page(File_Name, Directory: String) renames
+        Wrap_Test_Create_Page_93a400_dc01ab;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
@@ -73,21 +74,21 @@ package body Pages.Test_Data.Tests is
    begin
 
       StartSitemap;
-      CreateEmptyFile("test.md");
-      CreatePage("test.md", ".");
+      Create_Empty_File("test.md");
+      Create_Page("test.md", ".");
       Assert
         (Exists("_output/test.html"),
          "Failed to create a new HTML page from Markdown file.");
 
 --  begin read only
-   end Test_CreatePage_test_create_page;
+   end Test_Create_Page_test_create_page;
 --  end read only
 
 --  begin read only
-   procedure Wrap_Test_CopyFile_1a0ae8_88695c(FileName, Directory: String) is
+   procedure Wrap_Test_Copy_File_2f1aa9_049492(File_Name, Directory: String) is
    begin
       begin
-         pragma Assert(FileName'Length > 0 and Directory'Length > 0);
+         pragma Assert(File_Name'Length > 0 and Directory'Length > 0);
          null;
       exception
          when System.Assertions.Assert_Failure =>
@@ -95,7 +96,8 @@ package body Pages.Test_Data.Tests is
               (False,
                "req_sloc(pages.ads:0):Test_Copy_File test requirement violated");
       end;
-      GNATtest_Generated.GNATtest_Standard.Pages.CopyFile(FileName, Directory);
+      GNATtest_Generated.GNATtest_Standard.Pages.Copy_File
+        (File_Name, Directory);
       begin
          pragma Assert(True);
          null;
@@ -105,37 +107,37 @@ package body Pages.Test_Data.Tests is
               (False,
                "ens_sloc(pages.ads:0:):Test_Copy_File test commitment violated");
       end;
-   end Wrap_Test_CopyFile_1a0ae8_88695c;
+   end Wrap_Test_Copy_File_2f1aa9_049492;
 --  end read only
 
 --  begin read only
-   procedure Test_CopyFile_test_copy_file(Gnattest_T: in out Test);
-   procedure Test_CopyFile_1a0ae8_88695c(Gnattest_T: in out Test) renames
-     Test_CopyFile_test_copy_file;
---  id:2.2/1a0ae87d2933d598/CopyFile/1/0/test_copy_file/
-   procedure Test_CopyFile_test_copy_file(Gnattest_T: in out Test) is
-      procedure CopyFile(FileName, Directory: String) renames
-        Wrap_Test_CopyFile_1a0ae8_88695c;
+   procedure Test_Copy_File_test_copy_file(Gnattest_T: in out Test);
+   procedure Test_Copy_File_2f1aa9_049492(Gnattest_T: in out Test) renames
+     Test_Copy_File_test_copy_file;
+--  id:2.2/2f1aa9959af2dee0/Copy_File/1/0/test_copy_file/
+   procedure Test_Copy_File_test_copy_file(Gnattest_T: in out Test) is
+      procedure Copy_File(File_Name, Directory: String) renames
+        Wrap_Test_Copy_File_2f1aa9_049492;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
 
    begin
 
-      CopyFile("test.md", ".");
+      Pages.Copy_File("test.md", ".");
       Assert
         (Exists("_output/test.md"),
          "Failed to copy file to output directory.");
 
 --  begin read only
-   end Test_CopyFile_test_copy_file;
+   end Test_Copy_File_test_copy_file;
 --  end read only
 
 --  begin read only
-   procedure Wrap_Test_CreateEmptyFile_7571dc_f14a1f(FileName: String) is
+   procedure Wrap_Test_Create_Empty_File_07d252_44c53f(File_Name: String) is
    begin
       begin
-         pragma Assert(FileName'Length > 0);
+         pragma Assert(File_Name'Length > 0);
          null;
       exception
          when System.Assertions.Assert_Failure =>
@@ -143,7 +145,7 @@ package body Pages.Test_Data.Tests is
               (False,
                "req_sloc(pages.ads:0):Test_Create_Empty_File test requirement violated");
       end;
-      GNATtest_Generated.GNATtest_Standard.Pages.CreateEmptyFile(FileName);
+      GNATtest_Generated.GNATtest_Standard.Pages.Create_Empty_File(File_Name);
       begin
          pragma Assert(True);
          null;
@@ -153,40 +155,40 @@ package body Pages.Test_Data.Tests is
               (False,
                "ens_sloc(pages.ads:0:):Test_Create_Empty_File test commitment violated");
       end;
-   end Wrap_Test_CreateEmptyFile_7571dc_f14a1f;
+   end Wrap_Test_Create_Empty_File_07d252_44c53f;
 --  end read only
 
 --  begin read only
-   procedure Test_CreateEmptyFile_test_create_empty_file
+   procedure Test_Create_Empty_File_test_create_empty_file
      (Gnattest_T: in out Test);
-   procedure Test_CreateEmptyFile_7571dc_f14a1f
+   procedure Test_Create_Empty_File_07d252_44c53f
      (Gnattest_T: in out Test) renames
-     Test_CreateEmptyFile_test_create_empty_file;
---  id:2.2/7571dcb65e3d6ae8/CreateEmptyFile/1/0/test_create_empty_file/
-   procedure Test_CreateEmptyFile_test_create_empty_file
+     Test_Create_Empty_File_test_create_empty_file;
+--  id:2.2/07d2529fa48cbec9/Create_Empty_File/1/0/test_create_empty_file/
+   procedure Test_Create_Empty_File_test_create_empty_file
      (Gnattest_T: in out Test) is
-      procedure CreateEmptyFile(FileName: String) renames
-        Wrap_Test_CreateEmptyFile_7571dc_f14a1f;
+      procedure Create_Empty_File(File_Name: String) renames
+        Wrap_Test_Create_Empty_File_07d252_44c53f;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
 
    begin
 
-      CreateEmptyFile("mynewfile.md");
+      Create_Empty_File("mynewfile.md");
       Assert(Exists("mynewfile.md"), "Failed to create empty Markdown file.");
       Delete_File("mynewfile.md");
 
 --  begin read only
-   end Test_CreateEmptyFile_test_create_empty_file;
+   end Test_Create_Empty_File_test_create_empty_file;
 --  end read only
 
 --  begin read only
-   function Wrap_Test_GetLayoutName_5a4eaf_630566
-     (FileName: String) return String is
+   function Wrap_Test_Get_Layout_Name_dd1d05_287311
+     (File_Name: String) return String is
    begin
       begin
-         pragma Assert(FileName'Length > 0);
+         pragma Assert(File_Name'Length > 0);
          null;
       exception
          when System.Assertions.Assert_Failure =>
@@ -195,8 +197,9 @@ package body Pages.Test_Data.Tests is
                "req_sloc(pages.ads:0):Test_Get_Layout_Name test requirement violated");
       end;
       declare
-         Test_GetLayoutName_5a4eaf_630566_Result: constant String :=
-           GNATtest_Generated.GNATtest_Standard.Pages.GetLayoutName(FileName);
+         Test_Get_Layout_Name_dd1d05_287311_Result: constant String :=
+           GNATtest_Generated.GNATtest_Standard.Pages.Get_Layout_Name
+             (File_Name);
       begin
          begin
             pragma Assert(True);
@@ -207,20 +210,22 @@ package body Pages.Test_Data.Tests is
                  (False,
                   "ens_sloc(pages.ads:0:):Test_Get_Layout_Name test commitment violated");
          end;
-         return Test_GetLayoutName_5a4eaf_630566_Result;
+         return Test_Get_Layout_Name_dd1d05_287311_Result;
       end;
-   end Wrap_Test_GetLayoutName_5a4eaf_630566;
+   end Wrap_Test_Get_Layout_Name_dd1d05_287311;
 --  end read only
 
 --  begin read only
-   procedure Test_GetLayoutName_test_get_layout_name(Gnattest_T: in out Test);
-   procedure Test_GetLayoutName_5a4eaf_630566(Gnattest_T: in out Test) renames
-     Test_GetLayoutName_test_get_layout_name;
---  id:2.2/5a4eaf0a2a73252b/GetLayoutName/1/0/test_get_layout_name/
-   procedure Test_GetLayoutName_test_get_layout_name
+   procedure Test_Get_Layout_Name_test_get_layout_name
+     (Gnattest_T: in out Test);
+   procedure Test_Get_Layout_Name_dd1d05_287311
+     (Gnattest_T: in out Test) renames
+     Test_Get_Layout_Name_test_get_layout_name;
+--  id:2.2/dd1d05e38a591979/Get_Layout_Name/1/0/test_get_layout_name/
+   procedure Test_Get_Layout_Name_test_get_layout_name
      (Gnattest_T: in out Test) is
-      function GetLayoutName(FileName: String) return String renames
-        Wrap_Test_GetLayoutName_5a4eaf_630566;
+      function Get_Layout_Name(File_Name: String) return String renames
+        Wrap_Test_Get_Layout_Name_dd1d05_287311;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
@@ -228,11 +233,11 @@ package body Pages.Test_Data.Tests is
    begin
 
       Assert
-        (GetLayoutName("test.md") = "./_layouts/default.html",
+        (Get_Layout_Name("test.md") = "./_layouts/default.html",
          "Failed to get the path to the selected layout.");
 
 --  begin read only
-   end Test_GetLayoutName_test_get_layout_name;
+   end Test_Get_Layout_Name_test_get_layout_name;
 --  end read only
 
 --  begin read only

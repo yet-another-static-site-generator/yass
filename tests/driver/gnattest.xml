@@ -122,27 +122,31 @@
       <test_unit target_file="pages-test_data-tests.ads">
          <setup file="pages-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="pages-test_data.adb" name="Tear_Down" line="14"  column="4"/>
-         <tested name="CreatePage" line="41" column="14">
+         <tested name="Create_Page" line="41" column="14">
             <test_case name="Test_Create_Page" line="43" column="7">
-               <test file="pages-test_data-tests.adb" line="70" column="1" name="Test_CreatePage_8e91e0_6a6713" timestamp="modified"/>
+               <test file="pages-test_data-tests.adb" line="70" column="1" name="Test_Create_Page_93a400_dc01ab" timestamp="2021-08-03 05:29:00"/>
             </test_case>
          </tested>
-         <tested name="CopyFile" line="54" column="14">
+         <tested name="Copy_File" line="54" column="14">
             <test_case name="Test_Copy_File" line="56" column="7">
-               <test file="pages-test_data-tests.adb" line="121" column="1" name="Test_CopyFile_1a0ae8_88695c" timestamp="modified"/>
+               <test file="pages-test_data-tests.adb" line="118" column="1" name="Test_Copy_File_2f1aa9_049492" timestamp="2021-08-03 05:29:00"/>
             </test_case>
          </tested>
-         <tested name="CreateEmptyFile" line="65" column="14">
+         <tested name="Create_Empty_File" line="65" column="14">
             <test_case name="Test_Create_Empty_File" line="67" column="7">
-               <test file="pages-test_data-tests.adb" line="170" column="1" name="Test_CreateEmptyFile_7571dc_f14a1f" timestamp="modified"/>
+               <test file="pages-test_data-tests.adb" line="166" column="1" name="Test_Create_Empty_File_07d252_44c53f" timestamp="2021-08-03 05:29:00"/>
             </test_case>
          </tested>
-         <tested name="GetLayoutName" line="78" column="13">
+         <tested name="Get_Layout_Name" line="78" column="13">
             <test_case name="Test_Get_Layout_Name" line="80" column="7">
-               <test file="pages-test_data-tests.adb" line="222" column="1" name="Test_GetLayoutName_5a4eaf_630566" timestamp="modified"/>
+               <test file="pages-test_data-tests.adb" line="218" column="1" name="Test_Get_Layout_Name_dd1d05_287311" timestamp="2021-08-03 05:29:00"/>
             </test_case>
          </tested>
          <dangling>
+            <test file="pages-test_data-tests.adb" line="238" column="1"/>
+            <test file="pages-test_data-tests.adb" line="259" column="1"/>
+            <test file="pages-test_data-tests.adb" line="279" column="1"/>
+            <test file="pages-test_data-tests.adb" line="299" column="1"/>
          </dangling>
       </test_unit>
    </unit>
@@ -152,17 +156,17 @@
          <teardown file="sitemaps-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="StartSitemap" line="29" column="14">
             <test_case name="Test_Start_Sitemap" line="30" column="7">
-               <test file="sitemaps-test_data-tests.adb" line="46" column="1" name="Test_StartSitemap_351b30_223cc9" timestamp="modified"/>
+               <test file="sitemaps-test_data-tests.adb" line="51" column="1" name="Test_StartSitemap_351b30_223cc9" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="AddPageToSitemap" line="43" column="14">
             <test_case name="Test_Add_Page_To_Sitemap" line="46" column="7">
-               <test file="sitemaps-test_data-tests.adb" line="73" column="1" name="Test_AddPageToSitemap_afae92_d33b30" timestamp="modified"/>
+               <test file="sitemaps-test_data-tests.adb" line="78" column="1" name="Test_AddPageToSitemap_afae92_d33b30" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="SaveSitemap" line="53" column="14">
             <test_case name="Test_Save_Sitemap" line="54" column="7">
-               <test file="sitemaps-test_data-tests.adb" line="100" column="1" name="Test_SaveSitemap_8a2373_7f961d" timestamp="2021-07-31 05:53:18"/>
+               <test file="sitemaps-test_data-tests.adb" line="105" column="1" name="Test_SaveSitemap_8a2373_7f961d" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
