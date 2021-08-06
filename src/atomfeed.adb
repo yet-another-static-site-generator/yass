@@ -211,7 +211,7 @@ package body AtomFeed is
              Length(Source => Yass_Config.Output_Directory & Dir_Separator) +
              1,
            High => File_Name'Length);
-      Delete_Index, Entry_Index: Natural := 0;
+      Entry_Index: Natural := 0;
       Local_Entries: FeedEntry_Container.Vector := Get_Entries_List;
    begin
       if Yass_Config.Atom_Feed_Source =
@@ -245,17 +245,16 @@ package body AtomFeed is
          if AtomEntry.Content = Null_Unbounded_String then
             AtomEntry.Content := AtomEntry.Id;
          end if;
-         Find_Delete_Index_Loop :
-         for I in Local_Entries.Iterate loop
-            if Local_Entries(I).Entry_Title = AtomEntry.Entry_Title then
-               Delete_Index := FeedEntry_Container.To_Index(Position => I);
-               exit Find_Delete_Index_Loop;
+         Entry_Index := Local_Entries.First_Index;
+         Delete_Entry_Loop :
+         while Entry_Index <= Local_Entries.Last_Index loop
+            if Local_Entries(Entry_Index).Entry_Title =
+              AtomEntry.Entry_Title then
+               Local_Entries.Delete(Index => Entry_Index);
+               exit Delete_Entry_Loop;
             end if;
-         end loop Find_Delete_Index_Loop;
-         if Delete_Index > 0 then
-            Local_Entries.Delete(Index => Delete_Index);
-            Delete_Index := 0;
-         end if;
+            Entry_Index := Entry_Index + 1;
+         end loop Delete_Entry_Loop;
          Entry_Index := Get_Entries_List.First_Index;
          Move_Atom_Entries_Loop :
          for I in Local_Entries.Iterate loop
