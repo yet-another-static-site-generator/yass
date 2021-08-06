@@ -55,15 +55,16 @@ package body Pages is
       New_File_Name: constant String :=
         To_String(Output_Directory) & Dir_Separator &
         Ada.Directories.Base_Name(File_Name) & ".html";
-      PageTags: Tags_Container.Map;
-      PageTableTags: TableTags_Container.Map;
-      FrequencyValues: constant array(Positive range <>) of Unbounded_String :=
+      Page_Tags: Tags_Container.Map;
+      Page_Table_Tags: TableTags_Container.Map;
+      Frequency_Values: constant array
+        (Positive range <>) of Unbounded_String :=
         (To_Unbounded_String("always"), To_Unbounded_String("hourly"),
          To_Unbounded_String("daily"), To_Unbounded_String("weekly"),
          To_Unbounded_String("monthly"), To_Unbounded_String("yearly"),
          To_Unbounded_String("never"));
       InSitemap: Boolean := True;
-      AtomEntries: FeedEntry_Container.Vector;
+      Atom_Entries: FeedEntry_Container.Vector;
       SitemapInvalidValue, InvalidValue: exception;
       -- Add tag to the page template tags lists (simple or composite).
       -- Name: name of the tag
@@ -72,13 +73,13 @@ package body Pages is
       begin
          -- Create new composite template tag
          if Value = "[]" then
-            TableTags_Container.Include(PageTableTags, Name, +"");
-            Clear(PageTableTags(Name));
+            TableTags_Container.Include(Page_Table_Tags, Name, +"");
+            Clear(Page_Table_Tags(Name));
             return;
          end if;
          -- Add values to Atom feed entries for the page
          if Name = "title" then
-            AtomEntries.Prepend
+            Atom_Entries.Prepend
               (New_Item =>
                  (Entry_Title => To_Unbounded_String(Value),
                   Id => Null_Unbounded_String, Updated => Time_Of(1_901, 1, 1),
@@ -87,29 +88,29 @@ package body Pages is
                   Summary => Null_Unbounded_String,
                   Content => Null_Unbounded_String));
          elsif Name = "id" then
-            AtomEntries(AtomEntries.First_Index).Id :=
+            Atom_Entries(Atom_Entries.First_Index).Id :=
               To_Unbounded_String(Value);
          elsif Name = "updated" then
-            AtomEntries(AtomEntries.First_Index).Updated := To_Time(Value);
+            Atom_Entries(Atom_Entries.First_Index).Updated := To_Time(Value);
          elsif Name = "author" then
-            AtomEntries(AtomEntries.First_Index).Author_Name :=
+            Atom_Entries(Atom_Entries.First_Index).Author_Name :=
               To_Unbounded_String(Value);
          elsif Name = "authoremail" then
-            AtomEntries(AtomEntries.First_Index).Author_Email :=
+            Atom_Entries(Atom_Entries.First_Index).Author_Email :=
               To_Unbounded_String(Value);
          elsif Name = "summary" then
-            AtomEntries(AtomEntries.First_Index).Summary :=
+            Atom_Entries(Atom_Entries.First_Index).Summary :=
               To_Unbounded_String(Value);
          elsif Name = "content" then
-            AtomEntries(AtomEntries.First_Index).Content :=
+            Atom_Entries(Atom_Entries.First_Index).Content :=
               To_Unbounded_String(Value);
          end if;
          -- Add value for composite tag
-         if TableTags_Container.Contains(PageTableTags, Name) then
-            PageTableTags(Name) := PageTableTags(Name) & Value;
+         if TableTags_Container.Contains(Page_Table_Tags, Name) then
+            Page_Table_Tags(Name) := Page_Table_Tags(Name) & Value;
             -- Add value for simple tag
          else
-            Tags_Container.Include(PageTags, Name, Value);
+            Tags_Container.Include(Page_Tags, Name, Value);
          end if;
       exception
          when Constraint_Error =>
@@ -172,8 +173,8 @@ package body Pages is
             elsif Index(Data, "changefreq:", 1) = (StartPos + 2) then
                Change_Frequency :=
                  Unbounded_Slice(Data, (StartPos + 14), Length(Data));
-               for I in FrequencyValues'Range loop
-                  if Change_Frequency = FrequencyValues(I) then
+               for I in Frequency_Values'Range loop
+                  if Change_Frequency = Frequency_Values(I) then
                      ValidValue := True;
                      exit;
                   end if;
@@ -222,14 +223,14 @@ package body Pages is
       end;
       -- Convert markdown to HTML
       Tags_Container.Include
-        (PageTags, "Content",
+        (Page_Tags, "Content",
          Value
            (Cmark_Markdown_To_Html
               (New_String(To_String(Content)), Size_T(Length(Content)), 0)));
       -- Load the program modules with 'pre' hook
-      Load_Modules("pre", PageTags, PageTableTags);
+      Load_Modules("pre", Page_Tags, Page_Table_Tags);
       -- Insert tags to template
-      Insert(Tags, Assoc("Content", PageTags("Content")));
+      Insert(Tags, Assoc("Content", Page_Tags("Content")));
       InsertTags(Site_Tags);
       if not Exists(Tags, "canonicallink") then
          Insert
@@ -249,13 +250,13 @@ package body Pages is
         and then Site_Tags.Contains("Description") then
          Insert(Tags, Assoc("description", Site_Tags("Description")));
       end if;
-      for I in PageTableTags.Iterate loop
-         Insert(Tags, Assoc(TableTags_Container.Key(I), PageTableTags(I)));
+      for I in Page_Table_Tags.Iterate loop
+         Insert(Tags, Assoc(TableTags_Container.Key(I), Page_Table_Tags(I)));
       end loop;
       for I in Global_Table_Tags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), Global_Table_Tags(I)));
       end loop;
-      InsertTags(PageTags);
+      InsertTags(Page_Tags);
       -- Create HTML file in Output_Directory
       Create_Path(To_String(Output_Directory));
       Create(Page_File, Append_File, New_File_Name);
@@ -269,12 +270,12 @@ package body Pages is
       end if;
       -- Add the page to the Atom feed
       if Yass_Config.Atom_Feed_Source = To_Unbounded_String("tags") then
-         AtomEntries(AtomEntries.First_Index).Content := Content;
+         Atom_Entries(Atom_Entries.First_Index).Content := Content;
       end if;
-      Add_Page_To_Feed(New_File_Name, AtomEntries);
+      Add_Page_To_Feed(New_File_Name, Atom_Entries);
       Set("YASSFILE", New_File_Name);
       -- Load the program modules with 'post' hook
-      Load_Modules("post", PageTags, PageTableTags);
+      Load_Modules("post", Page_Tags, Page_Table_Tags);
    exception
       when An_Exception : Layout_Not_Found =>
          Put_Line
@@ -304,11 +305,12 @@ package body Pages is
       Output_Directory: constant Unbounded_String :=
         Yass_Config.Output_Directory &
         Delete(To_Unbounded_String(Directory), 1, Length(Site_Directory));
-      PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
-      PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
+      Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
+      Page_Table_Tags: TableTags_Container.Map :=
+        TableTags_Container.Empty_Map;
    begin
       -- Load the program modules with 'pre' hook
-      Load_Modules("pre", PageTags, PageTableTags);
+      Load_Modules("pre", Page_Tags, Page_Table_Tags);
       -- Copy the file to output directory
       Create_Path(To_String(Output_Directory));
       Ada.Directories.Copy_File
@@ -324,7 +326,7 @@ package body Pages is
         ("YASSFILE",
          To_String(Output_Directory) & Dir_Separator & Simple_Name(File_Name));
       -- Load the program modules with 'post' hook
-      Load_Modules("post", PageTags, PageTableTags);
+      Load_Modules("post", Page_Tags, Page_Table_Tags);
    end Copy_File;
 
    procedure Create_Empty_File(File_Name: String) is
