@@ -245,15 +245,12 @@ package body AtomFeed is
          if AtomEntry.Content = Null_Unbounded_String then
             AtomEntry.Content := AtomEntry.Id;
          end if;
-         Entry_Index := Local_Entries.First_Index;
          Delete_Entry_Loop :
-         while Entry_Index <= Local_Entries.Last_Index loop
-            if Local_Entries(Entry_Index).Entry_Title =
-              AtomEntry.Entry_Title then
-               Local_Entries.Delete(Index => Entry_Index);
+         for I in Local_Entries.First_Index .. Local_Entries.Last_Index loop
+            if Local_Entries(I).Entry_Title = AtomEntry.Entry_Title then
+               Local_Entries.Delete(Index => I);
                exit Delete_Entry_Loop;
             end if;
-            Entry_Index := Entry_Index + 1;
          end loop Delete_Entry_Loop;
          Entry_Index := Get_Entries_List.First_Index;
          Move_Atom_Entries_Loop :
