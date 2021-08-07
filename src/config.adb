@@ -413,7 +413,7 @@ package body Config is
         (Item =>
            "Please enter the description of the new site (default - My new site). It is used to create meta tag for the website (which is showed in search engines results) but only if pages don't set own. Must be set in one line, no new line allowed.");
       Answer := To_Unbounded_String(Source => Get_Line);
-      if Answer /= Null_Unbounded_String then
+      if Answer = Null_Unbounded_String then
          Answer := To_Unbounded_String(Source => "My new site");
       end if;
       Put_Line
