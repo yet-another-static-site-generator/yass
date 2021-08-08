@@ -46,17 +46,19 @@ package body Pages is
       External_Name => "cmark_markdown_to_html";
 
    procedure Create_Page(File_Name, Directory: String) is
-      Layout, Content, Change_Frequency, Page_Priority: Unbounded_String;
+      Layout, Content, Change_Frequency, Page_Priority: Unbounded_String :=
+        Null_Unbounded_String;
       Page_File: File_Type;
-      Tags: Translate_Set;
+      Tags: Translate_Set := Null_Set;
       Output_Directory: constant Unbounded_String :=
         Yass_Config.Output_Directory &
         Delete(To_Unbounded_String(Directory), 1, Length(Site_Directory));
       New_File_Name: constant String :=
         To_String(Output_Directory) & Dir_Separator &
         Ada.Directories.Base_Name(File_Name) & ".html";
-      Page_Tags: Tags_Container.Map;
-      Page_Table_Tags: TableTags_Container.Map;
+      Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
+      Page_Table_Tags: TableTags_Container.Map :=
+        TableTags_Container.Empty_Map;
       Frequency_Values: constant array
         (Positive range <>) of Unbounded_String :=
         (To_Unbounded_String("always"), To_Unbounded_String("hourly"),
@@ -64,7 +66,8 @@ package body Pages is
          To_Unbounded_String("monthly"), To_Unbounded_String("yearly"),
          To_Unbounded_String("never"));
       InSitemap: Boolean := True;
-      Atom_Entries: FeedEntry_Container.Vector;
+      Atom_Entries: FeedEntry_Container.Vector :=
+        FeedEntry_Container.Empty_Vector;
       SitemapInvalidValue, InvalidValue: exception;
       -- Add tag to the page template tags lists (simple or composite).
       -- Name: name of the tag
