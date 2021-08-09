@@ -52,19 +52,23 @@ package body Pages is
       Tags: Translate_Set := Null_Set;
       Output_Directory: constant Unbounded_String :=
         Yass_Config.Output_Directory &
-        Delete(To_Unbounded_String(Directory), 1, Length(Site_Directory));
+        Delete
+          (Source => To_Unbounded_String(Source => Directory), From => 1,
+           Through => Length(Source => Site_Directory));
       New_File_Name: constant String :=
-        To_String(Output_Directory) & Dir_Separator &
-        Ada.Directories.Base_Name(File_Name) & ".html";
+        To_String(Source => Output_Directory) & Dir_Separator &
+        Ada.Directories.Base_Name(Name => File_Name) & ".html";
       Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
       Page_Table_Tags: TableTags_Container.Map :=
         TableTags_Container.Empty_Map;
-      Frequency_Values: constant array
-        (Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String("always"), To_Unbounded_String("hourly"),
-         To_Unbounded_String("daily"), To_Unbounded_String("weekly"),
-         To_Unbounded_String("monthly"), To_Unbounded_String("yearly"),
-         To_Unbounded_String("never"));
+      Frequency_Values: constant array(1 .. 7) of Unbounded_String :=
+        (1 => To_Unbounded_String(Source => "always"),
+         2 => To_Unbounded_String(Source => "hourly"),
+         3 => To_Unbounded_String(Source => "daily"),
+         4 => To_Unbounded_String(Source => "weekly"),
+         5 => To_Unbounded_String(Source => "monthly"),
+         6 => To_Unbounded_String(Source => "yearly"),
+         7 => To_Unbounded_String(Source => "never"));
       InSitemap: Boolean := True;
       Atom_Entries: FeedEntry_Container.Vector :=
         FeedEntry_Container.Empty_Vector;
