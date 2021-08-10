@@ -222,7 +222,7 @@ package body Modules is
                      Send_Table_Tag(Table_Tags => Page_Table_Tags);
                end case;
                -- Edit value of selected tag with new value from the module
-            elsif Slice(Source => Text, Low => 1, High => 7) = "Edit_Tag" then
+            elsif Slice(Source => Text, Low => 1, High => 7) = "edittag" then
                Tag_Name :=
                  Unbounded_Slice
                    (Source => Text, Low => 9,
