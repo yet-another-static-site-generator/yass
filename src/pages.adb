@@ -69,14 +69,14 @@ package body Pages is
          5 => To_Unbounded_String(Source => "monthly"),
          6 => To_Unbounded_String(Source => "yearly"),
          7 => To_Unbounded_String(Source => "never"));
-      InSitemap: Boolean := True;
+      In_Sitemap: Boolean := True;
       Atom_Entries: FeedEntry_Container.Vector :=
         FeedEntry_Container.Empty_Vector;
-      SitemapInvalidValue, InvalidValue: exception;
+      Sitemap_Invalid_Value, Invalid_Value: exception;
       -- Add tag to the page template tags lists (simple or composite).
       -- Name: name of the tag
       -- Value: value of the tag
-      procedure AddTag(Name, Value: String) is
+      procedure Add_Tag(Name, Value: String) is
       begin
          -- Create new composite template tag
          if Value = "[]" then
@@ -121,8 +121,9 @@ package body Pages is
          end if;
       exception
          when Constraint_Error =>
-            raise InvalidValue with """" & Name & """ value """ & Value & """";
-      end AddTag;
+            raise Invalid_Value
+              with """" & Name & """ value """ & Value & """";
+      end Add_Tag;
       -- Insert selected list of tags TagsList to templates
       procedure InsertTags(TagsList: Tags_Container.Map) is
       begin
@@ -187,7 +188,7 @@ package body Pages is
                   end if;
                end loop;
                if not ValidValue then
-                  raise SitemapInvalidValue
+                  raise Sitemap_Invalid_Value
                     with "Invalid value for changefreq";
                end if;
                ValidValue := False;
@@ -198,19 +199,19 @@ package body Pages is
                begin
                   if Float'Value(To_String(Page_Priority)) < 0.0 or
                     Float'Value(To_String(Page_Priority)) > 1.0 then
-                     raise SitemapInvalidValue
+                     raise Sitemap_Invalid_Value
                        with "Invalid value for page priority";
                   end if;
                exception
                   when Constraint_Error =>
-                     raise SitemapInvalidValue
+                     raise Sitemap_Invalid_Value
                        with "Invalid value for page priority";
                end;
                -- Check if the page is excluded from the sitemap
             elsif Index(Data, "insitemap:", 1) = (StartPos + 2) then
                if To_Lower(Slice(Data, (StartPos + 13), Length(Data))) =
                  "false" then
-                  InSitemap := False;
+                  In_Sitemap := False;
                end if;
                -- Add tag to the page tags lists
             else
@@ -219,7 +220,7 @@ package body Pages is
                   StartIndex := 0;
                end if;
                if StartIndex > 0 then
-                  AddTag
+                  Add_Tag
                     (Slice(Data, (StartPos + 2), StartIndex - 1),
                      Slice(Data, StartIndex + 2, Length(Data)));
                end if;
@@ -270,7 +271,7 @@ package body Pages is
       Put(Page_File, Decode(Parse(To_String(Layout), Tags)));
       Close(Page_File);
       -- Add the page to the sitemap
-      if InSitemap then
+      if In_Sitemap then
          AddPageToSitemap
            (New_File_Name, To_String(Change_Frequency),
             To_String(Page_Priority));
@@ -296,12 +297,12 @@ package body Pages is
             Delete_File(New_File_Name);
          end if;
          raise Generate_Site_Exception;
-      when An_Exception : SitemapInvalidValue =>
+      when An_Exception : Sitemap_Invalid_Value =>
          Put_Line
            ("Can't parse """ & File_Name & """. " &
             Exception_Message(An_Exception));
          raise Generate_Site_Exception;
-      when An_Exception : InvalidValue =>
+      when An_Exception : Invalid_Value =>
          Put_Line
            ("Can't parse """ & File_Name & """. Invalid value for tag: " &
             Exception_Message(An_Exception));
