@@ -80,44 +80,46 @@ package body Pages is
       begin
          -- Create new composite template tag
          if Value = "[]" then
-            TableTags_Container.Include(Page_Table_Tags, Name, +"");
-            Clear(Page_Table_Tags(Name));
+            Page_Table_Tags.Include(Key => Name, New_Item => +"");
+            Clear(T => Page_Table_Tags(Name));
             return;
          end if;
          -- Add values to Atom feed entries for the page
          if Name = "title" then
             Atom_Entries.Prepend
               (New_Item =>
-                 (Entry_Title => To_Unbounded_String(Value),
-                  Id => Null_Unbounded_String, Updated => Time_Of(1_901, 1, 1),
+                 (Entry_Title => To_Unbounded_String(Source => Value),
+                  Id => Null_Unbounded_String,
+                  Updated => Time_Of(Year => 1_901, Month => 1, Day => 1),
                   Author_Name => Null_Unbounded_String,
                   Author_Email => Null_Unbounded_String,
                   Summary => Null_Unbounded_String,
                   Content => Null_Unbounded_String));
          elsif Name = "id" then
             Atom_Entries(Atom_Entries.First_Index).Id :=
-              To_Unbounded_String(Value);
+              To_Unbounded_String(Source => Value);
          elsif Name = "updated" then
-            Atom_Entries(Atom_Entries.First_Index).Updated := To_Time(Value);
+            Atom_Entries(Atom_Entries.First_Index).Updated :=
+              To_Time(Date => Value);
          elsif Name = "author" then
             Atom_Entries(Atom_Entries.First_Index).Author_Name :=
-              To_Unbounded_String(Value);
+              To_Unbounded_String(Source => Value);
          elsif Name = "authoremail" then
             Atom_Entries(Atom_Entries.First_Index).Author_Email :=
-              To_Unbounded_String(Value);
+              To_Unbounded_String(Source => Value);
          elsif Name = "summary" then
             Atom_Entries(Atom_Entries.First_Index).Summary :=
-              To_Unbounded_String(Value);
+              To_Unbounded_String(Source => Value);
          elsif Name = "content" then
             Atom_Entries(Atom_Entries.First_Index).Content :=
-              To_Unbounded_String(Value);
+              To_Unbounded_String(Source => Value);
          end if;
          -- Add value for composite tag
-         if TableTags_Container.Contains(Page_Table_Tags, Name) then
+         if Page_Table_Tags.Contains(Key => Name) then
             Page_Table_Tags(Name) := Page_Table_Tags(Name) & Value;
             -- Add value for simple tag
          else
-            Tags_Container.Include(Page_Tags, Name, Value);
+            Page_Tags.Include(Key => Name, New_Item => Value);
          end if;
       exception
          when Constraint_Error =>
@@ -125,7 +127,7 @@ package body Pages is
               with """" & Name & """ value """ & Value & """";
       end Add_Tag;
       -- Insert selected list of tags TagsList to templates
-      procedure InsertTags(TagsList: Tags_Container.Map) is
+      procedure Insert_Tags(TagsList: Tags_Container.Map) is
       begin
          for I in TagsList.Iterate loop
             if To_Lower(TagsList(I)) = "true" then
@@ -142,7 +144,7 @@ package body Pages is
                end if;
             end if;
          end loop;
-      end InsertTags;
+      end Insert_Tags;
    begin
       declare
          Data: Unbounded_String;
@@ -239,7 +241,7 @@ package body Pages is
       Load_Modules("pre", Page_Tags, Page_Table_Tags);
       -- Insert tags to template
       Insert(Tags, Assoc("Content", Page_Tags("Content")));
-      InsertTags(Site_Tags);
+      Insert_Tags(Site_Tags);
       if not Exists(Tags, "canonicallink") then
          Insert
            (Tags,
@@ -264,7 +266,7 @@ package body Pages is
       for I in Global_Table_Tags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), Global_Table_Tags(I)));
       end loop;
-      InsertTags(Page_Tags);
+      Insert_Tags(Page_Tags);
       -- Create HTML file in Output_Directory
       Create_Path(To_String(Output_Directory));
       Create(Page_File, Append_File, New_File_Name);
