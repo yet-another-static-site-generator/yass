@@ -126,24 +126,39 @@ package body Pages is
             raise Invalid_Value
               with """" & Name & """ value """ & Value & """";
       end Add_Tag;
-      -- Insert selected list of tags TagsList to templates
-      procedure Insert_Tags(TagsList: Tags_Container.Map) is
+      -- Insert selected list of tags Tags_List to templates
+      procedure Insert_Tags(Tags_List: Tags_Container.Map) is
       begin
-         for I in TagsList.Iterate loop
-            if To_Lower(TagsList(I)) = "true" then
-               Insert(Tags, Assoc(Tags_Container.Key(I), True));
-            elsif To_Lower(TagsList(I)) = "false" then
-               Insert(Tags, Assoc(Tags_Container.Key(I), False));
+         Insert_Tags_Loop :
+         for I in Tags_List.Iterate loop
+            if To_Lower(Item => Tags_List(I)) = "true" then
+               Insert
+                 (Set => Tags,
+                  Item =>
+                    Assoc(Variable => Tags_Container.Key(I), Value => True));
+            elsif To_Lower(Item => Tags_List(I)) = "false" then
+               Insert
+                 (Set => Tags,
+                  Item =>
+                    Assoc(Variable => Tags_Container.Key(I), Value => False));
             else
-               if Is_Number(TagsList(I)) then
+               if Is_Number(S => Tags_List(I)) then
                   Insert
-                    (Tags,
-                     Assoc(Tags_Container.Key(I), Integer'Value(TagsList(I))));
+                    (Set => Tags,
+                     Item =>
+                       Assoc
+                         (Variable => Tags_Container.Key(I),
+                          Value => Integer'Value(Tags_List(I))));
                else
-                  Insert(Tags, Assoc(Tags_Container.Key(I), TagsList(I)));
+                  Insert
+                    (Set => Tags,
+                     Item =>
+                       Assoc
+                         (Variable => Tags_Container.Key(I),
+                          Value => Tags_List(I)));
                end if;
             end if;
-         end loop;
+         end loop Insert_Tags_Loop;
       end Insert_Tags;
    begin
       declare
