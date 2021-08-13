@@ -135,40 +135,46 @@ package body Pages is
                Insert
                  (Set => Tags,
                   Item =>
-                    Assoc(Variable => Tags_Container.Key(I), Value => True));
+                    Assoc
+                      (Variable => Tags_Container.Key(Position => I),
+                       Value => True));
             elsif To_Lower(Item => Tags_List(I)) = "false" then
                Insert
                  (Set => Tags,
                   Item =>
-                    Assoc(Variable => Tags_Container.Key(I), Value => False));
+                    Assoc
+                      (Variable => Tags_Container.Key(Position => I),
+                       Value => False));
             else
                if Is_Number(S => Tags_List(I)) then
                   Insert
                     (Set => Tags,
                      Item =>
                        Assoc
-                         (Variable => Tags_Container.Key(I),
+                         (Variable => Tags_Container.Key(Position => I),
                           Value => Integer'Value(Tags_List(I))));
                else
                   Insert
                     (Set => Tags,
                      Item =>
                        Assoc
-                         (Variable => Tags_Container.Key(I),
+                         (Variable => Tags_Container.Key(Position => I),
                           Value => Tags_List(I)));
                end if;
             end if;
          end loop Insert_Tags_Loop;
       end Insert_Tags;
    begin
+      Read_Page_File_Block :
       declare
-         Data: Unbounded_String;
-         StartIndex: Natural;
-         StartPos: constant Positive := Length(Yass_Config.Markdown_Comment);
-         ValidValue: Boolean := False;
+         Data: Unbounded_String := Null_Unbounded_String;
+         Start_Index: Natural;
+         Start_Pos: constant Positive := Length(Yass_Config.Markdown_Comment);
+         Valid_Value: Boolean := False;
       begin
          -- Read selected markdown file
          Open(Page_File, In_File, File_Name);
+         Read_Page_File_Loop :
          while not End_Of_File(Page_File) loop
             Data := To_Unbounded_String(Encode(Get_Line(Page_File)));
             if Length(Data) < 3 then
@@ -176,15 +182,15 @@ package body Pages is
                Append(Content, LF);
                goto End_Of_Loop;
             end if;
-            if Unbounded_Slice(Data, 1, StartPos) /=
+            if Unbounded_Slice(Data, 1, Start_Pos) /=
               Yass_Config.Markdown_Comment then
                Append(Content, Data);
                Append(Content, LF);
                goto End_Of_Loop;
             end if;
             -- Get the page template layout
-            if Index(Data, "layout:", 1) = (StartPos + 2) then
-               Data := Unbounded_Slice(Data, (StartPos + 10), Length(Data));
+            if Index(Data, "layout:", 1) = (Start_Pos + 2) then
+               Data := Unbounded_Slice(Data, (Start_Pos + 10), Length(Data));
                Layout :=
                  Yass_Config.Layouts_Directory & Dir_Separator & Data &
                  To_Unbounded_String(".html");
@@ -195,24 +201,24 @@ package body Pages is
                     To_String(Layout);
                end if;
                -- Set update frequency for the page in the sitemap
-            elsif Index(Data, "changefreq:", 1) = (StartPos + 2) then
+            elsif Index(Data, "changefreq:", 1) = (Start_Pos + 2) then
                Change_Frequency :=
-                 Unbounded_Slice(Data, (StartPos + 14), Length(Data));
+                 Unbounded_Slice(Data, (Start_Pos + 14), Length(Data));
                for I in Frequency_Values'Range loop
                   if Change_Frequency = Frequency_Values(I) then
-                     ValidValue := True;
+                     Valid_Value := True;
                      exit;
                   end if;
                end loop;
-               if not ValidValue then
+               if not Valid_Value then
                   raise Sitemap_Invalid_Value
                     with "Invalid value for changefreq";
                end if;
-               ValidValue := False;
+               Valid_Value := False;
                -- Set priority for the page in the sitemap
-            elsif Index(Data, "priority:", 1) = (StartPos + 2) then
+            elsif Index(Data, "priority:", 1) = (Start_Pos + 2) then
                Page_Priority :=
-                 Unbounded_Slice(Data, (StartPos + 11), Length(Data));
+                 Unbounded_Slice(Data, (Start_Pos + 11), Length(Data));
                begin
                   if Float'Value(To_String(Page_Priority)) < 0.0 or
                     Float'Value(To_String(Page_Priority)) > 1.0 then
@@ -225,27 +231,27 @@ package body Pages is
                        with "Invalid value for page priority";
                end;
                -- Check if the page is excluded from the sitemap
-            elsif Index(Data, "insitemap:", 1) = (StartPos + 2) then
-               if To_Lower(Slice(Data, (StartPos + 13), Length(Data))) =
+            elsif Index(Data, "insitemap:", 1) = (Start_Pos + 2) then
+               if To_Lower(Slice(Data, (Start_Pos + 13), Length(Data))) =
                  "false" then
                   In_Sitemap := False;
                end if;
                -- Add tag to the page tags lists
             else
-               StartIndex := Index(Data, ":", (StartPos + 2));
-               if StartIndex > Index(Data, " ", (StartPos + 2)) then
-                  StartIndex := 0;
+               Start_Index := Index(Data, ":", (Start_Pos + 2));
+               if Start_Index > Index(Data, " ", (Start_Pos + 2)) then
+                  Start_Index := 0;
                end if;
-               if StartIndex > 0 then
+               if Start_Index > 0 then
                   Add_Tag
-                    (Slice(Data, (StartPos + 2), StartIndex - 1),
-                     Slice(Data, StartIndex + 2, Length(Data)));
+                    (Slice(Data, (Start_Pos + 2), Start_Index - 1),
+                     Slice(Data, Start_Index + 2, Length(Data)));
                end if;
             end if;
             <<End_Of_Loop>>
-         end loop;
+         end loop Read_Page_File_Loop;
          Close(Page_File);
-      end;
+      end Read_Page_File_Block;
       -- Convert markdown to HTML
       Tags_Container.Include
         (Page_Tags, "Content",
