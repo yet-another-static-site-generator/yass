@@ -168,24 +168,27 @@ package body Pages is
       Read_Page_File_Block :
       declare
          Data: Unbounded_String := Null_Unbounded_String;
-         Start_Index: Natural;
-         Start_Pos: constant Positive := Length(Yass_Config.Markdown_Comment);
+         Start_Index: Natural := 0;
+         Start_Pos: constant Positive :=
+           Length(Source => Yass_Config.Markdown_Comment);
          Valid_Value: Boolean := False;
       begin
          -- Read selected markdown file
-         Open(Page_File, In_File, File_Name);
+         Open(File => Page_File, Mode => In_File, Name => File_Name);
          Read_Page_File_Loop :
-         while not End_Of_File(Page_File) loop
-            Data := To_Unbounded_String(Encode(Get_Line(Page_File)));
-            if Length(Data) < 3 then
-               Append(Content, Data);
-               Append(Content, LF);
+         while not End_Of_File(File => Page_File) loop
+            Data :=
+              To_Unbounded_String
+                (Source => Encode(Item => Get_Line(File => Page_File)));
+            if Length(Source => Data) < 3 then
+               Append(Source => Content, New_Item => Data);
+               Append(Source => Content, New_Item => LF);
                goto End_Of_Loop;
             end if;
-            if Unbounded_Slice(Data, 1, Start_Pos) /=
+            if Unbounded_Slice(Source => Data, Low => 1, High => Start_Pos) /=
               Yass_Config.Markdown_Comment then
-               Append(Content, Data);
-               Append(Content, LF);
+               Append(Source => Content, New_Item => Data);
+               Append(Source => Content, New_Item => LF);
                goto End_Of_Loop;
             end if;
             -- Get the page template layout
