@@ -192,21 +192,29 @@ package body Pages is
                goto End_Of_Loop;
             end if;
             -- Get the page template layout
-            if Index(Data, "layout:", 1) = (Start_Pos + 2) then
-               Data := Unbounded_Slice(Data, (Start_Pos + 10), Length(Data));
+            if Index(Source => Data, Pattern => "layout:", From => 1) =
+              Start_Pos + 2 then
+               Data :=
+                 Unbounded_Slice
+                   (Source => Data, Low => Start_Pos + 10,
+                    High => Length(Source => Data));
                Layout :=
                  Yass_Config.Layouts_Directory & Dir_Separator & Data &
-                 To_Unbounded_String(".html");
-               if not Ada.Directories.Exists(To_String(Layout)) then
-                  Close(Page_File);
+                 To_Unbounded_String(Source => ".html");
+               if not Ada.Directories.Exists
+                   (Name => To_String(Source => Layout)) then
+                  Close(File => Page_File);
                   raise Layout_Not_Found
                     with File_Name & """. Selected layout file """ &
-                    To_String(Layout);
+                    To_String(Source => Layout);
                end if;
                -- Set update frequency for the page in the sitemap
-            elsif Index(Data, "changefreq:", 1) = (Start_Pos + 2) then
+            elsif Index(Source => Data, Pattern => "changefreq:", From => 1) =
+              Start_Pos + 2 then
                Change_Frequency :=
-                 Unbounded_Slice(Data, (Start_Pos + 14), Length(Data));
+                 Unbounded_Slice
+                   (Source => Data, Low => Start_Pos + 14,
+                    High => Length(Source => Data));
                for I in Frequency_Values'Range loop
                   if Change_Frequency = Frequency_Values(I) then
                      Valid_Value := True;
