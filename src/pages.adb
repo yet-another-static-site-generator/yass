@@ -215,12 +215,13 @@ package body Pages is
                  Unbounded_Slice
                    (Source => Data, Low => Start_Pos + 14,
                     High => Length(Source => Data));
-               for I in Frequency_Values'Range loop
-                  if Change_Frequency = Frequency_Values(I) then
+               Validate_Frequency_Loop :
+               for Value of Frequency_Values loop
+                  if Change_Frequency = Value then
                      Valid_Value := True;
-                     exit;
+                     exit Validate_Frequency_Loop;
                   end if;
-               end loop;
+               end loop Validate_Frequency_Loop;
                if not Valid_Value then
                   raise Sitemap_Invalid_Value
                     with "Invalid value for changefreq";
@@ -230,6 +231,7 @@ package body Pages is
             elsif Index(Data, "priority:", 1) = (Start_Pos + 2) then
                Page_Priority :=
                  Unbounded_Slice(Data, (Start_Pos + 11), Length(Data));
+               Validate_Priority_Block :
                begin
                   if Float'Value(To_String(Page_Priority)) < 0.0 or
                     Float'Value(To_String(Page_Priority)) > 1.0 then
@@ -240,7 +242,7 @@ package body Pages is
                   when Constraint_Error =>
                      raise Sitemap_Invalid_Value
                        with "Invalid value for page priority";
-               end;
+               end Validate_Priority_Block;
                -- Check if the page is excluded from the sitemap
             elsif Index(Data, "insitemap:", 1) = (Start_Pos + 2) then
                if To_Lower(Slice(Data, (Start_Pos + 13), Length(Data))) =
