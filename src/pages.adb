@@ -228,13 +228,16 @@ package body Pages is
                end if;
                Valid_Value := False;
                -- Set priority for the page in the sitemap
-            elsif Index(Data, "priority:", 1) = (Start_Pos + 2) then
+            elsif Index(Source => Data, Pattern => "priority:", From => 1) =
+              Start_Pos + 2 then
                Page_Priority :=
-                 Unbounded_Slice(Data, (Start_Pos + 11), Length(Data));
+                 Unbounded_Slice
+                   (Source => Data, Low => Start_Pos + 11,
+                    High => Length(Source => Data));
                Validate_Priority_Block :
                begin
-                  if Float'Value(To_String(Page_Priority)) < 0.0 or
-                    Float'Value(To_String(Page_Priority)) > 1.0 then
+                  if Float'Value(To_String(Source => Page_Priority)) < 0.0 or
+                    Float'Value(To_String(Source => Page_Priority)) > 1.0 then
                      raise Sitemap_Invalid_Value
                        with "Invalid value for page priority";
                   end if;
@@ -244,8 +247,13 @@ package body Pages is
                        with "Invalid value for page priority";
                end Validate_Priority_Block;
                -- Check if the page is excluded from the sitemap
-            elsif Index(Data, "insitemap:", 1) = (Start_Pos + 2) then
-               if To_Lower(Slice(Data, (Start_Pos + 13), Length(Data))) =
+            elsif Index(Source => Data, Pattern => "insitemap:", From => 1) =
+              Start_Pos + 2 then
+               if To_Lower
+                   (Item =>
+                      Slice
+                        (Source => Data, Low => Start_Pos + 13,
+                         High => Length(Source => Data))) =
                  "false" then
                   In_Sitemap := False;
                end if;
