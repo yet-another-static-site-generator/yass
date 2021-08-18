@@ -259,26 +259,37 @@ package body Pages is
                end if;
                -- Add tag to the page tags lists
             else
-               Start_Index := Index(Data, ":", (Start_Pos + 2));
-               if Start_Index > Index(Data, " ", (Start_Pos + 2)) then
+               Start_Index :=
+                 Index(Source => Data, Pattern => ":", From => Start_Pos + 2);
+               if Start_Index >
+                 Index
+                   (Source => Data, Pattern => " ", From => Start_Pos + 2) then
                   Start_Index := 0;
                end if;
                if Start_Index > 0 then
                   Add_Tag
-                    (Slice(Data, (Start_Pos + 2), Start_Index - 1),
-                     Slice(Data, Start_Index + 2, Length(Data)));
+                    (Name =>
+                       Slice
+                         (Source => Data, Low => Start_Pos + 2,
+                          High => Start_Index - 1),
+                     Value =>
+                       Slice
+                         (Source => Data, Low => Start_Index + 2,
+                          High => Length(Source => Data)));
                end if;
             end if;
             <<End_Of_Loop>>
          end loop Read_Page_File_Loop;
-         Close(Page_File);
+         Close(File => Page_File);
       end Read_Page_File_Block;
       -- Convert markdown to HTML
-      Tags_Container.Include
-        (Page_Tags, "Content",
-         Value
-           (Cmark_Markdown_To_Html
-              (New_String(To_String(Content)), Size_T(Length(Content)), 0)));
+      Page_Tags.Include
+        (Key => "Content",
+         New_Item =>
+           Value
+             (Cmark_Markdown_To_Html
+                (Text => New_String(Str => To_String(Source => Content)),
+                 Len => Size_T(Length(Source => Content)), Options => 0)));
       -- Load the program modules with 'pre' hook
       Load_Modules("pre", Page_Tags, Page_Table_Tags);
       -- Insert tags to template
