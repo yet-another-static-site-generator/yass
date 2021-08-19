@@ -287,24 +287,35 @@ package body Pages is
         (Key => "Content",
          New_Item =>
            Value
-             (Cmark_Markdown_To_Html
-                (Text => New_String(Str => To_String(Source => Content)),
-                 Len => Size_T(Length(Source => Content)), Options => 0)));
+             (Item =>
+                Cmark_Markdown_To_Html
+                  (Text => New_String(Str => To_String(Source => Content)),
+                   Len => Size_T(Length(Source => Content)), Options => 0)));
       -- Load the program modules with 'pre' hook
-      Load_Modules("pre", Page_Tags, Page_Table_Tags);
+      Load_Modules
+        (State => "pre", Page_Tags => Page_Tags,
+         Page_Table_Tags => Page_Table_Tags);
       -- Insert tags to template
-      Insert(Tags, Assoc("Content", Page_Tags("Content")));
-      Insert_Tags(Site_Tags);
-      if not Exists(Tags, "canonicallink") then
+      Insert
+        (Set => Tags,
+         Item => Assoc(Variable => "Content", Value => Page_Tags("Content")));
+      Insert_Tags(Tags_List => Site_Tags);
+      if not Exists(Set => Tags, Variable => "canonicallink") then
          Insert
-           (Tags,
-            Assoc
-              ("canonicallink",
-               To_String(Yass_Config.Base_Url) & "/" &
-               Slice
-                 (To_Unbounded_String(New_File_Name),
-                  Length(Yass_Config.Output_Directory & Dir_Separator) + 1,
-                  New_File_Name'Length)));
+           (Set => Tags,
+            Item =>
+              Assoc
+                (Variable => "canonicallink",
+                 Value =>
+                   To_String(Source => Yass_Config.Base_Url) & "/" &
+                   Slice
+                     (Source => To_Unbounded_String(Source => New_File_Name),
+                      Low =>
+                        Length
+                          (Source =>
+                             Yass_Config.Output_Directory & Dir_Separator) +
+                        1,
+                      High => New_File_Name'Length)));
       end if;
       if not Exists(Tags, "author") then
          Insert(Tags, Assoc("author", To_String(Yass_Config.Author_Name)));
