@@ -317,19 +317,31 @@ package body Pages is
                         1,
                       High => New_File_Name'Length)));
       end if;
-      if not Exists(Tags, "author") then
-         Insert(Tags, Assoc("author", To_String(Yass_Config.Author_Name)));
+      if not Exists(Set => Tags, Variable => "author") then
+         Insert
+           (Set => Tags,
+            Item =>
+              Assoc
+                (Variable => "author",
+                 Value => To_String(Source => Yass_Config.Author_Name)));
       end if;
-      if not Exists(Tags, "description")
-        and then Site_Tags.Contains("Description") then
-         Insert(Tags, Assoc("description", Site_Tags("Description")));
+      if not Exists(Set => Tags, Variable => "description")
+        and then Site_Tags.Contains(Key => "Description") then
+         Insert
+           (Set => Tags,
+            Item =>
+              Assoc
+                (Variable => "description",
+                 Value => Site_Tags("Description")));
       end if;
+      Add_Table_Tags_Loop :
       for I in Page_Table_Tags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), Page_Table_Tags(I)));
-      end loop;
+      end loop Add_Table_Tags_Loop;
+      Add_Global_Table_Tags_Loop :
       for I in Global_Table_Tags.Iterate loop
          Insert(Tags, Assoc(TableTags_Container.Key(I), Global_Table_Tags(I)));
-      end loop;
+      end loop Add_Global_Table_Tags_Loop;
       Insert_Tags(Page_Tags);
       -- Create HTML file in Output_Directory
       Create_Path(To_String(Output_Directory));
