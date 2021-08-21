@@ -336,17 +336,34 @@ package body Pages is
       end if;
       Add_Table_Tags_Loop :
       for I in Page_Table_Tags.Iterate loop
-         Insert(Tags, Assoc(TableTags_Container.Key(I), Page_Table_Tags(I)));
+         Insert
+           (Set => Tags,
+            Item =>
+              Assoc
+                (Variable => TableTags_Container.Key(I),
+                 Value => Page_Table_Tags(I)));
       end loop Add_Table_Tags_Loop;
       Add_Global_Table_Tags_Loop :
       for I in Global_Table_Tags.Iterate loop
-         Insert(Tags, Assoc(TableTags_Container.Key(I), Global_Table_Tags(I)));
+         Insert
+           (Set => Tags,
+            Item =>
+              Assoc
+                (Variable => TableTags_Container.Key(I),
+                 Value => Global_Table_Tags(I)));
       end loop Add_Global_Table_Tags_Loop;
-      Insert_Tags(Page_Tags);
+      Insert_Tags(Tags_List => Page_Tags);
       -- Create HTML file in Output_Directory
-      Create_Path(To_String(Output_Directory));
-      Create(Page_File, Append_File, New_File_Name);
-      Put(Page_File, Decode(Parse(To_String(Layout), Tags)));
+      Create_Path(New_Directory => To_String(Source => Output_Directory));
+      Create(File => Page_File, Mode => Append_File, Name => New_File_Name);
+      Put
+        (File => Page_File,
+         Item =>
+           Decode
+             (Item =>
+                Parse
+                  (Filename => To_String(Source => Layout),
+                   Translations => Tags)));
       Close(Page_File);
       -- Add the page to the sitemap
       if In_Sitemap then
