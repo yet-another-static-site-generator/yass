@@ -340,7 +340,7 @@ package body Pages is
            (Set => Tags,
             Item =>
               Assoc
-                (Variable => TableTags_Container.Key(I),
+                (Variable => TableTags_Container.Key(Position => I),
                  Value => Page_Table_Tags(I)));
       end loop Add_Table_Tags_Loop;
       Add_Global_Table_Tags_Loop :
@@ -349,7 +349,7 @@ package body Pages is
            (Set => Tags,
             Item =>
               Assoc
-                (Variable => TableTags_Container.Key(I),
+                (Variable => TableTags_Container.Key(Position => I),
                  Value => Global_Table_Tags(I)));
       end loop Add_Global_Table_Tags_Loop;
       Insert_Tags(Tags_List => Page_Tags);
@@ -364,29 +364,34 @@ package body Pages is
                 Parse
                   (Filename => To_String(Source => Layout),
                    Translations => Tags)));
-      Close(Page_File);
+      Close(File => Page_File);
       -- Add the page to the sitemap
       if In_Sitemap then
          AddPageToSitemap
-           (New_File_Name, To_String(Change_Frequency),
-            To_String(Page_Priority));
+           (FileName => New_File_Name,
+            ChangeFrequency => To_String(Source => Change_Frequency),
+            PagePriority => To_String(Source => Page_Priority));
       end if;
       -- Add the page to the Atom feed
-      if Yass_Config.Atom_Feed_Source = To_Unbounded_String("tags") then
+      if Yass_Config.Atom_Feed_Source =
+        To_Unbounded_String(Source => "tags") then
          Atom_Entries(Atom_Entries.First_Index).Content := Content;
       end if;
-      Add_Page_To_Feed(New_File_Name, Atom_Entries);
-      Set("YASSFILE", New_File_Name);
+      Add_Page_To_Feed(File_Name => New_File_Name, Entries => Atom_Entries);
+      Set(Name => "YASSFILE", Value => New_File_Name);
       -- Load the program modules with 'post' hook
-      Load_Modules("post", Page_Tags, Page_Table_Tags);
+      Load_Modules
+        (State => "post", Page_Tags => Page_Tags,
+         Page_Table_Tags => Page_Table_Tags);
    exception
       when An_Exception : Layout_Not_Found =>
          Put_Line
-           ("Can't parse """ & Exception_Message(An_Exception) &
-            """ does not exists.");
+           (Item =>
+              "Can't parse """ & Exception_Message(X => An_Exception) &
+              """ does not exists.");
          raise Generate_Site_Exception;
       when An_Exception : Template_Error =>
-         Put_Line(Exception_Message(An_Exception));
+         Put_Line(Item => Exception_Message(X => An_Exception));
          if Ada.Directories.Exists(New_File_Name) then
             Close(Page_File);
             Delete_File(New_File_Name);
