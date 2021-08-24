@@ -38,12 +38,12 @@ To build the program for Windows 64-bit, download `adabuildwin64` image and type
 
 To build you need:
 
-* compiler: GCC with enabled Ada support or (best option) GNAT from:
+* compiler: GCC with enabled Ada support or GNAT from:
 
   https://www.adacore.com/download/
 
-* gprbuild: it is included in GNAT and should be available in most Linux
-  distributions too.
+* gprbuild: it is included in GNAT from AdaCore and should be available in most
+  Linux distributions too.
 
 * libcmark: should be available in every Linux distribution, if not, you
   can download source code from:
@@ -70,7 +70,7 @@ To build you need:
 
 Navigate to the main directory(where this file is) to compile:
 
-* The easiest way to compile program is use Gnat Programming Studio included in
+* The easiest way to compile program is use Gnat Studio included in
   GNAT. Just run GPS, select *yass.gpr* as a project file and select option
   `Build All`.
 
@@ -110,6 +110,13 @@ environment variable `YASSDIR` to your current directory. Example:
 `export YASSDIR=$(pwd)`. You don't need to set it manually when you use
 AppImage version of the program.
 
+### Windows
+
+To see all available options, type in console `yass.exe help` in the directory
+where binary file is. If you want to run the program from other directory, you
+should set the environment variable `YASSDIR` to your current directory.
+Example: `set YASSDIR="C:\yass"`
+
 ### Running unit tests
 
 From the main directory (where this file is) go to `test/driver` directory
@@ -119,7 +126,7 @@ installed, you can type `bob runtests`.
 ### Testing versions
 
 Here are available testing versions of the program. You can find them
-in [Github Actions](https://github.com/yet-another-static-site-generator/yass/actions/workflows/ada.yml).
+in [GitHub Actions](https://github.com/yet-another-static-site-generator/yass/actions/workflows/ada.yml).
 Just select option from the list of results to see Artifacts list.
 To use them, first you must download normal release. Then, for Linux: inside
 directory where the program is, type `./yass-x86_64.AppImage --appimage-extract`
@@ -153,15 +160,15 @@ ideas propositions, code conduct, etc), see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 * Yass is released under GNU GPL v3 license.
 
-* Libcmark library distributed with AppImage version of the program is released
-under [few Open Sources licenses](https://github.com/commonmark/cmark/blob/master/COPYING)
+* Libcmark library distributed with the program is released under
+[a few Open Sources licenses](https://github.com/commonmark/cmark/blob/master/COPYING)
 
 https://github.com/commonmark/cmark
 
 ## TODO (someday or if someone wants to contribute)
 
-* Windows version of the program
 * More unit tests
+* Formally verify the project with SPARK
 * Your propositions?
 
 ----
