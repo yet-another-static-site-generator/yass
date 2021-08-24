@@ -414,23 +414,30 @@ package body Pages is
    procedure Copy_File(File_Name, Directory: String) is
       Output_Directory: constant Unbounded_String :=
         Yass_Config.Output_Directory &
-        Delete(To_Unbounded_String(Directory), 1, Length(Site_Directory));
+        Delete
+          (Source => To_Unbounded_String(Source => Directory), From => 1,
+           Through => Length(Source => Site_Directory));
       Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
       Page_Table_Tags: TableTags_Container.Map :=
         TableTags_Container.Empty_Map;
    begin
       -- Load the program modules with 'pre' hook
-      Load_Modules("pre", Page_Tags, Page_Table_Tags);
+      Load_Modules
+        (State => "pre", Page_Tags => Page_Tags,
+         Page_Table_Tags => Page_Table_Tags);
       -- Copy the file to output directory
-      Create_Path(To_String(Output_Directory));
+      Create_Path(New_Directory => To_String(Source => Output_Directory));
       Ada.Directories.Copy_File
-        (File_Name,
-         To_String(Output_Directory) & Dir_Separator & Simple_Name(File_Name));
-      if Extension(File_Name) = "html" then
+        (Source_Name => File_Name,
+         Target_Name =>
+           To_String(Source => Output_Directory) & Dir_Separator &
+           Simple_Name(Name => File_Name));
+      if Extension(Name => File_Name) = "html" then
          AddPageToSitemap
-           (To_String(Output_Directory) & Dir_Separator &
-            Simple_Name(File_Name),
-            "", "");
+           (FileName =>
+              To_String(Source => Output_Directory) & Dir_Separator &
+              Simple_Name(Name => File_Name),
+            ChangeFrequency => "", PagePriority => "");
       end if;
       Set
         ("YASSFILE",
