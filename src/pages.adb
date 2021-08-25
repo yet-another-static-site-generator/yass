@@ -440,85 +440,89 @@ package body Pages is
             ChangeFrequency => "", PagePriority => "");
       end if;
       Set
-        ("YASSFILE",
-         To_String(Output_Directory) & Dir_Separator & Simple_Name(File_Name));
+        (Name => "YASSFILE",
+         Value =>
+           To_String(Source => Output_Directory) & Dir_Separator &
+           Simple_Name(Name => File_Name));
       -- Load the program modules with 'post' hook
-      Load_Modules("post", Page_Tags, Page_Table_Tags);
+      Load_Modules
+        (State => "post", Page_Tags => Page_Tags,
+         Page_Table_Tags => Page_Table_Tags);
    end Copy_File;
 
    procedure Create_Empty_File(File_Name: String) is
-      IndexFile: File_Type;
-      CommentMark: constant String := To_String(Yass_Config.Markdown_Comment);
+      Index_File: File_Type;
+      Comment_Mark: constant String := To_String(Yass_Config.Markdown_Comment);
    begin
-      if Extension(File_Name) /= "md" then
-         Create
-           (IndexFile, Append_File, File_Name & Dir_Separator & "index.md");
+      if Extension(File_Name) = "md" then
+         Create(Index_File, Append_File, File_Name);
       else
-         Create(IndexFile, Append_File, File_Name);
+         Create
+           (Index_File, Append_File, File_Name & Dir_Separator & "index.md");
       end if;
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " All lines which starts with double minus sign are comments and ignored by program. Unless they have colon sign. Then they are tags definition.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " Ada Web Server template which will be used as HTML template for this file. Required for each file");
-      Put_Line(IndexFile, CommentMark & " layout: default");
+      Put_Line(Index_File, Comment_Mark & " layout: default");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " You may add as many tags as you want, and they can be in any place in file, not only at beginning. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " First 3 types of tags are in Name: Value scheme. For strings, it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always falls back to string value.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " Composite tags first must be initialized with Name: [] then just add as many as you want values to it by Name: Value scheme.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " For more information about tags please check program documentation.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " If you have enabled creation of sitemap in the project config file, you can set some sitemap parameters too. They are defined in this same way like tags, with ParameterName: Value.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " priority - The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " changefreq - How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " For more information how this options works, please look at the program documentation.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " Additionally, you can exclude this file from adding to sitemap by setting option insitemap: false.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you want to use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry. If you want to set author name for Atom feed, you must add ""author"" tag or setting Author from configuration file will be used. When you want to set author email for Atom feed, you must add ""authoremail"" tag. If you want to add short entry summary, you must add tag ""summary"". Do that tag will be for whole page or for each entry depends on your Atom feed configuration.");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " You can also specify canonical link for the page. If you don't set it here, the program will generate it automatically. To set the default canonical link for the page set tag ""canonicallink"". It must be a full URL (with https://).");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " By setting ""author"" tag for the page, you can overwrite the configuration setting for meta tag author for the page.");
-      Put_Line(IndexFile, CommentMark & " title: New page");
+      Put_Line(Index_File, Comment_Mark & " title: New page");
       Put_Line
-        (IndexFile,
-         CommentMark &
+        (Index_File,
+         Comment_Mark &
          " You can without problem delete all this comments from this file.");
-      Close(IndexFile);
+      Close(Index_File);
    end Create_Empty_File;
 
    function Get_Layout_Name(File_Name: String) return String is
