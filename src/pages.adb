@@ -452,35 +452,42 @@ package body Pages is
 
    procedure Create_Empty_File(File_Name: String) is
       Index_File: File_Type;
-      Comment_Mark: constant String := To_String(Yass_Config.Markdown_Comment);
+      Comment_Mark: constant String :=
+        To_String(Source => Yass_Config.Markdown_Comment);
    begin
-      if Extension(File_Name) = "md" then
-         Create(Index_File, Append_File, File_Name);
+      if Extension(Name => File_Name) = "md" then
+         Create(File => Index_File, Mode => Append_File, Name => File_Name);
       else
          Create
-           (Index_File, Append_File, File_Name & Dir_Separator & "index.md");
+           (File => Index_File, Mode => Append_File,
+            Name => File_Name & Dir_Separator & "index.md");
       end if;
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " All lines which starts with double minus sign are comments and ignored by program. Unless they have colon sign. Then they are tags definition.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " All lines which starts with double minus sign are comments and ignored by program. Unless they have colon sign. Then they are tags definition.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " Ada Web Server template which will be used as HTML template for this file. Required for each file");
-      Put_Line(Index_File, Comment_Mark & " layout: default");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " Ada Web Server template which will be used as HTML template for this file. Required for each file");
+      Put_Line(File => Index_File, Item => Comment_Mark & " layout: default");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " You may add as many tags as you want, and they can be in any place in file, not only at beginning. Tags can be 4 types: strings, boolean, numeric or composite.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " You may add as many tags as you want, and they can be in any place in file, not only at beginning. Tags can be 4 types: strings, boolean, numeric or composite.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " First 3 types of tags are in Name: Value scheme. For strings, it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always falls back to string value.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " First 3 types of tags are in Name: Value scheme. For strings, it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always falls back to string value.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " Composite tags first must be initialized with Name: [] then just add as many as you want values to it by Name: Value scheme.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " Composite tags first must be initialized with Name: [] then just add as many as you want values to it by Name: Value scheme.");
       Put_Line
         (Index_File,
          Comment_Mark &
