@@ -489,42 +489,51 @@ package body Pages is
            Comment_Mark &
            " Composite tags first must be initialized with Name: [] then just add as many as you want values to it by Name: Value scheme.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " For more information about tags please check program documentation.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " For more information about tags please check program documentation.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " If you have enabled creation of sitemap in the project config file, you can set some sitemap parameters too. They are defined in this same way like tags, with ParameterName: Value.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " If you have enabled creation of sitemap in the project config file, you can set some sitemap parameters too. They are defined in this same way like tags, with ParameterName: Value.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " priority - The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " priority - The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " changefreq - How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " changefreq - How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " For more information how this options works, please look at the program documentation.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " For more information how this options works, please look at the program documentation.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " Additionally, you can exclude this file from adding to sitemap by setting option insitemap: false.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " Additionally, you can exclude this file from adding to sitemap by setting option insitemap: false.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you want to use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry. If you want to set author name for Atom feed, you must add ""author"" tag or setting Author from configuration file will be used. When you want to set author email for Atom feed, you must add ""authoremail"" tag. If you want to add short entry summary, you must add tag ""summary"". Do that tag will be for whole page or for each entry depends on your Atom feed configuration.");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you want to use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry. If you want to set author name for Atom feed, you must add ""author"" tag or setting Author from configuration file will be used. When you want to set author email for Atom feed, you must add ""authoremail"" tag. If you want to add short entry summary, you must add tag ""summary"". Do that tag will be for whole page or for each entry depends on your Atom feed configuration.");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " You can also specify canonical link for the page. If you don't set it here, the program will generate it automatically. To set the default canonical link for the page set tag ""canonicallink"". It must be a full URL (with https://).");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " You can also specify canonical link for the page. If you don't set it here, the program will generate it automatically. To set the default canonical link for the page set tag ""canonicallink"". It must be a full URL (with https://).");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " By setting ""author"" tag for the page, you can overwrite the configuration setting for meta tag author for the page.");
-      Put_Line(Index_File, Comment_Mark & " title: New page");
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " By setting ""author"" tag for the page, you can overwrite the configuration setting for meta tag author for the page.");
+      Put_Line(File => Index_File, Item => Comment_Mark & " title: New page");
       Put_Line
         (Index_File,
          Comment_Mark &
