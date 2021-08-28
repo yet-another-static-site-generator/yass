@@ -535,24 +535,27 @@ package body Pages is
            " By setting ""author"" tag for the page, you can overwrite the configuration setting for meta tag author for the page.");
       Put_Line(File => Index_File, Item => Comment_Mark & " title: New page");
       Put_Line
-        (Index_File,
-         Comment_Mark &
-         " You can without problem delete all this comments from this file.");
-      Close(Index_File);
+        (File => Index_File,
+         Item =>
+           Comment_Mark &
+           " You can without problem delete all this comments from this file.");
+      Close(File => Index_File);
    end Create_Empty_File;
 
    function Get_Layout_Name(File_Name: String) return String is
       Page_File: File_Type;
-      Data, Layout: Unbounded_String;
-      StartPos: constant Positive := Length(Yass_Config.Markdown_Comment);
+      Data, Layout: Unbounded_String := Null_Unbounded_String;
+      Start_Pos: constant Positive :=
+        Length(Source => Yass_Config.Markdown_Comment);
    begin
-      Open(Page_File, In_File, File_Name);
-      while not End_Of_File(Page_File) loop
+      Open(File => Page_File, Mode => In_File, Name => File_Name);
+      Find_Layout_Name_Loop :
+      while not End_Of_File(File => Page_File) loop
          Data := To_Unbounded_String(Encode(Get_Line(Page_File)));
          if Length(Data) > 2
-           and then Unbounded_Slice(Data, 1, StartPos) =
+           and then Unbounded_Slice(Data, 1, Start_Pos) =
              Yass_Config.Markdown_Comment
-           and then Index(Data, "layout:", 1) = (StartPos + 2) then
+           and then Index(Data, "layout:", 1) = (Start_Pos + 2) then
             Data := Unbounded_Slice(Data, 12, Length(Data));
             Layout :=
               Yass_Config.Layouts_Directory & Dir_Separator & Data &
@@ -566,7 +569,7 @@ package body Pages is
             Close(Page_File);
             return To_String(Layout);
          end if;
-      end loop;
+      end loop Find_Layout_Name_Loop;
       Close(Page_File);
       return "";
    end Get_Layout_Name;
