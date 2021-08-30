@@ -551,20 +551,27 @@ package body Pages is
       Open(File => Page_File, Mode => In_File, Name => File_Name);
       Find_Layout_Name_Loop :
       while not End_Of_File(File => Page_File) loop
-         Data := To_Unbounded_String(Encode(Get_Line(Page_File)));
-         if Length(Data) > 2
-           and then Unbounded_Slice(Data, 1, Start_Pos) =
+         Data :=
+           To_Unbounded_String
+             (Source => Encode(Item => Get_Line(File => Page_File)));
+         if Length(Source => Data) > 2
+           and then
+             Unbounded_Slice(Source => Data, Low => 1, High => Start_Pos) =
              Yass_Config.Markdown_Comment
-           and then Index(Data, "layout:", 1) = (Start_Pos + 2) then
-            Data := Unbounded_Slice(Data, 12, Length(Data));
+           and then Index(Source => Data, Pattern => "layout:", From => 1) =
+             Start_Pos + 2 then
+            Data :=
+              Unbounded_Slice
+                (Source => Data, Low => 12, High => Length(Source => Data));
             Layout :=
               Yass_Config.Layouts_Directory & Dir_Separator & Data &
-              To_Unbounded_String(".html");
-            if not Ada.Directories.Exists(To_String(Layout)) then
-               Close(Page_File);
+              To_Unbounded_String(Source => ".html");
+            if not Ada.Directories.Exists
+                (Name => To_String(Source => Layout)) then
+               Close(File => Page_File);
                raise Layout_Not_Found
                  with File_Name & """. Selected layout file """ &
-                 To_String(Layout);
+                 To_String(Source => Layout);
             end if;
             Close(Page_File);
             return To_String(Layout);
