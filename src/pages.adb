@@ -573,11 +573,11 @@ package body Pages is
                  with File_Name & """. Selected layout file """ &
                  To_String(Source => Layout);
             end if;
-            Close(Page_File);
-            return To_String(Layout);
+            Close(File => Page_File);
+            return To_String(Source => Layout);
          end if;
       end loop Find_Layout_Name_Loop;
-      Close(Page_File);
+      Close(File => Page_File);
       return "";
    end Get_Layout_Name;
 
