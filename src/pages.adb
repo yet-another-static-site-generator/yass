@@ -15,37 +15,35 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Characters.Handling; use Ada.Characters.Handling;
-with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
+with Ada.Calendar;
+with Ada.Characters.Handling;
+with Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
-with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Exceptions;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Calendar; use Ada.Calendar;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
+with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with AWS.Templates; use AWS.Templates;
-with AWS.Templates.Utils; use AWS.Templates.Utils;
+with AWS.Templates;
+with AWS.Templates.Utils;
 with Config; use Config;
 with Sitemaps; use Sitemaps;
-with AtomFeed; use AtomFeed;
+with AtomFeed;
 with Modules; use Modules;
 
 package body Pages is
 
-   subtype Size_T is unsigned_long;
    Layout_Not_Found: exception;
 
-   function Cmark_Markdown_To_Html
-     (Text: chars_ptr; Len: Size_T; Options: int) return chars_ptr with
-      Import => True,
-      Convention => C,
-      External_Name => "cmark_markdown_to_html";
-
    procedure Create_Page(File_Name, Directory: String) is
+      use Ada.Characters.Handling;
+      use Ada.Exceptions;
+      use AWS.Templates;
+      use AtomFeed;
+
       Layout, Content, Change_Frequency, Page_Priority: Unbounded_String :=
         Null_Unbounded_String;
       Page_File: File_Type;
@@ -73,8 +71,15 @@ package body Pages is
       Atom_Entries: FeedEntry_Container.Vector :=
         FeedEntry_Container.Empty_Vector;
       Sitemap_Invalid_Value, Invalid_Value: exception;
+      subtype Size_T is unsigned_long;
+      function Cmark_Markdown_To_Html
+         (Text: chars_ptr; Len: Size_T; Options: int) return chars_ptr with
+         Import => True,
+         Convention => C,
+         External_Name => "cmark_markdown_to_html";
       -- Insert selected list of tags Tags_List to templates
       procedure Insert_Tags(Tags_List: Tags_Container.Map) is
+         use AWS.Templates.Utils;
       begin
          Insert_Tags_Loop :
          for I in Tags_List.Iterate loop
@@ -114,6 +119,8 @@ package body Pages is
    begin
       Read_Page_File_Block :
       declare
+         use Ada.Characters.Latin_1;
+
          Data: Unbounded_String := Null_Unbounded_String;
          Start_Index: Natural := 0;
          Start_Pos: constant Positive :=
@@ -123,6 +130,7 @@ package body Pages is
       -- Name: name of the tag
       -- Value: value of the tag
          procedure Add_Tag(Name, Value: String) is
+            use Ada.Calendar;
          begin
          -- Create new composite template tag
             if Value = "[]" then
