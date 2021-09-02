@@ -24,8 +24,8 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
-with Interfaces.C; use Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
+with Interfaces.C;
+with Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with AWS.Templates;
 with AWS.Templates.Utils;
@@ -41,6 +41,8 @@ package body Pages is
    procedure Create_Page(File_Name, Directory: String) is
       use Ada.Characters.Handling;
       use Ada.Exceptions;
+      use Interfaces.C;
+      use Interfaces.C.Strings;
       use AWS.Templates;
       use AtomFeed;
 
