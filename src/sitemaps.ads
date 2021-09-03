@@ -26,7 +26,7 @@ package Sitemaps is
    -- FUNCTION
    -- Create new or load existing sitemap for the site
    -- SOURCE
-   procedure StartSitemap with
+   procedure Start_Sitemap with
       Test_Case => (Name => "Test_Start_Sitemap", Mode => Robustness);
    -- ****
 
@@ -40,9 +40,9 @@ package Sitemaps is
    -- ChangeFrequency - How often selected page will change
    -- PagePriority    - Priority for the page
    -- SOURCE
-   procedure AddPageToSitemap
-     (FileName, ChangeFrequency, PagePriority: String) with
-      Pre => FileName'Length > 0,
+   procedure Add_Page_To_Sitemap
+     (File_Name, Change_Frequency, Page_Priority: String) with
+      Pre => File_Name'Length > 0,
       Test_Case => (Name => "Test_Add_Page_To_Sitemap", Mode => Robustness);
    -- ****
 
@@ -50,7 +50,7 @@ package Sitemaps is
    -- FUNCTION
    -- Save site map to file
    -- SOURCE
-   procedure SaveSitemap with
+   procedure Save_Sitemap with
       Test_Case => (Name => "Test_Save_Sitemap", Mode => Robustness);
    -- ****
 
