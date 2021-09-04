@@ -75,7 +75,7 @@ package body Pages is
       Sitemap_Invalid_Value, Invalid_Value: exception;
       subtype Size_T is unsigned_long;
       function Cmark_Markdown_To_Html
-         (Text: chars_ptr; Len: Size_T; Options: int) return chars_ptr with
+        (Text: chars_ptr; Len: Size_T; Options: int) return chars_ptr with
          Import => True,
          Convention => C,
          External_Name => "cmark_markdown_to_html";
@@ -377,10 +377,10 @@ package body Pages is
       Close(File => Page_File);
       -- Add the page to the sitemap
       if In_Sitemap then
-         AddPageToSitemap
-           (FileName => New_File_Name,
-            ChangeFrequency => To_String(Source => Change_Frequency),
-            PagePriority => To_String(Source => Page_Priority));
+         Add_Page_To_Sitemap
+           (File_Name => New_File_Name,
+            Change_Frequency => To_String(Source => Change_Frequency),
+            Page_Priority => To_String(Source => Page_Priority));
       end if;
       -- Add the page to the Atom feed
       if Yass_Config.Atom_Feed_Source =
@@ -443,11 +443,11 @@ package body Pages is
            To_String(Source => Output_Directory) & Dir_Separator &
            Simple_Name(Name => File_Name));
       if Extension(Name => File_Name) = "html" then
-         AddPageToSitemap
-           (FileName =>
+         Add_Page_To_Sitemap
+           (File_Name =>
               To_String(Source => Output_Directory) & Dir_Separator &
               Simple_Name(Name => File_Name),
-            ChangeFrequency => "", PagePriority => "");
+            Change_Frequency => "", Page_Priority => "");
       end if;
       Set
         (Name => "YASSFILE",

@@ -119,7 +119,7 @@ procedure Yass is
         (State => "start", Page_Tags => Page_Tags,
          Page_Table_Tags => Page_Table_Tags);
       -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
-      StartSitemap;
+      Start_Sitemap;
       -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
       Start_Atom_Feed;
       -- Build the site
@@ -127,7 +127,7 @@ procedure Yass is
       -- Save atom feed to file or nothing if atom feed generation is disabled
       Save_Atom_Feed;
       -- Save sitemap to file or nothing if sitemap generation is disabled
-      SaveSitemap;
+      Save_Sitemap;
       -- Load the program modules with 'end' hook
       Load_Modules
         (State => "end", Page_Tags => Page_Tags,
