@@ -73,7 +73,7 @@ package body Pages.Test_Data.Tests is
 
    begin
 
-      StartSitemap;
+      Start_Sitemap;
       Create_Empty_File("test.md");
       Create_Page("test.md", ".");
       Assert

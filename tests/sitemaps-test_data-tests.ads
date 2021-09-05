@@ -10,14 +10,14 @@ package Sitemaps.Test_Data.Tests is
      .Test with
    null record;
 
-   procedure Test_StartSitemap_351b30_223cc9(Gnattest_T: in out Test);
-   --  sitemaps.ads:29:4:StartSitemap:Test_Start_Sitemap
+   procedure Test_Start_Sitemap_8927d0_223cc9(Gnattest_T: in out Test);
+   --  sitemaps.ads:29:4:Start_Sitemap:Test_Start_Sitemap
 
-   procedure Test_AddPageToSitemap_afae92_d33b30(Gnattest_T: in out Test);
-   --  sitemaps.ads:43:4:AddPageToSitemap:Test_Add_Page_To_Sitemap
+   procedure Test_Add_Page_To_Sitemap_3dbb1d_d33b30(Gnattest_T: in out Test);
+   --  sitemaps.ads:43:4:Add_Page_To_Sitemap:Test_Add_Page_To_Sitemap
 
-   procedure Test_SaveSitemap_8a2373_7f961d(Gnattest_T: in out Test);
-   --  sitemaps.ads:53:4:SaveSitemap:Test_Save_Sitemap
+   procedure Test_Save_Sitemap_ede18d_7f961d(Gnattest_T: in out Test);
+   --  sitemaps.ads:53:4:Save_Sitemap:Test_Save_Sitemap
 
 end Sitemaps.Test_Data.Tests;
 --  end read only
