@@ -34,13 +34,13 @@ package body Sitemaps is
 
    Sitemap: Document;
    File_Name: Unbounded_String;
-   MainNode: DOM.Core.Element;
+   Main_Node: DOM.Core.Element;
 
    procedure Start_Sitemap is
-      SitemapFile: File_Input;
+      Sitemap_File: File_Input;
       Reader: Tree_Reader;
-      NewSitemap: DOM_Implementation;
-      NodesList: Node_List;
+      New_Sitemap: DOM_Implementation;
+      Nodes_List: Node_List;
    begin
       if not Yass_Config.Sitemap_Enabled then
          return;
@@ -50,22 +50,24 @@ package body Sitemaps is
         To_Unbounded_String(Dir_Separator & "sitemap.xml");
       -- Load existing sitemap data
       if Exists(To_String(File_Name)) then
-         Open(To_String(File_Name), SitemapFile);
-         Parse(Reader, SitemapFile);
-         Close(SitemapFile);
+         Open(To_String(File_Name), Sitemap_File);
+         --## rule off IMPROPER_INITIALIZATION
+         Parse(Reader, Sitemap_File);
+         Close(Sitemap_File);
          Sitemap := Get_Tree(Reader);
-         NodesList :=
+         --## rule on IMPROPER_INITIALIZATION
+         Nodes_List :=
            DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "urlset");
-         MainNode := Item(NodesList, 0);
+         Main_Node := Item(Nodes_List, 0);
          Set_Attribute
-           (MainNode, "xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+           (Main_Node, "xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
          -- Create new sitemap data
       else
-         Sitemap := Create_Document(NewSitemap);
-         MainNode := Create_Element(Sitemap, "urlset");
+         Sitemap := Create_Document(New_Sitemap);
+         Main_Node := Create_Element(Sitemap, "urlset");
          Set_Attribute
-           (MainNode, "xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
-         MainNode := Append_Child(Sitemap, MainNode);
+           (Main_Node, "xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+         Main_Node := Append_Child(Sitemap, Main_Node);
       end if;
    end Start_Sitemap;
 
@@ -142,9 +144,9 @@ package body Sitemaps is
       -- Add new sitemap entry
       if not Added then
          URLNode := Create_Element(Sitemap, "url");
-         OldMainNode := MainNode;
-         MainNode := Append_Child(MainNode, URLNode);
-         MainNode := OldMainNode;
+         OldMainNode := Main_Node;
+         Main_Node := Append_Child(Main_Node, URLNode);
+         Main_Node := OldMainNode;
          URLData := Create_Element(Sitemap, "loc");
          URLData := Append_Child(URLNode, URLData);
          URLText := Create_Text_Node(Sitemap, Url);
