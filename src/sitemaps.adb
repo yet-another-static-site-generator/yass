@@ -38,9 +38,11 @@ package body Sitemaps is
 
    procedure Start_Sitemap is
       Sitemap_File: File_Input;
+      --## rule off IMPROPER_INITIALIZATION
       Reader: Tree_Reader;
       New_Sitemap: DOM_Implementation;
       Nodes_List: Node_List;
+      --## rule on IMPROPER_INITIALIZATION
    begin
       if not Yass_Config.Sitemap_Enabled then
          return;
