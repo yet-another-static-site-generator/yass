@@ -1,4 +1,4 @@
---    Copyright 2019 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki
 --
 --    This file is part of YASS.
 --
@@ -49,24 +49,27 @@ package body Sitemaps is
       end if;
       File_Name :=
         Yass_Config.Output_Directory &
-        To_Unbounded_String(Dir_Separator & "sitemap.xml");
+        To_Unbounded_String(Source => Dir_Separator & "sitemap.xml");
       -- Load existing sitemap data
-      if Exists(To_String(File_Name)) then
-         Open(To_String(File_Name), Sitemap_File);
+      if Exists(Name => To_String(Source => File_Name)) then
+         Open
+           (Filename => To_String(Source => File_Name), Input => Sitemap_File);
          --## rule off IMPROPER_INITIALIZATION
-         Parse(Reader, Sitemap_File);
-         Close(Sitemap_File);
-         Sitemap := Get_Tree(Reader);
+         Parse(Parser => Reader, Input => Sitemap_File);
+         Close(Input => Sitemap_File);
+         Sitemap := Get_Tree(Read => Reader);
          --## rule on IMPROPER_INITIALIZATION
          Nodes_List :=
-           DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "urlset");
-         Main_Node := Item(Nodes_List, 0);
+           DOM.Core.Documents.Get_Elements_By_Tag_Name
+             (Doc => Sitemap, Tag_Name => "urlset");
+         Main_Node := Item(List => Nodes_List, Index => 0);
          Set_Attribute
-           (Main_Node, "xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+           (Elem => Main_Node, Name => "xmlns",
+            Value => "http://www.sitemaps.org/schemas/sitemap/0.9");
          -- Create new sitemap data
       else
-         Sitemap := Create_Document(New_Sitemap);
-         Main_Node := Create_Element(Sitemap, "urlset");
+         Sitemap := Create_Document(Implementation => New_Sitemap);
+         Main_Node := Create_Element(Doc => Sitemap, Tag_Name => "urlset");
          Set_Attribute
            (Main_Node, "xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
          Main_Node := Append_Child(Sitemap, Main_Node);
