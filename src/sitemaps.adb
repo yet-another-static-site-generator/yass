@@ -33,7 +33,7 @@ with AtomFeed; use AtomFeed;
 package body Sitemaps is
 
    Sitemap: Document;
-   File_Name: Unbounded_String;
+   Sitemap_File_Name: Unbounded_String;
    Main_Node: DOM.Core.Element;
 
    procedure Start_Sitemap is
@@ -47,13 +47,14 @@ package body Sitemaps is
       if not Yass_Config.Sitemap_Enabled then
          return;
       end if;
-      File_Name :=
+      Sitemap_File_Name :=
         Yass_Config.Output_Directory &
         To_Unbounded_String(Source => Dir_Separator & "sitemap.xml");
       -- Load existing sitemap data
-      if Exists(Name => To_String(Source => File_Name)) then
+      if Exists(Name => To_String(Source => Sitemap_File_Name)) then
          Open
-           (Filename => To_String(Source => File_Name), Input => Sitemap_File);
+           (Filename => To_String(Source => Sitemap_File_Name),
+            Input => Sitemap_File);
          --## rule off IMPROPER_INITIALIZATION
          Parse(Parser => Reader, Input => Sitemap_File);
          Close(Input => Sitemap_File);
@@ -71,8 +72,9 @@ package body Sitemaps is
          Sitemap := Create_Document(Implementation => New_Sitemap);
          Main_Node := Create_Element(Doc => Sitemap, Tag_Name => "urlset");
          Set_Attribute
-           (Main_Node, "xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
-         Main_Node := Append_Child(Sitemap, Main_Node);
+           (Elem => Main_Node, Name => "xmlns",
+            Value => "http://www.sitemaps.org/schemas/sitemap/0.9");
+         Main_Node := Append_Child(N => Sitemap, New_Child => Main_Node);
       end if;
    end Start_Sitemap;
 
@@ -84,63 +86,63 @@ package body Sitemaps is
           (To_Unbounded_String(File_Name),
            Length(Yass_Config.Output_Directory & Dir_Separator) + 1,
            File_Name'Length);
-      URLsList, ChildrenList: Node_List;
-      Added, FrequencyUpdated, PriorityUpdated: Boolean := False;
-      URLNode, URLData, OldMainNode, RemoveFrequency,
-      RemovePriority: DOM.Core.Element;
-      URLText: Text;
-      LastModified: constant String := To_HTTP_Date(Clock);
+      Urls_List, Children_List: Node_List;
+      Added, Frequency_Updated, Priority_Updated: Boolean := False;
+      Url_Node, Url_Data, Old_Main_Node, Remove_Frequency,
+      Remove_Priority: DOM.Core.Element;
+      Url_Text: Text;
+      Last_Modified: constant String := To_HTTP_Date(Clock);
    begin
       if not Yass_Config.Sitemap_Enabled then
          return;
       end if;
-      URLsList := DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "loc");
-      for I in 0 .. Length(URLsList) - 1 loop
-         if Node_Value(First_Child(Item(URLsList, I))) /= Url then
+      Urls_List := DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "loc");
+      for I in 0 .. Length(Urls_List) - 1 loop
+         if Node_Value(First_Child(Item(Urls_List, I))) /= Url then
             goto End_Of_Loop;
          end if;
          -- Update sitemap entry if exists
-         URLNode := Parent_Node(Item(URLsList, I));
-         ChildrenList := Child_Nodes(URLNode);
-         for J in 0 .. Length(ChildrenList) - 1 loop
-            if Node_Name(Item(ChildrenList, J)) = "lastmod" then
-               URLText := First_Child(Item(ChildrenList, J));
-               Set_Node_Value(URLText, LastModified);
-            elsif Node_Name(Item(ChildrenList, J)) = "changefreq" then
+         Url_Node := Parent_Node(Item(Urls_List, I));
+         Children_List := Child_Nodes(Url_Node);
+         for J in 0 .. Length(Children_List) - 1 loop
+            if Node_Name(Item(Children_List, J)) = "lastmod" then
+               Url_Text := First_Child(Item(Children_List, J));
+               Set_Node_Value(Url_Text, Last_Modified);
+            elsif Node_Name(Item(Children_List, J)) = "changefreq" then
                if Change_Frequency /= "" then
-                  URLText := First_Child(Item(ChildrenList, J));
-                  Set_Node_Value(URLText, Change_Frequency);
+                  Url_Text := First_Child(Item(Children_List, J));
+                  Set_Node_Value(Url_Text, Change_Frequency);
                else
-                  RemoveFrequency := Item(ChildrenList, J);
+                  Remove_Frequency := Item(Children_List, J);
                end if;
-               FrequencyUpdated := True;
-            elsif Node_Name(Item(ChildrenList, J)) = "priority" then
+               Frequency_Updated := True;
+            elsif Node_Name(Item(Children_List, J)) = "priority" then
                if Page_Priority /= "" then
-                  URLText := First_Child(Item(ChildrenList, J));
-                  Set_Node_Value(URLText, Page_Priority);
+                  Url_Text := First_Child(Item(Children_List, J));
+                  Set_Node_Value(Url_Text, Page_Priority);
                else
-                  RemovePriority := Item(ChildrenList, J);
+                  Remove_Priority := Item(Children_List, J);
                end if;
-               PriorityUpdated := True;
+               Priority_Updated := True;
             end if;
          end loop;
-         if Change_Frequency /= "" and not FrequencyUpdated then
-            URLData := Create_Element(Sitemap, "changefreq");
-            URLData := Append_Child(URLNode, URLData);
-            URLText := Create_Text_Node(Sitemap, Change_Frequency);
-            URLText := Append_Child(URLData, URLText);
+         if Change_Frequency /= "" and not Frequency_Updated then
+            Url_Data := Create_Element(Sitemap, "changefreq");
+            Url_Data := Append_Child(Url_Node, Url_Data);
+            Url_Text := Create_Text_Node(Sitemap, Change_Frequency);
+            Url_Text := Append_Child(Url_Data, Url_Text);
          end if;
-         if Page_Priority /= "" and not PriorityUpdated then
-            URLData := Create_Element(Sitemap, "priority");
-            URLData := Append_Child(URLNode, URLData);
-            URLText := Create_Text_Node(Sitemap, Page_Priority);
-            URLText := Append_Child(URLData, URLText);
+         if Page_Priority /= "" and not Priority_Updated then
+            Url_Data := Create_Element(Sitemap, "priority");
+            Url_Data := Append_Child(Url_Node, Url_Data);
+            Url_Text := Create_Text_Node(Sitemap, Page_Priority);
+            Url_Text := Append_Child(Url_Data, Url_Text);
          end if;
-         if RemoveFrequency /= null then
-            URLNode := Remove_Child(URLNode, RemoveFrequency);
+         if Remove_Frequency /= null then
+            Url_Node := Remove_Child(Url_Node, Remove_Frequency);
          end if;
-         if RemovePriority /= null then
-            URLNode := Remove_Child(URLNode, RemovePriority);
+         if Remove_Priority /= null then
+            Url_Node := Remove_Child(Url_Node, Remove_Priority);
          end if;
          Added := True;
          exit;
@@ -148,29 +150,29 @@ package body Sitemaps is
       end loop;
       -- Add new sitemap entry
       if not Added then
-         URLNode := Create_Element(Sitemap, "url");
-         OldMainNode := Main_Node;
-         Main_Node := Append_Child(Main_Node, URLNode);
-         Main_Node := OldMainNode;
-         URLData := Create_Element(Sitemap, "loc");
-         URLData := Append_Child(URLNode, URLData);
-         URLText := Create_Text_Node(Sitemap, Url);
-         URLText := Append_Child(URLData, URLText);
-         URLData := Create_Element(Sitemap, "lastmod");
-         URLData := Append_Child(URLNode, URLData);
-         URLText := Create_Text_Node(Sitemap, LastModified);
-         URLText := Append_Child(URLData, URLText);
+         Url_Node := Create_Element(Sitemap, "url");
+         Old_Main_Node := Main_Node;
+         Main_Node := Append_Child(Main_Node, Url_Node);
+         Main_Node := Old_Main_Node;
+         Url_Data := Create_Element(Sitemap, "loc");
+         Url_Data := Append_Child(Url_Node, Url_Data);
+         Url_Text := Create_Text_Node(Sitemap, Url);
+         Url_Text := Append_Child(Url_Data, Url_Text);
+         Url_Data := Create_Element(Sitemap, "lastmod");
+         Url_Data := Append_Child(Url_Node, Url_Data);
+         Url_Text := Create_Text_Node(Sitemap, Last_Modified);
+         Url_Text := Append_Child(Url_Data, Url_Text);
          if Change_Frequency /= "" then
-            URLData := Create_Element(Sitemap, "changefreq");
-            URLData := Append_Child(URLNode, URLData);
-            URLText := Create_Text_Node(Sitemap, Change_Frequency);
-            URLText := Append_Child(URLData, URLText);
+            Url_Data := Create_Element(Sitemap, "changefreq");
+            Url_Data := Append_Child(Url_Node, Url_Data);
+            Url_Text := Create_Text_Node(Sitemap, Change_Frequency);
+            Url_Text := Append_Child(Url_Data, Url_Text);
          end if;
          if Page_Priority /= "" then
-            URLData := Create_Element(Sitemap, "priority");
-            URLData := Append_Child(URLNode, URLData);
-            URLText := Create_Text_Node(Sitemap, Page_Priority);
-            URLText := Append_Child(URLData, URLText);
+            Url_Data := Create_Element(Sitemap, "priority");
+            Url_Data := Append_Child(Url_Node, Url_Data);
+            Url_Text := Create_Text_Node(Sitemap, Page_Priority);
+            Url_Text := Append_Child(Url_Data, Url_Text);
          end if;
       end if;
    end Add_Page_To_Sitemap;
@@ -182,19 +184,19 @@ package body Sitemaps is
          return;
       end if;
       -- If the sitemap file not exists - create or open existing robot.txt file and append address to the sitemap
-      if not Exists(To_String(File_Name)) then
+      if not Exists(To_String(Sitemap_File_Name)) then
          if Exists
-             (Containing_Directory(To_String(File_Name)) & Dir_Separator &
-              "robots.txt") then
+             (Containing_Directory(To_String(Sitemap_File_Name)) &
+              Dir_Separator & "robots.txt") then
             Open
               (SitemapFile, Append_File,
-               Containing_Directory(To_String(File_Name)) & Dir_Separator &
-               "robots.txt");
+               Containing_Directory(To_String(Sitemap_File_Name)) &
+               Dir_Separator & "robots.txt");
          else
             Create
               (SitemapFile, Append_File,
-               Containing_Directory(To_String(File_Name)) & Dir_Separator &
-               "robots.txt");
+               Containing_Directory(To_String(Sitemap_File_Name)) &
+               Dir_Separator & "robots.txt");
          end if;
          Put_Line
            (SitemapFile,
@@ -202,7 +204,7 @@ package body Sitemaps is
          Close(SitemapFile);
       end if;
       -- Save the sitemap to the file
-      Create(SitemapFile, Out_File, To_String(File_Name));
+      Create(SitemapFile, Out_File, To_String(Sitemap_File_Name));
       Write(Stream => Stream(SitemapFile), N => Sitemap, Pretty_Print => True);
       Close(SitemapFile);
    end Save_Sitemap;
