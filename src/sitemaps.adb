@@ -36,6 +36,8 @@ package body Sitemaps is
    Sitemap_File_Name: Unbounded_String;
    Main_Node: DOM.Core.Element;
 
+   function Get_Sitemap return Document is (Sitemap);
+
    procedure Start_Sitemap is
       Sitemap_File: File_Input;
       --## rule off IMPROPER_INITIALIZATION
@@ -70,11 +72,11 @@ package body Sitemaps is
          -- Create new sitemap data
       else
          Sitemap := Create_Document(Implementation => New_Sitemap);
-         Main_Node := Create_Element(Doc => Sitemap, Tag_Name => "urlset");
+         Main_Node := Create_Element(Doc => Get_Sitemap, Tag_Name => "urlset");
          Set_Attribute
            (Elem => Main_Node, Name => "xmlns",
             Value => "http://www.sitemaps.org/schemas/sitemap/0.9");
-         Main_Node := Append_Child(N => Sitemap, New_Child => Main_Node);
+         Main_Node := Append_Child(N => Get_Sitemap, New_Child => Main_Node);
       end if;
    end Start_Sitemap;
 
@@ -86,7 +88,8 @@ package body Sitemaps is
           (To_Unbounded_String(File_Name),
            Length(Yass_Config.Output_Directory & Dir_Separator) + 1,
            File_Name'Length);
-      Urls_List, Children_List: Node_List;
+      Urls_List: Node_List;
+      Children_List: Node_List; --## rule line off IMPROPER_INITIALIZATION
       Added, Frequency_Updated, Priority_Updated: Boolean := False;
       Url_Node, Url_Data, Old_Main_Node, Remove_Frequency,
       Remove_Priority: DOM.Core.Element;
@@ -96,7 +99,9 @@ package body Sitemaps is
       if not Yass_Config.Sitemap_Enabled then
          return;
       end if;
-      Urls_List := DOM.Core.Documents.Get_Elements_By_Tag_Name(Sitemap, "loc");
+      Urls_List :=
+        DOM.Core.Documents.Get_Elements_By_Tag_Name(Get_Sitemap, "loc");
+      Load_Existing_Urls_Loop :
       for I in 0 .. Length(Urls_List) - 1 loop
          if Node_Value(First_Child(Item(Urls_List, I))) /= Url then
             goto End_Of_Loop;
@@ -145,9 +150,9 @@ package body Sitemaps is
             Url_Node := Remove_Child(Url_Node, Remove_Priority);
          end if;
          Added := True;
-         exit;
+         exit Load_Existing_Urls_Loop;
          <<End_Of_Loop>>
-      end loop;
+      end loop Load_Existing_Urls_Loop;
       -- Add new sitemap entry
       if not Added then
          Url_Node := Create_Element(Sitemap, "url");
