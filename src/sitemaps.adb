@@ -36,7 +36,17 @@ package body Sitemaps is
    Sitemap_File_Name: Unbounded_String;
    Main_Node: DOM.Core.Element;
 
-   function Get_Sitemap return Document is (Sitemap);
+   -- ****if* Sitemaps/Sitemaps.Get_Sitemap
+   -- FUNCTION
+   -- Get the project sitemap content
+   -- RESULT
+   -- The Document with sitemap of the current project
+   -- SOURCE
+   function Get_Sitemap return Document is
+      -- ****
+   begin
+      return Sitemap;
+   end Get_Sitemap;
 
    procedure Start_Sitemap is
       Sitemap_File: File_Input;
