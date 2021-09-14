@@ -74,7 +74,7 @@ package body Sitemaps is
          --## rule on IMPROPER_INITIALIZATION
          Nodes_List :=
            DOM.Core.Documents.Get_Elements_By_Tag_Name
-             (Doc => Sitemap, Tag_Name => "urlset");
+             (Doc => Get_Sitemap, Tag_Name => "urlset");
          Main_Node := Item(List => Nodes_List, Index => 0);
          Set_Attribute
            (Elem => Main_Node, Name => "xmlns",
@@ -93,32 +93,38 @@ package body Sitemaps is
    procedure Add_Page_To_Sitemap
      (File_Name, Change_Frequency, Page_Priority: String) is
       Url: constant String :=
-        To_String(Yass_Config.Base_Url) & "/" &
+        To_String(Source => Yass_Config.Base_Url) & "/" &
         Slice
-          (To_Unbounded_String(File_Name),
-           Length(Yass_Config.Output_Directory & Dir_Separator) + 1,
-           File_Name'Length);
+          (Source => To_Unbounded_String(Source => File_Name),
+           Low =>
+             Length(Source => Yass_Config.Output_Directory & Dir_Separator) +
+             1,
+           High => File_Name'Length);
       Urls_List: Node_List;
       Children_List: Node_List; --## rule line off IMPROPER_INITIALIZATION
       Added, Frequency_Updated, Priority_Updated: Boolean := False;
       Url_Node, Url_Data, Old_Main_Node, Remove_Frequency,
       Remove_Priority: DOM.Core.Element;
       Url_Text: Text;
-      Last_Modified: constant String := To_HTTP_Date(Clock);
+      Last_Modified: constant String := To_HTTP_Date(Date => Clock);
    begin
       if not Yass_Config.Sitemap_Enabled then
          return;
       end if;
       Urls_List :=
-        DOM.Core.Documents.Get_Elements_By_Tag_Name(Get_Sitemap, "loc");
+        DOM.Core.Documents.Get_Elements_By_Tag_Name
+          (Doc => Get_Sitemap, Tag_Name => "loc");
       Load_Existing_Urls_Loop :
-      for I in 0 .. Length(Urls_List) - 1 loop
-         if Node_Value(First_Child(Item(Urls_List, I))) /= Url then
+      for I in 0 .. Length(List => Urls_List) - 1 loop
+         if Node_Value
+             (N => First_Child(N => Item(List => Urls_List, Index => I))) /=
+           Url then
             goto End_Of_Loop;
          end if;
          -- Update sitemap entry if exists
          Url_Node := Parent_Node(Item(Urls_List, I));
          Children_List := Child_Nodes(Url_Node);
+         Update_Entry_Loop :
          for J in 0 .. Length(Children_List) - 1 loop
             if Node_Name(Item(Children_List, J)) = "lastmod" then
                Url_Text := First_Child(Item(Children_List, J));
@@ -140,7 +146,7 @@ package body Sitemaps is
                end if;
                Priority_Updated := True;
             end if;
-         end loop;
+         end loop Update_Entry_Loop;
          if Change_Frequency /= "" and not Frequency_Updated then
             Url_Data := Create_Element(Sitemap, "changefreq");
             Url_Data := Append_Child(Url_Node, Url_Data);
