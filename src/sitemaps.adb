@@ -122,15 +122,18 @@ package body Sitemaps is
             goto End_Of_Loop;
          end if;
          -- Update sitemap entry if exists
-         Url_Node := Parent_Node(Item(Urls_List, I));
-         Children_List := Child_Nodes(Url_Node);
+         Url_Node := Parent_Node(N => Item(List => Urls_List, Index => I));
+         Children_List := Child_Nodes(N => Url_Node);
          Update_Entry_Loop :
-         for J in 0 .. Length(Children_List) - 1 loop
-            if Node_Name(Item(Children_List, J)) = "lastmod" then
-               Url_Text := First_Child(Item(Children_List, J));
-               Set_Node_Value(Url_Text, Last_Modified);
-            elsif Node_Name(Item(Children_List, J)) = "changefreq" then
-               if Change_Frequency /= "" then
+         for J in 0 .. Length(List => Children_List) - 1 loop
+            if Node_Name(N => Item(List => Children_List, Index => J)) =
+              "lastmod" then
+               Url_Text :=
+                 First_Child(N => Item(List => Children_List, Index => J));
+               Set_Node_Value(N => Url_Text, Value => Last_Modified);
+            elsif Node_Name(N => Item(List => Children_List, Index => J)) =
+              "changefreq" then
+               if Change_Frequency'Length > 0 then
                   Url_Text := First_Child(Item(Children_List, J));
                   Set_Node_Value(Url_Text, Change_Frequency);
                else
@@ -138,7 +141,7 @@ package body Sitemaps is
                end if;
                Frequency_Updated := True;
             elsif Node_Name(Item(Children_List, J)) = "priority" then
-               if Page_Priority /= "" then
+               if Page_Priority'Length > 0 then
                   Url_Text := First_Child(Item(Children_List, J));
                   Set_Node_Value(Url_Text, Page_Priority);
                else
@@ -147,13 +150,13 @@ package body Sitemaps is
                Priority_Updated := True;
             end if;
          end loop Update_Entry_Loop;
-         if Change_Frequency /= "" and not Frequency_Updated then
+         if Change_Frequency'Length > 0 and not Frequency_Updated then
             Url_Data := Create_Element(Sitemap, "changefreq");
             Url_Data := Append_Child(Url_Node, Url_Data);
             Url_Text := Create_Text_Node(Sitemap, Change_Frequency);
             Url_Text := Append_Child(Url_Data, Url_Text);
          end if;
-         if Page_Priority /= "" and not Priority_Updated then
+         if Page_Priority'Length > 0 and not Priority_Updated then
             Url_Data := Create_Element(Sitemap, "priority");
             Url_Data := Append_Child(Url_Node, Url_Data);
             Url_Text := Create_Text_Node(Sitemap, Page_Priority);
