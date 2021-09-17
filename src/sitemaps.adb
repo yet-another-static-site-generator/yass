@@ -155,15 +155,22 @@ package body Sitemaps is
          end loop Update_Entry_Loop;
          if Change_Frequency'Length > 0 and not Frequency_Updated then
             Url_Data :=
-              Append_Child(Url_Node, Create_Element(Sitemap, "changefreq"));
+              Append_Child
+                (N => Url_Node,
+                 New_Child =>
+                   Create_Element
+                     (Doc => Get_Sitemap, Tag_Name => "changefreq"));
             Url_Text :=
               Append_Child
-                (Url_Data, Create_Text_Node(Sitemap, Change_Frequency));
+                (N => Url_Data,
+                 New_Child =>
+                   Create_Text_Node
+                     (Doc => Get_Sitemap, Data => Change_Frequency));
          end if;
          if Page_Priority'Length > 0 and not Priority_Updated then
-            Url_Data := Create_Element(Sitemap, "priority");
+            Url_Data := Create_Element(Get_Sitemap, "priority");
             Url_Data := Append_Child(Url_Node, Url_Data);
-            Url_Text := Create_Text_Node(Sitemap, Page_Priority);
+            Url_Text := Create_Text_Node(Get_Sitemap, Page_Priority);
             Url_Text := Append_Child(Url_Data, Url_Text);
          end if;
          if Remove_Frequency /= null then
