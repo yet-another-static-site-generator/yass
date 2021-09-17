@@ -48,12 +48,25 @@ package body Sitemaps is
       return Sitemap;
    end Get_Sitemap;
 
+   -- ****if* Sitemaps/Sitemaps.Set_Sitemap
+   -- FUNCTION
+   -- Set the project sitemap content
+   -- PARAMETERS
+   -- New_Sitemap - The sitemap which will be used as the project sitemap
+   -- SOURCE
+   procedure Set_Sitemap(New_Sitemap: Document) is
+      -- ****
+   begin
+      Sitemap := New_Sitemap;
+   end Set_Sitemap;
+
    procedure Start_Sitemap is
       Sitemap_File: File_Input;
       --## rule off IMPROPER_INITIALIZATION
       Reader: Tree_Reader;
       New_Sitemap: DOM_Implementation;
       Nodes_List: Node_List;
+      Local_Sitemap: Document;
       --## rule on IMPROPER_INITIALIZATION
    begin
       if not Yass_Config.Sitemap_Enabled then
@@ -70,24 +83,26 @@ package body Sitemaps is
          --## rule off IMPROPER_INITIALIZATION
          Parse(Parser => Reader, Input => Sitemap_File);
          Close(Input => Sitemap_File);
-         Sitemap := Get_Tree(Read => Reader);
+         Local_Sitemap := Get_Tree(Read => Reader);
          --## rule on IMPROPER_INITIALIZATION
          Nodes_List :=
            DOM.Core.Documents.Get_Elements_By_Tag_Name
-             (Doc => Get_Sitemap, Tag_Name => "urlset");
+             (Doc => Local_Sitemap, Tag_Name => "urlset");
          Main_Node := Item(List => Nodes_List, Index => 0);
          Set_Attribute
            (Elem => Main_Node, Name => "xmlns",
             Value => "http://www.sitemaps.org/schemas/sitemap/0.9");
          -- Create new sitemap data
       else
-         Sitemap := Create_Document(Implementation => New_Sitemap);
-         Main_Node := Create_Element(Doc => Get_Sitemap, Tag_Name => "urlset");
+         Local_Sitemap := Create_Document(Implementation => New_Sitemap);
+         Main_Node :=
+           Create_Element(Doc => Local_Sitemap, Tag_Name => "urlset");
          Set_Attribute
            (Elem => Main_Node, Name => "xmlns",
             Value => "http://www.sitemaps.org/schemas/sitemap/0.9");
-         Main_Node := Append_Child(N => Get_Sitemap, New_Child => Main_Node);
+         Main_Node := Append_Child(N => Local_Sitemap, New_Child => Main_Node);
       end if;
+      Set_Sitemap(Local_Sitemap);
    end Start_Sitemap;
 
    procedure Add_Page_To_Sitemap
@@ -107,13 +122,14 @@ package body Sitemaps is
       Remove_Priority: DOM.Core.Element;
       Url_Text: Text;
       Last_Modified: constant String := To_HTTP_Date(Date => Clock);
+      Local_Sitemap: constant Document := Get_Sitemap;
    begin
       if not Yass_Config.Sitemap_Enabled then
          return;
       end if;
       Urls_List :=
         DOM.Core.Documents.Get_Elements_By_Tag_Name
-          (Doc => Get_Sitemap, Tag_Name => "loc");
+          (Doc => Local_Sitemap, Tag_Name => "loc");
       Load_Existing_Urls_Loop :
       for I in 0 .. Length(List => Urls_List) - 1 loop
          if Node_Value
@@ -159,18 +175,18 @@ package body Sitemaps is
                 (N => Url_Node,
                  New_Child =>
                    Create_Element
-                     (Doc => Get_Sitemap, Tag_Name => "changefreq"));
+                     (Doc => Local_Sitemap, Tag_Name => "changefreq"));
             Url_Text :=
               Append_Child
                 (N => Url_Data,
                  New_Child =>
                    Create_Text_Node
-                     (Doc => Get_Sitemap, Data => Change_Frequency));
+                     (Doc => Local_Sitemap, Data => Change_Frequency));
          end if;
          if Page_Priority'Length > 0 and not Priority_Updated then
-            Url_Data := Create_Element(Get_Sitemap, "priority");
+            Url_Data := Create_Element(Local_Sitemap, "priority");
             Url_Data := Append_Child(Url_Node, Url_Data);
-            Url_Text := Create_Text_Node(Get_Sitemap, Page_Priority);
+            Url_Text := Create_Text_Node(Local_Sitemap, Page_Priority);
             Url_Text := Append_Child(Url_Data, Url_Text);
          end if;
          if Remove_Frequency /= null then
@@ -210,6 +226,7 @@ package body Sitemaps is
             Url_Text := Append_Child(Url_Data, Url_Text);
          end if;
       end if;
+      Set_Sitemap(Local_Sitemap);
    end Add_Page_To_Sitemap;
 
    procedure Save_Sitemap is
