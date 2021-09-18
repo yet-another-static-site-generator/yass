@@ -32,9 +32,26 @@ with AtomFeed; use AtomFeed;
 
 package body Sitemaps is
 
+   -- ****iv* Sitemaps/Sitemaps.Sitemap
+   -- FUNCTION
+   -- The content of the sitemap of the project
+   -- SOURCE
    Sitemap: Document;
+   -- ****
+
+   -- ****iv* Sitemaps/Sitemaps.Sitemap_File_Name
+   -- FUNCTION
+   -- The name of the file which contains the project's sitemap
+   -- SOURCE
    Sitemap_File_Name: Unbounded_String;
+   -- ****
+
+   -- ****iv* Sitemaps/Sitemaps.Main_Node
+   -- FUNCTION
+   -- The main XML node of the project's sitemap
+   -- SOURCE
    Main_Node: DOM.Core.Element;
+   -- ****
 
    -- ****if* Sitemaps/Sitemaps.Get_Sitemap
    -- FUNCTION
