@@ -203,16 +203,24 @@ package body Sitemaps is
          if Page_Priority'Length > 0 and not Priority_Updated then
             Url_Data :=
               Append_Child
-                (Create_Element(Local_Sitemap, "priority"), Url_Data);
+                (N =>
+                   Create_Element
+                     (Doc => Local_Sitemap, Tag_Name => "priority"),
+                 New_Child => Url_Data);
             Url_Text :=
               Append_Child
-                (Url_Data, Create_Text_Node(Local_Sitemap, Page_Priority));
+                (N => Url_Data,
+                 New_Child =>
+                   Create_Text_Node
+                     (Doc => Local_Sitemap, Data => Page_Priority));
          end if;
          if Remove_Frequency /= null then
-            Url_Node := Remove_Child(Url_Node, Remove_Frequency);
+            Url_Node :=
+              Remove_Child(N => Url_Node, Old_Child => Remove_Frequency);
          end if;
          if Remove_Priority /= null then
-            Url_Node := Remove_Child(Url_Node, Remove_Priority);
+            Url_Node :=
+              Remove_Child(N => Url_Node, Old_Child => Remove_Priority);
          end if;
          Added := True;
          exit Load_Existing_Urls_Loop;
@@ -220,28 +228,36 @@ package body Sitemaps is
       end loop Load_Existing_Urls_Loop;
       -- Add new sitemap entry
       if not Added then
-         Url_Node := Create_Element(Sitemap, "url");
+         Url_Node := Create_Element(Local_Sitemap, "url");
          Old_Main_Node := Main_Node;
          Main_Node := Append_Child(Main_Node, Url_Node);
+         --## rule off ASSIGNMENTS
          Main_Node := Old_Main_Node;
-         Url_Data := Append_Child(Url_Node, Create_Element(Sitemap, "loc"));
-         Url_Text := Append_Child(Url_Data, Create_Text_Node(Sitemap, Url));
          Url_Data :=
-           Append_Child(Url_Node, Create_Element(Sitemap, "lastmod"));
+           Append_Child(Url_Node, Create_Element(Local_Sitemap, "loc"));
          Url_Text :=
-           Append_Child(Url_Data, Create_Text_Node(Sitemap, Last_Modified));
+           Append_Child(Url_Data, Create_Text_Node(Local_Sitemap, Url));
+         Url_Data :=
+           Append_Child(Url_Node, Create_Element(Local_Sitemap, "lastmod"));
+         Url_Text :=
+           Append_Child
+             (Url_Data, Create_Text_Node(Local_Sitemap, Last_Modified));
+         --## rule on ASSIGNMENTS
          if Change_Frequency /= "" then
             Url_Data :=
-              Append_Child(Url_Node, Create_Element(Sitemap, "changefreq"));
+              Append_Child
+                (Url_Node, Create_Element(Local_Sitemap, "changefreq"));
             Url_Text :=
               Append_Child
-                (Url_Data, Create_Text_Node(Sitemap, Change_Frequency));
+                (Url_Data, Create_Text_Node(Local_Sitemap, Change_Frequency));
          end if;
          if Page_Priority /= "" then
             Url_Data :=
-              Append_Child(Url_Node, Create_Element(Sitemap, "priority"));
+              Append_Child
+                (Url_Node, Create_Element(Local_Sitemap, "priority"));
             Url_Text :=
-              Append_Child(Url_Data, Create_Text_Node(Sitemap, Page_Priority));
+              Append_Child
+                (Url_Data, Create_Text_Node(Local_Sitemap, Page_Priority));
          end if;
       end if;
       Set_Sitemap(Local_Sitemap);
