@@ -46,13 +46,6 @@ package body Sitemaps is
    Sitemap_File_Name: Unbounded_String;
    -- ****
 
-   -- ****iv* Sitemaps/Sitemaps.Main_Node
-   -- FUNCTION
-   -- The main XML node of the project's sitemap
-   -- SOURCE
-   Main_Node: DOM.Core.Element;
-   -- ****
-
    -- ****if* Sitemaps/Sitemaps.Get_Sitemap
    -- FUNCTION
    -- Get the project sitemap content
@@ -77,6 +70,38 @@ package body Sitemaps is
       Sitemap := New_Sitemap;
    end Set_Sitemap;
 
+   -- ****iv* Sitemaps/Sitemaps.Main_Node
+   -- FUNCTION
+   -- The main XML node of the project's sitemap
+   -- SOURCE
+   Main_Node: DOM.Core.Element;
+   -- ****
+
+   -- ****if* Sitemaps/Sitemaps.Get_Main_Node
+   -- FUNCTION
+   -- Get the main XML node of the sitemap of the project
+   -- RESULT
+   -- Element with the main XML node
+   -- SOURCE
+   function Get_Main_Node return DOM.Core.Element is
+      -- ****
+   begin
+      return Main_Node;
+   end Get_Main_Node;
+
+   -- ****if* Sitemaps/Set_Main_Node
+   -- FUNCTION
+   -- Set the new main XML node for the sitemap of the project
+   -- PARAMETERS
+   -- New_Main_Node - The XML node which will be set as the new main sitemap
+   -- node
+   -- SOURCE
+   procedure Set_Main_Node(New_Main_Node: DOM.Core.Element) is
+      -- ****
+   begin
+      Main_Node := New_Main_Node;
+   end Set_Main_Node;
+
    procedure Start_Sitemap is
       Sitemap_File: File_Input;
       --## rule off IMPROPER_INITIALIZATION
@@ -84,6 +109,7 @@ package body Sitemaps is
       New_Sitemap: DOM_Implementation;
       Nodes_List: Node_List;
       Local_Sitemap: Document;
+      Local_Main_Node: DOM.Core.Element;
       --## rule on IMPROPER_INITIALIZATION
    begin
       if not Yass_Config.Sitemap_Enabled then
@@ -105,21 +131,23 @@ package body Sitemaps is
          Nodes_List :=
            DOM.Core.Documents.Get_Elements_By_Tag_Name
              (Doc => Local_Sitemap, Tag_Name => "urlset");
-         Main_Node := Item(List => Nodes_List, Index => 0);
+         Local_Main_Node := Item(List => Nodes_List, Index => 0);
          Set_Attribute
-           (Elem => Main_Node, Name => "xmlns",
+           (Elem => Local_Main_Node, Name => "xmlns",
             Value => "http://www.sitemaps.org/schemas/sitemap/0.9");
          -- Create new sitemap data
       else
          Local_Sitemap := Create_Document(Implementation => New_Sitemap);
-         Main_Node :=
+         Local_Main_Node :=
            Create_Element(Doc => Local_Sitemap, Tag_Name => "urlset");
          Set_Attribute
-           (Elem => Main_Node, Name => "xmlns",
+           (Elem => Local_Main_Node, Name => "xmlns",
             Value => "http://www.sitemaps.org/schemas/sitemap/0.9");
-         Main_Node := Append_Child(N => Local_Sitemap, New_Child => Main_Node);
+         Local_Main_Node :=
+           Append_Child(N => Local_Sitemap, New_Child => Local_Main_Node);
       end if;
       Set_Sitemap(New_Sitemap => Local_Sitemap);
+      Set_Main_Node(New_Main_Node => Local_Main_Node);
    end Start_Sitemap;
 
    procedure Add_Page_To_Sitemap
@@ -140,6 +168,7 @@ package body Sitemaps is
       Url_Text: Text;
       Last_Modified: constant String := To_HTTP_Date(Date => Clock);
       Local_Sitemap: constant Document := Get_Sitemap;
+      Local_Main_Node: DOM.Core.Element := Get_Main_Node;
    begin
       if not Yass_Config.Sitemap_Enabled then
          return;
@@ -228,11 +257,11 @@ package body Sitemaps is
       end loop Load_Existing_Urls_Loop;
       -- Add new sitemap entry
       if not Added then
-         Url_Node := Create_Element(Local_Sitemap, "url");
-         Old_Main_Node := Main_Node;
-         Main_Node := Append_Child(Main_Node, Url_Node);
+         Url_Node := Create_Element(Doc => Local_Sitemap, Tag_Name => "url");
+         Old_Main_Node := Local_Main_Node;
+         Local_Main_Node := Append_Child(Local_Main_Node, Url_Node);
          --## rule off ASSIGNMENTS
-         Main_Node := Old_Main_Node;
+         Local_Main_Node := Old_Main_Node;
          Url_Data :=
            Append_Child(Url_Node, Create_Element(Local_Sitemap, "loc"));
          Url_Text :=
@@ -261,6 +290,7 @@ package body Sitemaps is
          end if;
       end if;
       Set_Sitemap(Local_Sitemap);
+      Set_Main_Node(New_Main_Node => Local_Main_Node);
    end Add_Page_To_Sitemap;
 
    procedure Save_Sitemap is
