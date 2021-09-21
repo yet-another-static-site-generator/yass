@@ -259,23 +259,38 @@ package body Sitemaps is
       if not Added then
          Url_Node := Create_Element(Doc => Local_Sitemap, Tag_Name => "url");
          Old_Main_Node := Local_Main_Node;
-         Local_Main_Node := Append_Child(Local_Main_Node, Url_Node);
+         Local_Main_Node :=
+           Append_Child(N => Local_Main_Node, New_Child => Url_Node);
          --## rule off ASSIGNMENTS
          Local_Main_Node := Old_Main_Node;
          Url_Data :=
-           Append_Child(Url_Node, Create_Element(Local_Sitemap, "loc"));
-         Url_Text :=
-           Append_Child(Url_Data, Create_Text_Node(Local_Sitemap, Url));
-         Url_Data :=
-           Append_Child(Url_Node, Create_Element(Local_Sitemap, "lastmod"));
+           Append_Child
+             (N => Url_Node,
+              New_Child =>
+                Create_Element(Doc => Local_Sitemap, Tag_Name => "loc"));
          Url_Text :=
            Append_Child
-             (Url_Data, Create_Text_Node(Local_Sitemap, Last_Modified));
+             (N => Url_Data,
+              New_Child =>
+                Create_Text_Node(Doc => Local_Sitemap, Data => Url));
+         Url_Data :=
+           Append_Child
+             (N => Url_Node,
+              New_Child =>
+                Create_Element(Doc => Local_Sitemap, Tag_Name => "lastmod"));
+         Url_Text :=
+           Append_Child
+             (N => Url_Data,
+              New_Child =>
+                Create_Text_Node(Doc => Local_Sitemap, Data => Last_Modified));
          --## rule on ASSIGNMENTS
          if Change_Frequency /= "" then
             Url_Data :=
               Append_Child
-                (Url_Node, Create_Element(Local_Sitemap, "changefreq"));
+                (N => Url_Node,
+                 New_Child =>
+                   Create_Element
+                     (Doc => Local_Sitemap, Tag_Name => "changefreq"));
             Url_Text :=
               Append_Child
                 (Url_Data, Create_Text_Node(Local_Sitemap, Change_Frequency));
