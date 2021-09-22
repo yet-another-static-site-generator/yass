@@ -39,13 +39,6 @@ package body Sitemaps is
    Sitemap: Document;
    -- ****
 
-   -- ****iv* Sitemaps/Sitemaps.Sitemap_File_Name
-   -- FUNCTION
-   -- The name of the file which contains the project's sitemap
-   -- SOURCE
-   Sitemap_File_Name: Unbounded_String;
-   -- ****
-
    -- ****if* Sitemaps/Sitemaps.Get_Sitemap
    -- FUNCTION
    -- Get the project sitemap content
@@ -102,6 +95,24 @@ package body Sitemaps is
       Main_Node := New_Main_Node;
    end Set_Main_Node;
 
+   -- ****iv* Sitemaps/Sitemaps.Sitemap_File_Name
+   -- FUNCTION
+   -- The name of the file which contains the project's sitemap
+   -- SOURCE
+   Sitemap_File_Name: Unbounded_String;
+   -- ****
+
+   -- ****if* Sitemaps/Get_Sitemap_File_Name
+   -- FUNCTION
+   -- Get the name of file which contains the project's sitemap
+   -- RESULT
+   -- Unbounded_String with the name of sitemap file
+   -- SOURCE
+   function Get_Sitemap_File_Name return Unbounded_String is
+   begin
+      return Sitemap_File_Name;
+   end Get_Sitemap_File_Name;
+
    procedure Start_Sitemap is
       Sitemap_File: File_Input;
       --## rule off IMPROPER_INITIALIZATION
@@ -119,9 +130,9 @@ package body Sitemaps is
         Yass_Config.Output_Directory &
         To_Unbounded_String(Source => Dir_Separator & "sitemap.xml");
       -- Load existing sitemap data
-      if Exists(Name => To_String(Source => Sitemap_File_Name)) then
+      if Exists(Name => To_String(Source => Get_Sitemap_File_Name)) then
          Open
-           (Filename => To_String(Source => Sitemap_File_Name),
+           (Filename => To_String(Source => Get_Sitemap_File_Name),
             Input => Sitemap_File);
          --## rule off IMPROPER_INITIALIZATION
          Parse(Parser => Reader, Input => Sitemap_File);
@@ -293,51 +304,61 @@ package body Sitemaps is
                      (Doc => Local_Sitemap, Tag_Name => "changefreq"));
             Url_Text :=
               Append_Child
-                (Url_Data, Create_Text_Node(Local_Sitemap, Change_Frequency));
+                (N => Url_Data,
+                 New_Child =>
+                   Create_Text_Node
+                     (Doc => Local_Sitemap, Data => Change_Frequency));
          end if;
          if Page_Priority /= "" then
             Url_Data :=
               Append_Child
-                (Url_Node, Create_Element(Local_Sitemap, "priority"));
+                (N => Url_Node,
+                 New_Child =>
+                   Create_Element
+                     (Doc => Local_Sitemap, Tag_Name => "priority"));
             Url_Text :=
               Append_Child
-                (Url_Data, Create_Text_Node(Local_Sitemap, Page_Priority));
+                (N => Url_Data,
+                 New_Child =>
+                   Create_Text_Node
+                     (Doc => Local_Sitemap, Data => Page_Priority));
          end if;
       end if;
-      Set_Sitemap(Local_Sitemap);
+      Set_Sitemap(New_Sitemap => Local_Sitemap);
       Set_Main_Node(New_Main_Node => Local_Main_Node);
    end Add_Page_To_Sitemap;
 
    procedure Save_Sitemap is
-      SitemapFile: File_Type;
+      Sitemap_File: File_Type;
    begin
       if not Yass_Config.Sitemap_Enabled then
          return;
       end if;
       -- If the sitemap file not exists - create or open existing robot.txt file and append address to the sitemap
-      if not Exists(To_String(Sitemap_File_Name)) then
+      if not Exists(To_String(Get_Sitemap_File_Name)) then
          if Exists
-             (Containing_Directory(To_String(Sitemap_File_Name)) &
+             (Containing_Directory(To_String(Get_Sitemap_File_Name)) &
               Dir_Separator & "robots.txt") then
             Open
-              (SitemapFile, Append_File,
-               Containing_Directory(To_String(Sitemap_File_Name)) &
+              (Sitemap_File, Append_File,
+               Containing_Directory(To_String(Get_Sitemap_File_Name)) &
                Dir_Separator & "robots.txt");
          else
             Create
-              (SitemapFile, Append_File,
-               Containing_Directory(To_String(Sitemap_File_Name)) &
+              (Sitemap_File, Append_File,
+               Containing_Directory(To_String(Get_Sitemap_File_Name)) &
                Dir_Separator & "robots.txt");
          end if;
          Put_Line
-           (SitemapFile,
+           (Sitemap_File,
             "Sitemap: " & To_String(Yass_Config.Base_Url) & "/sitemap.xml");
-         Close(SitemapFile);
+         Close(Sitemap_File);
       end if;
       -- Save the sitemap to the file
-      Create(SitemapFile, Out_File, To_String(Sitemap_File_Name));
-      Write(Stream => Stream(SitemapFile), N => Sitemap, Pretty_Print => True);
-      Close(SitemapFile);
+      Create(Sitemap_File, Out_File, To_String(Get_Sitemap_File_Name));
+      Write
+        (Stream => Stream(Sitemap_File), N => Sitemap, Pretty_Print => True);
+      Close(Sitemap_File);
    end Save_Sitemap;
 
 end Sitemaps;
