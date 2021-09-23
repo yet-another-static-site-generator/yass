@@ -335,30 +335,40 @@ package body Sitemaps is
          return;
       end if;
       -- If the sitemap file not exists - create or open existing robot.txt file and append address to the sitemap
-      if not Exists(To_String(Get_Sitemap_File_Name)) then
+      if not Exists(Name => To_String(Source => Get_Sitemap_File_Name)) then
          if Exists
-             (Containing_Directory(To_String(Get_Sitemap_File_Name)) &
-              Dir_Separator & "robots.txt") then
+             (Name =>
+                Containing_Directory
+                  (Name => To_String(Source => Get_Sitemap_File_Name)) &
+                Dir_Separator & "robots.txt") then
             Open
-              (Sitemap_File, Append_File,
-               Containing_Directory(To_String(Get_Sitemap_File_Name)) &
-               Dir_Separator & "robots.txt");
+              (File => Sitemap_File, Mode => Append_File,
+               Name =>
+                 Containing_Directory
+                   (Name => To_String(Source => Get_Sitemap_File_Name)) &
+                 Dir_Separator & "robots.txt");
          else
             Create
-              (Sitemap_File, Append_File,
-               Containing_Directory(To_String(Get_Sitemap_File_Name)) &
-               Dir_Separator & "robots.txt");
+              (File => Sitemap_File, Mode => Append_File,
+               Name =>
+                 Containing_Directory
+                   (Name => To_String(Source => Get_Sitemap_File_Name)) &
+                 Dir_Separator & "robots.txt");
          end if;
          Put_Line
-           (Sitemap_File,
-            "Sitemap: " & To_String(Yass_Config.Base_Url) & "/sitemap.xml");
-         Close(Sitemap_File);
+           (File => Sitemap_File,
+            Item =>
+              "Sitemap: " & To_String(Source => Yass_Config.Base_Url) &
+              "/sitemap.xml");
+         Close(File => Sitemap_File);
       end if;
       -- Save the sitemap to the file
-      Create(Sitemap_File, Out_File, To_String(Get_Sitemap_File_Name));
+      Create
+        (File => Sitemap_File, Mode => Out_File,
+         Name => To_String(Source => Get_Sitemap_File_Name));
       Write
         (Stream => Stream(Sitemap_File), N => Sitemap, Pretty_Print => True);
-      Close(Sitemap_File);
+      Close(File => Sitemap_File);
    end Save_Sitemap;
 
 end Sitemaps;
