@@ -70,18 +70,6 @@ package body Sitemaps is
    Main_Node: DOM.Core.Element;
    -- ****
 
-   -- ****if* Sitemaps/Sitemaps.Get_Main_Node
-   -- FUNCTION
-   -- Get the main XML node of the sitemap of the project
-   -- RESULT
-   -- Element with the main XML node
-   -- SOURCE
-   function Get_Main_Node return DOM.Core.Element is
-      -- ****
-   begin
-      return Main_Node;
-   end Get_Main_Node;
-
    -- ****if* Sitemaps/Set_Main_Node
    -- FUNCTION
    -- Set the new main XML node for the sitemap of the project
@@ -179,7 +167,7 @@ package body Sitemaps is
       Url_Text: Text;
       Last_Modified: constant String := To_HTTP_Date(Date => Clock);
       Local_Sitemap: constant Document := Get_Sitemap;
-      Local_Main_Node: DOM.Core.Element := Get_Main_Node;
+      Local_Main_Node: DOM.Core.Element := Main_Node;
    begin
       if not Yass_Config.Sitemap_Enabled then
          return;
@@ -367,7 +355,7 @@ package body Sitemaps is
         (File => Sitemap_File, Mode => Out_File,
          Name => To_String(Source => Get_Sitemap_File_Name));
       Write
-        (Stream => Stream(Sitemap_File), N => Sitemap, Pretty_Print => True);
+        (Stream => Stream(File => Sitemap_File), N => Get_Sitemap, Pretty_Print => True);
       Close(File => Sitemap_File);
    end Save_Sitemap;
 
