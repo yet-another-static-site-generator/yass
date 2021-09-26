@@ -40,7 +40,7 @@ package body Server is
 
    HTTPServer: AWS.Server.HTTP;
 
-   task body MonitorSite is
+   task body Monitor_Site is
       SiteRebuild: Boolean;
       PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
       PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
@@ -141,7 +141,7 @@ package body Server is
                "] " & "Site rebuilding has been interrupted.");
             if Yass_Config.Stop_Server_On_Error then
                if Yass_Config.Server_Enabled then
-                  ShutdownServer;
+                  Shutdown_Server;
                   Show_Message("done.", SUCCESS);
                end if;
                Show_Message
@@ -181,9 +181,9 @@ package body Server is
       or
          terminate;
       end select;
-   end MonitorSite;
+   end Monitor_Site;
 
-   task body MonitorConfig is
+   task body Monitor_Config is
       ConfigLastModified: Time;
    begin
       select
@@ -201,17 +201,17 @@ package body Server is
                Put_Line
                  ("Site configuration was changed, reconfiguring the project.");
                Parse_Config(To_String(Site_Directory));
-               ShutdownServer;
+               Shutdown_Server;
                Show_Message("done", Messages.SUCCESS);
                if Yass_Config.Server_Enabled then
-                  StartServer;
+                  Start_Server;
                end if;
             end if;
          end loop;
       or
          terminate;
       end select;
-   end MonitorConfig;
+   end Monitor_Config;
 
    function Callback(Request: AWS.Status.Data) return AWS.Response.Data is
       URI: constant String := AWS.Status.URI(Request);
@@ -231,7 +231,7 @@ package body Server is
       return AWS.Services.Page_Server.Callback(Request);
    end Callback;
 
-   procedure StartServer is
+   procedure Start_Server is
    begin
       AWS.Server.Start
         (HTTPServer, "YASS static page server",
@@ -243,12 +243,12 @@ package body Server is
            (Positive'Image(Yass_Config.Server_Port)'First + 1 ..
                 Positive'Image(Yass_Config.Server_Port)'Length) &
          "/index.html Press ""Q"" for quit.");
-   end StartServer;
+   end Start_Server;
 
-   procedure ShutdownServer is
+   procedure Shutdown_Server is
    begin
       Put("Shutting down server...");
       AWS.Server.Shutdown(HTTPServer);
-   end ShutdownServer;
+   end Shutdown_Server;
 
 end Server;

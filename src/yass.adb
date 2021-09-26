@@ -379,7 +379,7 @@ begin
                 Dir_Separator & "directory.html") then
             Create_Directory_Layout(Directory_Name => "");
          end if;
-         StartServer;
+         Start_Server;
          if Yass_Config.Browser_Command /=
            To_Unbounded_String(Source => "none") then
             Start_Web_Browser_Block :
@@ -398,7 +398,7 @@ begin
                   Put_Line
                     (Item =>
                        "Can't start web browser. Please check your site configuration did it have proper value for ""BrowserCommand"" setting.");
-                  ShutdownServer;
+                  Shutdown_Server;
                   return;
                end if;
             end Start_Web_Browser_Block;
@@ -407,16 +407,16 @@ begin
          Put_Line
            (Item => "Started monitoring site changes. Press ""Q"" for quit.");
       end if;
-      MonitorSite.Start;
-      MonitorConfig.Start;
+      Monitor_Site.Start;
+      Monitor_Config.Start;
       AWS.Server.Wait(Mode => AWS.Server.Q_Key_Pressed);
       if Yass_Config.Server_Enabled then
-         ShutdownServer;
+         Shutdown_Server;
       else
          Put(Item => "Stopping monitoring site changes...");
       end if;
-      abort MonitorSite;
-      abort MonitorConfig;
+      abort Monitor_Site;
+      abort Monitor_Config;
       Show_Message(Text => "done.", Message_Type => Messages.SUCCESS);
       -- Create new empty markdown file with selected name
    elsif Argument(Number => 1) = "createfile" then
