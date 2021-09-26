@@ -22,37 +22,37 @@
 package Server is
 -- ****
 
-   -- ****a* Server/Server.MonitorSite
+   -- ****a* Server/Server.Monitor_Site
    -- FUNCTION
    -- Task for monitor changes in the site files and regenerate them
    -- SOURCE
-   task MonitorSite is
+   task Monitor_Site is
       entry Start;
-   end MonitorSite;
+   end Monitor_Site;
    -- ****
 
-   -- ****a* Server/Server.MonitorConfig
+   -- ****a* Server/Server.Monitor_Config
    -- FUNCTION
    -- Task for monitor changes in the site config file and reload config if
    -- needed
    -- SOURCE
-   task MonitorConfig is
+   task Monitor_Config is
       entry Start;
-   end MonitorConfig;
+   end Monitor_Config;
    -- ****
 
-   -- ****f* Server/Server.StartServer
+   -- ****f* Server/Server.Start_Server
    -- FUNCTION
    -- Start the web server
    -- SOURCE
-   procedure StartServer;
+   procedure Start_Server;
    -- ****
 
-   -- ****f* Server/Server.ShutdownServer
+   -- ****f* Server/Server.Shutdown_Server
    -- FUNCTION
    -- Shutdown the web server
    -- SOURCE
-   procedure ShutdownServer;
+   procedure Shutdown_Server;
    -- ****
 
 end Server;
