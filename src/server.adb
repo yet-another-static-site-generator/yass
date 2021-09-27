@@ -38,42 +38,51 @@ with Messages; use Messages;
 
 package body Server is
 
-   HTTPServer: AWS.Server.HTTP;
+   Http_Server: AWS.Server.HTTP;
 
    task body Monitor_Site is
-      SiteRebuild: Boolean;
-      PageTags: Tags_Container.Map := Tags_Container.Empty_Map;
-      PageTableTags: TableTags_Container.Map := TableTags_Container.Empty_Map;
+      Site_Rebuild: Boolean := False;
+      Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
+      Page_Table_Tags: TableTags_Container.Map :=
+        TableTags_Container.Empty_Map;
       -- Monitor directory with full path Name for changes and update the site if needed
-      procedure MonitorDirectory(Name: String) is
-         -- Process file with full path Item: create html pages from markdown files or copy any other file if they was updated since last check.
-         procedure ProcessFiles(Item: Directory_Entry_Type) is
-            SiteFileName: Unbounded_String :=
+      procedure Monitor_Directory(Name: String) is
+         -- Process file with full path Item: create html pages from markdown
+         -- files or copy any other file if they was updated since last check.
+         procedure Process_Files(Item: Directory_Entry_Type) is
+            Site_File_Name: Unbounded_String :=
               Yass_Config.Output_Directory & Dir_Separator &
-              To_Unbounded_String(Simple_Name(Item));
+              To_Unbounded_String
+                (Source => Simple_Name(Directory_Entry => Item));
          begin
-            if Yass_Config.Excluded_Files.Find_Index(Simple_Name(Item)) /=
+            if Yass_Config.Excluded_Files.Find_Index
+                (Item => Simple_Name(Directory_Entry => Item)) /=
               Excluded_Container.No_Index or
-              not Ada.Directories.Exists(Full_Name(Item)) then
+              not Ada.Directories.Exists
+                (Name => Full_Name(Directory_Entry => Item)) then
                return;
             end if;
-            if Containing_Directory(Full_Name(Item)) /=
-              To_String(Site_Directory) then
-               SiteFileName :=
+            if Containing_Directory
+                (Name => Full_Name(Directory_Entry => Item)) /=
+              To_String(Source => Site_Directory) then
+               Site_File_Name :=
                  Yass_Config.Output_Directory &
                  Slice
-                   (To_Unbounded_String(Full_Name(Item)),
-                    Length(Site_Directory) + 1, Full_Name(Item)'Length);
+                   (Source =>
+                      To_Unbounded_String
+                        (Source => Full_Name(Directory_Entry => Item)),
+                    Low => Length(Source => Site_Directory) + 1,
+                    High => Full_Name(Directory_Entry => Item)'Length);
             end if;
             if Extension(Simple_Name(Item)) = "md" then
-               SiteFileName :=
+               Site_File_Name :=
                  To_Unbounded_String
                    (Compose
-                      (Containing_Directory(To_String(SiteFileName)),
-                       Ada.Directories.Base_Name(To_String(SiteFileName)),
+                      (Containing_Directory(To_String(Site_File_Name)),
+                       Ada.Directories.Base_Name(To_String(Site_File_Name)),
                        "html"));
             end if;
-            if not Ada.Directories.Exists(To_String(SiteFileName)) then
+            if not Ada.Directories.Exists(To_String(Site_File_Name)) then
                Set("YASSFILE", Full_Name(Item));
                if Extension(Simple_Name(Item)) = "md" then
                   Create_Page(Full_Name(Item), Name);
@@ -84,42 +93,43 @@ package body Server is
                  ("[" &
                   Ada.Calendar.Formatting.Image
                     (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                  "] " & "File: " & To_String(SiteFileName) & " was added.");
-               SiteRebuild := True;
+                  "] " & "File: " & To_String(Site_File_Name) & " was added.");
+               Site_Rebuild := True;
             elsif Extension(Simple_Name(Item)) = "md" then
                if Modification_Time(Full_Name(Item)) >
-                 Modification_Time(To_String(SiteFileName)) or
+                 Modification_Time(To_String(Site_File_Name)) or
                  Modification_Time(Get_Layout_Name(Full_Name(Item))) >
-                   Modification_Time(To_String(SiteFileName)) then
+                   Modification_Time(To_String(Site_File_Name)) then
                   Set("YASSFILE", Full_Name(Item));
                   Create_Page(Full_Name(Item), Name);
                   Put_Line
                     ("[" &
                      Ada.Calendar.Formatting.Image
                        (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                     "] " & "File: " & To_String(SiteFileName) &
+                     "] " & "File: " & To_String(Site_File_Name) &
                      " was updated.");
-                  SiteRebuild := True;
+                  Site_Rebuild := True;
                end if;
             elsif Modification_Time(Full_Name(Item)) >
-              Modification_Time(To_String(SiteFileName)) then
+              Modification_Time(To_String(Site_File_Name)) then
                Set("YASSFILE", Full_Name(Item));
                Pages.Copy_File(Full_Name(Item), Name);
                Put_Line
                  ("[" &
                   Ada.Calendar.Formatting.Image
                     (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                  "] " & "File: " & To_String(SiteFileName) & " was updated.");
-               SiteRebuild := True;
+                  "] " & "File: " & To_String(Site_File_Name) &
+                  " was updated.");
+               Site_Rebuild := True;
             end if;
-         end ProcessFiles;
+         end Process_Files;
          -- Go recursive with directory with full path Item.
          procedure ProcessDirectories(Item: Directory_Entry_Type) is
          begin
             if Yass_Config.Excluded_Files.Find_Index(Simple_Name(Item)) =
               Excluded_Container.No_Index and
               Ada.Directories.Exists(Full_Name(Item)) then
-               MonitorDirectory(Full_Name(Item));
+               Monitor_Directory(Full_Name(Item));
             end if;
          exception
             when Ada.Directories.Name_Error =>
@@ -128,7 +138,7 @@ package body Server is
       begin
          Search
            (Name, "", (Directory => False, others => True),
-            ProcessFiles'Access);
+            Process_Files'Access);
          Search
            (Name, "", (Directory => True, others => False),
             ProcessDirectories'Access);
@@ -148,27 +158,27 @@ package body Server is
                  ("Stopping monitoring site changes...done.", SUCCESS);
                OS_Exit(0);
             end if;
-      end MonitorDirectory;
+      end Monitor_Directory;
    begin
       select
          accept Start;
          -- Load the program modules with 'start' hook
-         Load_Modules("start", PageTags, PageTableTags);
+         Load_Modules("start", Page_Tags, Page_Table_Tags);
          -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
          Start_Sitemap;
          -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
          Start_Atom_Feed;
          loop
-            SiteRebuild := False;
+            Site_Rebuild := False;
             -- Monitor the site project directory for changes
-            MonitorDirectory(To_String(Site_Directory));
-            if SiteRebuild then
+            Monitor_Directory(To_String(Site_Directory));
+            if Site_Rebuild then
                -- Save atom feed to file or nothing if atom feed generation is disabled
                Save_Atom_Feed;
                -- Save sitemap to file or nothing if sitemap generation is disabled
                Save_Sitemap;
                -- Load the program modules with 'end' hook
-               Load_Modules("end", PageTags, PageTableTags);
+               Load_Modules("end", Page_Tags, Page_Table_Tags);
                Put_Line
                  ("[" &
                   Ada.Calendar.Formatting.Image
@@ -234,7 +244,7 @@ package body Server is
    procedure Start_Server is
    begin
       AWS.Server.Start
-        (HTTPServer, "YASS static page server",
+        (Http_Server, "YASS static page server",
          Port => Yass_Config.Server_Port, Callback => Callback'Access,
          Max_Connection => 5);
       Put_Line
@@ -248,7 +258,7 @@ package body Server is
    procedure Shutdown_Server is
    begin
       Put("Shutting down server...");
-      AWS.Server.Shutdown(HTTPServer);
+      AWS.Server.Shutdown(Http_Server);
    end Shutdown_Server;
 
 end Server;
