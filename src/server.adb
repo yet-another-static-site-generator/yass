@@ -74,18 +74,30 @@ package body Server is
                     Low => Length(Source => Site_Directory) + 1,
                     High => Full_Name(Directory_Entry => Item)'Length);
             end if;
-            if Extension(Simple_Name(Item)) = "md" then
+            if Extension(Name => Simple_Name(Directory_Entry => Item)) =
+              "md" then
                Site_File_Name :=
                  To_Unbounded_String
-                   (Compose
-                      (Containing_Directory(To_String(Site_File_Name)),
-                       Ada.Directories.Base_Name(To_String(Site_File_Name)),
-                       "html"));
+                   (Source =>
+                      Compose
+                        (Containing_Directory =>
+                           Containing_Directory
+                             (Name => To_String(Source => Site_File_Name)),
+                         Name =>
+                           Ada.Directories.Base_Name
+                             (Name => To_String(Source => Site_File_Name)),
+                         Extension => "html"));
             end if;
-            if not Ada.Directories.Exists(To_String(Site_File_Name)) then
-               Set("YASSFILE", Full_Name(Item));
-               if Extension(Simple_Name(Item)) = "md" then
-                  Create_Page(Full_Name(Item), Name);
+            if not Ada.Directories.Exists
+                (Name => To_String(Source => Site_File_Name)) then
+               Set
+                 (Name => "YASSFILE",
+                  Value => Full_Name(Directory_Entry => Item));
+               if Extension(Name => Simple_Name(Directory_Entry => Item)) =
+                 "md" then
+                  Create_Page
+                    (File_Name => Full_Name(Directory_Entry => Item),
+                     Directory => Name);
                else
                   Pages.Copy_File(Full_Name(Item), Name);
                end if;
