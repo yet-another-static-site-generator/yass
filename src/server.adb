@@ -99,21 +99,36 @@ package body Server is
                     (File_Name => Full_Name(Directory_Entry => Item),
                      Directory => Name);
                else
-                  Pages.Copy_File(Full_Name(Item), Name);
+                  Pages.Copy_File
+                    (File_Name => Full_Name(Directory_Entry => Item),
+                     Directory => Name);
                end if;
                Put_Line
-                 ("[" &
-                  Ada.Calendar.Formatting.Image
-                    (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                  "] " & "File: " & To_String(Site_File_Name) & " was added.");
+                 (Item =>
+                    "[" &
+                    Ada.Calendar.Formatting.Image
+                      (Date => Clock, Time_Zone => UTC_Time_Offset) &
+                    "] " & "File: " & To_String(Source => Site_File_Name) &
+                    " was added.");
                Site_Rebuild := True;
-            elsif Extension(Simple_Name(Item)) = "md" then
-               if Modification_Time(Full_Name(Item)) >
-                 Modification_Time(To_String(Site_File_Name)) or
-                 Modification_Time(Get_Layout_Name(Full_Name(Item))) >
-                   Modification_Time(To_String(Site_File_Name)) then
-                  Set("YASSFILE", Full_Name(Item));
-                  Create_Page(Full_Name(Item), Name);
+            elsif Extension(Name => Simple_Name(Directory_Entry => Item)) =
+              "md" then
+               if Modification_Time
+                   (Name => Full_Name(Directory_Entry => Item)) >
+                 Modification_Time
+                   (Name => To_String(Source => Site_File_Name)) or
+                 Modification_Time
+                     (Name =>
+                        Get_Layout_Name
+                          (File_Name => Full_Name(Directory_Entry => Item))) >
+                   Modification_Time
+                     (Name => To_String(Source => Site_File_Name)) then
+                  Set
+                    (Name => "YASSFILE",
+                     Value => Full_Name(Directory_Entry => Item));
+                  Create_Page
+                    (File_Name => Full_Name(Directory_Entry => Item),
+                     Directory => Name);
                   Put_Line
                     ("[" &
                      Ada.Calendar.Formatting.Image
