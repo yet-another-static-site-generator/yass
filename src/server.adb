@@ -130,45 +130,55 @@ package body Server is
                     (File_Name => Full_Name(Directory_Entry => Item),
                      Directory => Name);
                   Put_Line
-                    ("[" &
-                     Ada.Calendar.Formatting.Image
-                       (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                     "] " & "File: " & To_String(Site_File_Name) &
-                     " was updated.");
+                    (Item =>
+                       "[" &
+                       Ada.Calendar.Formatting.Image
+                         (Date => Clock, Time_Zone => UTC_Time_Offset) &
+                       "] " & "File: " & To_String(Source => Site_File_Name) &
+                       " was updated.");
                   Site_Rebuild := True;
                end if;
-            elsif Modification_Time(Full_Name(Item)) >
-              Modification_Time(To_String(Site_File_Name)) then
-               Set("YASSFILE", Full_Name(Item));
-               Pages.Copy_File(Full_Name(Item), Name);
+            elsif Modification_Time
+                (Name => Full_Name(Directory_Entry => Item)) >
+              Modification_Time
+                (Name => To_String(Source => Site_File_Name)) then
+               Set
+                 (Name => "YASSFILE",
+                  Value => Full_Name(Directory_Entry => Item));
+               Pages.Copy_File
+                 (File_Name => Full_Name(Directory_Entry => Item),
+                  Directory => Name);
                Put_Line
-                 ("[" &
-                  Ada.Calendar.Formatting.Image
-                    (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                  "] " & "File: " & To_String(Site_File_Name) &
-                  " was updated.");
+                 (Item =>
+                    "[" &
+                    Ada.Calendar.Formatting.Image
+                      (Date => Clock, Time_Zone => UTC_Time_Offset) &
+                    "] " & "File: " & To_String(Source => Site_File_Name) &
+                    " was updated.");
                Site_Rebuild := True;
             end if;
          end Process_Files;
          -- Go recursive with directory with full path Item.
-         procedure ProcessDirectories(Item: Directory_Entry_Type) is
+         procedure Process_Directories(Item: Directory_Entry_Type) is
          begin
-            if Yass_Config.Excluded_Files.Find_Index(Simple_Name(Item)) =
+            if Yass_Config.Excluded_Files.Find_Index
+                (Item => Simple_Name(Directory_Entry => Item)) =
               Excluded_Container.No_Index and
-              Ada.Directories.Exists(Full_Name(Item)) then
-               Monitor_Directory(Full_Name(Item));
+              Ada.Directories.Exists
+                (Name => Full_Name(Directory_Entry => Item)) then
+               Monitor_Directory(Name => Full_Name(Directory_Entry => Item));
             end if;
          exception
             when Ada.Directories.Name_Error =>
                null;
-         end ProcessDirectories;
+         end Process_Directories;
       begin
          Search
            (Name, "", (Directory => False, others => True),
             Process_Files'Access);
          Search
            (Name, "", (Directory => True, others => False),
-            ProcessDirectories'Access);
+            Process_Directories'Access);
       exception
          when Generate_Site_Exception =>
             Show_Message
