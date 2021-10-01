@@ -174,37 +174,44 @@ package body Server is
          end Process_Directories;
       begin
          Search
-           (Name, "", (Directory => False, others => True),
-            Process_Files'Access);
+           (Directory => Name, Pattern => "",
+            Filter => (Directory => False, others => True),
+            Process => Process_Files'Access);
          Search
-           (Name, "", (Directory => True, others => False),
-            Process_Directories'Access);
+           (Directory => Name, Pattern => "",
+            Filter => (Directory => True, others => False),
+            Process => Process_Directories'Access);
       exception
          when Generate_Site_Exception =>
             Show_Message
-              ("[" &
-               Ada.Calendar.Formatting.Image
-                 (Date => Clock, Time_Zone => UTC_Time_Offset) &
-               "] " & "Site rebuilding has been interrupted.");
+              (Text =>
+                 "[" &
+                 Ada.Calendar.Formatting.Image
+                   (Date => Clock, Time_Zone => UTC_Time_Offset) &
+                 "] " & "Site rebuilding has been interrupted.");
             if Yass_Config.Stop_Server_On_Error then
                if Yass_Config.Server_Enabled then
                   Shutdown_Server;
-                  Show_Message("done.", SUCCESS);
+                  Show_Message(Text => "done.", Message_Type => SUCCESS);
                end if;
                Show_Message
-                 ("Stopping monitoring site changes...done.", SUCCESS);
-               OS_Exit(0);
+                 (Text => "Stopping monitoring site changes...done.",
+                  Message_Type => SUCCESS);
+               OS_Exit(Status => 0);
             end if;
       end Monitor_Directory;
    begin
       select
          accept Start;
          -- Load the program modules with 'start' hook
-         Load_Modules("start", Page_Tags, Page_Table_Tags);
+         Load_Modules
+           (State => "start", Page_Tags => Page_Tags,
+            Page_Table_Tags => Page_Table_Tags);
          -- Load data from exisiting sitemap or create new set of data or nothing if sitemap generation is disabled
          Start_Sitemap;
          -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
          Start_Atom_Feed;
+         Monitor_Site_Loop :
          loop
             Site_Rebuild := False;
             -- Monitor the site project directory for changes
@@ -224,7 +231,7 @@ package body Server is
             end if;
             -- Wait before next check
             delay Yass_Config.Monitor_Interval;
-         end loop;
+         end loop Monitor_Site_Loop;
       or
          terminate;
       end select;
