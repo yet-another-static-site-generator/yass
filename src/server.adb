@@ -215,19 +215,22 @@ package body Server is
          loop
             Site_Rebuild := False;
             -- Monitor the site project directory for changes
-            Monitor_Directory(To_String(Site_Directory));
+            Monitor_Directory(Name => To_String(Source => Site_Directory));
             if Site_Rebuild then
                -- Save atom feed to file or nothing if atom feed generation is disabled
                Save_Atom_Feed;
                -- Save sitemap to file or nothing if sitemap generation is disabled
                Save_Sitemap;
                -- Load the program modules with 'end' hook
-               Load_Modules("end", Page_Tags, Page_Table_Tags);
+               Load_Modules
+                 (State => "end", Page_Tags => Page_Tags,
+                  Page_Table_Tags => Page_Table_Tags);
                Put_Line
-                 ("[" &
-                  Ada.Calendar.Formatting.Image
-                    (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                  "] " & "Site was rebuild.");
+                 (Item =>
+                    "[" &
+                    Ada.Calendar.Formatting.Image
+                      (Date => Clock, Time_Zone => UTC_Time_Offset) &
+                    "] " & "Site was rebuild.");
             end if;
             -- Wait before next check
             delay Yass_Config.Monitor_Interval;
@@ -238,18 +241,22 @@ package body Server is
    end Monitor_Site;
 
    task body Monitor_Config is
-      ConfigLastModified: Time;
+      Config_Last_Modified: Time :=
+        Modification_Time
+          (Name =>
+             To_String(Source => Site_Directory) & Dir_Separator & "site.cfg");
    begin
       select
          accept Start;
+         Monitor_Config_Loop :
          loop
-            ConfigLastModified :=
+            Config_Last_Modified :=
               Modification_Time
                 (To_String(Site_Directory) & Dir_Separator & "site.cfg");
             -- Wait before next check
             delay Yass_Config.Monitor_Config_Interval;
             -- Update configuration if needed
-            if ConfigLastModified /=
+            if Config_Last_Modified /=
               Modification_Time
                 (To_String(Site_Directory) & Dir_Separator & "site.cfg") then
                Put_Line
@@ -261,7 +268,7 @@ package body Server is
                   Start_Server;
                end if;
             end if;
-         end loop;
+         end loop Monitor_Config_Loop;
       or
          terminate;
       end select;
