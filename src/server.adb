@@ -252,18 +252,24 @@ package body Server is
          loop
             Config_Last_Modified :=
               Modification_Time
-                (To_String(Site_Directory) & Dir_Separator & "site.cfg");
+                (Name =>
+                   To_String(Source => Site_Directory) & Dir_Separator &
+                   "site.cfg");
             -- Wait before next check
             delay Yass_Config.Monitor_Config_Interval;
             -- Update configuration if needed
             if Config_Last_Modified /=
               Modification_Time
-                (To_String(Site_Directory) & Dir_Separator & "site.cfg") then
+                (Name =>
+                   To_String(Source => Site_Directory) & Dir_Separator &
+                   "site.cfg") then
                Put_Line
-                 ("Site configuration was changed, reconfiguring the project.");
-               Parse_Config(To_String(Site_Directory));
+                 (Item =>
+                    "Site configuration was changed, reconfiguring the project.");
+               Parse_Config
+                 (Directory_Name => To_String(Source => Site_Directory));
                Shutdown_Server;
-               Show_Message("done", Messages.SUCCESS);
+               Show_Message(Text => "done", Message_Type => Messages.SUCCESS);
                if Yass_Config.Server_Enabled then
                   Start_Server;
                end if;
@@ -275,18 +281,23 @@ package body Server is
    end Monitor_Config;
 
    function Callback(Request: AWS.Status.Data) return AWS.Response.Data is
-      URI: constant String := AWS.Status.URI(Request);
+      Uri: constant String := AWS.Status.URI(D => Request);
    begin
       -- Show directory listing if requested
-      if Kind(To_String(Yass_Config.Output_Directory) & URI) = Directory then
+      if Kind
+          (Name => To_String(Source => Yass_Config.Output_Directory) & Uri) =
+        Directory then
          return
            AWS.Response.Build
-             ("text/html",
-              Browse
-                (To_String(Yass_Config.Output_Directory) & URI,
-                 To_String(Yass_Config.Layouts_Directory) & Dir_Separator &
-                 "directory.html",
-                 Request));
+             (Content_Type => "text/html",
+              Message_Body =>
+                Browse
+                  (Directory_Name =>
+                     To_String(Source => Yass_Config.Output_Directory) & Uri,
+                   Template_Filename =>
+                     To_String(Source => Yass_Config.Layouts_Directory) &
+                     Dir_Separator & "directory.html",
+                   Request => Request));
       end if;
       -- Show selected page if requested
       return AWS.Services.Page_Server.Callback(Request);
