@@ -300,17 +300,17 @@ package body Server is
                    Request => Request));
       end if;
       -- Show selected page if requested
-      return AWS.Services.Page_Server.Callback(Request);
+      return AWS.Services.Page_Server.Callback(Request => Request);
    end Callback;
 
    procedure Start_Server is
    begin
       AWS.Server.Start
-        (Http_Server, "YASS static page server",
+        (Web_Server => Http_Server, Name => "YASS static page server",
          Port => Yass_Config.Server_Port, Callback => Callback'Access,
          Max_Connection => 5);
       Put_Line
-        ("Server was started. Web address: http://localhost:" &
+        (Item => "Server was started. Web address: http://localhost:" &
          Positive'Image(Yass_Config.Server_Port)
            (Positive'Image(Yass_Config.Server_Port)'First + 1 ..
                 Positive'Image(Yass_Config.Server_Port)'Length) &
@@ -319,8 +319,10 @@ package body Server is
 
    procedure Shutdown_Server is
    begin
-      Put("Shutting down server...");
-      AWS.Server.Shutdown(Http_Server);
+      Put(Item => "Shutting down server...");
+      --## rule off DIRECTLY_ACCESSED_GLOBALS
+      AWS.Server.Shutdown(Web_Server => Http_Server);
+      --## rule on DIRECTLY_ACCESSED_GLOBALS
    end Shutdown_Server;
 
 end Server;
