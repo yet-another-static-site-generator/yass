@@ -14,7 +14,7 @@ exec gprclean -P yass.gpr >@stdout
 file delete $logfile
 cd [file join obj]
 if {$argc == 0} {
-   set adaoptions "-r yass-aws-templates_parser-dom-unicode-input_sources"
+   set adaoptions "-r yass-aws-templates_parser-dom-unicode-input_sources-aws_config-aws_net_log"
 } else {
    set adaoptions "[file join $rootdir src [lindex $argv 0]]"
 }

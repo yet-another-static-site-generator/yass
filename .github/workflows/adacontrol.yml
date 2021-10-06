@@ -20,7 +20,7 @@ jobs:
       run: |
          mkdir obj
          cd obj
-         adactl -f ../others/rules.aru -p ../yass.gpr -o ../adacontrol.log -r yass-aws-templates_parser-dom-unicode-input_sources
+         adactl -f ../others/rules.aru -p ../yass.gpr -o ../adacontrol.log -r yass-aws-templates_parser-dom-unicode-input_sources-aws_config-aws_net_log
          cd ..
 
     - name: Upload the log
