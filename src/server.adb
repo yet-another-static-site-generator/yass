@@ -38,7 +38,12 @@ with Messages; use Messages;
 
 package body Server is
 
+   -- ****iv* Server/Server.Http_Server
+   -- FUNCTION
+   -- Instance of Http server which will be serving the project's files
+   -- SOURCE
    Http_Server: AWS.Server.HTTP;
+   -- ****
 
    task body Monitor_Site is
       Site_Rebuild: Boolean := False;
