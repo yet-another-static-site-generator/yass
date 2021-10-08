@@ -15,26 +15,26 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Directories; use Ada.Directories;
-with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting;
-with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Calendar.Time_Zones;
+with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.OS_Lib;
+with AWS.Response;
 with AWS.Services.Page_Server;
-with AWS.Services.Directory; use AWS.Services.Directory;
+with AWS.Services.Directory;
 with AWS.Server;
 with AWS.Status;
-with AWS.Response;
+with AtomFeed;
 with Config; use Config;
-with Pages; use Pages;
-with Modules; use Modules;
-with Sitemaps; use Sitemaps;
-with AtomFeed; use AtomFeed;
 with Messages; use Messages;
+with Modules;
+with Pages;
+with Sitemaps;
 
 package body Server is
 
@@ -46,15 +46,25 @@ package body Server is
    -- ****
 
    task body Monitor_Site is
+      use Ada.Calendar.Time_Zones;
+      use AtomFeed;
+      use Modules;
+      use Sitemaps;
+
       Site_Rebuild: Boolean := False;
       Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
       Page_Table_Tags: TableTags_Container.Map :=
         TableTags_Container.Empty_Map;
       -- Monitor directory with full path Name for changes and update the site if needed
       procedure Monitor_Directory(Name: String) is
+         use GNAT.OS_Lib;
+         use Pages;
+
          -- Process file with full path Item: create html pages from markdown
          -- files or copy any other file if they was updated since last check.
          procedure Process_Files(Item: Directory_Entry_Type) is
+            use Ada.Environment_Variables;
+
             Site_File_Name: Unbounded_String :=
               Yass_Config.Output_Directory & Dir_Separator &
               To_Unbounded_String
@@ -286,6 +296,8 @@ package body Server is
    end Monitor_Config;
 
    function Callback(Request: AWS.Status.Data) return AWS.Response.Data is
+      use AWS.Services.Directory;
+
       Uri: constant String := AWS.Status.URI(D => Request);
    begin
       -- Show directory listing if requested
@@ -315,11 +327,12 @@ package body Server is
          Port => Yass_Config.Server_Port, Callback => Callback'Access,
          Max_Connection => 5);
       Put_Line
-        (Item => "Server was started. Web address: http://localhost:" &
-         Positive'Image(Yass_Config.Server_Port)
-           (Positive'Image(Yass_Config.Server_Port)'First + 1 ..
-                Positive'Image(Yass_Config.Server_Port)'Length) &
-         "/index.html Press ""Q"" for quit.");
+        (Item =>
+           "Server was started. Web address: http://localhost:" &
+           Positive'Image(Yass_Config.Server_Port)
+             (Positive'Image(Yass_Config.Server_Port)'First + 1 ..
+                  Positive'Image(Yass_Config.Server_Port)'Length) &
+           "/index.html Press ""Q"" for quit.");
    end Start_Server;
 
    procedure Shutdown_Server is
