@@ -31,12 +31,21 @@ with Config; use Config;
 
 package body AtomFeed is
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* AtomFeed/AtomFeed.Feed_File_Name
    -- FUNCTION
    -- The name of the Atom feed file of the website
    -- SOURCE
    Feed_File_Name: Unbounded_String;
    -- ****
+
+   -- ****iv* AtomFeed/AtomFeed.Entries_List
+   -- FUNCTION
+   -- The list of Atom entries for the website
+   -- SOURCE
+   Entries_List: FeedEntry_Container.Vector;
+   -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* AtomFeed/AtomFeed.Get_Feed_File_Name
    -- FUNCTION
@@ -49,13 +58,6 @@ package body AtomFeed is
    begin
       return To_String(Source => Feed_File_Name);
    end Get_Feed_File_Name;
-
-   -- ****iv* AtomFeed/AtomFeed.Entries_List
-   -- FUNCTION
-   -- The list of Atom entries for the website
-   -- SOURCE
-   Entries_List: FeedEntry_Container.Vector;
-   -- ****
 
    -- ****if* AtomFeed/AtomFeed.Get_Entries_List
    -- FUNCTION
