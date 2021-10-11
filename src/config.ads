@@ -112,6 +112,7 @@ package Config is
    Default_Parser_Configuration: constant Parser_Config := (others => <>);
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* Config/Config.Yass_Config
    -- FUNCTION
    -- Settings for the program
@@ -157,6 +158,7 @@ package Config is
    -- SOURCE
    Global_Table_Tags: TableTags_Container.Map;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****e* Config/Config.Invalid_Config_Data
    -- FUNCTION
