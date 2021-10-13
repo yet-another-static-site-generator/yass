@@ -276,7 +276,7 @@ package body AtomFeed is
       use DOM.Core.Elements;
 
       Atom_File: File_Type;
-      Feed: Document;
+      Feed: Document; --## rule line off GLOBAL_REFERENCES
       New_Feed: DOM_Implementation; --## rule line off IMPROPER_INITIALIZATION
       Main_Node, Entry_Node: DOM.Core.Element;
       Entries_Amount: Natural := 0;
