@@ -41,10 +41,12 @@ package body Modules is
          use AWS.Templates;
          use Messages;
 
-         Module: Process_Descriptor;
+         Module: Process_Descriptor; --## rule line off GLOBAL_REFERENCES
          Finished: Boolean := False;
          Result: Expect_Match := 0;
+         --## rule off GLOBAL_REFERENCES
          Text, Tag_Name: Unbounded_String := Null_Unbounded_String;
+         --## rule off GLOBAL_REFERENCES
          type Tag_Types is
            (NOTAG, GLOBALTAG, GLOBALTABLETAG, PAGETAG, PAGETABLETAG) with
             Default_Value => NOTAG;
