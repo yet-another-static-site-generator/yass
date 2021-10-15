@@ -256,10 +256,7 @@ package body Server is
    end Monitor_Site;
 
    task body Monitor_Config is
-      Config_Last_Modified: Time :=
-        Modification_Time
-          (Name =>
-             To_String(Source => Site_Directory) & Dir_Separator & "site.cfg");
+      Config_Last_Modified: Time;
    begin
       select
          accept Start;
