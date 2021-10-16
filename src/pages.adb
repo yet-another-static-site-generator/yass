@@ -49,7 +49,7 @@ package body Pages is
       Layout, Content, Change_Frequency, Page_Priority: Unbounded_String :=
         Null_Unbounded_String;
       Page_File: File_Type;
-      Tags: Translate_Set := Null_Set;
+      Tags: Translate_Set := Null_Set; --## rule line off GLOBAL_REFERENCES
       Output_Directory: constant Unbounded_String :=
         Yass_Config.Output_Directory &
         Delete
@@ -58,9 +58,11 @@ package body Pages is
       New_File_Name: constant String :=
         To_String(Source => Output_Directory) & Dir_Separator &
         Ada.Directories.Base_Name(Name => File_Name) & ".html";
+      --## rule off GLOBAL_REFERENCES
       Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
       Page_Table_Tags: TableTags_Container.Map :=
         TableTags_Container.Empty_Map;
+      --## rule on GLOBAL_REFERENCES
       Frequency_Values: constant array(1 .. 7) of Unbounded_String :=
         (1 => To_Unbounded_String(Source => "always"),
          2 => To_Unbounded_String(Source => "hourly"),
@@ -70,8 +72,10 @@ package body Pages is
          6 => To_Unbounded_String(Source => "yearly"),
          7 => To_Unbounded_String(Source => "never"));
       In_Sitemap: Boolean := True;
+      --## rule off GLOBAL_REFERENCES
       Atom_Entries: FeedEntry_Container.Vector :=
         FeedEntry_Container.Empty_Vector;
+      --## rule on GLOBAL_REFERENCES
       Sitemap_Invalid_Value, Invalid_Value: exception;
       subtype Size_T is unsigned_long;
       function Cmark_Markdown_To_Html
