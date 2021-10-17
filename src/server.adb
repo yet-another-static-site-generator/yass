@@ -38,12 +38,14 @@ with Sitemaps;
 
 package body Server is
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* Server/Server.Http_Server
    -- FUNCTION
    -- Instance of Http server which will be serving the project's files
    -- SOURCE
    Http_Server: AWS.Server.HTTP;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    task body Monitor_Site is
       use Ada.Calendar.Time_Zones;
@@ -51,7 +53,7 @@ package body Server is
       use Modules;
       use Sitemaps;
 
-      Site_Rebuild: Boolean := False;
+      Site_Rebuild: Boolean := False; --## rule line off GLOBAL_REFERENCES
       Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
       Page_Table_Tags: TableTags_Container.Map :=
         TableTags_Container.Empty_Map;
@@ -256,7 +258,7 @@ package body Server is
    end Monitor_Site;
 
    task body Monitor_Config is
-      Config_Last_Modified: Time;
+      Config_Last_Modified: Time; --## rule line off IMPROPER_INITIALIZATION
    begin
       select
          accept Start;
