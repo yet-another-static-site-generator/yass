@@ -67,7 +67,7 @@ package body Sitemaps is
    -- FUNCTION
    -- The main XML node of the project's sitemap
    -- SOURCE
-   Main_Node: DOM.Core.Element;
+   Main_Node: DOM.Core.Element; --## rule line off GLOBAL_REFERENCES
    -- ****
 
    -- ****if* Sitemaps/Set_Main_Node
