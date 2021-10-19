@@ -36,7 +36,7 @@ package body Sitemaps is
    -- FUNCTION
    -- The content of the sitemap of the project
    -- SOURCE
-   Sitemap: Document;
+   Sitemap: Document; --## rule line off GLOBAL_REFERENCES
    -- ****
 
    -- ****if* Sitemaps/Sitemaps.Get_Sitemap
