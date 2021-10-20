@@ -87,7 +87,7 @@ package body Sitemaps is
    -- FUNCTION
    -- The name of the file which contains the project's sitemap
    -- SOURCE
-   Sitemap_File_Name: Unbounded_String;
+   Sitemap_File_Name: Unbounded_String; --## rule line off GLOBAL_REFERENCES
    -- ****
 
    -- ****if* Sitemaps/Get_Sitemap_File_Name
