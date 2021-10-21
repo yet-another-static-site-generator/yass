@@ -3,6 +3,7 @@ set Verbose On;
 rule_file_off "aws(-.*)*\.adb$" GLOBAL_REFERENCES;
 rule_file_off "aws(-.*)*\.ads$" GLOBAL_REFERENCES;
 rule_file_off "dom-core.adb" GLOBAL_REFERENCES;
+rule_file_off "templates_parser(-.*)*\.adb$" GLOBAL_REFERENCES;
 check Assignments (repeated);
 check Case_Statement (others_span, min 1);
 check Directly_Accessed_globals;
