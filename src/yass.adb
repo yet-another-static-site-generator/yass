@@ -40,7 +40,9 @@ with Server; use Server;
 
 procedure Yass is
    Version: constant String := "3.0";
+   --## rule off GLOBAL_REFERENCES
    Work_Directory: Unbounded_String := Null_Unbounded_String;
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* YASS/YASS.Build_Site
    -- FUNCTION
