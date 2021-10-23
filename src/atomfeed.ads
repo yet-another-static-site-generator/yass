@@ -49,12 +49,14 @@ package AtomFeed is
    end record;
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****d* AtomFeed/AtomFeed.Empty_Feed_Entry
    -- FUNCTION
    -- Empty Atom feed entry
    -- SOURCE
    Empty_Feed_Entry: constant Feed_Entry := (others => <>);
    -- ****
+   --## rule on REDUCEABLE_SCOPE
 
    -- ****t* AtomFeed/AtomFeed.FeedEntry_Container
    -- FUNCTION
