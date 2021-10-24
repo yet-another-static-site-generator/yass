@@ -117,7 +117,7 @@ package Config is
    -- FUNCTION
    -- Settings for the program
    -- SOURCE
-   Yass_Config: Parser_Config;
+   Yass_Config: Parser_Config := Default_Parser_Configuration;
    -- ****
 
    -- ****t* Config/Config.Tags_Container
