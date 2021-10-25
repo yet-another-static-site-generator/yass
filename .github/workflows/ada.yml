@@ -25,9 +25,35 @@ jobs:
     - name: Run the tests
       run: others/tests.tcl
 
-  build_linux:
+  adacontrol:
 
     needs: tests
+
+    runs-on: ubuntu-latest
+
+    container: ghcr.io/thindil/adacontrol:9
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Run AdaControl
+      run: |
+         mkdir obj
+         cd obj
+         adactl -f ../others/rules.aru -p ../yass.gpr -o ../adacontrol.log -r yass-aws-templates_parser-dom-unicode-input_sources-aws_config-aws_net_log
+         cd ..
+
+    - name: Upload the log
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+         name: adacontrol.log
+         path: adacontrol.log
+
+  build_linux:
+
+    needs: adacontrol
 
     runs-on: ubuntu-latest
 
@@ -51,7 +77,7 @@ jobs:
 
   build_windows:
 
-    needs: tests
+    needs: adacontrol
 
     runs-on: ubuntu-latest
 
