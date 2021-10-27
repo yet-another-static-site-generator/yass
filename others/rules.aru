@@ -1,4 +1,3 @@
-set Max_Messages 20;
 set Verbose On;
 rule_file_off "aws(-.*)*\.adb$" GLOBAL_REFERENCES;
 rule_file_off "aws(-.*)*\.ads$" GLOBAL_REFERENCES;
