@@ -98,8 +98,8 @@ How to generate the code documentation is described in main *README.md* file.
 
 A preferred way to submit your code is to use [tickets](https://www.laeran.pl/repositories/yass/ticket)
 on the project page. Please attach to that ticket file with diff changes,
-the best if done with command `fossil diff`. But any other diff program will
-work. In that situation, please add information which program was used to
+the best if done with command `fossil patch`. Another diff program will work
+too. In that situation, please add information which program was used to
 create the diff file. If you prefer you can also use other options from
 [contact page](https://www.laeran.pl/repositories/yass/wiki?name=Contact).
 
