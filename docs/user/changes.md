@@ -29,7 +29,7 @@
 -- detailslink: 0.3
 -- detailslink: 0.2
 -- detailslink: 0.1
-## <a name="3.0"></a>[Unreleased]
+## <a name="3.0"></a>[3.0] - 2021-10-29
 
 ### Added
 - Creating and setting canonical links for pages
