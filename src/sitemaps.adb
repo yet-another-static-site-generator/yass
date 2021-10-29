@@ -97,6 +97,7 @@ package body Sitemaps is
    -- Unbounded_String with the name of sitemap file
    -- SOURCE
    function Get_Sitemap_File_Name return Unbounded_String is
+      -- ****
    begin
       return Sitemap_File_Name;
    end Get_Sitemap_File_Name;
