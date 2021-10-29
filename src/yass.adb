@@ -289,7 +289,7 @@ begin
       -- Show version information
    elsif Argument(Number => 1) = "version" then
       Put_Line(Item => "Version: " & Version);
-      Put_Line(Item => "Released: not yet");
+      Put_Line(Item => "Released: 2021-10-29");
       -- Show license information
    elsif Argument(Number => 1) = "license" then
       Put_Line(Item => "Copyright (C) 2019-2021 Bartek thindil Jasicki");
