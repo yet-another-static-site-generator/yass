@@ -6,19 +6,21 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
-<title>./src/layouts.ads</title>
+<script src="./robodoc.js"></script>
+<title>layouts.ads</title>
 <!-- Source: ./src/layouts.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+<!-- Generated with ROBODoc Version 4.99.44 (Sep 19 2021) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">YASS v2.0 code documentation</a>
+<a name="robo_top_of_doc">YASS 3.0 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_constants.html#top">Constants</a>
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
@@ -30,8 +32,8 @@
 <ul>
 <li>1. <a href="#robo2">Yass/Layouts</a></li>
 <ul>
-<li>1.1. <a href="#robo31">Layouts/CreateDirectoryLayout</a></li>
-<li>1.2. <a href="#robo32">Layouts/CreateLayout</a></li>
+<li>1.1. <a href="#robo43">Layouts/Layouts.Create_Directory_Layout</a></li>
+<li>1.2. <a href="#robo44">Layouts/Layouts.Create_Layout</a></li>
 </ul>
 </ul>
 <hr />
@@ -47,8 +49,8 @@
 </pre>
 
 <hr />
-<a name="Layouts2fCreateDirectoryLayout"></a>
-<a name="robo31"></a><h2>Layouts/CreateDirectoryLayout [ Subprograms ]</h2>
+<a name="Layouts2fLayouts2eCreate5fDirectory5fLayout"></a>
+<a name="robo43"></a><h2>Layouts/Layouts.Create_Directory_Layout [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">Layouts</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -56,32 +58,36 @@
  directory with full path DirectoryName
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CreateDirectoryLayout</strong><span class="sign">(</span>DirectoryName<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> Create_Directory_Layout<span class="sign">(</span>Directory_Name<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">with</span>
+      Test_Case <span class="sign">=</span><span class="sign">&gt;</span> <span class="sign">(</span>Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"Test_Create_Directory_Layout"</span><span class="sign">,</span>
+       Mode <span class="sign">=</span><span class="sign">&gt;</span> Robustness<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> DirectoryName - Full path to the directory where layout will be created
+<pre> Directory_Name - Full path to the directory where layout will be created
 </pre>
 
 <hr />
-<a name="Layouts2fCreateLayout"></a>
-<a name="robo32"></a><h2>Layouts/CreateLayout [ Subprograms ]</h2>
+<a name="Layouts2fLayouts2eCreate5fLayout"></a>
+<a name="robo44"></a><h2>Layouts/Layouts.Create_Layout [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">Layouts</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create default site layouts in directory with full path DirectoryName
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CreateLayout</strong><span class="sign">(</span>DirectoryName<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> Create_Layout<span class="sign">(</span>Directory_Name<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">with</span>
+      Pre <span class="sign">=</span><span class="sign">&gt;</span> Directory_Name<span class="keyword">'Length</span> <span class="sign">&gt;</span> 0<span class="sign">,</span>
+      Test_Case =<span class="sign">&gt;</span> <span class="sign">(</span>Name =<span class="sign">&gt;</span> "Test_Create_Layout"<span class="sign">,</span> Mode =<span class="sign">&gt;</span> Nominal<span class="sign">);</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> DirectoryName - Full path to the directory where default layout will be
+<pre> Directory_Name - Full path to the directory where default layout will be
                  created
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/layouts.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Nov 17 2019 06:40:33
-</p>
+<p>Generated from ./src/layouts.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2021-10-29 06:57:52</p>
 </div> <!-- footer -->
 </body>
 </html>
+

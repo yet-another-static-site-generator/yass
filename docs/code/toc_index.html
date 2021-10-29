@@ -6,13 +6,14 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<script src="./robodoc.js"></script>
 <title>Table of Contents</title>
 <!-- Source: ./src/ -->
-<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+<!-- Generated with ROBODoc Version 4.99.44 (Sep 19 2021) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">YASS v2.0 code documentation</a>
+<a name="robo_top_of_doc">YASS 3.0 code documentation</a>
 </div> <!-- logo -->
 <div id="extra">
 </div> <!-- extra -->
@@ -21,6 +22,7 @@
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_constants.html#top">Constants</a>
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
@@ -30,74 +32,90 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="./atomfeed_ads.html#robo0">Yass/AtomFeed</a></li>
+<li>1. <a href="./yass_adb.html#robo62">YASS/YASS.Valid_Arguments</a></li>
+<li>2. <a href="./yass_adb.html#robo61">YASS/YASS.Show_Help</a></li>
+<li>3. <a href="./yass_adb.html#robo60">YASS/YASS.Build_Site</a></li>
+<li>4. <a href="./sitemaps_ads.html#robo7">Yass/Sitemaps</a></li>
 <ul>
-<li>1.1. <a href="./atomfeed_ads.html#robo10">AtomFeed/FeedEntry</a></li>
-<li>1.2. <a href="./atomfeed_ads.html#robo11">AtomFeed/FeedEntry_Container</a></li>
-<li>1.3. <a href="./atomfeed_ads.html#robo23">AtomFeed/AddPageToFeed</a></li>
-<li>1.4. <a href="./atomfeed_ads.html#robo24">AtomFeed/SaveAtomFeed</a></li>
-<li>1.5. <a href="./atomfeed_ads.html#robo25">AtomFeed/StartAtomFeed</a></li>
-<li>1.6. <a href="./atomfeed_ads.html#robo26">AtomFeed/To_HTTP_Date</a></li>
-<li>1.7. <a href="./atomfeed_ads.html#robo27">AtomFeed/To_Time</a></li>
+<li>4.1. <a href="./sitemaps_adb.html#robo27">Sitemaps/Sitemaps.Main_Node</a></li>
+<li>4.2. <a href="./sitemaps_adb.html#robo28">Sitemaps/Sitemaps.Sitemap</a></li>
+<li>4.3. <a href="./sitemaps_adb.html#robo29">Sitemaps/Sitemaps.Sitemap_File_Name</a></li>
+<li>4.4. <a href="./sitemaps_adb.html#robo53">Sitemaps/Get_Sitemap_File_Name</a></li>
+<li>4.5. <a href="./sitemaps_adb.html#robo54">Sitemaps/Set_Main_Node</a></li>
+<li>4.6. <a href="./sitemaps_ads.html#robo55">Sitemaps/Sitemaps.AddPageToSitemap</a></li>
+<li>4.7. <a href="./sitemaps_adb.html#robo56">Sitemaps/Sitemaps.Get_Sitemap</a></li>
+<li>4.8. <a href="./sitemaps_ads.html#robo57">Sitemaps/Sitemaps.SaveSitemap</a></li>
+<li>4.9. <a href="./sitemaps_adb.html#robo58">Sitemaps/Sitemaps.Set_Sitemap</a></li>
+<li>4.10. <a href="./sitemaps_ads.html#robo59">Sitemaps/Sitemaps.StartSitemap</a></li>
 </ul>
-<li>2. <a href="./config_ads.html#robo1">Yass/Config</a></li>
+<li>5. <a href="./server_ads.html#robo6">Yass/Server</a></li>
 <ul>
-<li>2.1. <a href="./config_ads.html#robo12">Config/Excluded_Container</a></li>
-<li>2.2. <a href="./config_ads.html#robo13">Config/ParserConfig</a></li>
-<li>2.3. <a href="./config_ads.html#robo14">Config/TableTags_Container</a></li>
-<li>2.4. <a href="./config_ads.html#robo15">Config/Tags_Container</a></li>
-<li>2.5. <a href="./config_ads.html#robo17">Config/GlobalTableTags</a></li>
-<li>2.6. <a href="./config_ads.html#robo18">Config/SiteDirectory</a></li>
-<li>2.7. <a href="./config_ads.html#robo19">Config/SiteTags</a></li>
-<li>2.8. <a href="./config_ads.html#robo20">Config/YassConfig</a></li>
-<li>2.9. <a href="./config_ads.html#robo21">Config/InvalidConfigData</a></li>
-<li>2.10. <a href="./config_ads.html#robo28">Config/CreateConfig</a></li>
-<li>2.11. <a href="./config_ads.html#robo29">Config/CreateInteractiveConfig</a></li>
-<li>2.12. <a href="./config_ads.html#robo30">Config/ParseConfig</a></li>
-</ul>
-<li>3. <a href="./layouts_ads.html#robo2">Yass/Layouts</a></li>
-<ul>
-<li>3.1. <a href="./layouts_ads.html#robo31">Layouts/CreateDirectoryLayout</a></li>
-<li>3.2. <a href="./layouts_ads.html#robo32">Layouts/CreateLayout</a></li>
-</ul>
-<li>4. <a href="./messages_ads.html#robo3">Yass/Messages</a></li>
-<ul>
-<li>4.1. <a href="./messages_ads.html#robo16">Messages/Messages_Types</a></li>
-<li>4.2. <a href="./messages_ads.html#robo33">Messages/ShowMessage</a></li>
-</ul>
-<li>5. <a href="./modules_ads.html#robo4">Yass/Modules</a></li>
-<ul>
-<li>5.1. <a href="./modules_ads.html#robo34">Modules/LoadModules</a></li>
+<li>5.1. <a href="./server_ads.html#robo8">Server/Server.Monitor_Config</a></li>
+<li>5.2. <a href="./server_ads.html#robo9">Server/Server.Monitor_Site</a></li>
+<li>5.3. <a href="./server_adb.html#robo26">Server/Server.Http_Server</a></li>
+<li>5.4. <a href="./server_ads.html#robo51">Server/Server.Shutdown_Server</a></li>
+<li>5.5. <a href="./server_ads.html#robo52">Server/Server.Start_Server</a></li>
 </ul>
 <li>6. <a href="./pages_ads.html#robo5">Yass/Pages</a></li>
 <ul>
-<li>6.1. <a href="./pages_ads.html#robo22">Pages/GenerateSiteException</a></li>
-<li>6.2. <a href="./pages_ads.html#robo35">Pages/CopyFile</a></li>
-<li>6.3. <a href="./pages_ads.html#robo36">Pages/CreateEmptyFile</a></li>
-<li>6.4. <a href="./pages_ads.html#robo37">Pages/CreatePage</a></li>
-<li>6.5. <a href="./pages_ads.html#robo38">Pages/GetLayoutName</a></li>
+<li>6.1. <a href="./pages_ads.html#robo31">Pages/Pages.Generate_Site_Exception</a></li>
+<li>6.2. <a href="./pages_ads.html#robo47">Pages/Pages.Copy_File</a></li>
+<li>6.3. <a href="./pages_ads.html#robo48">Pages/Pages.Create_Empty_File</a></li>
+<li>6.4. <a href="./pages_ads.html#robo49">Pages/Pages.Create_Page</a></li>
+<li>6.5. <a href="./pages_ads.html#robo50">Pages/Pages.Get_Layout_Name</a></li>
 </ul>
-<li>7. <a href="./server_ads.html#robo6">Yass/Server</a></li>
+<li>7. <a href="./modules_ads.html#robo4">Yass/Modules</a></li>
 <ul>
-<li>7.1. <a href="./server_ads.html#robo8">Server/MonitorConfig</a></li>
-<li>7.2. <a href="./server_ads.html#robo9">Server/MonitorSite</a></li>
-<li>7.3. <a href="./server_ads.html#robo39">Server/ShutdownServer</a></li>
-<li>7.4. <a href="./server_ads.html#robo40">Server/StartServer</a></li>
+<li>7.1. <a href="./modules_ads.html#robo46">Modules/Modules.Load_Modules</a></li>
 </ul>
-<li>8. <a href="./sitemaps_ads.html#robo7">Yass/Sitemaps</a></li>
+<li>8. <a href="./messages_ads.html#robo3">Yass/Messages</a></li>
 <ul>
-<li>8.1. <a href="./sitemaps_ads.html#robo41">Sitemaps/AddPageToSitemap</a></li>
-<li>8.2. <a href="./sitemaps_ads.html#robo42">Sitemaps/SaveSitemap</a></li>
-<li>8.3. <a href="./sitemaps_ads.html#robo43">Sitemaps/StartSitemap</a></li>
+<li>8.1. <a href="./messages_ads.html#robo16">Messages/Messages.Messages_Types</a></li>
+<li>8.2. <a href="./messages_ads.html#robo19">Messages/Messages.Default_Message_Type</a></li>
+<li>8.3. <a href="./messages_ads.html#robo45">Messages/Messages.Show_Message</a></li>
 </ul>
-<li>9. <a href="./yass_adb.html#robo44">YASS/BuildSite</a></li>
-<li>10. <a href="./yass_adb.html#robo45">YASS/ShowHelp</a></li>
-<li>11. <a href="./yass_adb.html#robo46">YASS/ValidArguments</a></li>
+<li>9. <a href="./layouts_ads.html#robo2">Yass/Layouts</a></li>
+<ul>
+<li>9.1. <a href="./layouts_ads.html#robo43">Layouts/Layouts.Create_Directory_Layout</a></li>
+<li>9.2. <a href="./layouts_ads.html#robo44">Layouts/Layouts.Create_Layout</a></li>
+</ul>
+<li>10. <a href="./config_ads.html#robo1">Yass/Config</a></li>
+<ul>
+<li>10.1. <a href="./config_ads.html#robo12">Config/Config.Excluded_Container</a></li>
+<li>10.2. <a href="./config_ads.html#robo13">Config/Config.Parser_Config</a></li>
+<li>10.3. <a href="./config_ads.html#robo14">Config/Config.TableTags_Container</a></li>
+<li>10.4. <a href="./config_ads.html#robo15">Config/Config.Tags_Container</a></li>
+<li>10.5. <a href="./config_ads.html#robo18">Config/Config.Default_Parser_Configuration</a></li>
+<li>10.6. <a href="./config_ads.html#robo22">Config/Config.Global_Table_Tags</a></li>
+<li>10.7. <a href="./config_ads.html#robo23">Config/Config.Site_Directory</a></li>
+<li>10.8. <a href="./config_ads.html#robo24">Config/Config.Site_Tags</a></li>
+<li>10.9. <a href="./config_ads.html#robo25">Config/Config.Yass_Config</a></li>
+<li>10.10. <a href="./config_ads.html#robo30">Config/Config.Invalid_Config_Data</a></li>
+<li>10.11. <a href="./config_ads.html#robo40">Config/Config.Create_Config</a></li>
+<li>10.12. <a href="./config_ads.html#robo41">Config/Config.Create_Interactive_Config</a></li>
+<li>10.13. <a href="./config_ads.html#robo42">Config/Config.Parse_Config</a></li>
+</ul>
+<li>11. <a href="./atomfeed_ads.html#robo0">Yass/AtomFeed</a></li>
+<ul>
+<li>11.1. <a href="./atomfeed_ads.html#robo10">AtomFeed/AtomFeed.Feed_Entry</a></li>
+<li>11.2. <a href="./atomfeed_ads.html#robo11">AtomFeed/AtomFeed.FeedEntry_Container</a></li>
+<li>11.3. <a href="./atomfeed_ads.html#robo17">AtomFeed/AtomFeed.Empty_Feed_Entry</a></li>
+<li>11.4. <a href="./atomfeed_adb.html#robo20">AtomFeed/AtomFeed.Entries_List</a></li>
+<li>11.5. <a href="./atomfeed_adb.html#robo21">AtomFeed/AtomFeed.Feed_File_Name</a></li>
+<li>11.6. <a href="./atomfeed_ads.html#robo32">AtomFeed/AtomFeed.Add_Page_To_Feed</a></li>
+<li>11.7. <a href="./atomfeed_adb.html#robo33">AtomFeed/AtomFeed.Get_Entries_List</a></li>
+<li>11.8. <a href="./atomfeed_adb.html#robo34">AtomFeed/AtomFeed.Get_Feed_File_Name</a></li>
+<li>11.9. <a href="./atomfeed_ads.html#robo35">AtomFeed/AtomFeed.Save_Atom_Feed</a></li>
+<li>11.10. <a href="./atomfeed_adb.html#robo36">AtomFeed/AtomFeed.Set_Entries_List</a></li>
+<li>11.11. <a href="./atomfeed_ads.html#robo37">AtomFeed/AtomFeed.Start_Atom_Feed</a></li>
+<li>11.12. <a href="./atomfeed_ads.html#robo38">AtomFeed/AtomFeed.To_HTTP_Date</a></li>
+<li>11.13. <a href="./atomfeed_ads.html#robo39">AtomFeed/AtomFeed.To_Time</a></li>
+</ul>
 </ul>
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/ with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Nov 17 2019 06:40:33
-</p>
+<p>Generated from ./src/ with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2021-10-29 06:57:52</p>
 </div> <!-- footer -->
 </body>
 </html>
+

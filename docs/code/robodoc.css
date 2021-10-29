@@ -30,8 +30,8 @@
 
 body
 {
-    background-color:    #ebdbb2;
-    color:               #282828;
+    background-color:    #303536;
+    color:               #DDDDDD;
     font-family: Verdana, serif;
     border-color:        rgb(226,199,143);
 }
@@ -42,13 +42,13 @@ pre
     margin:      15px;
     padding:     5px;
     white-space: pre;
-    color:       #282828;
+    color:       #f8f8f2;
 }
 
 pre.source
 {
-    background-color: #d5c4a1;
-    border: dashed #f1fa8c 1px;
+    background-color: black;
+    border: solid #DDDDDD 1px;
 }
 
 p
@@ -66,8 +66,8 @@ p.item_name
 #content
 {
     font-size:           100%;
-    color:               #282828;
-    background-color:    #ebdbb2;
+    color:               #DDDDDD;
+    background-color:    #1D2021;
     border-left-width:   0px; 
     border-right-width:  0px; 
     border-top-width:    0px; 
@@ -77,54 +77,51 @@ p.item_name
     border-top-style:    none; 
     border-bottom-style: none;
     padding:             40px 31px 14px 17px;
-    border-color:        #d65d0e;
+    border-color:        #44475a;
     text-align:          justify;
 }
 
 #navigation
 {
-    background-color: #98971a;
-    color:            #bd93f9;
+    background-color: #161819;
+    color:            #DDDDDD;
     font-style:       normal;
-    border-color:     #98971a;
+    border-color:     #161819;
 }
 
 a.menuitem
 {
     font-size: 120%;
-    background-color:    #ebdbb2;
-    color:               #076778;
+    background-color:    #161819;
+    color:               #66a8c7;
     font-variant:        normal;
     text-transform:      none;
     font-weight:         normal;
     padding:             1px 8px 3px 1px;
-    margin-left:         5px; 
-    margin-right:        5px; 
-    margin-top:          5px; 
-    margin-bottom:       5px;
-    border-color:        #ebdbb2;
+    margin:              5px; 
+    border-color:        #282a36;
     text-align:          right;
 }
 
 #logo, #logo a
 {
     font-size: 130%;
-    background-color:   #d65d0e;
-    color:              #282828;
+    background-color:   #303536;
+    color:              #888888;
     font-style:         normal;
     font-variant:       normal;
     text-transform:     none;
     font-weight:        bold;
     padding:            20px 18px 20px 18px;
-    border-color:       #282828;
+    border-color:       #f8f8f2;
     text-align:         right;
 }
 
 #extra, #extra a
 {
     font-size: 128%;
-    background-color:    #ebdbb2;
-    color:               #076778;
+    background-color:    #282a36;
+    color:               #ffb86c;
     font-style:          normal;
     font-variant:        normal;
     text-transform:      none;
@@ -138,19 +135,19 @@ a.menuitem
     border-top-style:    none; 
     border-bottom-style: none;
     padding: 12px 12px 12px 12px;
-    border-color:        #076778;
+    border-color:        #ffb86c;
     text-align:          center;
 }
 
 #content a
 {
-    color:              #076778;
+    color:              #66a8c7;
     text-decoration:    none;
 }
 
 #content a:hover, #content a:active
 {
-    color:              #9d0006;
+    color:              white;
 }
 
 a.indexitem
@@ -160,7 +157,6 @@ a.indexitem
 
 h1, h2, h3, h4, h5, h6
 {
-    background-color: #d79921;
     font-style:       normal;
     font-variant:     normal;
     text-transform:   none;
@@ -199,13 +195,15 @@ h6
 
 #navigation a
 {
-    text-decoration: none;
+   text-decoration: none;
+   float: left;
+   display: block;
 }
 
 .menuitem:hover
 {
-    background-color:   #076778;
-    color:              #ebdbb2;
+    background-color:   #ff8000;
+    color:              #282a36;
 }
 
 #extra a
@@ -225,13 +223,17 @@ h6
 /* layout */
 #navigation
 {
-    width:       22%; 
-    position:    relative; 
-    top:         0; 
-    right:       0; 
-    float:       right; 
-    text-align:  center;
-    margin-left: 10px;
+    position:    fixed;
+    top:         0;
+    width:       100%;
+}
+
+#logo
+{
+   margin-top: 50px;
+   margin-left: auto;
+   margin-right: auto;
+   width: 50%;
 }
 
 .menuitem       {width: auto;}
@@ -248,12 +250,12 @@ div#footer
 
 div#footer a
 {
-    color:           #9d0006;
+    color:           #ff5555;
 }
 
 div#footer a:hover
 {
-    color:           #076778;
+    color:           #ffb86c;
 }
 div#footer p
 {
@@ -263,32 +265,32 @@ div#footer p
 
 span.keyword
 {
-    color: #8f3f71;
+    color: #8be9fd;
 }
 
 span.comment
 {
-    color: #7c6f64;
+    color: #6272a4;
 }
 
 span.quote
 {
-    color: #79740e;
+    color: #50fa7b;
 }
 
 span.squote
 {
-    color: #98971a;
+    color: #ff79c6;
 }
 
 span.sign
 {
-    color: #9d0006;
+    color: #ff5555;
 }
 
 span.line_number
 {
-    color: #458588;
+    color: #f1fa8c;
 }
 
 @media print

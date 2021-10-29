@@ -6,19 +6,21 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
-<title>./src/config.ads</title>
+<script src="./robodoc.js"></script>
+<title>config.ads</title>
 <!-- Source: ./src/config.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+<!-- Generated with ROBODoc Version 4.99.44 (Sep 19 2021) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">YASS v2.0 code documentation</a>
+<a name="robo_top_of_doc">YASS 3.0 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_constants.html#top">Constants</a>
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
@@ -30,18 +32,19 @@
 <ul>
 <li>1. <a href="#robo1">Yass/Config</a></li>
 <ul>
-<li>1.1. <a href="#robo12">Config/Excluded_Container</a></li>
-<li>1.2. <a href="#robo13">Config/ParserConfig</a></li>
-<li>1.3. <a href="#robo14">Config/TableTags_Container</a></li>
-<li>1.4. <a href="#robo15">Config/Tags_Container</a></li>
-<li>1.5. <a href="#robo17">Config/GlobalTableTags</a></li>
-<li>1.6. <a href="#robo18">Config/SiteDirectory</a></li>
-<li>1.7. <a href="#robo19">Config/SiteTags</a></li>
-<li>1.8. <a href="#robo20">Config/YassConfig</a></li>
-<li>1.9. <a href="#robo21">Config/InvalidConfigData</a></li>
-<li>1.10. <a href="#robo28">Config/CreateConfig</a></li>
-<li>1.11. <a href="#robo29">Config/CreateInteractiveConfig</a></li>
-<li>1.12. <a href="#robo30">Config/ParseConfig</a></li>
+<li>1.1. <a href="#robo12">Config/Config.Excluded_Container</a></li>
+<li>1.2. <a href="#robo13">Config/Config.Parser_Config</a></li>
+<li>1.3. <a href="#robo14">Config/Config.TableTags_Container</a></li>
+<li>1.4. <a href="#robo15">Config/Config.Tags_Container</a></li>
+<li>1.5. <a href="#robo18">Config/Config.Default_Parser_Configuration</a></li>
+<li>1.6. <a href="#robo22">Config/Config.Global_Table_Tags</a></li>
+<li>1.7. <a href="#robo23">Config/Config.Site_Directory</a></li>
+<li>1.8. <a href="#robo24">Config/Config.Site_Tags</a></li>
+<li>1.9. <a href="#robo25">Config/Config.Yass_Config</a></li>
+<li>1.10. <a href="#robo30">Config/Config.Invalid_Config_Data</a></li>
+<li>1.11. <a href="#robo40">Config/Config.Create_Config</a></li>
+<li>1.12. <a href="#robo41">Config/Config.Create_Interactive_Config</a></li>
+<li>1.13. <a href="#robo42">Config/Config.Parse_Config</a></li>
 </ul>
 </ul>
 <hr />
@@ -57,191 +60,214 @@
 </pre>
 
 <hr />
-<a name="Config2fExcluded5fContainer"></a>
-<a name="robo12"></a><h2>Config/Excluded_Container [ Types ]</h2>
+<a name="Config2fConfig2eExcluded5fContainer"></a>
+<a name="robo12"></a><h2>Config/Config.Excluded_Container [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to store list of excluded files
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> <strong>Excluded_Container</strong> <span class="keyword">is</span> <span class="keyword">new</span> Ada<span class="sign">.</span>Containers<span class="sign">.</span>Indefinite_Vectors
-     <span class="sign">(</span>Positive<span class="sign">,</span> String<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">package</span> Excluded_Container <span class="keyword">is</span> <span class="keyword">new</span> Ada<span class="sign">.</span>Containers<span class="sign">.</span>Indefinite_Vectors
+     <span class="sign">(</span>Index_Type <span class="sign">=</span><span class="sign">&gt;</span> Positive<span class="sign">,</span> Element_Type <span class="sign">=</span><span class="sign">&gt;</span> String<span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Config2fParserConfig"></a>
-<a name="robo13"></a><h2>Config/ParserConfig [ Types ]</h2>
+<a name="Config2fConfig2eParser5fConfig"></a>
+<a name="robo13"></a><h2>Config/Config.Parser_Config [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Data structure for setting for parser
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">type</span> <strong>ParserConfig</strong> <span class="keyword">is</span> <span class="keyword">record</span>
-      OutputDirectory<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span><span class="quote">"_output"</span><span class="sign">)</span><span class="sign">;</span>
-      LayoutsDirectory<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span><span class="quote">"_layouts"</span><span class="sign">)</span><span class="sign">;</span>
-      ModulesDirectory<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span><span class="quote">"_modules"</span><span class="sign">)</span><span class="sign">;</span>
-      ExcludedFiles<span class="sign">:</span> <a href="#robo12">Excluded_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
-      ServerEnabled<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> True<span class="sign">;</span>
-      ServerPort<span class="sign">:</span> Positive <span class="sign">:</span><span class="sign">=</span> 8888<span class="sign">;</span>
-      MonitorInterval<span class="sign">:</span> Duration <span class="sign">:</span><span class="sign">=</span> 5<span class="sign">.</span>0<span class="sign">;</span>
-      BaseURL<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
-        To_Unbounded_String<span class="sign">(</span><span class="quote">"http://localhost:8888"</span><span class="sign">)</span><span class="sign">;</span>
-      SitemapEnabled<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> True<span class="sign">;</span>
-      AtomFeedSource<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span><span class="quote">"none"</span><span class="sign">)</span><span class="sign">;</span>
-      SiteName<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span><span class="quote">"New Site"</span><span class="sign">)</span><span class="sign">;</span>
-      AtomFeedAmount<span class="sign">:</span> Positive <span class="sign">:</span><span class="sign">=</span> 25<span class="sign">;</span>
-      MarkdownComment<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span><span class="quote">"--"</span><span class="sign">)</span><span class="sign">;</span>
-      StopServerOnError<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span>
-      BrowserCommand<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span><span class="quote">"none"</span><span class="sign">)</span><span class="sign">;</span>
-      MonitorConfigInterval<span class="sign">:</span> Duration <span class="sign">:</span><span class="sign">=</span> 60<span class="sign">.</span>0<span class="sign">;</span>
-      AuthorName<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span><span class="quote">"John Doe"</span><span class="sign">)</span><span class="sign">;</span>
-      AuthorEmail<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
-        To_Unbounded_String<span class="sign">(</span><span class="quote">"johndoe@example.com"</span><span class="sign">)</span><span class="sign">;</span>
-      Language<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span><span class="quote">"en"</span><span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">type</span> Parser_Config <span class="keyword">is</span> <span class="keyword">record</span>
+      Output_Directory<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
+        To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"_output"</span><span class="sign">)</span><span class="sign">;</span>
+      Layouts_Directory<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
+        To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"_layouts"</span><span class="sign">)</span><span class="sign">;</span>
+      Modules_Directory<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
+        To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"_modules"</span><span class="sign">)</span><span class="sign">;</span>
+      Excluded_Files<span class="sign">:</span> Excluded_Container<span class="sign">.</span>Vector<span class="sign">;</span>
+      Server_Enabled<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> True<span class="sign">;</span>
+      Server_Port<span class="sign">:</span> Positive <span class="sign">:</span><span class="sign">=</span> 8_888<span class="sign">;</span>
+      Monitor_Interval<span class="sign">:</span> Duration <span class="sign">:</span><span class="sign">=</span> 5<span class="sign">.</span>0<span class="sign">;</span>
+      Base_Url<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
+        To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"http<span class="sign">:</span>//localhost<span class="sign">:</span>8888"</span><span class="sign">)</span><span class="sign">;</span>
+      Sitemap_Enabled<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> True<span class="sign">;</span>
+      Atom_Feed_Source<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
+        To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"none"</span><span class="sign">)</span><span class="sign">;</span>
+      Site_Name<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"New Site"</span><span class="sign">)</span><span class="sign">;</span>
+      Atom_Feed_Amount<span class="sign">:</span> Positive <span class="sign">:</span><span class="sign">=</span> 25<span class="sign">;</span>
+      Markdown_Comment<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
+        To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"--"</span><span class="sign">)</span><span class="sign">;</span>
+      Stop_Server_On_Error<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span>
+      Browser_Command<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
+        To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"none"</span><span class="sign">)</span><span class="sign">;</span>
+      Monitor_Config_Interval<span class="sign">:</span> Duration <span class="sign">:</span><span class="sign">=</span> 60<span class="sign">.</span>0<span class="sign">;</span>
+      Author_Name<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
+        To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"John Doe"</span><span class="sign">)</span><span class="sign">;</span>
+      Author_Email<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
+        To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"johndoe@example.com"</span><span class="sign">)</span><span class="sign">;</span>
+      Language<span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> To_Unbounded_String<span class="sign">(</span>Source <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"en"</span><span class="sign">)</span><span class="sign">;</span>
    <span class="keyword">end</span> <span class="keyword">record</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> OutputDirectory       - Path to directory with generated site
- LayoutsDirectory      - Path to directory where site layouts are
- ModulesDirectory      - Path to directory where program modules for this
-                         site are
- ExcludedFiles         - List of excluded files (and directories) from
-                         site
- ServerEnabled         - Did web server is enabled
- ServerPort            - Port on which web server listen
- MonitorInterval       - Interval (in seconds) how often program should
-                         check for changes in site to regenerate it
- BaseURL               - Base URL for site, needed mostly for creating
-                         sitemap
- SitemapEnabled        - Did creating sitemap is enabled
- AtomFeedSource        - Source of atom feed entries. Possible values
-                         are: none (don't create atom feed, default),
-                         tags (create entries from tags in markdown files)
-                         and [filename] (path to markdown file which will
-                         be used as a source of feed)
- SiteName              - Name of the site, needed for atom feed
- AtomFeedAmount        - Number of entries in the Atom feed of the site
- MarkdownComment       - String used to mark comments in markdown files
- StopServerOnError     - Did sever should go down if encounter error
-                         during creating site
- BrowserCommand        - Command used to open web browser (if empty,
-                         don't open anything)
- MonitorConfigInterval - Interval (in seconds) how often program should
-                         check for changes in site configuration to
-                         reconfigure it
- AuthorName            - Name of author of the site, needed for atom feed
- AuthorEmail           - Email address of author of the site, needed for
-                         atom feed
- Language              - ISO code of the language of the site
+<pre> Output_Directory        - Path to directory with generated site
+ Layouts_Directory       - Path to directory where site layouts are
+ Modules_Directory       - Path to directory where program modules for this
+                           site are
+ Excluded_Files          - List of excluded files (and directories) from
+                           site
+ Server_Enabled          - Did web server is enabled
+ Server_Port             - Port on which web server listen
+ Monitor_Interval        - Interval (in seconds) how often program should
+                           check for changes in site to regenerate it
+ Base_Url                - Base URL for site, needed mostly for creating
+                           sitemap
+ Sitemap_Enabled         - Did creating sitemap is enabled
+ Atom_Feed_Source        - Source of atom feed entries. Possible values
+                           are: none (don't create atom feed, default),
+                           tags (create entries from tags in markdown files)
+                           and [filename] (path to markdown file which will
+                           be used as a source of feed)
+ Site_Name               - Name of the site, needed for atom feed
+ Atom_Feed_Amount        - Number of entries in the Atom feed of the site
+ Markdown_Comment        - String used to mark comments in markdown files
+ Stop_Server_On_Error    - Did sever should go down if encounter error
+                           during creating site
+ Browser_Command         - Command used to open web browser (if empty,
+                           don't open anything)
+ Monitor_Config_Interval - Interval (in seconds) how often program should
+                           check for changes in site configuration to
+                           reconfigure it
+ Author_Name             - Name of author of the site, needed for atom feed
+ Author_Email            - Email address of author of the site, needed for
+                           atom feed
+ Language                - ISO code of the language of the site
 </pre>
 
 <hr />
-<a name="Config2fTableTags5fContainer"></a>
-<a name="robo14"></a><h2>Config/TableTags_Container [ Types ]</h2>
+<a name="Config2fConfig2eTableTags5fContainer"></a>
+<a name="robo14"></a><h2>Config/Config.TableTags_Container [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to store AWS template table tags
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> <strong>TableTags_Container</strong> <span class="keyword">is</span> <span class="keyword">new</span> Ada<span class="sign">.</span>Containers<span class="sign">.</span>Indefinite_Hashed_Maps
-     <span class="sign">(</span>String<span class="sign">,</span> Vector_Tag<span class="sign">,</span> Ada<span class="sign">.</span>Strings<span class="sign">.</span>Hash<span class="sign">,</span> <span class="quote">"="</span><span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">package</span> TableTags_Container <span class="keyword">is</span> <span class="keyword">new</span> Ada<span class="sign">.</span>Containers<span class="sign">.</span>Indefinite_Hashed_Maps
+     <span class="sign">(</span>Key_Type <span class="sign">=</span><span class="sign">&gt;</span> String<span class="sign">,</span> Element_Type <span class="sign">=</span><span class="sign">&gt;</span> Vector_Tag<span class="sign">,</span> Hash <span class="sign">=</span><span class="sign">&gt;</span> Ada<span class="sign">.</span>Strings<span class="sign">.</span>Hash<span class="sign">,</span>
+      Equivalent_Keys <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"="</span><span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Config2fTags5fContainer"></a>
-<a name="robo15"></a><h2>Config/Tags_Container [ Types ]</h2>
+<a name="Config2fConfig2eTags5fContainer"></a>
+<a name="robo15"></a><h2>Config/Config.Tags_Container [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to store AWS template tags
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> <strong>Tags_Container</strong> <span class="keyword">is</span> <span class="keyword">new</span> Ada<span class="sign">.</span>Containers<span class="sign">.</span>Indefinite_Hashed_Maps<span class="sign">(</span>String<span class="sign">,</span>
-      String<span class="sign">,</span> Ada<span class="sign">.</span>Strings<span class="sign">.</span>Hash<span class="sign">,</span> <span class="quote">"="</span><span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">package</span> Tags_Container <span class="keyword">is</span> <span class="keyword">new</span> Ada<span class="sign">.</span>Containers<span class="sign">.</span>Indefinite_Hashed_Maps
+     <span class="sign">(</span>Key_Type <span class="sign">=</span><span class="sign">&gt;</span> String<span class="sign">,</span> Element_Type <span class="sign">=</span><span class="sign">&gt;</span> String<span class="sign">,</span> Hash <span class="sign">=</span><span class="sign">&gt;</span> Ada<span class="sign">.</span>Strings<span class="sign">.</span>Hash<span class="sign">,</span>
+      Equivalent_Keys <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"="</span><span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Config2fGlobalTableTags"></a>
-<a name="robo17"></a><h2>Config/GlobalTableTags [ Variables ]</h2>
+<a name="Config2fConfig2eDefault5fParser5fConfiguration"></a>
+<a name="robo18"></a><h2>Config/Config.Default_Parser_Configuration [ Constants ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_constants.html#robo_top_of_doc">Constants</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Default parser configuration values
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Default_Parser_Configuration<span class="sign">:</span> <span class="keyword">constant</span> Parser_Config <span class="sign">:</span><span class="sign">=</span> <span class="sign">(</span><span class="keyword">others</span> <span class="sign">=</span><span class="sign">&gt;</span> <span class="sign">&lt;</span><span class="sign">&gt;</span><span class="sign">)</span><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Config2fConfig2eGlobal5fTable5fTags"></a>
+<a name="robo22"></a><h2>Config/Config.Global_Table_Tags [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Global table tags, used in @@TABLE@@ statement
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>GlobalTableTags</strong><span class="sign">:</span> <a href="#robo14">TableTags_Container</a><span class="sign">.</span>Map<span class="sign">;</span>
+<pre class="source">   Global_Table_Tags<span class="sign">:</span> TableTags_Container<span class="sign">.</span>Map<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Config2fSiteDirectory"></a>
-<a name="robo18"></a><h2>Config/SiteDirectory [ Variables ]</h2>
+<a name="Config2fConfig2eSite5fDirectory"></a>
+<a name="robo23"></a><h2>Config/Config.Site_Directory [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Directory where site files are
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>SiteDirectory</strong><span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+<pre class="source">   Site_Directory<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Config2fSiteTags"></a>
-<a name="robo19"></a><h2>Config/SiteTags [ Variables ]</h2>
+<a name="Config2fConfig2eSite5fTags"></a>
+<a name="robo24"></a><h2>Config/Config.Site_Tags [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Site tags (like title, author, etc)
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>SiteTags</strong><span class="sign">:</span> <a href="#robo15">Tags_Container</a><span class="sign">.</span>Map<span class="sign">;</span>
+<pre class="source">   Site_Tags<span class="sign">:</span> Tags_Container<span class="sign">.</span>Map<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Config2fYassConfig"></a>
-<a name="robo20"></a><h2>Config/YassConfig [ Variables ]</h2>
+<a name="Config2fConfig2eYass5fConfig"></a>
+<a name="robo25"></a><h2>Config/Config.Yass_Config [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Settings for the program
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>YassConfig</strong><span class="sign">:</span> <a href="#robo13">ParserConfig</a><span class="sign">;</span>
+<pre class="source">   Yass_Config<span class="sign">:</span> Parser_Config <span class="sign">:</span><span class="sign">=</span> Default_Parser_Configuration<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Config2fInvalidConfigData"></a>
-<a name="robo21"></a><h2>Config/InvalidConfigData [ Exceptions ]</h2>
+<a name="Config2fConfig2eInvalid5fConfig5fData"></a>
+<a name="robo30"></a><h2>Config/Config.Invalid_Config_Data [ Exceptions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_exceptions.html#robo_top_of_doc">Exceptions</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Raised when invalid data found in site config file
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>InvalidConfigData</strong><span class="sign">:</span> <span class="keyword">exception</span><span class="sign">;</span>
+<pre class="source">   Invalid_Config_Data<span class="sign">:</span> <span class="keyword">exception</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Config2fCreateConfig"></a>
-<a name="robo28"></a><h2>Config/CreateConfig [ Subprograms ]</h2>
+<a name="Config2fConfig2eCreate5fConfig"></a>
+<a name="robo40"></a><h2>Config/Config.Create_Config [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Create default config in directory with full path DirectoryName
+<pre> Create default config in directory with full path Directory_Name
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CreateConfig</strong><span class="sign">(</span>DirectoryName<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> Create_Config<span class="sign">(</span>Directory_Name<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">with</span>
+      Pre <span class="sign">=</span><span class="sign">&gt;</span> Directory_Name<span class="keyword">'Length</span> <span class="sign">&gt;</span> 0<span class="sign">,</span>
+      Test_Case =<span class="sign">&gt;</span> <span class="sign">(</span>Name =<span class="sign">&gt;</span> "Test_Create_Config"<span class="sign">,</span> Mode =<span class="sign">&gt;</span> Nominal<span class="sign">);</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> DirectoryName - Full path to the directory where config file will be
-                 created
+<pre> Directory_Name - Full path to the directory where config file will be
+                  created
 </pre>
 
 <hr />
-<a name="Config2fCreateInteractiveConfig"></a>
-<a name="robo29"></a><h2>Config/CreateInteractiveConfig [ Subprograms ]</h2>
+<a name="Config2fConfig2eCreate5fInteractive5fConfig"></a>
+<a name="robo41"></a><h2>Config/Config.Create_Interactive_Config [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -249,34 +275,37 @@
  questions
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CreateInteractiveConfig</strong><span class="sign">(</span>DirectoryName<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> Create_Interactive_Config<span class="sign">(</span>Directory_Name<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">with</span>
+      Pre <span class="sign">=</span><span class="sign">&gt;</span> Directory_Name<span class="keyword">'Length</span> <span class="sign">&gt;</span> 0<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> DirectoryName - Full path to the directory where config file will be
-                 created
+<pre> Directory_Name - Full path to the directory where config file will be
+                  created
 </pre>
 
 <hr />
-<a name="Config2fParseConfig"></a>
-<a name="robo30"></a><h2>Config/ParseConfig [ Subprograms ]</h2>
+<a name="Config2fConfig2eParse5fConfig"></a>
+<a name="robo42"></a><h2>Config/Config.Parse_Config [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Config</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Parse config file and set all settings and tags for site in directory
- with full path DirectoryName
+ with full path Directory_Name
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ParseConfig</strong><span class="sign">(</span>DirectoryName<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> Parse_Config<span class="sign">(</span>Directory_Name<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">with</span>
+      Pre <span class="sign">=</span><span class="sign">&gt;</span> Directory_Name<span class="keyword">'Length</span> <span class="sign">&gt;</span> 0<span class="sign">,</span>
+      Test_Case =<span class="sign">&gt;</span> <span class="sign">(</span>Name =<span class="sign">&gt;</span> "Test_Parse_Config"<span class="sign">,</span> Mode =<span class="sign">&gt;</span> Nominal<span class="sign">);</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> DirectoryName - Full path to the directory from which config file will
-                 be parsed
+<pre> Directory_Name - Full path to the directory from which config file will
+                  be parsed
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/config.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Nov 17 2019 06:40:33
-</p>
+<p>Generated from ./src/config.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.44 on 2021-10-29 06:57:52</p>
 </div> <!-- footer -->
 </body>
 </html>
+
