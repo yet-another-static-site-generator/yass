@@ -2,10 +2,10 @@ YASS: Yet Another Static Site (Generator)
 
 As name says, it is static site generator written in Ada. It is *headless*
 application (no user interface). The program documentation is included in
-distribution.  If you read this file on GitHub: **please don't send pull
-requests here**. All will be automatically closed. Any code propositions
-should go to the [Fossil](https://www.laeran.pl/repositories/yass)
-repository.
+distribution.
+
+**INFO:** This project is no longer maintained. Feel free to clone it and take
+care about it.
 
 ## Features
 
