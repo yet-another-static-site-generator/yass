@@ -3,7 +3,7 @@
 Bugs are not only problems or the program crashes, but also typos. If you
 find any bug in the program, please report it at
 <https://github.com/yet-another-static-site-generator/yass/issues> or if
-you prefer, on mail <thindil@laeran.pl>
+you prefer, on mail <aj@ianozi.com>
 
 ### Some general hints about reporting bugs
 
