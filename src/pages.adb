@@ -441,9 +441,11 @@ package body Pages is
          Page_Table_Tags => Page_Table_Tags);
       -- Copy the file to output directory
       Create_Path(New_Directory => To_String(Source => Output_Directory));
-      if Ada.Directories.Kind(File_Name) = Ada.Directories.Directory then
-         Create_Path(To_String(Source => Output_Directory) & Dir_Separator &
-           Simple_Name(Name => File_Name));
+      if Ada.Directories.Kind(Name => File_Name) = Ada.Directories.Directory
+      then
+         Create_Path(New_Directory =>
+            To_String(Source => Output_Directory) & Dir_Separator &
+               Simple_Name(Name => File_Name));
       else
          Ada.Directories.Copy_File
          (Source_Name => File_Name,
