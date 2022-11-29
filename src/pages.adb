@@ -1,4 +1,4 @@
---    Copyright 2019-2021 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki & 2022 A.J. Ianozi
 --
 --    This file is part of YASS.
 --
@@ -441,23 +441,30 @@ package body Pages is
          Page_Table_Tags => Page_Table_Tags);
       -- Copy the file to output directory
       Create_Path(New_Directory => To_String(Source => Output_Directory));
-      Ada.Directories.Copy_File
-        (Source_Name => File_Name,
-         Target_Name =>
-           To_String(Source => Output_Directory) & Dir_Separator &
-           Simple_Name(Name => File_Name));
-      if Extension(Name => File_Name) = "html" then
-         Add_Page_To_Sitemap
-           (File_Name =>
-              To_String(Source => Output_Directory) & Dir_Separator &
-              Simple_Name(Name => File_Name),
-            Change_Frequency => "", Page_Priority => "");
+      if Ada.Directories.Kind(Name => File_Name) = Ada.Directories.Directory
+      then
+         Create_Path(New_Directory =>
+            To_String(Source => Output_Directory) & Dir_Separator &
+               Simple_Name(Name => File_Name));
+      else
+         Ada.Directories.Copy_File
+         (Source_Name => File_Name,
+            Target_Name =>
+            To_String(Source => Output_Directory) & Dir_Separator &
+            Simple_Name(Name => File_Name));
+         if Extension(Name => File_Name) = "html" then
+            Add_Page_To_Sitemap
+            (File_Name =>
+               To_String(Source => Output_Directory) & Dir_Separator &
+               Simple_Name(Name => File_Name),
+               Change_Frequency => "", Page_Priority => "");
+         end if;
+         Set
+         (Name => "YASSFILE",
+            Value =>
+            To_String(Source => Output_Directory) & Dir_Separator &
+            Simple_Name(Name => File_Name));
       end if;
-      Set
-        (Name => "YASSFILE",
-         Value =>
-           To_String(Source => Output_Directory) & Dir_Separator &
-           Simple_Name(Name => File_Name));
       -- Load the program modules with 'post' hook
       Load_Modules
         (State => "post", Page_Tags => Page_Tags,

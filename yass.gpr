@@ -10,8 +10,8 @@ project yass is
 
     for Create_Missing_Dirs use "True";
 
-    type Mode_Type is ("debug", "release", "analyze");
-    Mode : Mode_Type := external ("Mode", "debug");
+    type Mode_Type is ("dev", "debug", "release", "analyze");
+    Mode : Mode_Type := external ("Mode", "dev");
 
     type OS_Type is ("Windows", "Unix");
     OS : OS_Type := external ("OS", "Unix");
@@ -28,6 +28,8 @@ project yass is
 
     package Binder is
       case Mode is
+         when "dev" =>
+            for Default_Switches ("Ada") use ("-E");
          when "debug" | "analyze" =>
             for Default_Switches("ada") use ("-E", "-shared");
          when "release" =>
@@ -37,7 +39,7 @@ project yass is
 
     package Compiler is
       case Mode is
-         when "debug" =>
+         when "dev" | "debug" =>
             for Default_Switches ("ada") use ("-gnatwa",
                "-fstack-check",
                "-gnatVa",
@@ -66,6 +68,8 @@ project yass is
          "-lcmark",
          "-flto");
       case Mode is
+         when "dev" =>
+            for Default_Switches ("Ada") use ("-lcmark");
          when "debug" =>
             for Default_Switches ("ada") use ("-no-pie", "-lcmark");
          when "release" =>

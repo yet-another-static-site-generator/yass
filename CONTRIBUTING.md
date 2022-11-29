@@ -49,18 +49,14 @@ possible. This help us all better understand purpose of your changes.
 
 If you want to start help in the program development, please consider starts
 from something easy like fixing bugs. Before you been want to add new feature
-to the program, please contact with me by options available at [contact page](https://www.laeran.pl/repositories/yass/wiki?name=Contact). Same as with features proposition - your code may "collide" with
+to the program, please feel free to [open an issue](https://github.com/yet-another-static-site-generator/yass/issues). Same as with features proposition - your code may "collide" with
 my work and it this moment you may just lose time by working on it. So it is
 better that we first discuss your proposition. In any other case, fell free
 to fix my code.
 
 ### Coding standard
 
-The full description of coding style used by the project, you can find on the
-[Coding Standard](https://www.laeran.pl/repositories/yass/wiki?name=Coding%20Standard) page.
-On the page [Testing the Project](https://www.laeran.pl/repositories/yass/wiki?name=Testing%20the%20Project) you will
-find information how to test your code, so it will be compliant with the
-project standards.
+Please try to utilize of coding style used by the project and be sure to test your code, so it will be compliant with the project standards.
 
 #### Code comments formatting
 
@@ -96,12 +92,8 @@ How to generate the code documentation is described in main *README.md* file.
 
 ### Code submission
 
-A preferred way to submit your code is to use [tickets](https://www.laeran.pl/repositories/yass/ticket)
-on the project page. Please attach to that ticket file with diff changes,
-the best if done with command `fossil patch`. Another diff program will work
-too. In that situation, please add information which program was used to
-create the diff file. If you prefer you can also use other options from
-[contact page](https://www.laeran.pl/repositories/yass/wiki?name=Contact).
+A preferred way to submit your code is to use [Issues](https://github.com/yet-another-static-site-generator/yass/issues) and [Pull Requests](https://github.com/yet-another-static-site-generator/yass/pulls)
+on the project page.
 
 ## Additional debugging options
 
