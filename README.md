@@ -34,6 +34,10 @@ To build you need:
 
   https://github.com/commonmark/cmark
 
+  or specify other commonmark library ie:
+  
+  `export YASS_CMark=cmark-gfm`
+  
 * Ada Web Server (AWS): if you use GNAT from AdaCore it is included in
   package. In other situations, you may need to download it from:
 

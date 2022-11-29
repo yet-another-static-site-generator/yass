@@ -10,11 +10,15 @@ project yass is
 
     for Create_Missing_Dirs use "True";
 
-    type Mode_Type is ("debug", "release", "analyze");
-    Mode : Mode_Type := external ("Mode", "debug");
+    type Mode_Type is ("dev", "debug", "release", "analyze");
+    Mode : Mode_Type := external ("Mode", "dev");
 
     type OS_Type is ("Windows", "Unix");
     OS : OS_Type := external ("OS", "Unix");
+
+    type CMark_Type is ("cmark", "cmark-gfm");
+    CMark : CMark_Type := external ("YASS_CMark", "cmark");
+    CMark_Link_Switch := "-l" & CMark;
 
     package Builder is
       case Mode is
@@ -28,6 +32,8 @@ project yass is
 
     package Binder is
       case Mode is
+         when "dev" =>
+            for Default_Switches ("Ada") use ("-E");
          when "debug" | "analyze" =>
             for Default_Switches("ada") use ("-E", "-shared");
          when "release" =>
@@ -37,7 +43,7 @@ project yass is
 
     package Compiler is
       case Mode is
-         when "debug" =>
+         when "dev" | "debug" =>
             for Default_Switches ("ada") use ("-gnatwa",
                "-fstack-check",
                "-gnatVa",
@@ -63,11 +69,13 @@ project yass is
       Release_Switches := ("-Wl,--gc-sections",
          "-s",
          "-O2",
-         "-lcmark",
+         Cmark_Link_Switch,
          "-flto");
       case Mode is
+         when "dev" =>
+            for Default_Switches ("Ada") use (CMark_Link_Switch);
          when "debug" =>
-            for Default_Switches ("ada") use ("-no-pie", "-lcmark");
+            for Default_Switches ("ada") use ("-no-pie", CMark_Link_Switch);
          when "release" =>
             case OS is
                when "Windows" =>
@@ -81,7 +89,7 @@ project yass is
             for Default_Switches ("ada") use ("-no-pie",
                "-pg",
                "-fprofile-arcs",
-               "-lcmark");
+               CMark_Link_Switch);
       end case;
     end Linker;
 
