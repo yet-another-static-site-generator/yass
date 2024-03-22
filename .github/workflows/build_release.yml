@@ -1,0 +1,24 @@
+name: Build Release
+on:
+   workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up GNAT toolchain
+      run: >
+        sudo apt-get update &&
+        sudo apt-get install gnat gprbuild
+
+    - name: Build
+      run: gprbuild -XMode=release
+
+    - name: Testing pack
+      run: >
+        ls
