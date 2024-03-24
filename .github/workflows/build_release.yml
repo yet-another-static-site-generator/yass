@@ -14,7 +14,8 @@ jobs:
     - name: Set up GNAT toolchain
       run: >
         sudo apt-get update &&
-        sudo apt-get install gnat gprbuild
+        sudo apt-get install gnat gprbuild &&
+        sudo apt-get install libcmark-dev
 
     - name: Build
       run: gprbuild -XMode=release
