@@ -19,6 +19,11 @@ jobs:
     - name: Build
       run: gprbuild -XMode=release
 
-    - name: Testing pack
-      run: >
-        ls
+    - name: Compress yass
+      run: zip -r yass-linux_x86_64.zip bin
+
+    - name: Upload yass
+      uses: actions/upload-artifact@v2
+      with:
+         name: yass-linux_x86_64.zip
+         path: yass-linux_x86_64.zip
