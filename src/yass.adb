@@ -39,7 +39,8 @@ with Sitemaps;
 with Server; use Server;
 
 procedure Yass is
-   Version: constant String := "3.0";
+   Version: constant String := "3.1.0-dev";
+   Released : constant String := "2024-06-01";
    --## rule off GLOBAL_REFERENCES
    Work_Directory: Unbounded_String := Null_Unbounded_String;
    --## rule on GLOBAL_REFERENCES
@@ -289,9 +290,10 @@ begin
       -- Show version information
    elsif Argument(Number => 1) = "version" then
       Put_Line(Item => "Version: " & Version);
-      Put_Line(Item => "Released: 2021-10-29");
+      Put_Line(Item => "Released: " & Released);
       -- Show license information
    elsif Argument(Number => 1) = "license" then
+      Put_Line(Item => "Copyright (C) 2022-2024 A.J. Ianozi");
       Put_Line(Item => "Copyright (C) 2019-2021 Bartek thindil Jasicki");
       New_Line;
       Put_Line
