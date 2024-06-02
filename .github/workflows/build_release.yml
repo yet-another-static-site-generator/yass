@@ -38,8 +38,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install ports
-        uses: melusina-org/setup-macports@v1
+      ###- name: Install ports
+      ###  uses: melusina-org/setup-macports@v1
 
       - name: Set up alire
         uses: alire-project/setup-alire@v3
