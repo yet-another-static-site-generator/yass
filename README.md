@@ -20,6 +20,15 @@ care about it.
 
 ## Build from sources
 
+### Using alire
+
+If all goes will this will be in the alire index soon.  For now, you can build
+via `alr update && alr build`
+
+This should automatically pull all of the dependencies in, including libcmark.
+
+### Using gprbuild
+
 To build you need:
 
 * compiler: GCC with enabled Ada support or GNAT from:
@@ -70,6 +79,9 @@ If you want to be able to print content of README.md file to terminal (by
 debug mode the program may have problems with finding all dependencies.
 
 ### Build unit tests
+
+**Note:** Unit tests are currently being migrated to aunit and alire so this may
+not work as expected.
 
 Navigate to `tests/driver` directory from the main directory (where this
 file is):
