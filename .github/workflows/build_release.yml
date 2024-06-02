@@ -3,7 +3,8 @@ on:
    workflow_dispatch:
 
 jobs:
-  build:
+  ###  x86-64 linux
+  build-linux_x86_64:
 
     runs-on: ubuntu-20.04
 
@@ -11,13 +12,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Set up GNAT toolchain
-      run: >
-        sudo apt-get update &&
-        sudo apt-get install gnat gprbuild libcmark-dev libaws* libxmlada*
+    - name: Set up alire
+      uses: alire-project/setup-alire@v1
 
-    - name: Build
-      run: gprbuild -XMode=release
+    - name: Build yass
+      run: >
+        alr -n update &&
+        alr -n build --release
 
     - name: Compress yass
       run: zip -r yass-linux_x86_64.zip bin
@@ -27,3 +28,55 @@ jobs:
       with:
          name: yass-linux_x86_64.zip
          path: yass-linux_x86_64.zip
+
+  ###  x86-64 MacOS
+  build-macos_x86_64:
+    runs-on: macos-12
+
+    steps: 
+    
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up alire
+        uses: alire-project/setup-alire@v1
+
+      - name: Build yass
+        run: >
+          alr -n update &&
+          alr -n build --release
+
+      - name: Compress yass
+        run: zip -r yass-mac_x86_64.zip bin
+    
+      - name: Upload yass
+        uses: actions/upload-artifact@v2
+        with:
+          name: yass-mac_x86_64.zip
+          path: yass-mac_x86_64.zip
+
+  ###  build on windows
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up alire
+        uses: alire-project/setup-alire@v1
+
+      - name: Build yass
+        run: >
+          alr -n update &&
+          alr -n build --release
+          
+      - name: Compress yass
+        run: 7z a -tzip yass-win.zip bin
+
+      - name: upload yass
+        uses: actions/upload-artifact@v2
+        with:
+         name: yass-win.zip
+         path: yass-win.zip
