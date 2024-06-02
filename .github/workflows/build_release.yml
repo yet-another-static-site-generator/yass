@@ -17,6 +17,7 @@ jobs:
 
     - name: Build yass
       run: >
+        alr -n index --update-all &&
         alr -n update &&
         alr -n build --release
 
@@ -43,6 +44,7 @@ jobs:
 
       - name: Build yass
         run: >
+          alr -n index --update-all &&
           alr -n update &&
           alr -n build --release
 
@@ -69,6 +71,7 @@ jobs:
 
       - name: Build yass
         run: >
+          alr -n index --update-all &&
           alr -n update &&
           alr -n build --release
           
