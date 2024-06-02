@@ -17,8 +17,6 @@ jobs:
 
     - name: Build yass
       run: >
-        apt-get install libcmark-dev -y &&
-        alr -n index --update-all &&
         alr -n update &&
         alr -n build --release
 
@@ -48,7 +46,6 @@ jobs:
 
       - name: Build yass
         run: >
-          alr -n index --update-all &&
           alr -n update &&
           alr -n build --release
 
@@ -75,7 +72,6 @@ jobs:
 
       - name: Build yass
         run: >
-          alr -n index --update-all &&
           alr -n update &&
           alr -n build --release
           
