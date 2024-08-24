@@ -67,6 +67,8 @@ Possible settings for project:
 * EnableSitemap: Did the program should create sitemap when creating the site.
   Possible values are true or false (case-insensitive). Default value is
   `true` (create sitemap).
+* HTMLEnabled: Enables HTML that is embedded in the markdown. Default value is
+  `true`
 * AtomFeedSource: Source which will be used for creating Atom feed of the
   site. Possible values are: `none`: don't create Atom feed, `tags`: create
   Atom entries from proper tags in .md files, `[filename]`: the path (related to

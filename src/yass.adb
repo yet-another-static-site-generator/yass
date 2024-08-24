@@ -1,4 +1,4 @@
---    Copyright 2019-2021 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki & 2022-2024 A.J. Ianozi
 --
 --    This file is part of YASS.
 --
@@ -39,8 +39,8 @@ with Sitemaps;
 with Server; use Server;
 
 procedure Yass is
-   Version: constant String := "3.1.0-dev";
-   Released : constant String := "2024-06-01";
+   Version: constant String := "3.1.0";
+   Released : constant String := "2024-08-23";
    --## rule off GLOBAL_REFERENCES
    Work_Directory: Unbounded_String := Null_Unbounded_String;
    --## rule on GLOBAL_REFERENCES
@@ -518,6 +518,6 @@ exception
          Close(File => Error_File);
          Put_Line
            (Item =>
-              "Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://www.laeran.pl/repositories/yass and attach (if possible) file 'error.log' (should be in this same directory).");
+              "Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://github.com/yet-another-static-site-generator/yass and attach (if possible) file 'error.log' (should be in this same directory).");
       end Save_Exception_Info_Block;
 end Yass;

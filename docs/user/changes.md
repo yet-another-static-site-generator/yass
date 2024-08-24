@@ -29,6 +29,16 @@
 -- detailslink: 0.3
 -- detailslink: 0.2
 -- detailslink: 0.1
+## <a name="3.1"></a>[3.1] - 2024-08-83
+### Added
+- Alire support
+- Includes HTML by default
+
+### Changed
+- Updated README.md
+- Updated contributing guide
+- Website itself now at yass.website
+
 ## <a name="3.0"></a>[3.0] - 2021-10-29
 
 ### Added

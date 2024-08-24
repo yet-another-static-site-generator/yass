@@ -1,4 +1,4 @@
---    Copyright 2019-2021 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki & 2022-2024 A.J. Ianozi
 --
 --    This file is part of YASS.
 --
@@ -98,6 +98,11 @@ package body Config is
          Item =>
            "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
       Put_Line(File => Config_File, Item => "SitemapEnabled = true");
+      Put_Line
+        (File => Config_File,
+         Item =>
+           "# Should program convert HTML in markdown documents to actual HTML. Possible values are true or false (case-insensitive).");
+      Put_Line(File => Config_File, Item => "HTMLEnabled = true");
       Put_Line
         (File => Config_File,
          Item =>
@@ -276,6 +281,12 @@ package body Config is
          elsif Field_Name =
            To_Unbounded_String(Source => "SitemapEnabled") then
             Yass_Config.Sitemap_Enabled :=
+              (if To_Lower(Item => To_String(Source => Value)) = "true" then
+                 True
+               else False);
+         elsif Field_Name =
+           To_Unbounded_String(Source => "HTMLEnabled") then
+            Yass_Config.HTML_Enabled :=
               (if To_Lower(Item => To_String(Source => Value)) = "true" then
                  True
                else False);
@@ -520,6 +531,16 @@ package body Config is
          Put_Line(File => Config_File, Item => "SitemapEnabled = true");
       else
          Put_Line(File => Config_File, Item => "SitemapEnabled = false");
+      end if;
+      Put
+        (Item =>
+           "Do you want to HTML embedded in your markdown to be converted? (default - yes): ");
+      Answer := To_Unbounded_String(Source => Get_Line);
+      if Answer in To_Unbounded_String(Source => "yes") |
+            To_Unbounded_String(Source => "y") | Null_Unbounded_String then
+         Put_Line(File => Config_File, Item => "HTMLEnabled = true");
+      else
+         Put_Line(File => Config_File, Item => "HTMLEnabled = false");
       end if;
       Put
         (Item =>

@@ -1,4 +1,4 @@
---    Copyright 2019-2021 Bartek thindil Jasicki
+--    Copyright 2019-2021 Bartek thindil Jasicki & 2022-2024 A.J. Ianozi
 --
 --    This file is part of YASS.
 --
@@ -87,6 +87,7 @@ package Config is
       Base_Url: Unbounded_String :=
         To_Unbounded_String(Source => "http://localhost:8888");
       Sitemap_Enabled: Boolean := True;
+      HTML_Enabled: Boolean := True;
       Atom_Feed_Source: Unbounded_String :=
         To_Unbounded_String(Source => "none");
       Site_Name: Unbounded_String := To_Unbounded_String(Source => "New Site");

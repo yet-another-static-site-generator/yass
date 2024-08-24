@@ -1,6 +1,6 @@
 name = "yass"
 description = "Static website generator"
-version = "3.1.0-dev"
+version = "3.1.0"
 
 authors = ["AJ Ianozi"]
 maintainers = ["AJ Ianozi <aj@ianozi.com>"]

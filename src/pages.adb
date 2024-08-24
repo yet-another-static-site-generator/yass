@@ -1,4 +1,4 @@
---    Copyright 2019-2021 Bartek thindil Jasicki & 2022 A.J. Ianozi
+--    Copyright 2019-2021 Bartek thindil Jasicki & 2022-2024 A.J. Ianozi
 --
 --    This file is part of YASS.
 --
@@ -83,6 +83,8 @@ package body Pages is
          Import => True,
          Convention => C,
          External_Name => "cmark_markdown_to_html";
+      Markdown_Options : constant int :=
+        (if Yass_Config.HTML_Enabled then 16#20000# else 0);
       -- Insert selected list of tags Tags_List to templates
       procedure Insert_Tags(Tags_List: Tags_Container.Map) is
          use AWS.Templates.Utils;
@@ -304,7 +306,8 @@ package body Pages is
              (Item =>
                 Cmark_Markdown_To_Html
                   (Text => New_String(Str => To_String(Source => Content)),
-                   Len => Size_T(Length(Source => Content)), Options => 0)));
+                   Len => Size_T(Length(Source => Content)),
+                   Options => Markdown_Options)));
       -- Load the program modules with 'pre' hook
       Load_Modules
         (State => "pre", Page_Tags => Page_Tags,
