@@ -4,9 +4,6 @@ As name says, it is static site generator written in Ada. It is *headless*
 application (no user interface). The program documentation is included in
 distribution.
 
-**INFO:** This project is no longer maintained. Feel free to clone it and take
-care about it.
-
 ## Features
 
 * Support almost infinite amount of custom tags in HTML templates (depends
@@ -21,9 +18,11 @@ care about it.
 ## Build from sources
 
 ### Using alire
+To install it, simply run `alr install yass` and yass will automatically be 
+added to alire's binary folder (default is `$HOME/.alire/bin`).
 
-If all goes will this will be in the alire index soon.  For now, you can build
-via `alr update && alr build`
+If you'd rather just download and build manually, either run `alr get yass` or 
+clone this repository and run `alr update && alr build`.
 
 This should automatically pull all of the dependencies in, including libcmark.
 
