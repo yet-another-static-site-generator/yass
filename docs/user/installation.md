@@ -9,6 +9,12 @@
 -- detailslink: []
 -- detailslink: requirements
 -- detailslink: buildprogram
+
+
+## <a name="downloading"></a>Downloading
+
+The easiest way to get YASS is by downloading the [latest release](https://github.com/yet-another-static-site-generator/yass/releases/latest) for your operating system.  For example, if you have windows, then download ` yass-windows_x86_64.zip`.
+
 ## <a name="requirements"></a>Requirements
 
 To run the program or build it from the sources you need *libcmark* library
@@ -16,29 +22,29 @@ which should be available in most Linux distributions. If not, you can
 download it source code from [GitHub](https://github.com/commonmark/cmark).
 Please refer to it documentation on how to compile it.
 
-If you use downloaded AppImage version of the program, you don't need any
-other dependencies. More information about using AppImage files you can find
-in [AppImage documentation](https://docs.appimage.org/user-guide/run-appimages.html)
-
 <a href="#top">^ Top</a>
 
 ## <a name="buildprogram"></a>Build from sources
 
-### Docker way
+### Using Alire
 
-You can use Docker images `adabuild` and `adabuildwin64` from the project
-[Docker Ada](https://www.laeran.pl/repositories/dockerada). They contain all libraries
-and compiler needed to build the program.
+The easiest way to build YASS is via [Alire](https://alire.ada.dev/).  If don't
+ have alire already, you can get it from the main website or auto-install it via
+ [Getada.dev](https://www.getada.dev/).
 
-To build the program for Linux, download `adabuild` image and type in console:
+To build and install it, simply run `alr install yass` and yass will automatically be 
+added to alire's binary folder (default is `$HOME/.alire/bin`).
 
-`docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuild /bin/bash -c "cd /app && gprbuild -p -P yass.gpr -XMode=release"`
+If you'd rather just download and build manually, navigate to a folder where you
+ wish to build YASS and issue the following commands:
+ 1. `alr get yass`
+ 2. `cd yass*`
+ 3. `alr update && alr build`
+ YASS will now be in the project's `./bin` directory.
 
-To build the program for Windows 64-bit, download `adabuildwin64` image and type in console:
+This should automatically pull all of the dependencies in, ie AWS and libcmark.
 
-`docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuildwin64 /bin/bash -c "cd /app && gprbuild -p -P yass.gpr -XMode=release --target=x86_64-windows"`
-
-### Classic way
+### Using gprbuild
 
 #### Preparations
 

@@ -15,16 +15,29 @@ distribution.
 * Generating Atom feeds
 * Auto reconfigure server when configuration file was changed
 
+## Downloading YASS
+
+The easiest way to get YASS is by downloading the [latest release](https://github.com/yet-another-static-site-generator/yass/releases/latest) for your operating system.  For example, if you have windows, then download ` yass-windows_x86_64.zip`.
+
 ## Build from sources
 
 ### Using alire
-To install it, simply run `alr install yass` and yass will automatically be 
+
+The easiest way to build YASS is via [Alire](https://alire.ada.dev/).  If don't
+ have alire already, you can get it from the main website or auto-install it via
+ [Getada.dev](https://www.getada.dev/).
+
+To build and install it, simply run `alr install yass` and yass will automatically be 
 added to alire's binary folder (default is `$HOME/.alire/bin`).
 
-If you'd rather just download and build manually, either run `alr get yass` or 
-clone this repository and run `alr update && alr build`.
+If you'd rather just download and build manually, navigate to a folder where you
+ wish to build YASS and issue the following commands:
+ 1. `alr get yass`
+ 2. `cd yass*`
+ 3. `alr update && alr build`
+ YASS will now be in the project's `./bin` directory.
 
-This should automatically pull all of the dependencies in, including libcmark.
+This should automatically pull all of the dependencies in, ie AWS and libcmark.
 
 ### Using gprbuild
 
