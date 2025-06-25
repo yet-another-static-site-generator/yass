@@ -2,7 +2,10 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [ master ]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
 
 ### Until I get the new tests working I will have to just deal with this method.
 
@@ -10,7 +13,7 @@ jobs:
   ###  x86-64 linux
   build-linux_x86_64:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout
