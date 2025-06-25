@@ -4,97 +4,80 @@ on:
   push:
     branches: [ master ]
 
+### Until I get the new tests working I will have to just deal with this method.
+
 jobs:
+  ###  x86-64 linux
+  build-linux_x86_64:
 
-  tests:
-
-    runs-on: ubuntu-latest
-
-    container: ghcr.io/thindil/adabuild:10
+    runs-on: ubuntu-20.04
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Generate tests
-      run: gnattest -P yass.gpr
+    - name: Set up alire
+      uses: alire-project/setup-alire@v3
 
-    - name: Build the tests
-      run: gprbuild -P tests/driver/test_driver.gpr
+    - name: Build yass
+      run: >
+        alr -n update &&
+        alr -n build --release
 
-    - name: Run the tests
-      run: others/tests.tcl
+    - name: Test yass
+      run: >
+        bin/yass build docs/user &&
+        bin/yass createnow newsite &&
+        bin/yass build newsite
 
-  adacontrol:
+  ###  x86-64 MacOS
+  build-macos_x86_64:
+    runs-on: macos-13
 
-    needs: tests
+    steps: 
+    
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    runs-on: ubuntu-latest
+      - name: install latest xcode stuff
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+           xcode-version: latest-stable
 
-    container: ghcr.io/thindil/adacontrol:9
+      - name: Set up alire
+        uses: alire-project/setup-alire@v3
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Build yass
+        run: >
+          alr -n update &&
+          alr -n build --release
 
-    - name: Run AdaControl
-      run: |
-         mkdir obj
-         cd obj
-         adactl -f ../others/rules.aru -p ../yass.gpr -o ../adacontrol.log -r yass-aws-templates_parser-dom-unicode-input_sources-aws_config-aws_net_log
-         cd ..
+      - name: Test yass
+        run: >
+          bin/yass build docs/user &&
+          bin/yass createnow newsite &&
+          bin/yass build newsite
 
-    - name: Upload the log
-      uses: actions/upload-artifact@v2
-      if: failure()
-      with:
-         name: adacontrol.log
-         path: adacontrol.log
-
-  build_linux:
-
-    needs: adacontrol
-
-    runs-on: ubuntu-latest
-
-    container: ghcr.io/thindil/adabuild:10
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Build the program
-      run: others/build.tcl x86_64-linux-gnu
-
-    - name: Compress the artifact
-      run: tar -cf yass-development-linux.tar usr
-
-    - name: Upload the artifact
-      uses: actions/upload-artifact@v2
-      with:
-         name: yass-development-linux.tar
-         path: yass-development-linux.tar
-
-  build_windows:
-
-    needs: adacontrol
-
-    runs-on: ubuntu-latest
-
-    container: ghcr.io/thindil/adabuildwin64:10
+  ###  build on windows
+  build-windows:
+    runs-on: windows-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
 
-    - name: Build the program
-      run: others/build.tcl x86_64-windows
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Compress the artifact
-      run: tar -cf yass-development-windows.tar release
+      - name: Set up alire
+        uses: alire-project/setup-alire@v3
 
-    - name: Upload the artifact
-      uses: actions/upload-artifact@v2
-      with:
-         name: yass-development-windows.tar
-         path: yass-development-windows.tar
+      - name: Build yass
+        run: >
+          alr -n update &&
+          alr -n build --release
+
+
+      - name: Test yass
+        run: >
+          bin/yass build docs/user &&
+          bin/yass createnow newsite &&
+          bin/yass build newsite
