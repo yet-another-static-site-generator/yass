@@ -1,11 +1,6 @@
 name: Continuous Integration
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+on: pull_request
 
 ### Until I get the new tests working I will have to just deal with this method.
 
