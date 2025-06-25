@@ -24,15 +24,17 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
-with Interfaces.C;
-with Interfaces.C.Strings;
+
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+
 with AWS.Templates;
 with AWS.Templates.Utils;
-with Config; use Config;
-with Sitemaps; use Sitemaps;
+
 with AtomFeed;
-with Modules; use Modules;
+with CMark;
+with Config;   use Config;
+with Modules;  use Modules;
+with Sitemaps; use Sitemaps;
 
 package body Pages is
 
@@ -41,8 +43,6 @@ package body Pages is
    procedure Create_Page(File_Name, Directory: String) is
       use Ada.Characters.Handling;
       use Ada.Exceptions;
-      use Interfaces.C;
-      use Interfaces.C.Strings;
       use AWS.Templates;
       use AtomFeed;
 
@@ -77,14 +77,7 @@ package body Pages is
         FeedEntry_Container.Empty_Vector;
       --## rule on GLOBAL_REFERENCES
       Sitemap_Invalid_Value, Invalid_Value: exception;
-      subtype Size_T is unsigned_long;
-      function Cmark_Markdown_To_Html
-        (Text: chars_ptr; Len: Size_T; Options: int) return chars_ptr with
-         Import => True,
-         Convention => C,
-         External_Name => "cmark_markdown_to_html";
-      Markdown_Options : constant int :=
-        (if Yass_Config.HTML_Enabled then 16#20000# else 0);
+
       -- Insert selected list of tags Tags_List to templates
       procedure Insert_Tags(Tags_List: Tags_Container.Map) is
          use AWS.Templates.Utils;
@@ -298,16 +291,14 @@ package body Pages is
          end loop Read_Page_File_Loop;
          Close(File => Page_File);
       end Read_Page_File_Block;
+
       -- Convert markdown to HTML
       Page_Tags.Include
-        (Key => "Content",
-         New_Item =>
-           Value
-             (Item =>
-                Cmark_Markdown_To_Html
-                  (Text => New_String(Str => To_String(Source => Content)),
-                   Len => Size_T(Length(Source => Content)),
-                   Options => Markdown_Options)));
+        (Key      => "Content",
+         New_Item => CMark.Markdown_To_HTML
+                       (Text         => To_String (Content),
+                        HTML_Enabled => Yass_Config.HTML_Enabled));
+
       -- Load the program modules with 'pre' hook
       Load_Modules
         (State => "pre", Page_Tags => Page_Tags,
