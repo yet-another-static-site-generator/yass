@@ -1,20 +1,9 @@
 name = "tests"
 description = "Test of Yass"
-version = "0.1.0-dev"
-
-authors = ["Jesper Quorning"]
-maintainers = ["Jesper Quorning <jesper.quorning@gmail.com>"]
-maintainers-logins = ["jquorning"]
-licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
-website = ""
-tags = []
+version = "0.1.0-test"
 
 project-files = ["driver/test_driver.gpr"]
-#executables = ["tests"]
 executables = ["test_runner"]
-
-#[test]
-#runner = "alire"
 
 [[depends-on]]
 aunit = "^25.0.0"
