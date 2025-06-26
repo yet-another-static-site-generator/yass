@@ -1,0 +1,15 @@
+name = "tests"
+description = "Test of Yass"
+version = "0.1.0-dev"
+
+authors = ["Jesper Quorning"]
+maintainers = ["Jesper Quorning <jesper.quorning@gmail.com>"]
+maintainers-logins = ["jquorning"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+executables = ["tests"]
+
+[test]
+runner = "alire"
