@@ -22,3 +22,6 @@ yass  = "*"
 
 [[pins]]
 yass = { path = '../' }
+
+[build-profiles]
+yass = "validation"
