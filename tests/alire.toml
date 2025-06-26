@@ -9,7 +9,16 @@ licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
 website = ""
 tags = []
 
-executables = ["tests"]
+project-files = ["driver/test_driver.gpr"]
+#executables = ["tests"]
+executables = ["test_runner"]
 
-[test]
-runner = "alire"
+#[test]
+#runner = "alire"
+
+[[depends-on]]
+aunit = "^25.0.0"
+yass  = "*"
+
+[[pins]]
+yass = { path = '../' }
