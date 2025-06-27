@@ -76,6 +76,17 @@ project Yass is
          "-c0");
    end Pretty_Printer;
 
+   package GNATtest is
+      for Tests_Dir use "tests/";
+      for Harness_Dir use "tests/driver/";
+      for GNATtest_Switches use (
+         "--omit-sloc",
+         "--test-case-only",
+         "--passed-tests=show",
+         "--exit-status=on"
+        );
+   end GNATtest;
+
    package Install is
       for Artifacts (".") use ("share");
    end Install;
