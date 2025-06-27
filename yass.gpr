@@ -77,9 +77,10 @@ project Yass is
    end Pretty_Printer;
 
    package GNATtest is
-      for Tests_Dir use "tests/";
-      for Harness_Dir use "tests/driver/";
+      for Tests_Dir   use "../../tests/";         --  Relative to Object_Dir
+      for Harness_Dir use "../../tests/driver/";  --  Relative to Object_Dir
       for GNATtest_Switches use (
+         "--no-subprojects",
          "--omit-sloc",
          "--test-case-only",
          "--passed-tests=show",
