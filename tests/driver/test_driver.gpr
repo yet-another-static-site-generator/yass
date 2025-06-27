@@ -11,6 +11,7 @@ project Test_Driver is
 
    for Languages use ("Ada");
    for Main use ("test_runner.adb");
+   for Object_Dir use "obj/";
    for Exec_Dir use ".";
 
    package Builder renames Gnattest_Common.Builder;

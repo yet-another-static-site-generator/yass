@@ -6,6 +6,7 @@ project test_yass is
    for Source_Dirs use
      ("../../obj/../tests",
       "common");
+   for Object_Dir use "obj/";
 
    for Languages use Gnattest_Common'Languages & ("Ada");
    package Compiler renames Gnattest_Common.Compiler;
