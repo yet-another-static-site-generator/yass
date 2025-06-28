@@ -85,9 +85,10 @@ package body AtomFeed.Test_Data.Tests is
       declare
          Test_To_HTTP_Date_2bd5b1_79d01d_Result: constant String :=
            GNATtest_Generated.GNATtest_Standard.AtomFeed.To_HTTP_Date(Date);
+         Result : String renames Test_To_Http_Date_2bd5b1_79d01d_Result;
       begin
          begin
-            pragma Assert(To_HTTP_Date'Result'Length > 0);
+            pragma Assert(Result'Length > 0);
             null;
          exception
             when System.Assertions.Assert_Failure =>
