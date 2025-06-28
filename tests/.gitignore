@@ -1,8 +1,7 @@
 /alire/
-/bin/
 /config/
-/lib/
-/obj/
+/driver
+!/driver/gnattest_common.gpr
 
 *.a
 *.ali
