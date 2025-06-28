@@ -41,8 +41,8 @@ package body CMark is
    -- Markdown_to_HTML --
    ----------------------
 
-   function Markdown_To_HTML (Text         : in String;
-                              HTML_Enabled : in Boolean)
+   function Markdown_To_HTML (Text         : String;
+                              HTML_Enabled : Boolean)
                               return String
    is
       C_Options : constant int :=
