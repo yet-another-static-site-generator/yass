@@ -11,13 +11,16 @@ project Test_Driver is
 
    for Languages use ("Ada");
    for Main use ("test_runner.adb");
-   for Object_Dir use "obj/";
    for Exec_Dir use ".";
 
    package Builder renames Gnattest_Common.Builder;
    package Linker renames Gnattest_Common.Linker;
    package Binder renames Gnattest_Common.Binder;
    package Compiler renames Gnattest_Common.Compiler;
+
+   package Coverage is
+      for Units use ();
+   end Coverage;
 
    package GNATtest is
       for GNATTest_Mapping_File use "gnattest.xml";

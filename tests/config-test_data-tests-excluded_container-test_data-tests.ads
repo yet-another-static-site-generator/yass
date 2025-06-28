@@ -6,7 +6,8 @@ with Gnattest_Generated;
 
 package Config.Test_Data.Tests.Excluded_Container.Test_Data.Tests is
 
-   type Test is new GNATtest_Generated.GNATtest_Standard.Config.Test_Data.Tests
+   type Test is
+   new GNATtest_Generated.GNATtest_Standard.Config.Test_Data.Tests
      .Excluded_Container
      .Test_Data
      .New_Test with

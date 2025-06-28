@@ -1,91 +1,67 @@
 <tests_mapping mode="monolith">
    <unit source_file="atomfeed.ads">
-      <test_unit target_file="atomfeed-test_data-tests.ads">
+      <test_unit target_file="AtomFeed">
          <setup file="atomfeed-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="atomfeed-test_data.adb" name="Tear_Down" line="14"  column="4"/>
-         <tested name="To_Time" line="75" column="13">
-            <test_case name="Test_To_Date" line="77" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="75" column="1" name="Test_To_Time_e953f5_b6f0f8" timestamp="modified"/>
+         <tested name="To_Time" line="77" column="13">
+            <test_case name="Test_To_Date" line="79" column="7">
+               <test file="atomfeed-test_data-tests.adb" line="65" column="1" name="Test_To_Time_e953f5_c5180a" timestamp="modified"/>
             </test_case>
          </tested>
-         <tested name="To_HTTP_Date" line="88" column="13">
-            <test_case name="Test_To_HTTP_Date" line="91" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="130" column="1" name="Test_To_HTTP_Date_2bd5b1_0b38f7" timestamp="modified"/>
+         <tested name="To_HTTP_Date" line="90" column="13">
+            <test_case name="Test_To_HTTP_Date" line="93" column="7">
+               <test file="atomfeed-test_data-tests.adb" line="110" column="1" name="Test_To_HTTP_Date_2bd5b1_79d01d" timestamp="modified"/>
             </test_case>
          </tested>
-         <tested name="Start_Atom_Feed" line="98" column="14">
-            <test_case name="Test_Start_Atom_Feed" line="99" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="158" column="1" name="Test_Start_Atom_Feed_2493ea_0ccbf2" timestamp="modified"/>
+         <tested name="Start_Atom_Feed" line="100" column="14">
+            <test_case name="Test_Start_Atom_Feed" line="101" column="7">
+               <test file="atomfeed-test_data-tests.adb" line="138" column="1" name="Test_Start_Atom_Feed_2493ea_0ccbf2" timestamp="modified"/>
             </test_case>
          </tested>
-         <tested name="Add_Page_To_Feed" line="109" column="14">
-            <test_case name="Test_Add_Page_To_Feed" line="112" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="208" column="1" name="Test_Add_Page_To_Feed_467d32_84581a" timestamp="modified"/>
+         <tested name="Add_Page_To_Feed" line="111" column="14">
+            <test_case name="Test_Add_Page_To_Feed" line="114" column="7">
+               <test file="atomfeed-test_data-tests.adb" line="178" column="1" name="Test_Add_Page_To_Feed_467d32_dc8147" timestamp="modified"/>
             </test_case>
          </tested>
-         <tested name="Save_Atom_Feed" line="119" column="14">
-            <test_case name="Test_Save_Atom_Feed" line="120" column="7">
-               <test file="atomfeed-test_data-tests.adb" line="241" column="1" name="Test_Save_Atom_Feed_73b303_2e8e31" timestamp="modified"/>
+         <tested name="Save_Atom_Feed" line="121" column="14">
+            <test_case name="Test_Save_Atom_Feed" line="122" column="7">
+               <test file="atomfeed-test_data-tests.adb" line="211" column="1" name="Test_Save_Atom_Feed_73b303_2e8e31" timestamp="modified"/>
             </test_case>
          </tested>
-         <dangling>
-         </dangling>
-      </test_unit>
-      <test_unit target_file="atomfeed-test_data-tests-feedentry_container-test_data-tests.ads">
-         <setup file="atomfeed-test_data-tests-feedentry_container-test_data.adb" name="Set_Up" line="8"  column="4"/>
-         <teardown file="atomfeed-test_data-tests-feedentry_container-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <dangling>
          </dangling>
       </test_unit>
    </unit>
    <unit source_file="config.ads">
-      <test_unit target_file="config-test_data-tests.ads">
+      <test_unit target_file="Config">
          <setup file="config-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="config-test_data.adb" name="Tear_Down" line="14"  column="4"/>
-         <tested name="Create_Config" line="175" column="14">
-            <test_case name="Test_Create_Config" line="177" column="7">
-               <test file="config-test_data-tests.adb" line="68" column="1" name="Test_Create_Config_683023_fc325a" timestamp="modified"/>
+         <tested name="Create_Config" line="178" column="14">
+            <test_case name="Test_Create_Config" line="180" column="7">
+               <test file="config-test_data-tests.adb" line="58" column="1" name="Test_Create_Config_683023_a99277" timestamp="modified"/>
             </test_case>
          </tested>
-         <tested name="Parse_Config" line="188" column="14">
-            <test_case name="Test_Parse_Config" line="190" column="7">
-               <test file="config-test_data-tests.adb" line="117" column="1" name="Test_Parse_Config_31244b_3aea6e" timestamp="modified"/>
+         <tested name="Parse_Config" line="191" column="14">
+            <test_case name="Test_Parse_Config" line="193" column="7">
+               <test file="config-test_data-tests.adb" line="97" column="1" name="Test_Parse_Config_31244b_5fe7b0" timestamp="modified"/>
             </test_case>
          </tested>
-         <dangling>
-         </dangling>
-      </test_unit>
-      <test_unit target_file="config-test_data-tests-excluded_container-test_data-tests.ads">
-         <setup file="config-test_data-tests-excluded_container-test_data.adb" name="Set_Up" line="8"  column="4"/>
-         <teardown file="config-test_data-tests-excluded_container-test_data.adb" name="Tear_Down" line="14"  column="4"/>
-         <dangling>
-         </dangling>
-      </test_unit>
-      <test_unit target_file="config-test_data-tests-tags_container-test_data-tests.ads">
-         <setup file="config-test_data-tests-tags_container-test_data.adb" name="Set_Up" line="8"  column="4"/>
-         <teardown file="config-test_data-tests-tags_container-test_data.adb" name="Tear_Down" line="14"  column="4"/>
-         <dangling>
-         </dangling>
-      </test_unit>
-      <test_unit target_file="config-test_data-tests-tabletags_container-test_data-tests.ads">
-         <setup file="config-test_data-tests-tabletags_container-test_data.adb" name="Set_Up" line="8"  column="4"/>
-         <teardown file="config-test_data-tests-tabletags_container-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <dangling>
          </dangling>
       </test_unit>
    </unit>
    <unit source_file="layouts.ads">
-      <test_unit target_file="layouts-test_data-tests.ads">
+      <test_unit target_file="Layouts">
          <setup file="layouts-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="layouts-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="Create_Layout" line="32" column="14">
             <test_case name="Test_Create_Layout" line="34" column="7">
-               <test file="layouts-test_data-tests.adb" line="68" column="1" name="Test_Create_Layout_c5b31b_63f314" timestamp="modified"/>
+               <test file="layouts-test_data-tests.adb" line="58" column="1" name="Test_Create_Layout_c5b31b_3f7438" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="Create_Directory_Layout" line="44" column="14">
             <test_case name="Test_Create_Directory_Layout" line="45" column="7">
-               <test file="layouts-test_data-tests.adb" line="98" column="1" name="Test_Create_Directory_Layout_00199c_0f2a92" timestamp="modified"/>
+               <test file="layouts-test_data-tests.adb" line="88" column="1" name="Test_Create_Directory_Layout_00199c_0f2a92" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
@@ -93,12 +69,12 @@
       </test_unit>
    </unit>
    <unit source_file="messages.ads">
-      <test_unit target_file="messages-test_data-tests.ads">
+      <test_unit target_file="Messages">
          <setup file="messages-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="messages-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="Show_Message" line="45" column="14">
             <test_case name="Test_Show_Message" line="48" column="7">
-               <test file="messages-test_data-tests.adb" line="66" column="1" name="Test_Show_Message_b0ef3e_ce41f3" timestamp="modified"/>
+               <test file="messages-test_data-tests.adb" line="56" column="1" name="Test_Show_Message_b0ef3e_268f83" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
@@ -106,12 +82,12 @@
       </test_unit>
    </unit>
    <unit source_file="modules.ads">
-      <test_unit target_file="modules-test_data-tests.ads">
+      <test_unit target_file="Modules">
          <setup file="modules-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="modules-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="Load_Modules" line="37" column="14">
             <test_case name="Test_Load_Modules" line="41" column="7">
-               <test file="modules-test_data-tests.adb" line="66" column="1" name="Test_Load_Modules_944a26_c25e19" timestamp="modified"/>
+               <test file="modules-test_data-tests.adb" line="56" column="1" name="Test_Load_Modules_944a26_495a16" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
@@ -119,27 +95,27 @@
       </test_unit>
    </unit>
    <unit source_file="pages.ads">
-      <test_unit target_file="pages-test_data-tests.ads">
+      <test_unit target_file="Pages">
          <setup file="pages-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="pages-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="Create_Page" line="41" column="14">
             <test_case name="Test_Create_Page" line="43" column="7">
-               <test file="pages-test_data-tests.adb" line="70" column="1" name="Test_Create_Page_93a400_dc01ab" timestamp="modified"/>
+               <test file="pages-test_data-tests.adb" line="60" column="1" name="Test_Create_Page_93a400_e3720d" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="Copy_File" line="54" column="14">
             <test_case name="Test_Copy_File" line="56" column="7">
-               <test file="pages-test_data-tests.adb" line="121" column="1" name="Test_Copy_File_2f1aa9_049492" timestamp="modified"/>
+               <test file="pages-test_data-tests.adb" line="101" column="1" name="Test_Copy_File_2f1aa9_a56046" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="Create_Empty_File" line="65" column="14">
             <test_case name="Test_Create_Empty_File" line="67" column="7">
-               <test file="pages-test_data-tests.adb" line="170" column="1" name="Test_Create_Empty_File_07d252_44c53f" timestamp="modified"/>
+               <test file="pages-test_data-tests.adb" line="140" column="1" name="Test_Create_Empty_File_07d252_7a3630" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="Get_Layout_Name" line="78" column="13">
             <test_case name="Test_Get_Layout_Name" line="80" column="7">
-               <test file="pages-test_data-tests.adb" line="222" column="1" name="Test_Get_Layout_Name_dd1d05_287311" timestamp="modified"/>
+               <test file="pages-test_data-tests.adb" line="182" column="1" name="Test_Get_Layout_Name_dd1d05_d0feda" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
@@ -147,28 +123,25 @@
       </test_unit>
    </unit>
    <unit source_file="sitemaps.ads">
-      <test_unit target_file="sitemaps-test_data-tests.ads">
+      <test_unit target_file="Sitemaps">
          <setup file="sitemaps-test_data.adb" name="Set_Up" line="8"  column="4"/>
          <teardown file="sitemaps-test_data.adb" name="Tear_Down" line="14"  column="4"/>
          <tested name="Start_Sitemap" line="29" column="14">
             <test_case name="Test_Start_Sitemap" line="30" column="7">
-               <test file="sitemaps-test_data-tests.adb" line="51" column="1" name="Test_Start_Sitemap_8927d0_223cc9" timestamp="2021-09-04 05:48:54"/>
+               <test file="sitemaps-test_data-tests.adb" line="51" column="1" name="Test_Start_Sitemap_8927d0_223cc9" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="Add_Page_To_Sitemap" line="43" column="14">
             <test_case name="Test_Add_Page_To_Sitemap" line="46" column="7">
-               <test file="sitemaps-test_data-tests.adb" line="79" column="1" name="Test_Add_Page_To_Sitemap_3dbb1d_d33b30" timestamp="2021-09-04 05:48:54"/>
+               <test file="sitemaps-test_data-tests.adb" line="78" column="1" name="Test_Add_Page_To_Sitemap_3dbb1d_d33b30" timestamp="modified"/>
             </test_case>
          </tested>
          <tested name="Save_Sitemap" line="53" column="14">
             <test_case name="Test_Save_Sitemap" line="54" column="7">
-               <test file="sitemaps-test_data-tests.adb" line="107" column="1" name="Test_Save_Sitemap_ede18d_7f961d" timestamp="2021-09-04 05:48:54"/>
+               <test file="sitemaps-test_data-tests.adb" line="105" column="1" name="Test_Save_Sitemap_ede18d_7f961d" timestamp="modified"/>
             </test_case>
          </tested>
          <dangling>
-            <test file="sitemaps-test_data-tests.adb" line="127" column="1"/>
-            <test file="sitemaps-test_data-tests.adb" line="146" column="1"/>
-            <test file="sitemaps-test_data-tests.adb" line="169" column="1"/>
          </dangling>
       </test_unit>
    </unit>
