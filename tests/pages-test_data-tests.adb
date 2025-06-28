@@ -33,7 +33,7 @@ package body Pages.Test_Data.Tests is
 --  begin read only
 --  end read only
 --  begin read only
-   procedure Wrap_Test_Create_Page_93a400_dc01ab
+   procedure Wrap_Test_Create_Page_93a400_e3720d
      (File_Name, Directory: String) is
    begin
       begin
@@ -43,30 +43,21 @@ package body Pages.Test_Data.Tests is
          when System.Assertions.Assert_Failure =>
             AUnit.Assertions.Assert
               (False,
-               "req_sloc(pages.ads:0):Test_Create_Page test requirement violated");
+               "req_sloc(pages.ads:0:):Test_Create_Page test requirement violated");
       end;
       GNATtest_Generated.GNATtest_Standard.Pages.Create_Page
         (File_Name, Directory);
-      begin
-         pragma Assert(True);
-         null;
-      exception
-         when System.Assertions.Assert_Failure =>
-            AUnit.Assertions.Assert
-              (False,
-               "ens_sloc(pages.ads:0:):Test_Create_Page test commitment violated");
-      end;
-   end Wrap_Test_Create_Page_93a400_dc01ab;
+   end Wrap_Test_Create_Page_93a400_e3720d;
 --  end read only
 
 --  begin read only
    procedure Test_Create_Page_test_create_page(Gnattest_T: in out Test);
-   procedure Test_Create_Page_93a400_dc01ab(Gnattest_T: in out Test) renames
+   procedure Test_Create_Page_93a400_e3720d(Gnattest_T: in out Test) renames
      Test_Create_Page_test_create_page;
 --  id:2.2/93a4003e12046daf/Create_Page/1/0/test_create_page/
    procedure Test_Create_Page_test_create_page(Gnattest_T: in out Test) is
       procedure Create_Page(File_Name, Directory: String) renames
-        Wrap_Test_Create_Page_93a400_dc01ab;
+        Wrap_Test_Create_Page_93a400_e3720d;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
@@ -85,7 +76,7 @@ package body Pages.Test_Data.Tests is
 --  end read only
 
 --  begin read only
-   procedure Wrap_Test_Copy_File_2f1aa9_049492(File_Name, Directory: String) is
+   procedure Wrap_Test_Copy_File_2f1aa9_a56046(File_Name, Directory: String) is
    begin
       begin
          pragma Assert(File_Name'Length > 0 and Directory'Length > 0);
@@ -94,30 +85,21 @@ package body Pages.Test_Data.Tests is
          when System.Assertions.Assert_Failure =>
             AUnit.Assertions.Assert
               (False,
-               "req_sloc(pages.ads:0):Test_Copy_File test requirement violated");
+               "req_sloc(pages.ads:0:):Test_Copy_File test requirement violated");
       end;
       GNATtest_Generated.GNATtest_Standard.Pages.Copy_File
         (File_Name, Directory);
-      begin
-         pragma Assert(True);
-         null;
-      exception
-         when System.Assertions.Assert_Failure =>
-            AUnit.Assertions.Assert
-              (False,
-               "ens_sloc(pages.ads:0:):Test_Copy_File test commitment violated");
-      end;
-   end Wrap_Test_Copy_File_2f1aa9_049492;
+   end Wrap_Test_Copy_File_2f1aa9_a56046;
 --  end read only
 
 --  begin read only
    procedure Test_Copy_File_test_copy_file(Gnattest_T: in out Test);
-   procedure Test_Copy_File_2f1aa9_049492(Gnattest_T: in out Test) renames
+   procedure Test_Copy_File_2f1aa9_a56046(Gnattest_T: in out Test) renames
      Test_Copy_File_test_copy_file;
 --  id:2.2/2f1aa9959af2dee0/Copy_File/1/0/test_copy_file/
    procedure Test_Copy_File_test_copy_file(Gnattest_T: in out Test) is
       procedure Copy_File(File_Name, Directory: String) renames
-        Wrap_Test_Copy_File_2f1aa9_049492;
+        Wrap_Test_Copy_File_2f1aa9_a56046;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
@@ -134,7 +116,7 @@ package body Pages.Test_Data.Tests is
 --  end read only
 
 --  begin read only
-   procedure Wrap_Test_Create_Empty_File_07d252_44c53f(File_Name: String) is
+   procedure Wrap_Test_Create_Empty_File_07d252_7a3630(File_Name: String) is
    begin
       begin
          pragma Assert(File_Name'Length > 0);
@@ -143,32 +125,23 @@ package body Pages.Test_Data.Tests is
          when System.Assertions.Assert_Failure =>
             AUnit.Assertions.Assert
               (False,
-               "req_sloc(pages.ads:0):Test_Create_Empty_File test requirement violated");
+               "req_sloc(pages.ads:0:):Test_Create_Empty_File test requirement violated");
       end;
       GNATtest_Generated.GNATtest_Standard.Pages.Create_Empty_File(File_Name);
-      begin
-         pragma Assert(True);
-         null;
-      exception
-         when System.Assertions.Assert_Failure =>
-            AUnit.Assertions.Assert
-              (False,
-               "ens_sloc(pages.ads:0:):Test_Create_Empty_File test commitment violated");
-      end;
-   end Wrap_Test_Create_Empty_File_07d252_44c53f;
+   end Wrap_Test_Create_Empty_File_07d252_7a3630;
 --  end read only
 
 --  begin read only
    procedure Test_Create_Empty_File_test_create_empty_file
      (Gnattest_T: in out Test);
-   procedure Test_Create_Empty_File_07d252_44c53f
+   procedure Test_Create_Empty_File_07d252_7a3630
      (Gnattest_T: in out Test) renames
      Test_Create_Empty_File_test_create_empty_file;
 --  id:2.2/07d2529fa48cbec9/Create_Empty_File/1/0/test_create_empty_file/
    procedure Test_Create_Empty_File_test_create_empty_file
      (Gnattest_T: in out Test) is
       procedure Create_Empty_File(File_Name: String) renames
-        Wrap_Test_Create_Empty_File_07d252_44c53f;
+        Wrap_Test_Create_Empty_File_07d252_7a3630;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
@@ -184,7 +157,7 @@ package body Pages.Test_Data.Tests is
 --  end read only
 
 --  begin read only
-   function Wrap_Test_Get_Layout_Name_dd1d05_287311
+   function Wrap_Test_Get_Layout_Name_dd1d05_d0feda
      (File_Name: String) return String is
    begin
       begin
@@ -194,38 +167,29 @@ package body Pages.Test_Data.Tests is
          when System.Assertions.Assert_Failure =>
             AUnit.Assertions.Assert
               (False,
-               "req_sloc(pages.ads:0):Test_Get_Layout_Name test requirement violated");
+               "req_sloc(pages.ads:0:):Test_Get_Layout_Name test requirement violated");
       end;
       declare
-         Test_Get_Layout_Name_dd1d05_287311_Result: constant String :=
+         Test_Get_Layout_Name_dd1d05_d0feda_Result: constant String :=
            GNATtest_Generated.GNATtest_Standard.Pages.Get_Layout_Name
              (File_Name);
       begin
-         begin
-            pragma Assert(True);
-            null;
-         exception
-            when System.Assertions.Assert_Failure =>
-               AUnit.Assertions.Assert
-                 (False,
-                  "ens_sloc(pages.ads:0:):Test_Get_Layout_Name test commitment violated");
-         end;
-         return Test_Get_Layout_Name_dd1d05_287311_Result;
+         return Test_Get_Layout_Name_dd1d05_d0feda_Result;
       end;
-   end Wrap_Test_Get_Layout_Name_dd1d05_287311;
+   end Wrap_Test_Get_Layout_Name_dd1d05_d0feda;
 --  end read only
 
 --  begin read only
    procedure Test_Get_Layout_Name_test_get_layout_name
      (Gnattest_T: in out Test);
-   procedure Test_Get_Layout_Name_dd1d05_287311
+   procedure Test_Get_Layout_Name_dd1d05_d0feda
      (Gnattest_T: in out Test) renames
      Test_Get_Layout_Name_test_get_layout_name;
 --  id:2.2/dd1d05e38a591979/Get_Layout_Name/1/0/test_get_layout_name/
    procedure Test_Get_Layout_Name_test_get_layout_name
      (Gnattest_T: in out Test) is
       function Get_Layout_Name(File_Name: String) return String renames
-        Wrap_Test_Get_Layout_Name_dd1d05_287311;
+        Wrap_Test_Get_Layout_Name_dd1d05_d0feda;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);

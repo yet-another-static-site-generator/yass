@@ -1,0 +1,16 @@
+name = "tests"
+description = "Test of Yass"
+version = "0.1.0-test"
+
+project-files = ["driver/test_driver.gpr"]
+executables = ["test_runner"]
+
+[[depends-on]]
+aunit = "^25.0.0"
+yass  = "*"
+
+[[pins]]
+yass = { path = '../' }
+
+[build-profiles]
+yass = "validation"

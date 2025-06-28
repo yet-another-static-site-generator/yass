@@ -31,7 +31,7 @@ package body Config.Test_Data.Tests is
 --  begin read only
 --  end read only
 --  begin read only
-   procedure Wrap_Test_Create_Config_683023_fc325a(Directory_Name: String) is
+   procedure Wrap_Test_Create_Config_683023_a99277(Directory_Name: String) is
    begin
       begin
          pragma Assert(Directory_Name'Length > 0);
@@ -40,30 +40,21 @@ package body Config.Test_Data.Tests is
          when System.Assertions.Assert_Failure =>
             AUnit.Assertions.Assert
               (False,
-               "req_sloc(config.ads:0):Test_Create_Config test requirement violated");
+               "req_sloc(config.ads:0:):Test_Create_Config test requirement violated");
       end;
       GNATtest_Generated.GNATtest_Standard.Config.Create_Config
         (Directory_Name);
-      begin
-         pragma Assert(True);
-         null;
-      exception
-         when System.Assertions.Assert_Failure =>
-            AUnit.Assertions.Assert
-              (False,
-               "ens_sloc(config.ads:0:):Test_Create_Config test commitment violated");
-      end;
-   end Wrap_Test_Create_Config_683023_fc325a;
+   end Wrap_Test_Create_Config_683023_a99277;
 --  end read only
 
 --  begin read only
    procedure Test_Create_Config_test_create_config(Gnattest_T: in out Test);
-   procedure Test_Create_Config_683023_fc325a(Gnattest_T: in out Test) renames
+   procedure Test_Create_Config_683023_a99277(Gnattest_T: in out Test) renames
      Test_Create_Config_test_create_config;
 --  id:2.2/6830236232fc055b/Create_Config/1/0/test_create_config/
    procedure Test_Create_Config_test_create_config(Gnattest_T: in out Test) is
       procedure Create_Config(Directory_Name: String) renames
-        Wrap_Test_Create_Config_683023_fc325a;
+        Wrap_Test_Create_Config_683023_a99277;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
@@ -80,7 +71,7 @@ package body Config.Test_Data.Tests is
 --  end read only
 
 --  begin read only
-   procedure Wrap_Test_Parse_Config_31244b_3aea6e(Directory_Name: String) is
+   procedure Wrap_Test_Parse_Config_31244b_5fe7b0(Directory_Name: String) is
    begin
       begin
          pragma Assert(Directory_Name'Length > 0);
@@ -89,29 +80,20 @@ package body Config.Test_Data.Tests is
          when System.Assertions.Assert_Failure =>
             AUnit.Assertions.Assert
               (False,
-               "req_sloc(config.ads:0):Test_Parse_Config test requirement violated");
+               "req_sloc(config.ads:0:):Test_Parse_Config test requirement violated");
       end;
       GNATtest_Generated.GNATtest_Standard.Config.Parse_Config(Directory_Name);
-      begin
-         pragma Assert(True);
-         null;
-      exception
-         when System.Assertions.Assert_Failure =>
-            AUnit.Assertions.Assert
-              (False,
-               "ens_sloc(config.ads:0:):Test_Parse_Config test commitment violated");
-      end;
-   end Wrap_Test_Parse_Config_31244b_3aea6e;
+   end Wrap_Test_Parse_Config_31244b_5fe7b0;
 --  end read only
 
 --  begin read only
    procedure Test_Parse_Config_test_parse_config(Gnattest_T: in out Test);
-   procedure Test_Parse_Config_31244b_3aea6e(Gnattest_T: in out Test) renames
+   procedure Test_Parse_Config_31244b_5fe7b0(Gnattest_T: in out Test) renames
      Test_Parse_Config_test_parse_config;
 --  id:2.2/31244ba1905b93dd/Parse_Config/1/0/test_parse_config/
    procedure Test_Parse_Config_test_parse_config(Gnattest_T: in out Test) is
       procedure Parse_Config(Directory_Name: String) renames
-        Wrap_Test_Parse_Config_31244b_3aea6e;
+        Wrap_Test_Parse_Config_31244b_5fe7b0;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);

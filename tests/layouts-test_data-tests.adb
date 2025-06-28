@@ -31,7 +31,7 @@ package body Layouts.Test_Data.Tests is
 --  begin read only
 --  end read only
 --  begin read only
-   procedure Wrap_Test_Create_Layout_c5b31b_63f314(Directory_Name: String) is
+   procedure Wrap_Test_Create_Layout_c5b31b_3f7438(Directory_Name: String) is
    begin
       begin
          pragma Assert(Directory_Name'Length > 0);
@@ -40,30 +40,21 @@ package body Layouts.Test_Data.Tests is
          when System.Assertions.Assert_Failure =>
             AUnit.Assertions.Assert
               (False,
-               "req_sloc(layouts.ads:0):Test_Create_Layout test requirement violated");
+               "req_sloc(layouts.ads:0:):Test_Create_Layout test requirement violated");
       end;
       GNATtest_Generated.GNATtest_Standard.Layouts.Create_Layout
         (Directory_Name);
-      begin
-         pragma Assert(True);
-         null;
-      exception
-         when System.Assertions.Assert_Failure =>
-            AUnit.Assertions.Assert
-              (False,
-               "ens_sloc(layouts.ads:0:):Test_Create_Layout test commitment violated");
-      end;
-   end Wrap_Test_Create_Layout_c5b31b_63f314;
+   end Wrap_Test_Create_Layout_c5b31b_3f7438;
 --  end read only
 
 --  begin read only
    procedure Test_Create_Layout_test_create_layout(Gnattest_T: in out Test);
-   procedure Test_Create_Layout_c5b31b_63f314(Gnattest_T: in out Test) renames
+   procedure Test_Create_Layout_c5b31b_3f7438(Gnattest_T: in out Test) renames
      Test_Create_Layout_test_create_layout;
 --  id:2.2/c5b31b74a47d8c7a/Create_Layout/1/0/test_create_layout/
    procedure Test_Create_Layout_test_create_layout(Gnattest_T: in out Test) is
       procedure Create_Layout(Directory_Name: String) renames
-        Wrap_Test_Create_Layout_c5b31b_63f314;
+        Wrap_Test_Create_Layout_c5b31b_3f7438;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);

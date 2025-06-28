@@ -29,7 +29,7 @@ package body Messages.Test_Data.Tests is
 --  begin read only
 --  end read only
 --  begin read only
-   procedure Wrap_Test_Show_Message_b0ef3e_ce41f3
+   procedure Wrap_Test_Show_Message_b0ef3e_268f83
      (Text: String; Message_Type: Messages_Types := Default_Message_Type) is
    begin
       begin
@@ -39,32 +39,23 @@ package body Messages.Test_Data.Tests is
          when System.Assertions.Assert_Failure =>
             AUnit.Assertions.Assert
               (False,
-               "req_sloc(messages.ads:0):Test_Show_Message test requirement violated");
+               "req_sloc(messages.ads:0:):Test_Show_Message test requirement violated");
       end;
       GNATtest_Generated.GNATtest_Standard.Messages.Show_Message
         (Text, Message_Type);
-      begin
-         pragma Assert(True);
-         null;
-      exception
-         when System.Assertions.Assert_Failure =>
-            AUnit.Assertions.Assert
-              (False,
-               "ens_sloc(messages.ads:0:):Test_Show_Message test commitment violated");
-      end;
-   end Wrap_Test_Show_Message_b0ef3e_ce41f3;
+   end Wrap_Test_Show_Message_b0ef3e_268f83;
 --  end read only
 
 --  begin read only
    procedure Test_Show_Message_test_show_message(Gnattest_T: in out Test);
-   procedure Test_Show_Message_b0ef3e_ce41f3(Gnattest_T: in out Test) renames
+   procedure Test_Show_Message_b0ef3e_268f83(Gnattest_T: in out Test) renames
      Test_Show_Message_test_show_message;
 --  id:2.2/b0ef3ea444439e3e/Show_Message/1/0/test_show_message/
    procedure Test_Show_Message_test_show_message(Gnattest_T: in out Test) is
       procedure Show_Message
         (Text: String;
          Message_Type: Messages_Types := Default_Message_Type) renames
-        Wrap_Test_Show_Message_b0ef3e_ce41f3;
+        Wrap_Test_Show_Message_b0ef3e_268f83;
 --  end read only
 
       pragma Unreferenced(Gnattest_T);
