@@ -27,144 +27,171 @@ package body Config is
 
    procedure Create_Config(Directory_Name: String) is
       Config_File: File_Type;
+
+      procedure NL is
+      begin
+         New_Line (Config_File);
+      end NL;
+
+      procedure PL (Item : String) is
+      begin
+         Put_Line (File => Config_File,
+                   Item => Item);
+      end PL;
+
    begin
       Create
-        (File => Config_File, Mode => Append_File,
+        (File => Config_File,
+         Mode => Append_File,
          Name => Directory_Name & Dir_Separator & "site.cfg");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Directory in which will be placed HTML files with site layout (templates). May be absolute or relative to project directory.");
-      Put_Line(File => Config_File, Item => "LayoutsDirectory = _layouts");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Directory in which will be placed generated site. May be absolute or relative to project directory.");
-      Put_Line(File => Config_File, Item => "OutputDirectory = _output");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Directory in which will be placed program modules used to generate the site. May be absolute or relative to project directory.");
-      Put_Line(File => Config_File, Item => "ModulesDirectory = _modules");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# List of excluded files and directories from list of sources used to generating the site. All paths must be relative to the project directory. If you exclude directory, it whole content will be excluded too. Layouts, modules and output directories are excluded by default.");
-      Put_Line
-        (File => Config_File, Item => "ExcludedFiles = .git,.gitignore,tags");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# The name of the site which will be created. If you have enabled creating Atom feed then it is needed. Otherwise, you can use it as a normal template tag.");
-      Put_Line(File => Config_File, Item => "Name = New Site");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# The description of the site which will be created. Must be in one line, no new line allowed. It is used to set meta tag description (which is showed in search engines results) but only when pages don't set it. Optional setting.");
-      Put_Line(File => Config_File, Item => "Description = My new site");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# The ISO 639-1 language code in which the site will be created.");
-      Put_Line(File => Config_File, Item => "Language = en");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Name of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag. It is also used in setting meta tag author for all pages.");
-      Put_Line(File => Config_File, Item => "Author = John Doe");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Email address of author of the site. If you have enable creating Atom feed, then it is needed. Otherwise, you can use it as a normal template tag.");
-      Put_Line
-        (File => Config_File, Item => "AuthorEmail = johndoe@example.com");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Base URL of the site. It is needed mostly for creating sitemap and Atom feed, but you can use it as a normal the site tag. If your site will be available at https://mysite.com/blog then this will be your BaseURL.");
-      Put_Line(File => Config_File, Item => "BaseURL = http://localhost:8888");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Source which will be used for creating Atom feed of the site. Possible values are: none: don't create atom feed, tags: create Atom entries from proper tags in .md files, [filename]: the path (related to the project directory path) to markdown file which will be used as a source of atom feed (must have proper tags set inside).");
-      Put_Line(File => Config_File, Item => "AtomFeedSource = none");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Number of entries in the Atom feed of the site. Try not set it too high, recommended values are between 10 and 50.");
-      Put_Line(File => Config_File, Item => "AtomFeedAmount = 25");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Should the program create sitemap when creating the site. Possible values are true or false (case-insensitive).");
-      Put_Line(File => Config_File, Item => "SitemapEnabled = true");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Should program convert HTML in markdown documents to actual HTML. Possible values are true or false (case-insensitive).");
-      Put_Line(File => Config_File, Item => "HTMLEnabled = true");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Should the program start web server when monitoring for changes in site. Possible values are true or false (case-insensitive).");
-      Put_Line(File => Config_File, Item => "ServerEnabled = true");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Port on which web server will be listen if enabled. Possible values are from 1 to 65535. Please remember, that ports below 1025 require root privileges to work.");
-      Put_Line(File => Config_File, Item => "ServerPort = 8888");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Should web server and whole monitoring of the site changes stop if encounter any error during the site creation.  Possible values are true or false (case-insensitive).");
-      Put_Line(File => Config_File, Item => "StopServerOnError = false");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Full path to the command which will be used to start the web browser with index.html page of the site. String ""%s"" (without quotes) will be replaced by server URL. If this setting is ""none"", the web browser will be not started, same as when the web server is disabled.");
-      Put_Line(File => Config_File, Item => "BrowserCommand = none");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# How often (in seconds) the program should monitor site for changes and regenerate it if needed. Can be any positive number, but you probably don't want to set it to check every few thousands years :)");
-      Put_Line(File => Config_File, Item => "MonitorInterval = 5");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# How often (in seconds) the program should monitor site configuration for changes and reconfigure it if needed. Can be any positive number.");
-      Put_Line(File => Config_File, Item => "MonitorConfigInterval = 60");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# String used to mark start of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-      Put_Line(File => Config_File, Item => "Start_TagSeparator = {%");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# String used to mark end of the templates tags, used in templates files. You may want to change it, if you want to use templates from other static site generator.");
-      Put_Line(File => Config_File, Item => "EndTagSeparator = %}");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# String used to mark comments in markdown files which will be parsed.");
-      Put_Line(File => Config_File, Item => "MarkdownComment = --");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Site tags, optional. Tags can be 4 types: strings, boolean, numeric or composite.");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# First 3 types of tags are in Name = Value scheme. For strings, it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always falls back to string value.");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# Composite tags first must be initialized with Name = [] then just add as many as you want values to it by Name = Value scheme.");
-      Put_Line
-        (File => Config_File,
-         Item =>
-           "# For more information about site.cfg file please check program documentation.");
+
+      PL ("# Directory in which will be placed HTML files with site layout");
+      PL ("# (templates). May be absolute or relative to project directory.");
+      PL ("LayoutsDirectory = _layouts");
+      NL;
+
+      PL ("# Directory in which will be placed generated site. May be absolute");
+      PL ("# or relative to project directory.");
+      PL ("OutputDirectory = _output");
+      NL;
+
+      PL ("# Directory in which will be placed program modules used to generate");
+      PL ("# the site. May be absolute or relative to project directory.");
+      PL ("ModulesDirectory = _modules");
+      NL;
+
+      PL ("# List of excluded files and directories from list of sources used to");
+      PL ("# generating the site. All paths must be relative to the project");
+      PL ("# directory. If you exclude directory, it whole content will be");
+      PL ("# excluded too. Layouts, modules and output directories are excluded");
+      PL ("# by default.");
+      PL ("ExcludedFiles = .git,.gitignore,tags");
+      NL;
+
+      PL ("# The name of the site which will be created. If you have enabled");
+      PL ("# creating Atom feed then it is needed. Otherwise, you can use it as a");
+      PL ("# normal template tag.");
+      PL ("Name = New Site");
+      NL;
+
+      PL ("# The description of the site which will be created. Must be in one line,");
+      PL ("# no new line allowed. It is used to set meta tag description (which is");
+      PL ("# showed in search engines results) but only when pages don't set it.");
+      PL ("# Optional setting.");
+      PL ("Description = My new site");
+      NL;
+
+      PL ("# The ISO 639-1 language code in which the site will be created.");
+      PL ("Language = en");
+      NL;
+
+      PL ("# Name of author of the site. If you have enable creating Atom feed,");
+      PL ("# then it is needed. Otherwise, you can use it as a normal template tag.");
+      PL ("# It is also used in setting meta tag author for all pages.");
+      PL ("Author = John Doe");
+      NL;
+
+      PL ("# Email address of author of the site. If you have enable creating Atom");
+      PL ("# feed, then it is needed. Otherwise, you can use it as a normal");
+      PL ("# template tag.");
+      PL ("AuthorEmail = johndoe@example.com");
+      NL;
+
+      PL ("# Base URL of the site. It is needed mostly for creating sitemap and");
+      PL ("# Atom feed, but you can use it as a normal the site tag. If your site");
+      PL ("# will be available at https://mysite.com/blog then this will be your");
+      PL ("# BaseURL.");
+      PL ("BaseURL = http://localhost:8888");
+      NL;
+
+      PL ("# Source which will be used for creating Atom feed of the site.");
+      PL ("# Possible values are: none: don't create atom feed, tags: create");
+      PL ("# Atom entries from proper tags in .md files, [filename]: the path");
+      PL ("# (related to the project directory path) to markdown file which will");
+      PL ("# be used as a source of atom feed (must have proper tags set inside).");
+      PL ("AtomFeedSource = none");
+      NL;
+
+      PL ("# Number of entries in the Atom feed of the site. Try not set it too");
+      PL ("# high, recommended values are between 10 and 50.");
+      PL ("AtomFeedAmount = 25");
+      NL;
+
+      PL ("# Should the program create sitemap when creating the site. Possible");
+      PL ("# values are true or false (case-insensitive).");
+      PL ("SitemapEnabled = true");
+      NL;
+
+      PL ("# Should program convert HTML in markdown documents to actual HTML.");
+      PL ("# Possible values are true or false (case-insensitive).");
+      PL ("HTMLEnabled = true");
+      NL;
+
+      PL ("# Should the program start web server when monitoring for changes in");
+      PL ("# site. Possible values are true or false (case-insensitive).");
+      PL ("ServerEnabled = true");
+      NL;
+
+      PL ("# Port on which web server will be listen if enabled. Possible values");
+      PL ("# are from 1 to 65535. Please remember, that ports below 1025 require");
+      PL ("# root privileges to work.");
+      PL ("ServerPort = 8888");
+      NL;
+
+      PL ("# Should web server and whole monitoring of the site changes stop if");
+      PL ("# encounter any error during the site creation.  Possible values are");
+      PL ("# true or false (case-insensitive).");
+      PL ("StopServerOnError = false");
+      NL;
+
+      PL ("# Full path to the command which will be used to start the web browser");
+      PL ("# with index.html page of the site. String ""%s"" (without quotes) will");
+      PL ("# be replaced by server URL. If this setting is ""none"", the web");
+      PL ("# browser will be not started, same as when the web server is disabled.");
+      PL ("BrowserCommand = none");
+      NL;
+
+      PL ("# How often (in seconds) the program should monitor site for changes");
+      PL ("# and regenerate it if needed. Can be any positive number, but you");
+      PL ("# probably don't want to set it to check every few thousands years :)");
+      PL ("MonitorInterval = 5");
+      NL;
+
+      PL ("# How often (in seconds) the program should monitor site configuration");
+      PL ("# for changes and reconfigure it if needed. Can be any positive number.");
+      PL ("MonitorConfigInterval = 60");
+      NL;
+
+      PL ("# String used to mark start of the templates tags, used in templates");
+      PL ("# files. You may want to change it, if you want to use templates from");
+      PL ("# other static site generator.");
+      PL ("Start_TagSeparator = {%");
+      NL;
+
+      PL ("# String used to mark end of the templates tags, used in templates");
+      PL ("# files. You may want to change it, if you want to use templates from");
+      PL ("# other static site generator.");
+      PL ("EndTagSeparator = %}");
+      NL;
+
+      PL ("# String used to mark comments in markdown files which will be parsed.");
+      PL ("MarkdownComment = --");
+      NL;
+
+      PL ("# Site tags, optional. Tags can be 4 types: strings, boolean, numeric");
+      PL ("# or composite.");
+      PL ("# First 3 types of tags are in Name = Value scheme. For strings, it can");
+      PL ("# be any alphanumeric value without new line sign. For boolean it must");
+      PL ("# be ""true"" or ""false"", for numeric any number. Program will detect");
+      PL ("# self which type of tag is and properly set it. It always falls back");
+      PL ("# to string value.");
+      PL ("# Composite tags first must be initialized with Name = [] then just");
+      PL ("# add as many as you want values to it by Name = Value scheme.");
+      PL ("# For more information about site.cfg file please check program");
+      PL ("# documentation.");
+
       Close(File => Config_File);
+
    end Create_Config;
 
    procedure Parse_Config(Directory_Name: String) is
