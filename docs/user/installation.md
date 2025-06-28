@@ -70,9 +70,7 @@ Navigate to the main directory to compile:
   `Build All`.
 
 * If you prefer using console: in main source code directory type `gprbuild`
-  for debug mode build or for release mode: `gprbuild -XMode=release`. If you
-  have installed [Bob](https://github.com/thindil/bob) you can type `bob debug`
-  for build in debug mode or `bob release` to prepare release for the program.
+  for debug mode build or for release mode: `gprbuild -XMode=release`.
 
 If you want to be able to print content of README.md file to terminal (by
 `readme` program command), copy file README.md to `bin` directory.
@@ -86,8 +84,5 @@ Navigate to `tests/driver` directory from the main directory (where this
 file is):
 
 * From console: type `gprbuild -P test_driver.gpr`
-
-Or if you have [Bob](https://github.com/thindil/bob) installed, type
-`bob tests`.
 
 <a href="#top">^ Top</a>

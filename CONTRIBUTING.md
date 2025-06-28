@@ -105,9 +105,5 @@ file is):
 
 `gprbuild -P yass.gpr -XMode=analyze`
 
-or, if you have [Bob](https://github.com/thindil/bob) installed, command:
-
-`bob analyze`
-
 More informations about code coverage and profiling, you can find in proper
 documentation for both programs.
