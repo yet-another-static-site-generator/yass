@@ -163,19 +163,25 @@ procedure Yass is
          Show_Message(Text => "Please specify directory name " & Message);
          return False;
       end if;
-      -- Assign Work_Directory
-      if Index
-          (Source => Argument(Number => 2),
-           Pattern => Containing_Directory(Name => Current_Directory)) =
-        1 then
-         Work_Directory :=
-           To_Unbounded_String(Source => Argument(Number => 2));
-      else
-         Work_Directory :=
-           To_Unbounded_String
-             (Source =>
-                Current_Directory & Dir_Separator & Argument(Number => 2));
-      end if;
+
+      --  Assign Work_Directory
+      declare
+         Path : String renames Argument (Number => 2);
+      begin
+         if Path (Path'First) = '/' then
+            Work_Directory := To_Unbounded_String (Path);
+         elsif
+            Index
+              (Source  => Path,
+               Pattern => Containing_Directory (Current_Directory)) = 1
+         then
+            Work_Directory := To_Unbounded_String (Path);
+         else
+            Work_Directory :=
+              To_Unbounded_String (Current_Directory & Dir_Separator & Path);
+         end if;
+      end;
+
       -- Check if selected directory exist, if not, return False
       if Ada.Directories.Exists(Name => To_String(Source => Work_Directory)) =
         Exist then
