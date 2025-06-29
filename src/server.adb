@@ -257,7 +257,7 @@ package body Server is
                accept Stop do
                   Site_Monitor_Running := False;
                end Stop;
-	    or
+            or
                --  Wait before next check
                delay Yass_Config.Monitor_Interval;
             end select;
