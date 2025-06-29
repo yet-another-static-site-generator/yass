@@ -27,6 +27,8 @@ Mode = "release"
 libcmark = ">=0.0.1"
 
 [[depends-on]]
+resources = "~0.1.0"
+
 # See https://github.com/AdaCore/aws/issues/380
 # and https://github.com/alire-project/alire/issues/1710
 [depends-on.'case(os)'.windows]
