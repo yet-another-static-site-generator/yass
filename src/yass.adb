@@ -419,8 +419,10 @@ begin
       else
          Put(Item => "Stopping monitoring site changes...");
       end if;
-      abort Monitor_Site;
-      abort Monitor_Config;
+
+      Monitor_Site.Stop;
+      Monitor_Config.Stop;
+
       Show_Message(Text => "done.", Message_Type => Messages.SUCCESS);
       -- Create new empty markdown file with selected name
    elsif Argument(Number => 1) = "createfile" then

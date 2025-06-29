@@ -28,6 +28,7 @@ package Server is
    -- SOURCE
    task Monitor_Site is
       entry Start;
+      entry Stop;
    end Monitor_Site;
    -- ****
 
@@ -38,6 +39,7 @@ package Server is
    -- SOURCE
    task Monitor_Config is
       entry Start;
+      entry Stop;
    end Monitor_Config;
    -- ****
 
