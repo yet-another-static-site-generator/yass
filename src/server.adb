@@ -335,6 +335,7 @@ package body Server is
       Put_Line
            (Error_File,
             Ada.Calendar.Formatting.Image (Date => Clock));
+      Put_Line (Error_File, "Excepton from" & Task_Name);
 --      Put_Line (Error_File, Version);
       Put_Line (Error_File,
                 "Exception: " & Exception_Name (Occurrence));
