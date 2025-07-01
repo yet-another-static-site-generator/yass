@@ -20,10 +20,14 @@ with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib;
+with GNAT.Traceback.Symbolic;
+
 with AWS.Response;
 with AWS.Services.Page_Server;
 with AWS.Services.Directory;
@@ -38,6 +42,8 @@ with Sitemaps;
 
 package body Server is
 
+   Error_File_Name : constant String := "error.log";
+
    --## rule off GLOBAL_REFERENCES
    -- ****iv* Server/Server.Http_Server
    -- FUNCTION
@@ -46,6 +52,17 @@ package body Server is
    Http_Server: AWS.Server.HTTP;
    -- ****
    --## rule on GLOBAL_REFERENCES
+
+   -- ****f* Yass/Server.Save_Exception_Info
+   -- SOURCE
+   procedure Save_Exception_Info (Occurrence : Ada.Exceptions.Exception_Occurrence;
+                                  Task_Name  : String);
+   -- FUNCTION
+   -- Save exception traceback to error.log
+   -- PARAMETERS
+   -- Occurrence - Exception occurence information
+   -- Task_Name  - Identifier for task.
+   -- ****
 
    task body Monitor_Site is
       use Ada.Calendar.Time_Zones;
@@ -255,6 +272,11 @@ package body Server is
       or
          terminate;
       end select;
+
+   exception
+      when Occurrence : others =>
+         Save_Exception_Info (Occurrence, "Monitor_Site");
+
    end Monitor_Site;
 
    task body Monitor_Config is
@@ -292,7 +314,69 @@ package body Server is
       or
          terminate;
       end select;
+
+   exception
+      when Occurence : others =>
+         Save_Exception_Info (Occurence, "Monitor_Config");
+
    end Monitor_Config;
+
+   -------------------------
+   -- Save_Exception_Info --
+   -------------------------
+
+   procedure Save_Exception_Info (Occurrence : Ada.Exceptions.Exception_Occurrence;
+                                  Task_Name  : String)
+   is
+      use Ada.Calendar;
+      use Ada.Exceptions;
+      use GNAT.Traceback.Symbolic;
+
+      Error_File: File_Type;
+   begin
+      if Ada.Directories.Exists (Error_File_Name) then
+         Open (File => Error_File,
+               Mode => Append_File,
+               Name => Error_File_Name);
+      else
+         Create (File => Error_File,
+                 Mode => Append_File,
+                 Name => Error_File_Name);
+      end if;
+
+      Put_Line
+           (Error_File,
+            Ada.Calendar.Formatting.Image (Date => Clock));
+--      Put_Line (Error_File, Version);
+      Put_Line (Error_File,
+                "Exception: " & Exception_Name (Occurrence));
+      Put_Line (Error_File,
+                "Message: " & Exception_Message (Occurrence));
+      Put_Line (Error_File,
+                "-------------------------------------------------");
+
+      if Dir_Separator = '/' then
+         Put_Line (Error_File,
+                   Symbolic_Traceback (Occurrence));
+      else
+         Put_Line (Error_File,
+                   Exception_Information (Occurrence));
+      end if;
+
+      Put_Line (Error_File,
+                "-------------------------------------------------");
+
+      Close (Error_File);
+
+      Put_Line ("Oops, something bad happened and the program crashed.");
+      Put_Line ("Please, remember what you did before the crash and report this");
+      Put_Line ("problem at");
+      Put_Line ("");
+      Put_Line ("   https://github.com/yet-another-static-site-generator/yass");
+      Put_Line ("");
+      Put_Line ("and attach (if possible) file 'error.log' (should be in this");
+      Put_Line ("directory).");
+   end Save_Exception_Info;
 
    function Callback(Request: AWS.Status.Data) return AWS.Response.Data is
       use AWS.Services.Directory;
