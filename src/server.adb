@@ -20,7 +20,6 @@ with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -52,17 +51,6 @@ package body Server is
    Http_Server: AWS.Server.HTTP;
    -- ****
    --## rule on GLOBAL_REFERENCES
-
-   -- ****f* Yass/Server.Save_Exception_Info
-   -- SOURCE
-   procedure Save_Exception_Info (Occurrence : Ada.Exceptions.Exception_Occurrence;
-                                  Task_Name  : String);
-   -- FUNCTION
-   -- Save exception traceback to error.log
-   -- PARAMETERS
-   -- Occurrence - Exception occurence information
-   -- Task_Name  - Identifier for task.
-   -- ****
 
    task body Monitor_Site is
       use Ada.Calendar.Time_Zones;

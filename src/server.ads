@@ -15,6 +15,8 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Exceptions;
+
 -- ****h* Yass/Server
 -- FUNCTION
 -- Provide code for running simple HTTP server
@@ -39,6 +41,17 @@ package Server is
    task Monitor_Config is
       entry Start;
    end Monitor_Config;
+   -- ****
+
+   -- ****f* Yass/Server.Save_Exception_Info
+   -- SOURCE
+   procedure Save_Exception_Info (Occurrence : Ada.Exceptions.Exception_Occurrence;
+                                  Task_Name  : String);
+   -- FUNCTION
+   -- Save exception traceback to error.log
+   -- PARAMETERS
+   -- Occurrence - Exception occurence information
+   -- Task_Name  - Identifier for task.
    -- ****
 
    -- ****f* Server/Server.Start_Server
