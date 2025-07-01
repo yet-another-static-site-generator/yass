@@ -88,15 +88,17 @@ project Yass is
          "-c0");
    end Pretty_Printer;
 
-   --  Unit tests on hold until ported to alire
-   --   package GnatTest is
-   --      for Tests_Dir use "../tests";
-   --      for Harness_Dir use "../tests/driver";
-   --      for GnatTest_Switches use ("--omit-sloc",
-   --         "--test-case-only",
-   --         "--passed-tests=hide",
-   --         "--exit-status=on");
-   --   end GnatTest;
+   package GNATtest is
+      for Tests_Dir   use "../../tests/";         --  Relative to Object_Dir
+      for Harness_Dir use "../../tests/driver/";  --  Relative to Object_Dir
+      for GNATtest_Switches use (
+         "--no-subprojects",
+         "--omit-sloc",
+         "--test-case-only",
+         "--passed-tests=show",
+         "--exit-status=on"
+        );
+   end GNATtest;
 
    package Install is
       for Artifacts (".") use ("share");
