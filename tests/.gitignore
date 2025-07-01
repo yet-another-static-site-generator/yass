@@ -1,0 +1,9 @@
+/alire/
+/config/
+/driver
+!/driver/gnattest_common.gpr
+
+*.a
+*.ali
+*.o
+*.so
