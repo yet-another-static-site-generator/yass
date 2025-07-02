@@ -49,7 +49,7 @@ package body Config is
       Image_Server_Enabled      : constant String := To_Lower (Yass_Config.Server_Enabled'Image);
       Image_Server_Port         : constant String := Yass_Config.Server_Port'Image;
       Image_Stop_Server_On_Error: constant String := To_Lower (Yass_Config.Stop_Server_On_Error'Image);
-      Image_Browser_Command     : constant String := Yass_Config.Monitor_Config_Interval'Image;
+      Image_Browser_Command     : constant String := To_String (Yass_Config.Browser_Command);
       Image_Monitor_Interval    : constant String := Yass_Config.Monitor_Config_Interval'Image;
       Image_Monitor_Config_Interval : constant String := Yass_Config.Monitor_Config_Interval'Image;
       Image_Start_Tag_Separator : constant String := To_String (Additional.Start_Tag_Separator);
@@ -188,7 +188,7 @@ package body Config is
       PL ("# String used to mark start of the templates tags, used in templates");
       PL ("# files. You may want to change it, if you want to use templates from");
       PL ("# other static site generator.");
-      PL ("Start_TagSeparator = " & Image_Start_Tag_Separator);
+      PL ("StartTagSeparator = " & Image_Start_Tag_Separator);
       PL ("");
 
       PL ("# String used to mark end of the templates tags, used in templates");
@@ -363,7 +363,7 @@ package body Config is
               (Key => To_String(Source => Field_Name),
                New_Item => To_String(Source => Value));
          elsif Field_Name =
-           To_Unbounded_String(Source => "Start_TagSeparator") then
+           To_Unbounded_String(Source => "StartTagSeparator") then
             Start_Tag := Value;
          elsif Field_Name =
            To_Unbounded_String(Source => "EndTagSeparator") then

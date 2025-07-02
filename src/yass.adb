@@ -271,7 +271,7 @@ procedure Yass is
 
       if Argument(Number => 1) = "create" then
          declare
-            Additional : Additional_Info;
+            Additional : Additional_Info := Default_Additional;
          begin
             Interactive_Site_Config (Additional);
             Create_Config (Directory_Name => To_String (Work_Directory),
