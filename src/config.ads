@@ -207,18 +207,6 @@ package Config is
       Test_Case => (Name => "Test_Parse_Config", Mode => Nominal);
    -- ****
 
-   -- ****f* Config/Config.Create_Interactive_Config
-   -- FUNCTION
-   -- Create configuration file based on the user answers to the program
-   -- questions
-   -- PARAMETERS
-   -- Directory_Name - Full path to the directory where config file will be
-   --                  created
-   -- SOURCE
-   procedure Create_Interactive_Config(Directory_Name: String) with
-      Pre => Directory_Name'Length > 0;
-   -- ****
-
    -- ****f* Config/Config.Interactive_Site_Config
    -- SOURCE
    procedure Interactive_Site_Config (Additional : out Additional_Info);
