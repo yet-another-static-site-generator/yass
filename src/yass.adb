@@ -268,12 +268,20 @@ procedure Yass is
                  To_String(Source => Directory));
          end loop Create_Directories_Loop;
       end Create_Directories_Block;
+
       if Argument(Number => 1) = "create" then
-         Create_Interactive_Config
-           (Directory_Name => To_String(Source => Work_Directory));
+         declare
+            Additional : Additional_Info;
+         begin
+            Interactive_Site_Config (Additional);
+            Create_Config (Directory_Name => To_String (Work_Directory),
+                           Additional     => Additional);
+         end;
       else
-         Create_Config(Directory_Name => To_String(Source => Work_Directory));
+         Create_Config (Directory_Name => To_String (Work_Directory),
+                        Additional     => Default_Additional);
       end if;
+
       Create_Layout(Directory_Name => To_String(Source => Work_Directory));
       Create_Directory_Layout
         (Directory_Name => To_String(Source => Work_Directory));

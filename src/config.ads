@@ -168,6 +168,18 @@ package Config is
    Invalid_Config_Data: exception;
    -- ****
 
+   type Additional_Info is
+      record
+         Description         : Unbounded_String;
+         Start_Tag_Separator : Unbounded_String;
+         End_Tag_Separator   : Unbounded_String;
+      end record;
+
+   Default_Additional : constant Additional_Info :=
+     (Description         => To_Unbounded_String ("My site"),
+      Start_Tag_Separator => To_Unbounded_String ("{%"),
+      End_Tag_Separator   => To_Unbounded_String ("%}"));
+
    -- ****f* Config/Config.Create_Config
    -- FUNCTION
    -- Create default config in directory with full path Directory_Name
@@ -175,7 +187,9 @@ package Config is
    -- Directory_Name - Full path to the directory where config file will be
    --                  created
    -- SOURCE
-   procedure Create_Config(Directory_Name: String) with
+   procedure Create_Config (Directory_Name : String;
+                            Additional     : Additional_Info)
+   with
       Pre => Directory_Name'Length > 0,
       Test_Case => (Name => "Test_Create_Config", Mode => Nominal);
    -- ****
@@ -203,6 +217,15 @@ package Config is
    -- SOURCE
    procedure Create_Interactive_Config(Directory_Name: String) with
       Pre => Directory_Name'Length > 0;
+   -- ****
+
+   -- ****f* Config/Config.Interactive_Site_Config
+   -- SOURCE
+   procedure Interactive_Site_Config (Additional : out Additional_Info);
+   -- FUNCTION
+   -- Ask user for configuration.
+   -- PARAMETERS
+   -- Additional - Additional information
    -- ****
 
 end Config;

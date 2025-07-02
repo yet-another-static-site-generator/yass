@@ -25,13 +25,36 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 package body Config is
 
-   procedure Create_Config(Directory_Name: String) is
-      Config_File: File_Type;
+   -------------------
+   -- Create_Config --
+   -------------------
 
-      procedure NL is
-      begin
-         New_Line (Config_File);
-      end NL;
+   procedure Create_Config (Directory_Name : String;
+                            Additional     : Additional_Info)
+   is
+      use Ada.Characters.Handling;
+
+      Config_File : File_Type;
+
+      Image_Site_Name           : constant String := To_String (Yass_Config.Site_Name);
+      Image_Description         : constant String := To_String (Additional.Description);
+      Image_Language            : constant String := To_String (Yass_Config.Language);
+      Image_Author_Name         : constant String := To_String (Yass_Config.Author_Name);
+      Image_Author_Email        : constant String := To_String (Yass_Config.Author_Email);
+      Image_Base_URL            : constant String := To_String (Yass_Config.Base_Url);
+      Image_Atom_Feed_Source    : constant String := To_String (Yass_Config.Atom_Feed_Source);
+      Image_Atom_Feed_Amount    : constant String := Yass_Config.Atom_Feed_Amount'Image;
+      Image_Sitemap_Enabled     : constant String := To_Lower (Yass_Config.Sitemap_Enabled'Image);
+      Image_HTML_Enabled        : constant String := To_Lower (Yass_Config.HTML_Enabled'Image);
+      Image_Server_Enabled      : constant String := To_Lower (Yass_Config.Server_Enabled'Image);
+      Image_Server_Port         : constant String := Yass_Config.Server_Port'Image;
+      Image_Stop_Server_On_Error: constant String := To_Lower (Yass_Config.Stop_Server_On_Error'Image);
+      Image_Browser_Command     : constant String := Yass_Config.Monitor_Config_Interval'Image;
+      Image_Monitor_Interval    : constant String := Yass_Config.Monitor_Config_Interval'Image;
+      Image_Monitor_Config_Interval : constant String := Yass_Config.Monitor_Config_Interval'Image;
+      Image_Start_Tag_Separator : constant String := To_String (Additional.Start_Tag_Separator);
+      Image_End_Tag_Separator   : constant String := To_String (Additional.End_Tag_Separator);
+      Image_Markdown_Comment    : constant String := To_String (Yass_Config.Markdown_Comment);
 
       procedure PL (Item : String) is
       begin
@@ -48,17 +71,17 @@ package body Config is
       PL ("# Directory in which will be placed HTML files with site layout");
       PL ("# (templates). May be absolute or relative to project directory.");
       PL ("LayoutsDirectory = _layouts");
-      NL;
+      PL ("");
 
       PL ("# Directory in which will be placed generated site. May be absolute");
       PL ("# or relative to project directory.");
       PL ("OutputDirectory = _output");
-      NL;
+      PL ("");
 
       PL ("# Directory in which will be placed program modules used to generate");
       PL ("# the site. May be absolute or relative to project directory.");
       PL ("ModulesDirectory = _modules");
-      NL;
+      PL ("");
 
       PL ("# List of excluded files and directories from list of sources used to");
       PL ("# generating the site. All paths must be relative to the project");
@@ -66,117 +89,117 @@ package body Config is
       PL ("# excluded too. Layouts, modules and output directories are excluded");
       PL ("# by default.");
       PL ("ExcludedFiles = .git,.gitignore,tags");
-      NL;
+      PL ("");
 
       PL ("# The name of the site which will be created. If you have enabled");
       PL ("# creating Atom feed then it is needed. Otherwise, you can use it as a");
       PL ("# normal template tag.");
-      PL ("Name = New Site");
-      NL;
+      PL ("Name = " & Image_Site_Name);
+      PL ("");
 
       PL ("# The description of the site which will be created. Must be in one line,");
       PL ("# no new line allowed. It is used to set meta tag description (which is");
       PL ("# showed in search engines results) but only when pages don't set it.");
       PL ("# Optional setting.");
-      PL ("Description = My new site");
-      NL;
+      PL ("Description = " & Image_Description);
+      PL ("");
 
       PL ("# The ISO 639-1 language code in which the site will be created.");
-      PL ("Language = en");
-      NL;
+      PL ("Language = " & Image_Language);
+      PL ("");
 
       PL ("# Name of author of the site. If you have enable creating Atom feed,");
       PL ("# then it is needed. Otherwise, you can use it as a normal template tag.");
       PL ("# It is also used in setting meta tag author for all pages.");
-      PL ("Author = John Doe");
-      NL;
+      PL ("Author = " & Image_Author_Name);
+      PL ("");
 
       PL ("# Email address of author of the site. If you have enable creating Atom");
       PL ("# feed, then it is needed. Otherwise, you can use it as a normal");
       PL ("# template tag.");
-      PL ("AuthorEmail = johndoe@example.com");
-      NL;
+      PL ("AuthorEmail = " & Image_Author_Email);
+      PL ("");
 
       PL ("# Base URL of the site. It is needed mostly for creating sitemap and");
       PL ("# Atom feed, but you can use it as a normal the site tag. If your site");
       PL ("# will be available at https://mysite.com/blog then this will be your");
       PL ("# BaseURL.");
-      PL ("BaseURL = http://localhost:8888");
-      NL;
+      PL ("BaseURL = " & Image_Base_URL);
+      PL ("");
 
       PL ("# Source which will be used for creating Atom feed of the site.");
       PL ("# Possible values are: none: don't create atom feed, tags: create");
       PL ("# Atom entries from proper tags in .md files, [filename]: the path");
       PL ("# (related to the project directory path) to markdown file which will");
       PL ("# be used as a source of atom feed (must have proper tags set inside).");
-      PL ("AtomFeedSource = none");
-      NL;
+      PL ("AtomFeedSource = " & Image_Atom_Feed_Source);
+      PL ("");
 
       PL ("# Number of entries in the Atom feed of the site. Try not set it too");
       PL ("# high, recommended values are between 10 and 50.");
-      PL ("AtomFeedAmount = 25");
-      NL;
+      PL ("AtomFeedAmount = " & Image_Atom_Feed_Amount);
+      PL ("");
 
       PL ("# Should the program create sitemap when creating the site. Possible");
       PL ("# values are true or false (case-insensitive).");
-      PL ("SitemapEnabled = true");
-      NL;
+      PL ("SitemapEnabled = " & Image_Sitemap_Enabled);
+      PL ("");
 
       PL ("# Should program convert HTML in markdown documents to actual HTML.");
       PL ("# Possible values are true or false (case-insensitive).");
-      PL ("HTMLEnabled = true");
-      NL;
+      PL ("HTMLEnabled = " & Image_HTML_Enabled);
+      PL ("");
 
       PL ("# Should the program start web server when monitoring for changes in");
       PL ("# site. Possible values are true or false (case-insensitive).");
-      PL ("ServerEnabled = true");
-      NL;
+      PL ("ServerEnabled = " & Image_Server_Enabled);
+      PL ("");
 
       PL ("# Port on which web server will be listen if enabled. Possible values");
       PL ("# are from 1 to 65535. Please remember, that ports below 1025 require");
       PL ("# root privileges to work.");
-      PL ("ServerPort = 8888");
-      NL;
+      PL ("ServerPort = " & Image_Server_Port);
+      PL ("");
 
       PL ("# Should web server and whole monitoring of the site changes stop if");
       PL ("# encounter any error during the site creation.  Possible values are");
       PL ("# true or false (case-insensitive).");
-      PL ("StopServerOnError = false");
-      NL;
+      PL ("StopServerOnError = " & Image_Stop_Server_On_Error);
+      PL ("");
 
       PL ("# Full path to the command which will be used to start the web browser");
       PL ("# with index.html page of the site. String ""%s"" (without quotes) will");
       PL ("# be replaced by server URL. If this setting is ""none"", the web");
       PL ("# browser will be not started, same as when the web server is disabled.");
-      PL ("BrowserCommand = none");
-      NL;
+      PL ("BrowserCommand = " & Image_Browser_Command);
+      PL ("");
 
       PL ("# How often (in seconds) the program should monitor site for changes");
       PL ("# and regenerate it if needed. Can be any positive number, but you");
       PL ("# probably don't want to set it to check every few thousands years :)");
-      PL ("MonitorInterval = 5");
-      NL;
+      PL ("MonitorInterval = " & Image_Monitor_Interval);
+      PL ("");
 
       PL ("# How often (in seconds) the program should monitor site configuration");
       PL ("# for changes and reconfigure it if needed. Can be any positive number.");
-      PL ("MonitorConfigInterval = 60");
-      NL;
+      PL ("MonitorConfigInterval = " & Image_Monitor_Config_Interval);
+      PL ("");
 
       PL ("# String used to mark start of the templates tags, used in templates");
       PL ("# files. You may want to change it, if you want to use templates from");
       PL ("# other static site generator.");
-      PL ("Start_TagSeparator = {%");
-      NL;
+      PL ("Start_TagSeparator = " & Image_Start_Tag_Separator);
+      PL ("");
 
       PL ("# String used to mark end of the templates tags, used in templates");
       PL ("# files. You may want to change it, if you want to use templates from");
       PL ("# other static site generator.");
-      PL ("EndTagSeparator = %}");
-      NL;
+      PL ("EndTagSeparator = " & Image_End_Tag_Separator);
+      PL ("");
 
       PL ("# String used to mark comments in markdown files which will be parsed.");
-      PL ("MarkdownComment = --");
-      NL;
+      PL ("MarkdownComment = " & Image_Markdown_Comment);
+      PL ("");
 
       PL ("# Site tags, optional. Tags can be 4 types: strings, boolean, numeric");
       PL ("# or composite.");
@@ -189,6 +212,7 @@ package body Config is
       PL ("# add as many as you want values to it by Name = Value scheme.");
       PL ("# For more information about site.cfg file please check program");
       PL ("# documentation.");
+      PL ("");
 
       Close(File => Config_File);
 
@@ -398,6 +422,218 @@ package body Config is
       when others =>
          raise Invalid_Config_Data with To_String(Source => Raw_Data);
    end Parse_Config;
+
+   --------------
+   -- Ask_User --
+   --------------
+
+   function Ask_User (Default : String) return Unbounded_String
+   is
+      Answer : Unbounded_String;
+   begin
+      Put ("(Default - " & Default & ")");
+      Put (" > ");
+      Answer := To_Unbounded_String (Get_Line);
+      if Answer = "" then
+         Answer := To_Unbounded_String (Default);
+      end if;
+      return Answer;
+   end Ask_User;
+
+   -----------------------------
+   -- Interactive_Site_Config --
+   -----------------------------
+
+   procedure Interactive_Site_Config (Additional : out Additional_Info)
+   is
+      Answer_1, Answer_2, Answer_3 : Unbounded_String;
+      Answer_4, Answer_5, Answer_6 : Unbounded_String;
+   begin
+      Put_Line ("Now we ask you some questions about your new site.");
+      Put_Line ("You can always change it later by modifying the site configuration");
+      Put_Line ("file. If you just press Enter as a answer, default value will be");
+      Put_Line ("used.");
+      New_Line;
+
+      Put_Line ("Please enter the name of the new site");
+      New_Line;
+
+      Yass_Config.Site_Name := Ask_User ("New Site");
+      New_Line;
+
+      Put_Line ("Please enter the description of the new site.");
+      Put_Line ("It is used to create meta tag for the website (which is showed");
+      Put_Line ("in search engines results) but only if pages don't set own.");
+      Put_Line ("Must be set in one line, no new line allowed.");
+      New_Line;
+
+      Additional.Description := Ask_User ("My new site");
+      New_Line;
+
+      Put_Line ("Please enter language code in which the new site will be written");
+      New_Line;
+
+      Yass_Config.Language := Ask_User ("en");
+      New_Line;
+
+      Put_Line ("Please enter the author of the new site");
+      New_Line;
+
+      Yass_Config.Author_Name := Ask_User ("John Doe");
+      New_Line;
+
+      Put_Line ("Please enter the contact email for the new site");
+      New_Line;
+
+      Yass_Config.Author_Email := Ask_User ("johndoe@example.com");
+      New_Line;
+
+      Put_Line ("Please enter base URL of the new site");
+      New_Line;
+
+      Yass_Config.Base_Url := Ask_User ("http://localhost:8888");
+      New_Line;
+
+      Put_Line ("Do you want to create Atom feed for the new site?");
+      Put_Line ("If yes, you must specify source for the feed: tags - create Atom");
+      Put_Line ("entries from proper tags in Markdown files, filename - the path");
+      Put_Line ("(related to the project directory path) to markdown file which");
+      Put_Line ("will be used as a source of atom feed (must have proper tags set");
+      Put_Line ("(inside). If you press Enter, creating Atom feed will be disabled");
+      New_Line;
+
+      Yass_Config.Atom_Feed_Source := Ask_User ("none");
+      New_Line;
+
+      if Yass_Config.Atom_Feed_Source = "none" then
+         Yass_Config.Atom_Feed_Source := To_Unbounded_String ("25");
+      else
+         Put_Line ("How much maximum entries should be in the Atom feed?");
+         Put_Line ("Recommended valuese are between 10 and 50.");
+         New_Line;
+
+         Yass_Config.Atom_Feed_Amount := Integer'Value (To_String (Ask_User ("25")));
+      end if;
+
+      Put_Line ("Do you want to create sitemap file for the new site?");
+      New_Line;
+
+      Answer_1 := Ask_User ("yes");
+      New_Line;
+
+      if To_String (Answer_1) in "yes" | "y" | "" then
+         Yass_Config.Sitemap_Enabled := True;
+      else
+         Yass_Config.Sitemap_Enabled := False;
+      end if;
+
+      Put_Line ("Do you want to HTML embedded in your markdown to be converted?");
+      New_Line;
+
+      Answer_2 := Ask_User ("yes");
+      New_Line;
+
+      if To_String (Answer_2) in "yes" | "y" | "" then
+         Yass_Config.HTML_Enabled := True;
+      else
+         Yass_Config.HTML_Enabled := False;
+      end if;
+
+      Put_Line ("Do you want to set more technical options (like configuring");
+      Put_Line ("build-in web server)?");
+      New_Line;
+
+      Answer_3 := Ask_User ("no");
+      New_Line;
+
+      if To_String (Answer_3) in "yes" | "" then
+
+         Put_Line ("Should the program start web server when monitoring for");
+         Put_Line ("changes in the site?");
+         New_Line;
+
+         Answer_4 := Ask_User ("yes");
+         New_Line;
+
+         if To_String (Answer_4) in "yes" | "y" | "" then
+            Yass_Config.Server_Enabled := True;
+         else
+            Yass_Config.Server_Enabled := False;
+         end if;
+
+         Put_Line ("On which port should the web server listening?");
+         Put_Line ("Possible values are from 1 to 65535. Ports below 1025 require");
+         Put_Line ("root privileges.");
+         New_Line;
+
+         Yass_Config.Server_Port := Integer'Value (To_String (Ask_User ("8888")));
+         New_Line;
+
+         Put_Line ("Should whole monitoring option stop if encounter any error");
+         Put_Line ("during the site creation?");
+         New_Line;
+
+         Answer_5 := Ask_User ("yes");
+         New_Line;
+
+         if To_String (Answer_5) in "yes" | "y" | "" then
+            Yass_Config.Stop_Server_On_Error := True;
+         else
+            Yass_Config.Stop_Server_On_Error := False;
+         end if;
+
+         Put_Line ("Full path to the web broser which will be started when the");
+         Put_Line ("program starts in server mode.");
+         New_Line;
+
+         Yass_Config.Browser_Command := Ask_User ("none");
+         New_Line;
+
+         Put_Line ("How often, in seconds, the program should check for changes");
+         Put_Line ("in the site files?");
+         New_Line;
+
+         Yass_Config.Monitor_Interval :=
+            Duration'Value (To_String (Ask_User ("5.0")));
+         New_Line;
+
+         Put_Line ("How often, in seconds, the program should check for changes");
+         Put_Line ("in the site configuration file?");
+         New_Line;
+
+         Yass_Config.Monitor_Config_Interval :=
+            Duration'Value (To_String (Ask_User ("60.0")));
+         New_Line;
+      end if;
+
+      Put_Line ("Do you want to set options related to compatybility with other");
+      Put_Line ("static sites generators?");
+      New_Line;
+
+      Answer_6 := Ask_User ("no");
+      New_Line;
+
+      if To_String (Answer_6) in "yes" | "y" then
+         Put_Line ("What mark should be used as a start for template tag?");
+         New_Line;
+
+         Additional.Start_Tag_Separator := Ask_User ("{%");
+         New_Line;
+
+         Put_Line ("What mark should be used as an end for template tag?");
+         New_Line;
+
+         Additional.End_Tag_Separator := Ask_User ("%}");
+         New_Line;
+
+         Put_Line ("What mark should be used as a start for the comment line in");
+         Put_Line ("Markdown files?");
+         New_Line;
+
+         Yass_Config.Markdown_Comment := Ask_User ("--");
+      end if;
+
+   end Interactive_Site_Config;
 
    procedure Create_Interactive_Config(Directory_Name: String) is
       Config_File: File_Type;
