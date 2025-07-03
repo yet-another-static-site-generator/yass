@@ -15,25 +15,45 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* Yass/Server
+with Ada.Exceptions;
+
+-- ****h* Yass/Monitors
+-- SOURCE
+package Monitors
 -- FUNCTION
 -- Provide code for running simple HTTP server
--- SOURCE
-package Server is
 -- ****
-
-   -- ****f* Server/Server.Start_Server
+is
+   -- ****a* Monitors/Monitors.Monitor_Site
    -- SOURCE
-   procedure Start_Server;
+   task Monitor_Site is
+      entry Start;
+      entry Stop;
+   end Monitor_Site;
    -- FUNCTION
-   -- Start the web server
+   -- Task for monitor changes in the site files and regenerate them
    -- ****
 
-   -- ****f* Server/Server.Shutdown_Server
+   -- ****a* Monitors/Monitor.Monitor_Config
    -- SOURCE
-   procedure Shutdown_Server;
+   task Monitor_Config is
+      entry Start;
+      entry Stop;
+   end Monitor_Config;
    -- FUNCTION
-   -- Shutdown the web server
+   -- Task for monitor changes in the site config file and reload config if
+   -- needed
    -- ****
 
-end Server;
+   -- ****f* Monitors/Monitor.Save_Exception_Info
+   -- SOURCE
+   procedure Save_Exception_Info (Occurrence : Ada.Exceptions.Exception_Occurrence;
+                                  Task_Name  : String);
+   -- FUNCTION
+   -- Save exception traceback to error.log
+   -- PARAMETERS
+   -- Occurrence - Exception occurence information
+   -- Task_Name  - Identifier for task.
+   -- ****
+
+end Monitors;
