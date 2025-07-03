@@ -217,7 +217,12 @@ package body Config is
 
    end Create_Site_Config;
 
-   procedure Parse_Config(Directory_Name: String) is
+   ----------------------
+   -- Load_Site_Config --
+   ----------------------
+
+   procedure Load_Site_Config (Directory_Name : String)
+   is
       use Ada.Strings.UTF_Encoding.Strings;
       use Ada.Characters.Handling;
       use Ada.Directories;
@@ -420,7 +425,7 @@ package body Config is
    exception
       when others =>
          raise Invalid_Config_Data with To_String(Source => Raw_Data);
-   end Parse_Config;
+   end Load_Site_Config;
 
    --------------
    -- Ask_User --

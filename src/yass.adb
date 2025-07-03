@@ -360,7 +360,9 @@ begin
           (Message => "from where page will be created.", Exist => False) then
          return;
       end if;
-      Parse_Config(Directory_Name => To_String(Source => Work_Directory));
+
+      Load_Site_Config (Directory_Name => To_String (Work_Directory));
+
       if Build_Site(Directory_Name => To_String(Source => Work_Directory)) then
          Show_Message
            (Text => "Site was build.", Message_Type => Messages.SUCCESS);
@@ -373,7 +375,9 @@ begin
           (Message => "from where site will be served.", Exist => False) then
          return;
       end if;
-      Parse_Config(Directory_Name => To_String(Source => Work_Directory));
+
+      Load_Site_Config (Directory_Name => To_String (Work_Directory));
+
       if not Ada.Directories.Exists
           (Name => To_String(Source => Yass_Config.Output_Directory)) then
          Create_Path

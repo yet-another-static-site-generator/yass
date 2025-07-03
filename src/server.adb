@@ -280,8 +280,10 @@ package body Server is
                Put_Line
                  (Item =>
                     "Site configuration was changed, reconfiguring the project.");
-               Parse_Config
-                 (Directory_Name => To_String(Source => Site_Directory));
+
+               Load_Site_Config
+                 (Directory_Name => To_String (Site_Directory));
+
                Shutdown_Server;
                Show_Message(Text => "done", Message_Type => Messages.SUCCESS);
                if Yass_Config.Server_Enabled then

@@ -184,17 +184,18 @@ package Config is
       Test_Case => (Name => "Test_Create_Site_Config", Mode => Nominal);
    -- ****
 
-   -- ****f* Config/Config.Parse_Config
+   -- ****f* Config/Config.Load_Site_Config
+   -- SOURCE
+   procedure Load_Site_Config (Directory_Name : String)
+   with
+      Pre => Directory_Name'Length > 0,
+      Test_Case => (Name => "Test_Load_Site_Config", Mode => Nominal);
    -- FUNCTION
    -- Parse config file and set all settings and tags for site in directory
    -- with full path Directory_Name
    -- PARAMETERS
    -- Directory_Name - Full path to the directory from which config file will
    --                  be parsed
-   -- SOURCE
-   procedure Parse_Config(Directory_Name: String) with
-      Pre => Directory_Name'Length > 0,
-      Test_Case => (Name => "Test_Parse_Config", Mode => Nominal);
    -- ****
 
    -- ****f* Config/Config.Interactive_Site_Config
