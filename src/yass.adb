@@ -271,12 +271,12 @@ procedure Yass is
                  To_String(Source => Directory));
          end loop Create_Directories_Loop;
       end Create_Directories_Block;
+
       if Argument(Number => 1) = "create" then
-         Create_Interactive_Config
-           (Directory_Name => To_String(Source => Work_Directory));
-      else
-         Create_Config(Directory_Name => To_String(Source => Work_Directory));
+         Interactive_Site_Config;
       end if;
+      Create_Site_Config (Directory_Name => To_String (Work_Directory));
+
       Create_Layout(Directory_Name => To_String(Source => Work_Directory));
       Create_Directory_Layout
         (Directory_Name => To_String(Source => Work_Directory));
@@ -372,7 +372,9 @@ begin
           (Message => "from where page will be created.", Exist => False) then
          return;
       end if;
-      Parse_Config(Directory_Name => To_String(Source => Work_Directory));
+
+      Load_Site_Config (Directory_Name => To_String (Work_Directory));
+
       if Build_Site(Directory_Name => To_String(Source => Work_Directory)) then
          Show_Message
            (Text => "Site was build.", Message_Type => Messages.SUCCESS);
@@ -385,7 +387,9 @@ begin
           (Message => "from where site will be served.", Exist => False) then
          return;
       end if;
-      Parse_Config(Directory_Name => To_String(Source => Work_Directory));
+
+      Load_Site_Config (Directory_Name => To_String (Work_Directory));
+
       if not Ada.Directories.Exists
           (Name => To_String(Source => Yass_Config.Output_Directory)) then
          Create_Path

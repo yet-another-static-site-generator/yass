@@ -319,8 +319,8 @@ package body Monitors is
                Put_Line
                  (Item =>
                     "Site configuration was changed, reconfiguring the project.");
-               Parse_Config
-                 (Directory_Name => To_String(Source => Site_Directory));
+
+               Load_Site_Config (Directory_Name => To_String (Site_Directory));
 
                Server.Shutdown_Server;
 
