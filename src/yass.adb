@@ -15,8 +15,6 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar;
-with Ada.Calendar.Formatting;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
@@ -24,9 +22,10 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.Traceback.Symbolic;
+
 with AWS.Net;
 with AWS.Server;
 
@@ -496,48 +495,8 @@ exception
       Show_Message
         (Text =>
            "Can't start program in server mode. Probably another program is using this same port, or you have still connected old instance of the program in your browser. Please close whole browser and try run the program again. If problem will persist, try to change port for the server in the site configuration.");
-   when An_Exception : others =>
-      Save_Exception_Info_Block :
-      declare
-         use Ada.Calendar;
-         use GNAT.Traceback.Symbolic;
 
-         Error_File: File_Type;
-      begin
-         if Ada.Directories.Exists(Name => "error.log") then
-            Open(File => Error_File, Mode => Append_File, Name => "error.log");
-         else
-            Create
-              (File => Error_File, Mode => Append_File, Name => "error.log");
-         end if;
-         Put_Line
-           (File => Error_File,
-            Item => Ada.Calendar.Formatting.Image(Date => Clock));
-         Put_Line(File => Error_File, Item => Version);
-         Put_Line
-           (File => Error_File,
-            Item => "Exception: " & Exception_Name(X => An_Exception));
-         Put_Line
-           (File => Error_File,
-            Item => "Message: " & Exception_Message(X => An_Exception));
-         Put_Line
-           (File => Error_File,
-            Item => "-------------------------------------------------");
-         if Directory_Separator = '/' then
-            Put_Line
-              (File => Error_File,
-               Item => Symbolic_Traceback(E => An_Exception));
-         else
-            Put_Line
-              (File => Error_File,
-               Item => Exception_Information(X => An_Exception));
-         end if;
-         Put_Line
-           (File => Error_File,
-            Item => "-------------------------------------------------");
-         Close(File => Error_File);
-         Put_Line
-           (Item =>
-              "Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://github.com/yet-another-static-site-generator/yass and attach (if possible) file 'error.log' (should be in this same directory).");
-      end Save_Exception_Info_Block;
+   when Occurrence : others =>
+      Server.Save_Exception_Info (Occurrence, "Environment_Task");
+
 end Yass;
