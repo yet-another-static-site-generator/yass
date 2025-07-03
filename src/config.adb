@@ -227,201 +227,216 @@ package body Config is
       use Ada.Characters.Handling;
       use Ada.Directories;
       use Ada.Strings.Fixed;
-      use GNAT.String_Split;
 
-      Config_File: File_Type;
-      Raw_Data, Field_Name, Value: Unbounded_String := Null_Unbounded_String;
-      Equal_Index: Natural := 0;
-      Tokens: Slice_Set; --## rule line off IMPROPER_INITIALIZATION
-      Start_Tag: Unbounded_String := To_Unbounded_String(Source => "{%");
-      End_Tag: Unbounded_String := To_Unbounded_String(Source => "%}");
-      procedure Normalize_Dir(Directory_Path: in out Unbounded_String) is
+      Config_File : File_Type;
+
+      Raw_Data   : Unbounded_String := Null_Unbounded_String;
+      Field_Name : Unbounded_String := Null_Unbounded_String;
+      Value      : Unbounded_String := Null_Unbounded_String;
+
+      Equal_Index : Natural := 0;
+
+      procedure Normalize_Dir (Directory_Path : in out Unbounded_String)
+      is
       begin
          if Dir_Separator = '/'
-           and then Element(Source => Directory_Path, Index => 1) /= '/' then
+           and then Element (Directory_Path, Index => 1) /= '/' then
             Directory_Path :=
-              To_Unbounded_String(Source => Directory_Name & Dir_Separator) &
+              To_Unbounded_String (Directory_Name & Dir_Separator) &
               Directory_Path;
-         elsif Element(Source => Directory_Path, Index => 2) /= ':' then
+         elsif Element (Directory_Path, Index => 2) /= ':' then
             Directory_Path :=
-              To_Unbounded_String(Source => Directory_Name & Dir_Separator) &
+              To_Unbounded_String (Directory_Name & Dir_Separator) &
               Directory_Path;
          end if;
       end Normalize_Dir;
+
    begin
       Site_Tags.Clear;
       Global_Table_Tags.Clear;
-      Open
-        (File => Config_File, Mode => In_File,
-         Name => Directory_Name & "/site.cfg");
+
+      Open (File => Config_File,
+            Mode => In_File,
+            Name => Directory_Name & "/site.cfg");
+
       Load_Configuration_Loop :
-      while not End_Of_File(File => Config_File) loop
+      while not End_Of_File (Config_File) loop
          Raw_Data :=
-           To_Unbounded_String
-             (Source => Encode(Item => Get_Line(File => Config_File)));
-         if Length(Source => Raw_Data) = 0
-           or else Element(Source => Raw_Data, Index => 1) = '#' then
+           To_Unbounded_String (Encode (Get_Line (Config_File)));
+
+         if
+           Length (Raw_Data) = 0 or else
+           Element (Raw_Data, Index => 1) = '#'
+         then
             goto End_Of_Loop;
          end if;
-         Equal_Index := Index(Source => Raw_Data, Pattern => "=");
+
+         Equal_Index := Index (Raw_Data, Pattern => "=");
+
          if Equal_Index = 0 then
-            raise Invalid_Config_Data with To_String(Source => Raw_Data);
+            raise Invalid_Config_Data with To_String (Raw_Data);
          end if;
-         Field_Name := Head(Source => Raw_Data, Count => Equal_Index - 2);
-         Value :=
-           Tail
-             (Source => Raw_Data,
-              Count => Length(Source => Raw_Data) - Equal_Index - 1);
-         if Field_Name = To_Unbounded_String(Source => "LayoutsDirectory") then
+
+         Field_Name := Head (Raw_Data, Count => Equal_Index - 2);
+         Value      := Tail (Raw_Data, Count => Length (Raw_Data) - Equal_Index - 1);
+
+         if Field_Name = "LayoutsDirectory" then
             Yass_Config.Layouts_Directory := Value;
-         elsif Field_Name =
-           To_Unbounded_String(Source => "OutputDirectory") then
+
+         elsif Field_Name = "OutputDirectory" then
             Yass_Config.Output_Directory := Value;
-         elsif Field_Name =
-           To_Unbounded_String(Source => "ModulesDirectory") then
+
+         elsif Field_Name = "ModulesDirectory" then
             Yass_Config.Modules_Directory := Value;
-         elsif Field_Name = To_Unbounded_String(Source => "ExcludedFiles") then
-            Create
-              (S => Tokens, From => To_String(Source => Value),
-               Separators => ",");
-            Add_Excluded_Files_Loop :
-            for I in 1 .. Slice_Count(S => Tokens) loop
-               Yass_Config.Excluded_Files.Append
-                 (New_Item => Slice(S => Tokens, Index => I));
-            end loop Add_Excluded_Files_Loop;
-         elsif Field_Name = To_Unbounded_String(Source => "ServerEnabled") then
+
+         elsif Field_Name = "ExcludedFiles" then
+            declare
+               use GNAT.String_Split;
+
+               Tokens : Slice_Set; --## rule line off IMPROPER_INITIALIZATION
+            begin
+               Create (S          => Tokens,
+                       From       => To_String (Value),
+                       Separators => ",");
+
+               Add_Excluded_Files_Loop :
+               for I in 1 .. Slice_Count (S => Tokens) loop
+                  Yass_Config.Excluded_Files.Append
+                    (New_Item => Slice (S => Tokens, Index => I));
+               end loop Add_Excluded_Files_Loop;
+            end;
+
+         elsif Field_Name = "ServerEnabled" then
             Yass_Config.Server_Enabled :=
-              (if To_Lower(Item => To_String(Source => Value)) = "true" then
-                 True
-               else False);
-         elsif Field_Name = To_Unbounded_String(Source => "ServerPort") then
+               To_Lower (To_String (Value)) = "true";
+
+         elsif Field_Name = "ServerPort" then
             Yass_Config.Server_Port :=
-              Positive'Value(To_String(Source => Value));
+              Positive'Value (To_String (Value));
             if Yass_Config.Server_Port > 65_535 then
-               raise Invalid_Config_Data with To_String(Source => Raw_Data);
+               raise Invalid_Config_Data with To_String (Raw_Data);
             end if;
-         elsif Field_Name =
-           To_Unbounded_String(Source => "StopServerOnError") then
+
+         elsif Field_Name = "StopServerOnError" then
             Yass_Config.Stop_Server_On_Error :=
-              (if To_Lower(Item => To_String(Source => Value)) = "true" then
-                 True
-               else False);
-         elsif Field_Name =
-           To_Unbounded_String(Source => "BrowserCommand") then
-            if Index(Source => Value, Pattern => "%s", From => 1) > 0 then
+               To_Lower (Item => To_String (Value)) = "true";
+
+         elsif Field_Name = "BrowserCommand" then
+            if Index (Value, Pattern => "%s", From => 1) > 0 then
                Replace_Slice
                  (Source => Value,
-                  Low => Index(Source => Value, Pattern => "%s", From => 1),
-                  High =>
-                    Index(Source => Value, Pattern => "%s", From => 1) + 1,
-                  By =>
-                    "http://localhost:" &
+                  Low    => Index (Value, Pattern => "%s", From => 1),
+                  High   => Index (Value, Pattern => "%s", From => 1) + 1,
+                  By     => "http://localhost:" &
                     Trim
-                      (Source => Positive'Image(Yass_Config.Server_Port),
-                       Side => Ada.Strings.Left));
+                      (Source => Positive'Image (Yass_Config.Server_Port),
+                       Side   => Ada.Strings.Left));
             end if;
             Yass_Config.Browser_Command := Value;
-         elsif Field_Name =
-           To_Unbounded_String(Source => "MonitorInterval") then
+
+         elsif Field_Name = "MonitorInterval" then
             Yass_Config.Monitor_Interval :=
-              Duration'Value(To_String(Source => Value));
-         elsif Field_Name =
-           To_Unbounded_String(Source => "MonitorConfigInterval") then
+              Duration'Value (To_String (Value));
+
+         elsif Field_Name = "MonitorConfigInterval" then
             Yass_Config.Monitor_Config_Interval :=
-              Duration'Value(To_String(Source => Value));
-         elsif Field_Name = To_Unbounded_String(Source => "BaseURL") then
+              Duration'Value (To_String (Value));
+
+         elsif Field_Name = "BaseURL" then
             Yass_Config.Base_Url := Value;
             Site_Tags.Include
-              (Key => "BaseURL", New_Item => To_String(Source => Value));
-         elsif Field_Name =
-           To_Unbounded_String(Source => "SitemapEnabled") then
+              (Key => "BaseURL", New_Item => To_String (Value));
+
+         elsif Field_Name = "SitemapEnabled" then
             Yass_Config.Sitemap_Enabled :=
-              (if To_Lower(Item => To_String(Source => Value)) = "true" then
-                 True
-               else False);
-         elsif Field_Name =
-           To_Unbounded_String(Source => "HTMLEnabled") then
+               To_Lower (To_String (Value)) = "true";
+
+         elsif Field_Name = "HTMLEnabled" then
             Yass_Config.HTML_Enabled :=
-              (if To_Lower(Item => To_String(Source => Value)) = "true" then
-                 True
-               else False);
-         elsif Field_Name =
-           To_Unbounded_String(Source => "AtomFeedSource") then
-            if Value in To_Unbounded_String(Source => "none") |
-                  To_Unbounded_String(Source => "tags") then
+               To_Lower (To_String (Value)) = "true";
+
+         elsif Field_Name = "AtomFeedSource" then
+            if To_String (Value) in "none" | "tags" then
                Yass_Config.Atom_Feed_Source := Value;
             else
                Yass_Config.Atom_Feed_Source :=
                  Unbounded_Slice
                    (Source => Value, Low => 1,
-                    High => Length(Source => Value) - 2) &
-                 To_Unbounded_String(Source => "html");
+                    High   => Length (Value) - 2) & "html";
             end if;
-         elsif Field_Name =
-           To_Unbounded_String(Source => "AtomFeedAmount") then
+
+         elsif Field_Name = "AtomFeedAmount" then
             Yass_Config.Atom_Feed_Amount :=
-              Positive'Value(To_String(Source => Value));
-         elsif Field_Name = To_Unbounded_String(Source => "Name") then
+              Positive'Value (To_String (Value));
+
+         elsif Field_Name = "Name" then
             Yass_Config.Site_Name := Value;
-            Site_Tags.Include
-              (Key => To_String(Source => Field_Name),
-               New_Item => To_String(Source => Value));
-         elsif Field_Name =
-           To_Unbounded_String(Source => "StartTagSeparator") then
-            Start_Tag := Value;
-         elsif Field_Name =
-           To_Unbounded_String(Source => "EndTagSeparator") then
-            End_Tag := Value;
-         elsif Field_Name =
-           To_Unbounded_String(Source => "MarkdownComment") then
+            Site_Tags.Include (Key      => To_String (Field_Name),
+                               New_Item => To_String (Value));
+
+         elsif Field_Name = "StartTagSeparator" then
+            Yass_Config.Start_Tag_Separator := Value;
+
+         elsif Field_Name = "EndTagSeparator" then
+            Yass_Config.End_Tag_Separator := Value;
+
+         elsif Field_Name = "MarkdownComment" then
             Yass_Config.Markdown_Comment := Value;
-         elsif Field_Name = To_Unbounded_String(Source => "Author") then
+
+         elsif Field_Name = "Author" then
             Yass_Config.Author_Name := Value;
-         elsif Field_Name = To_Unbounded_String(Source => "AuthorEmail") then
+
+         elsif Field_Name = "AuthorEmail" then
             Yass_Config.Author_Email := Value;
-         elsif Field_Name = To_Unbounded_String(Source => "Language") then
+
+         elsif Field_Name = "Language" then
             Yass_Config.Language := Value;
             Site_Tags.Include
-              (Key => To_String(Source => Field_Name),
-               New_Item => To_String(Source => Value));
-         elsif Value = To_Unbounded_String(Source => "[]") then
-            Global_Table_Tags.Include
-              (Key => To_String(Source => Field_Name), New_Item => +"");
-            Clear(T => Global_Table_Tags(To_String(Source => Field_Name)));
-         elsif Global_Table_Tags.Contains
-             (Key => To_String(Source => Field_Name)) then
-            Global_Table_Tags(To_String(Source => Field_Name)) :=
-              Global_Table_Tags(To_String(Source => Field_Name)) & Value;
+              (Key      => To_String (Field_Name),
+               New_Item => To_String (Value));
+
+         elsif Value = "[]" then
+            Global_Table_Tags.Include (Key      => To_String (Field_Name),
+                                       New_Item => +"");
+            Clear (T => Global_Table_Tags (To_String (Field_Name)));
+
+         elsif Global_Table_Tags.Contains (Key => To_String (Field_Name)) then
+            Global_Table_Tags (To_String (Field_Name)) :=
+              Global_Table_Tags (To_String (Field_Name)) & Value;
+
          else
             Site_Tags.Include
-              (Key => To_String(Source => Field_Name),
-               New_Item => To_String(Source => Value));
+              (Key      => To_String (Field_Name),
+               New_Item => To_String (Value));
          end if;
+
          <<End_Of_Loop>>
       end loop Load_Configuration_Loop;
-      Close(File => Config_File);
-      Normalize_Dir(Directory_Path => Yass_Config.Layouts_Directory);
-      Normalize_Dir(Directory_Path => Yass_Config.Output_Directory);
-      Normalize_Dir(Directory_Path => Yass_Config.Modules_Directory);
-      Yass_Config.Excluded_Files.Append(New_Item => ".");
-      Yass_Config.Excluded_Files.Append(New_Item => "..");
-      Yass_Config.Excluded_Files.Append(New_Item => "site.cfg");
+
+      Close (Config_File);
+
+      Normalize_Dir (Directory_Path => Yass_Config.Layouts_Directory);
+      Normalize_Dir (Directory_Path => Yass_Config.Output_Directory);
+      Normalize_Dir (Directory_Path => Yass_Config.Modules_Directory);
+
+      Yass_Config.Excluded_Files.Append (".");
+      Yass_Config.Excluded_Files.Append ("..");
+      Yass_Config.Excluded_Files.Append ("site.cfg");
       Yass_Config.Excluded_Files.Append
-        (New_Item =>
-           Simple_Name
-             (Name => To_String(Source => Yass_Config.Layouts_Directory)));
+        (Simple_Name
+          (Name => To_String (Yass_Config.Layouts_Directory)));
       Yass_Config.Excluded_Files.Append
-        (New_Item =>
-           Simple_Name
-             (Name => To_String(Source => Yass_Config.Output_Directory)));
+        (Simple_Name
+          (Name => To_String (Yass_Config.Output_Directory)));
       Yass_Config.Excluded_Files.Append
-        (New_Item =>
-           Simple_Name
-             (Name => To_String(Source => Yass_Config.Modules_Directory)));
-      Site_Directory := To_Unbounded_String(Source => Directory_Name);
+        (Simple_Name
+          (Name => To_String (Yass_Config.Modules_Directory)));
+
+      Site_Directory := To_Unbounded_String (Directory_Name);
+
       Set_Tag_Separators
-        (Start_With => To_String(Source => Start_Tag),
-         Stop_With => To_String(Source => End_Tag));
+        (Start_With => To_String (Yass_Config.Start_Tag_Separator),
+         Stop_With  => To_String (Yass_Config.End_Tag_Separator));
    exception
       when others =>
          raise Invalid_Config_Data with To_String(Source => Raw_Data);
