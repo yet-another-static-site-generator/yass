@@ -103,6 +103,9 @@ package Config is
       Author_Email: Unbounded_String :=
         To_Unbounded_String(Source => "johndoe@example.com");
       Language: Unbounded_String := To_Unbounded_String(Source => "en");
+      Start_Tag_Separator : Unbounded_String := To_Unbounded_String ("{%");
+      End_Tag_Separator   : Unbounded_String := To_Unbounded_String ("%}");
+      Description         : Unbounded_String := To_Unbounded_String ("My new site");
    end record;
    -- ****
 
@@ -168,30 +171,17 @@ package Config is
    Invalid_Config_Data: exception;
    -- ****
 
-   type Additional_Info is
-      record
-         Description         : Unbounded_String;
-         Start_Tag_Separator : Unbounded_String;
-         End_Tag_Separator   : Unbounded_String;
-      end record;
-
-   Default_Additional : constant Additional_Info :=
-     (Description         => To_Unbounded_String ("My site"),
-      Start_Tag_Separator => To_Unbounded_String ("{%"),
-      End_Tag_Separator   => To_Unbounded_String ("%}"));
-
-   -- ****f* Config/Config.Create_Config
+   -- ****f* Config/Config.Create_Site_Config
    -- FUNCTION
    -- Create default config in directory with full path Directory_Name
    -- PARAMETERS
    -- Directory_Name - Full path to the directory where config file will be
    --                  created
    -- SOURCE
-   procedure Create_Config (Directory_Name : String;
-                            Additional     : Additional_Info)
+   procedure Create_Site_Config (Directory_Name : String)
    with
       Pre => Directory_Name'Length > 0,
-      Test_Case => (Name => "Test_Create_Config", Mode => Nominal);
+      Test_Case => (Name => "Test_Create_Site_Config", Mode => Nominal);
    -- ****
 
    -- ****f* Config/Config.Parse_Config
@@ -209,11 +199,9 @@ package Config is
 
    -- ****f* Config/Config.Interactive_Site_Config
    -- SOURCE
-   procedure Interactive_Site_Config (Additional : out Additional_Info);
+   procedure Interactive_Site_Config;
    -- FUNCTION
    -- Ask user for configuration.
-   -- PARAMETERS
-   -- Additional - Additional information
    -- ****
 
 end Config;

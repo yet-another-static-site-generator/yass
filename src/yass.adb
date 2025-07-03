@@ -270,17 +270,9 @@ procedure Yass is
       end Create_Directories_Block;
 
       if Argument(Number => 1) = "create" then
-         declare
-            Additional : Additional_Info := Default_Additional;
-         begin
-            Interactive_Site_Config (Additional);
-            Create_Config (Directory_Name => To_String (Work_Directory),
-                           Additional     => Additional);
-         end;
-      else
-         Create_Config (Directory_Name => To_String (Work_Directory),
-                        Additional     => Default_Additional);
+         Interactive_Site_Config;
       end if;
+      Create_Site_Config (Directory_Name => To_String (Work_Directory));
 
       Create_Layout(Directory_Name => To_String(Source => Work_Directory));
       Create_Directory_Layout

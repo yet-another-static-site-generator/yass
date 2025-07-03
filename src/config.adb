@@ -25,19 +25,18 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 package body Config is
 
-   -------------------
-   -- Create_Config --
-   -------------------
+   ------------------------
+   -- Create_Site_Config --
+   ------------------------
 
-   procedure Create_Config (Directory_Name : String;
-                            Additional     : Additional_Info)
+   procedure Create_Site_Config (Directory_Name : String)
    is
       use Ada.Characters.Handling;
 
       Config_File : File_Type;
 
       Image_Site_Name           : constant String := To_String (Yass_Config.Site_Name);
-      Image_Description         : constant String := To_String (Additional.Description);
+      Image_Description         : constant String := To_String (Yass_Config.Description);
       Image_Language            : constant String := To_String (Yass_Config.Language);
       Image_Author_Name         : constant String := To_String (Yass_Config.Author_Name);
       Image_Author_Email        : constant String := To_String (Yass_Config.Author_Email);
@@ -52,8 +51,8 @@ package body Config is
       Image_Browser_Command     : constant String := To_String (Yass_Config.Browser_Command);
       Image_Monitor_Interval    : constant String := Yass_Config.Monitor_Config_Interval'Image;
       Image_Monitor_Config_Interval : constant String := Yass_Config.Monitor_Config_Interval'Image;
-      Image_Start_Tag_Separator : constant String := To_String (Additional.Start_Tag_Separator);
-      Image_End_Tag_Separator   : constant String := To_String (Additional.End_Tag_Separator);
+      Image_Start_Tag_Separator : constant String := To_String (Yass_Config.Start_Tag_Separator);
+      Image_End_Tag_Separator   : constant String := To_String (Yass_Config.End_Tag_Separator);
       Image_Markdown_Comment    : constant String := To_String (Yass_Config.Markdown_Comment);
 
       procedure PL (Item : String) is
@@ -214,9 +213,9 @@ package body Config is
       PL ("# documentation.");
       PL ("");
 
-      Close(File => Config_File);
+      Close (Config_File);
 
-   end Create_Config;
+   end Create_Site_Config;
 
    procedure Parse_Config(Directory_Name: String) is
       use Ada.Strings.UTF_Encoding.Strings;
@@ -444,7 +443,7 @@ package body Config is
    -- Interactive_Site_Config --
    -----------------------------
 
-   procedure Interactive_Site_Config (Additional : out Additional_Info)
+   procedure Interactive_Site_Config
    is
       Answer_1, Answer_2, Answer_3 : Unbounded_String;
       Answer_4, Answer_5, Answer_6 : Unbounded_String;
@@ -467,7 +466,7 @@ package body Config is
       Put_Line ("Must be set in one line, no new line allowed.");
       New_Line;
 
-      Additional.Description := Ask_User ("My new site");
+      Yass_Config.Description := Ask_User ("My new site");
       New_Line;
 
       Put_Line ("Please enter language code in which the new site will be written");
@@ -617,13 +616,13 @@ package body Config is
          Put_Line ("What mark should be used as a start for template tag?");
          New_Line;
 
-         Additional.Start_Tag_Separator := Ask_User ("{%");
+         Yass_Config.Start_Tag_Separator := Ask_User ("{%");
          New_Line;
 
          Put_Line ("What mark should be used as an end for template tag?");
          New_Line;
 
-         Additional.End_Tag_Separator := Ask_User ("%}");
+         Yass_Config.End_Tag_Separator := Ask_User ("%}");
          New_Line;
 
          Put_Line ("What mark should be used as a start for the comment line in");
