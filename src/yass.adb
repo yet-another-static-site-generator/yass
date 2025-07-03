@@ -29,6 +29,9 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.Traceback.Symbolic;
 with AWS.Net;
 with AWS.Server;
+
+with Resources;
+
 with AtomFeed;
 with Config; use Config;
 with Layouts; use Layouts;
@@ -332,26 +335,35 @@ begin
            "along with this program.  If not, see <https://www.gnu.org/licenses/>.");
       -- Show README.md file
    elsif Argument(Number => 1) = "readme" then
+
       Show_Readme_Block :
       declare
+         package Yass_Resources
+           is new Resources (Crate_Name => "yass");
+
          Readme_Name: constant String :=
-           (if Ada.Environment_Variables.Exists(Name => "APPDIR") then
-              Value(Name => "APPDIR") & "/usr/share/doc/yass/README.md"
-            else Containing_Directory(Name => Command_Name) & Dir_Separator &
-              "README.md");
+           Yass_Resources.Resource_Path & Dir_Separator & "README.md";
+
          Readme_File: File_Type;
       begin
-         if not Ada.Directories.Exists(Name => Readme_Name) then
-            Show_Message(Text => "Can't find file " & Readme_Name);
+         if not Ada.Directories.Exists (Name => Readme_Name) then
+            Show_Message (Text => "Can't find file " & Readme_Name);
             return;
          end if;
-         Open(File => Readme_File, Mode => In_File, Name => Readme_Name);
+
+         Open (File => Readme_File,
+               Mode => In_File,
+               Name => Readme_Name);
+
          Show_Readme_Loop :
-         while not End_Of_File(File => Readme_File) loop
-            Put_Line(Item => Get_Line(File => Readme_File));
+         while not End_Of_File (Readme_File) loop
+            Put_Line (Item => Get_Line (Readme_File));
          end loop Show_Readme_Loop;
-         Close(File => Readme_File);
+
+         Close (Readme_File);
+
       end Show_Readme_Block;
+
       -- Create new, selected site project directory
    elsif Argument(Number => 1) in "createnow" | "create" then
       Create;
