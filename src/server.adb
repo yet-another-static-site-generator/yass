@@ -217,6 +217,8 @@ package body Server is
                OS_Exit(Status => 0);
             end if;
       end Monitor_Directory;
+
+      Site_Monitor_Running : Boolean := True;
    begin
       select
          accept Start;
@@ -228,8 +230,9 @@ package body Server is
          Start_Sitemap;
          -- Load data from existing atom feed or create new set of data or nothing if atom feed generation is disabled
          Start_Atom_Feed;
+
          Monitor_Site_Loop :
-         loop
+         while Site_Monitor_Running loop
             Site_Rebuild := False;
             -- Monitor the site project directory for changes
             Monitor_Directory(Name => To_String(Source => Site_Directory));
@@ -249,8 +252,15 @@ package body Server is
                       (Date => Clock, Time_Zone => UTC_Time_Offset) &
                     "] " & "Site was rebuild.");
             end if;
-            -- Wait before next check
-            delay Yass_Config.Monitor_Interval;
+
+            select
+               accept Stop do
+                  Site_Monitor_Running := False;
+               end Stop;
+            or
+               --  Wait before next check
+               delay Yass_Config.Monitor_Interval;
+            end select;
          end loop Monitor_Site_Loop;
       or
          terminate;
@@ -259,18 +269,27 @@ package body Server is
 
    task body Monitor_Config is
       Config_Last_Modified: Time; --## rule line off IMPROPER_INITIALIZATION
+      Config_Monitor_Running : Boolean := True;
    begin
       select
          accept Start;
+
          Monitor_Config_Loop :
-         loop
+         while Config_Monitor_Running loop
             Config_Last_Modified :=
               Modification_Time
                 (Name =>
                    To_String(Source => Site_Directory) & Dir_Separator &
                    "site.cfg");
-            -- Wait before next check
-            delay Yass_Config.Monitor_Config_Interval;
+            select
+               accept Stop do
+                  Config_Monitor_Running := False;
+               end Stop;
+            or
+               --  Wait before next check
+               delay Yass_Config.Monitor_Config_Interval;
+            end select;
+
             -- Update configuration if needed
             if Config_Last_Modified /=
               Modification_Time
