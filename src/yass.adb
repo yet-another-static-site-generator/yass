@@ -36,6 +36,7 @@ with Config; use Config;
 with Layouts; use Layouts;
 with Messages; use Messages;
 with Modules;
+with Monitors;
 with Pages; use Pages;
 with Sitemaps;
 with Server; use Server;
@@ -432,8 +433,10 @@ begin
          Put_Line
            (Item => "Started monitoring site changes. Press ""Q"" for quit.");
       end if;
-      Monitor_Site.Start;
-      Monitor_Config.Start;
+
+      Monitors.Monitor_Site.Start;
+      Monitors.Monitor_Config.Start;
+
       AWS.Server.Wait(Mode => AWS.Server.Q_Key_Pressed);
       if Yass_Config.Server_Enabled then
          Shutdown_Server;
@@ -441,8 +444,8 @@ begin
          Put(Item => "Stopping monitoring site changes...");
       end if;
 
-      Monitor_Site.Stop;
-      Monitor_Config.Stop;
+      Monitors.Monitor_Site.Stop;
+      Monitors.Monitor_Config.Stop;
 
       Show_Message(Text => "done.", Message_Type => Messages.SUCCESS);
       -- Create new empty markdown file with selected name
@@ -501,6 +504,6 @@ exception
            "Can't start program in server mode. Probably another program is using this same port, or you have still connected old instance of the program in your browser. Please close whole browser and try run the program again. If problem will persist, try to change port for the server in the site configuration.");
 
    when Occurrence : others =>
-      Server.Save_Exception_Info (Occurrence, "Environment_Task");
+      Monitors.Save_Exception_Info (Occurrence, "Environment_Task");
 
 end Yass;
