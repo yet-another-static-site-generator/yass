@@ -55,7 +55,7 @@ package body Server is
    begin
       -- Show directory listing if requested
       if Kind
-          (Name => To_String(Source => Yass_Config.Output_Directory) & Uri) =
+          (Name => To_String(Source => Yass_Conf.Output_Directory) & Uri) =
         Directory then
          return
            AWS.Response.Build
@@ -63,9 +63,9 @@ package body Server is
               Message_Body =>
                 Browse
                   (Directory_Name =>
-                     To_String(Source => Yass_Config.Output_Directory) & Uri,
+                     To_String(Source => Yass_Conf.Output_Directory) & Uri,
                    Template_Filename =>
-                     To_String(Source => Yass_Config.Layouts_Directory) &
+                     To_String(Source => Yass_Conf.Layouts_Directory) &
                      Dir_Separator & "directory.html",
                    Request => Request));
       end if;
@@ -83,14 +83,14 @@ package body Server is
    begin
       AWS.Server.Start
         (Web_Server => Http_Server, Name => "YASS static page server",
-         Port => Yass_Config.Server_Port, Callback => Callback'Access,
+         Port => Yass_Conf.Server_Port, Callback => Callback'Access,
          Max_Connection => 5);
       Put_Line
         (Item =>
            "Server was started. Web address: http://localhost:" &
-           Positive'Image(Yass_Config.Server_Port)
-             (Positive'Image(Yass_Config.Server_Port)'First + 1 ..
-                  Positive'Image(Yass_Config.Server_Port)'Length) &
+           Positive'Image(Yass_Conf.Server_Port)
+             (Positive'Image(Yass_Conf.Server_Port)'First + 1 ..
+                  Positive'Image(Yass_Conf.Server_Port)'Length) &
            "/index.html Press ""Q"" for quit.");
    end Start_Server;
 

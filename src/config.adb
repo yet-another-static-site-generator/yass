@@ -35,25 +35,25 @@ package body Config is
 
       Config_File : File_Type;
 
-      Image_Site_Name           : constant String := To_String (Yass_Config.Site_Name);
-      Image_Description         : constant String := To_String (Yass_Config.Description);
-      Image_Language            : constant String := To_String (Yass_Config.Language);
-      Image_Author_Name         : constant String := To_String (Yass_Config.Author_Name);
-      Image_Author_Email        : constant String := To_String (Yass_Config.Author_Email);
-      Image_Base_URL            : constant String := To_String (Yass_Config.Base_Url);
-      Image_Atom_Feed_Source    : constant String := To_String (Yass_Config.Atom_Feed_Source);
-      Image_Atom_Feed_Amount    : constant String := Yass_Config.Atom_Feed_Amount'Image;
-      Image_Sitemap_Enabled     : constant String := To_Lower (Yass_Config.Sitemap_Enabled'Image);
-      Image_HTML_Enabled        : constant String := To_Lower (Yass_Config.HTML_Enabled'Image);
-      Image_Server_Enabled      : constant String := To_Lower (Yass_Config.Server_Enabled'Image);
-      Image_Server_Port         : constant String := Yass_Config.Server_Port'Image;
-      Image_Stop_Server_On_Error: constant String := To_Lower (Yass_Config.Stop_Server_On_Error'Image);
-      Image_Browser_Command     : constant String := To_String (Yass_Config.Browser_Command);
-      Image_Monitor_Interval    : constant String := Yass_Config.Monitor_Config_Interval'Image;
-      Image_Monitor_Config_Interval : constant String := Yass_Config.Monitor_Config_Interval'Image;
-      Image_Start_Tag_Separator : constant String := To_String (Yass_Config.Start_Tag_Separator);
-      Image_End_Tag_Separator   : constant String := To_String (Yass_Config.End_Tag_Separator);
-      Image_Markdown_Comment    : constant String := To_String (Yass_Config.Markdown_Comment);
+      Image_Site_Name           : constant String := To_String (Yass_Conf.Site_Name);
+      Image_Description         : constant String := To_String (Yass_Conf.Description);
+      Image_Language            : constant String := To_String (Yass_Conf.Language);
+      Image_Author_Name         : constant String := To_String (Yass_Conf.Author_Name);
+      Image_Author_Email        : constant String := To_String (Yass_Conf.Author_Email);
+      Image_Base_URL            : constant String := To_String (Yass_Conf.Base_Url);
+      Image_Atom_Feed_Source    : constant String := To_String (Yass_Conf.Atom_Feed_Source);
+      Image_Atom_Feed_Amount    : constant String := Yass_Conf.Atom_Feed_Amount'Image;
+      Image_Sitemap_Enabled     : constant String := To_Lower (Yass_Conf.Sitemap_Enabled'Image);
+      Image_HTML_Enabled        : constant String := To_Lower (Yass_Conf.HTML_Enabled'Image);
+      Image_Server_Enabled      : constant String := To_Lower (Yass_Conf.Server_Enabled'Image);
+      Image_Server_Port         : constant String := Yass_Conf.Server_Port'Image;
+      Image_Stop_Server_On_Error: constant String := To_Lower (Yass_Conf.Stop_Server_On_Error'Image);
+      Image_Browser_Command     : constant String := To_String (Yass_Conf.Browser_Command);
+      Image_Monitor_Interval    : constant String := Yass_Conf.Monitor_Config_Interval'Image;
+      Image_Monitor_Config_Interval : constant String := Yass_Conf.Monitor_Config_Interval'Image;
+      Image_Start_Tag_Separator : constant String := To_String (Yass_Conf.Start_Tag_Separator);
+      Image_End_Tag_Separator   : constant String := To_String (Yass_Conf.End_Tag_Separator);
+      Image_Markdown_Comment    : constant String := To_String (Yass_Conf.Markdown_Comment);
 
       procedure PL (Item : String) is
       begin
@@ -281,13 +281,13 @@ package body Config is
          Value      := Tail (Raw_Data, Count => Length (Raw_Data) - Equal_Index - 1);
 
          if Field_Name = "LayoutsDirectory" then
-            Yass_Config.Layouts_Directory := Value;
+            Yass_Conf.Layouts_Directory := Value;
 
          elsif Field_Name = "OutputDirectory" then
-            Yass_Config.Output_Directory := Value;
+            Yass_Conf.Output_Directory := Value;
 
          elsif Field_Name = "ModulesDirectory" then
-            Yass_Config.Modules_Directory := Value;
+            Yass_Conf.Modules_Directory := Value;
 
          elsif Field_Name = "ExcludedFiles" then
             declare
@@ -301,24 +301,24 @@ package body Config is
 
                Add_Excluded_Files_Loop :
                for I in 1 .. Slice_Count (S => Tokens) loop
-                  Yass_Config.Excluded_Files.Append
+                  Yass_Conf.Excluded_Files.Append
                     (New_Item => Slice (S => Tokens, Index => I));
                end loop Add_Excluded_Files_Loop;
             end;
 
          elsif Field_Name = "ServerEnabled" then
-            Yass_Config.Server_Enabled :=
+            Yass_Conf.Server_Enabled :=
                To_Lower (To_String (Value)) = "true";
 
          elsif Field_Name = "ServerPort" then
-            Yass_Config.Server_Port :=
+            Yass_Conf.Server_Port :=
               Positive'Value (To_String (Value));
-            if Yass_Config.Server_Port > 65_535 then
+            if Yass_Conf.Server_Port > 65_535 then
                raise Invalid_Config_Data with To_String (Raw_Data);
             end if;
 
          elsif Field_Name = "StopServerOnError" then
-            Yass_Config.Stop_Server_On_Error :=
+            Yass_Conf.Stop_Server_On_Error :=
                To_Lower (Item => To_String (Value)) = "true";
 
          elsif Field_Name = "BrowserCommand" then
@@ -329,68 +329,68 @@ package body Config is
                   High   => Index (Value, Pattern => "%s", From => 1) + 1,
                   By     => "http://localhost:" &
                     Trim
-                      (Source => Positive'Image (Yass_Config.Server_Port),
+                      (Source => Positive'Image (Yass_Conf.Server_Port),
                        Side   => Ada.Strings.Left));
             end if;
-            Yass_Config.Browser_Command := Value;
+            Yass_Conf.Browser_Command := Value;
 
          elsif Field_Name = "MonitorInterval" then
-            Yass_Config.Monitor_Interval :=
+            Yass_Conf.Monitor_Interval :=
               Duration'Value (To_String (Value));
 
          elsif Field_Name = "MonitorConfigInterval" then
-            Yass_Config.Monitor_Config_Interval :=
+            Yass_Conf.Monitor_Config_Interval :=
               Duration'Value (To_String (Value));
 
          elsif Field_Name = "BaseURL" then
-            Yass_Config.Base_Url := Value;
+            Yass_Conf.Base_Url := Value;
             Site_Tags.Include
               (Key => "BaseURL", New_Item => To_String (Value));
 
          elsif Field_Name = "SitemapEnabled" then
-            Yass_Config.Sitemap_Enabled :=
+            Yass_Conf.Sitemap_Enabled :=
                To_Lower (To_String (Value)) = "true";
 
          elsif Field_Name = "HTMLEnabled" then
-            Yass_Config.HTML_Enabled :=
+            Yass_Conf.HTML_Enabled :=
                To_Lower (To_String (Value)) = "true";
 
          elsif Field_Name = "AtomFeedSource" then
             if To_String (Value) in "none" | "tags" then
-               Yass_Config.Atom_Feed_Source := Value;
+               Yass_Conf.Atom_Feed_Source := Value;
             else
-               Yass_Config.Atom_Feed_Source :=
+               Yass_Conf.Atom_Feed_Source :=
                  Unbounded_Slice
                    (Source => Value, Low => 1,
                     High   => Length (Value) - 2) & "html";
             end if;
 
          elsif Field_Name = "AtomFeedAmount" then
-            Yass_Config.Atom_Feed_Amount :=
+            Yass_Conf.Atom_Feed_Amount :=
               Positive'Value (To_String (Value));
 
          elsif Field_Name = "Name" then
-            Yass_Config.Site_Name := Value;
+            Yass_Conf.Site_Name := Value;
             Site_Tags.Include (Key      => To_String (Field_Name),
                                New_Item => To_String (Value));
 
          elsif Field_Name = "StartTagSeparator" then
-            Yass_Config.Start_Tag_Separator := Value;
+            Yass_Conf.Start_Tag_Separator := Value;
 
          elsif Field_Name = "EndTagSeparator" then
-            Yass_Config.End_Tag_Separator := Value;
+            Yass_Conf.End_Tag_Separator := Value;
 
          elsif Field_Name = "MarkdownComment" then
-            Yass_Config.Markdown_Comment := Value;
+            Yass_Conf.Markdown_Comment := Value;
 
          elsif Field_Name = "Author" then
-            Yass_Config.Author_Name := Value;
+            Yass_Conf.Author_Name := Value;
 
          elsif Field_Name = "AuthorEmail" then
-            Yass_Config.Author_Email := Value;
+            Yass_Conf.Author_Email := Value;
 
          elsif Field_Name = "Language" then
-            Yass_Config.Language := Value;
+            Yass_Conf.Language := Value;
             Site_Tags.Include
               (Key      => To_String (Field_Name),
                New_Item => To_String (Value));
@@ -415,28 +415,28 @@ package body Config is
 
       Close (Config_File);
 
-      Normalize_Dir (Directory_Path => Yass_Config.Layouts_Directory);
-      Normalize_Dir (Directory_Path => Yass_Config.Output_Directory);
-      Normalize_Dir (Directory_Path => Yass_Config.Modules_Directory);
+      Normalize_Dir (Directory_Path => Yass_Conf.Layouts_Directory);
+      Normalize_Dir (Directory_Path => Yass_Conf.Output_Directory);
+      Normalize_Dir (Directory_Path => Yass_Conf.Modules_Directory);
 
-      Yass_Config.Excluded_Files.Append (".");
-      Yass_Config.Excluded_Files.Append ("..");
-      Yass_Config.Excluded_Files.Append ("site.cfg");
-      Yass_Config.Excluded_Files.Append
+      Yass_Conf.Excluded_Files.Append (".");
+      Yass_Conf.Excluded_Files.Append ("..");
+      Yass_Conf.Excluded_Files.Append ("site.cfg");
+      Yass_Conf.Excluded_Files.Append
         (Simple_Name
-          (Name => To_String (Yass_Config.Layouts_Directory)));
-      Yass_Config.Excluded_Files.Append
+          (Name => To_String (Yass_Conf.Layouts_Directory)));
+      Yass_Conf.Excluded_Files.Append
         (Simple_Name
-          (Name => To_String (Yass_Config.Output_Directory)));
-      Yass_Config.Excluded_Files.Append
+          (Name => To_String (Yass_Conf.Output_Directory)));
+      Yass_Conf.Excluded_Files.Append
         (Simple_Name
-          (Name => To_String (Yass_Config.Modules_Directory)));
+          (Name => To_String (Yass_Conf.Modules_Directory)));
 
       Site_Directory := To_Unbounded_String (Directory_Name);
 
       Set_Tag_Separators
-        (Start_With => To_String (Yass_Config.Start_Tag_Separator),
-         Stop_With  => To_String (Yass_Config.End_Tag_Separator));
+        (Start_With => To_String (Yass_Conf.Start_Tag_Separator),
+         Stop_With  => To_String (Yass_Conf.End_Tag_Separator));
    exception
       when others =>
          raise Invalid_Config_Data with To_String(Source => Raw_Data);
@@ -477,7 +477,7 @@ package body Config is
       Put_Line ("Please enter the name of the new site");
       New_Line;
 
-      Yass_Config.Site_Name := Ask_User ("New Site");
+      Yass_Conf.Site_Name := Ask_User ("New Site");
       New_Line;
 
       Put_Line ("Please enter the description of the new site.");
@@ -486,31 +486,31 @@ package body Config is
       Put_Line ("Must be set in one line, no new line allowed.");
       New_Line;
 
-      Yass_Config.Description := Ask_User ("My new site");
+      Yass_Conf.Description := Ask_User ("My new site");
       New_Line;
 
       Put_Line ("Please enter language code in which the new site will be written");
       New_Line;
 
-      Yass_Config.Language := Ask_User ("en");
+      Yass_Conf.Language := Ask_User ("en");
       New_Line;
 
       Put_Line ("Please enter the author of the new site");
       New_Line;
 
-      Yass_Config.Author_Name := Ask_User ("John Doe");
+      Yass_Conf.Author_Name := Ask_User ("John Doe");
       New_Line;
 
       Put_Line ("Please enter the contact email for the new site");
       New_Line;
 
-      Yass_Config.Author_Email := Ask_User ("johndoe@example.com");
+      Yass_Conf.Author_Email := Ask_User ("johndoe@example.com");
       New_Line;
 
       Put_Line ("Please enter base URL of the new site");
       New_Line;
 
-      Yass_Config.Base_Url := Ask_User ("http://localhost:8888");
+      Yass_Conf.Base_Url := Ask_User ("http://localhost:8888");
       New_Line;
 
       Put_Line ("Do you want to create Atom feed for the new site?");
@@ -521,17 +521,17 @@ package body Config is
       Put_Line ("(inside). If you press Enter, creating Atom feed will be disabled");
       New_Line;
 
-      Yass_Config.Atom_Feed_Source := Ask_User ("none");
+      Yass_Conf.Atom_Feed_Source := Ask_User ("none");
       New_Line;
 
-      if Yass_Config.Atom_Feed_Source = "none" then
-         Yass_Config.Atom_Feed_Source := To_Unbounded_String ("25");
+      if Yass_Conf.Atom_Feed_Source = "none" then
+         Yass_Conf.Atom_Feed_Source := To_Unbounded_String ("25");
       else
          Put_Line ("How much maximum entries should be in the Atom feed?");
          Put_Line ("Recommended valuese are between 10 and 50.");
          New_Line;
 
-         Yass_Config.Atom_Feed_Amount := Integer'Value (To_String (Ask_User ("25")));
+         Yass_Conf.Atom_Feed_Amount := Integer'Value (To_String (Ask_User ("25")));
       end if;
 
       Put_Line ("Do you want to create sitemap file for the new site?");
@@ -541,9 +541,9 @@ package body Config is
       New_Line;
 
       if To_String (Answer_1) in "yes" | "y" | "" then
-         Yass_Config.Sitemap_Enabled := True;
+         Yass_Conf.Sitemap_Enabled := True;
       else
-         Yass_Config.Sitemap_Enabled := False;
+         Yass_Conf.Sitemap_Enabled := False;
       end if;
 
       Put_Line ("Do you want to HTML embedded in your markdown to be converted?");
@@ -553,9 +553,9 @@ package body Config is
       New_Line;
 
       if To_String (Answer_2) in "yes" | "y" | "" then
-         Yass_Config.HTML_Enabled := True;
+         Yass_Conf.HTML_Enabled := True;
       else
-         Yass_Config.HTML_Enabled := False;
+         Yass_Conf.HTML_Enabled := False;
       end if;
 
       Put_Line ("Do you want to set more technical options (like configuring");
@@ -575,9 +575,9 @@ package body Config is
          New_Line;
 
          if To_String (Answer_4) in "yes" | "y" | "" then
-            Yass_Config.Server_Enabled := True;
+            Yass_Conf.Server_Enabled := True;
          else
-            Yass_Config.Server_Enabled := False;
+            Yass_Conf.Server_Enabled := False;
          end if;
 
          Put_Line ("On which port should the web server listening?");
@@ -585,7 +585,7 @@ package body Config is
          Put_Line ("root privileges.");
          New_Line;
 
-         Yass_Config.Server_Port := Integer'Value (To_String (Ask_User ("8888")));
+         Yass_Conf.Server_Port := Integer'Value (To_String (Ask_User ("8888")));
          New_Line;
 
          Put_Line ("Should whole monitoring option stop if encounter any error");
@@ -596,23 +596,23 @@ package body Config is
          New_Line;
 
          if To_String (Answer_5) in "yes" | "y" | "" then
-            Yass_Config.Stop_Server_On_Error := True;
+            Yass_Conf.Stop_Server_On_Error := True;
          else
-            Yass_Config.Stop_Server_On_Error := False;
+            Yass_Conf.Stop_Server_On_Error := False;
          end if;
 
          Put_Line ("Full path to the web broser which will be started when the");
          Put_Line ("program starts in server mode.");
          New_Line;
 
-         Yass_Config.Browser_Command := Ask_User ("none");
+         Yass_Conf.Browser_Command := Ask_User ("none");
          New_Line;
 
          Put_Line ("How often, in seconds, the program should check for changes");
          Put_Line ("in the site files?");
          New_Line;
 
-         Yass_Config.Monitor_Interval :=
+         Yass_Conf.Monitor_Interval :=
             Duration'Value (To_String (Ask_User ("5.0")));
          New_Line;
 
@@ -620,7 +620,7 @@ package body Config is
          Put_Line ("in the site configuration file?");
          New_Line;
 
-         Yass_Config.Monitor_Config_Interval :=
+         Yass_Conf.Monitor_Config_Interval :=
             Duration'Value (To_String (Ask_User ("60.0")));
          New_Line;
       end if;
@@ -636,20 +636,20 @@ package body Config is
          Put_Line ("What mark should be used as a start for template tag?");
          New_Line;
 
-         Yass_Config.Start_Tag_Separator := Ask_User ("{%");
+         Yass_Conf.Start_Tag_Separator := Ask_User ("{%");
          New_Line;
 
          Put_Line ("What mark should be used as an end for template tag?");
          New_Line;
 
-         Yass_Config.End_Tag_Separator := Ask_User ("%}");
+         Yass_Conf.End_Tag_Separator := Ask_User ("%}");
          New_Line;
 
          Put_Line ("What mark should be used as a start for the comment line in");
          Put_Line ("Markdown files?");
          New_Line;
 
-         Yass_Config.Markdown_Comment := Ask_User ("--");
+         Yass_Conf.Markdown_Comment := Ask_User ("--");
       end if;
 
    end Interactive_Site_Config;
