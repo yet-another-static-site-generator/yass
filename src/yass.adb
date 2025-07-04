@@ -294,10 +294,10 @@ begin
       Set_Directory(Directory => Value(Name => "YASSDIR"));
    end if;
    -- No arguments or help: show available commands
-   if Argument_Count < 1 or else Argument(Number => 1) = "help" then
+   if Argument_Count < 1 or else Argument(Number => 1) in "help" | "--help" then
       Show_Help;
       -- Show version information
-   elsif Argument(Number => 1) = "version" then
+   elsif Argument(Number => 1) in "version" | "--version" then
       Put_Line(Item => "Version: " & Version);
       Put_Line(Item => "Released: " & Released);
       -- Show license information
