@@ -119,7 +119,7 @@ package body AtomFeed is
       Child_Index, Author_Node_Index: Positive := 1;
       Local_Entries: FeedEntry_Container.Vector := Get_Entries_List;
    begin
-      if Yass_Config.Atom_Feed_Source =
+      if Yass_Conf.Atom_Feed_Source =
         To_Unbounded_String(Source => "none") then
          Site_Tags.Include(Key => "AtomLink", New_Item => "");
          return;
@@ -128,10 +128,10 @@ package body AtomFeed is
         (Key => "AtomLink",
          New_Item =>
            "<link rel=""alternate"" type=""application/rss+xml"" title=""" &
-           To_String(Source => Yass_Config.Site_Name) & " Feed"" href=""" &
-           To_String(Source => Yass_Config.Base_Url) & "/atom.xml"" />");
+           To_String(Source => Yass_Conf.Site_Name) & " Feed"" href=""" &
+           To_String(Source => Yass_Conf.Base_Url) & "/atom.xml"" />");
       Feed_File_Name :=
-        Yass_Config.Output_Directory &
+        Yass_Conf.Output_Directory &
         To_Unbounded_String(Source => Dir_Separator & "atom.xml");
       if not Exists(Name => Get_Feed_File_Name) then
          return;
@@ -206,23 +206,23 @@ package body AtomFeed is
       use Ada.Strings.Fixed;
 
       Url: constant String :=
-        To_String(Source => Yass_Config.Base_Url) & "/" &
+        To_String(Source => Yass_Conf.Base_Url) & "/" &
         Ada.Strings.Unbounded.Slice
           (Source => To_Unbounded_String(Source => File_Name),
            Low =>
-             Length(Source => Yass_Config.Output_Directory & Dir_Separator) +
+             Length(Source => Yass_Conf.Output_Directory & Dir_Separator) +
              1,
            High => File_Name'Length);
       Entry_Index: Natural := 0;
       Local_Entries: FeedEntry_Container.Vector := Get_Entries_List;
    begin
-      if Yass_Config.Atom_Feed_Source =
+      if Yass_Conf.Atom_Feed_Source =
         To_Unbounded_String(Source => "none") or
-        (Yass_Config.Atom_Feed_Source /= To_Unbounded_String(Source => "tags")
+        (Yass_Conf.Atom_Feed_Source /= To_Unbounded_String(Source => "tags")
          and then
            Index
              (Source => File_Name,
-              Pattern => To_String(Source => Yass_Config.Atom_Feed_Source),
+              Pattern => To_String(Source => Yass_Conf.Atom_Feed_Source),
               From => 1) =
            0) then
          return;
@@ -330,7 +330,7 @@ package body AtomFeed is
          end if;
       end Add_Author;
    begin
-      if Yass_Config.Atom_Feed_Source =
+      if Yass_Conf.Atom_Feed_Source =
         To_Unbounded_String(Source => "none") or
         FeedEntry_Container.Length(Container => Get_Entries_List) = 0 then
          return;
@@ -346,15 +346,15 @@ package body AtomFeed is
       Main_Node := Append_Child(N => Feed, New_Child => Main_Node);
       Add_Link
         (Parent_Node => Main_Node,
-         Url => To_String(Source => Yass_Config.Base_Url) & "/atom.xml",
+         Url => To_String(Source => Yass_Conf.Base_Url) & "/atom.xml",
          Relationship => "self");
       Add_Node
         (Node_Name => "id",
-         Node_Value => To_String(Source => Yass_Config.Base_Url) & "/",
+         Node_Value => To_String(Source => Yass_Conf.Base_Url) & "/",
          Parent_Node => Main_Node);
       Add_Node
         (Node_Name => "title",
-         Node_Value => To_String(Source => Yass_Config.Site_Name),
+         Node_Value => To_String(Source => Yass_Conf.Site_Name),
          Parent_Node => Main_Node);
       Add_Node
         (Node_Name => "updated",
@@ -362,8 +362,8 @@ package body AtomFeed is
          Parent_Node => Main_Node);
       Add_Author
         (Parent_Node => Main_Node,
-         Name => To_String(Source => Yass_Config.Author_Name),
-         Email => To_String(Source => Yass_Config.Author_Email));
+         Name => To_String(Source => Yass_Conf.Author_Name),
+         Email => To_String(Source => Yass_Conf.Author_Email));
       Add_Entries_Loop :
       for FeedEntry of Local_Entries loop
          Entry_Node :=
@@ -404,7 +404,7 @@ package body AtomFeed is
          end if;
          Entries_Amount := Entries_Amount + 1;
          exit Add_Entries_Loop when Entries_Amount =
-           Yass_Config.Atom_Feed_Amount;
+           Yass_Conf.Atom_Feed_Amount;
       end loop Add_Entries_Loop;
       Create(File => Atom_File, Mode => Out_File, Name => Get_Feed_File_Name);
       Write

@@ -66,11 +66,11 @@ package body Monitors is
             use Ada.Environment_Variables;
 
             Site_File_Name: Unbounded_String :=
-              Yass_Config.Output_Directory & Dir_Separator &
+              Yass_Conf.Output_Directory & Dir_Separator &
               To_Unbounded_String
                 (Source => Simple_Name(Directory_Entry => Item));
          begin
-            if Yass_Config.Excluded_Files.Find_Index
+            if Yass_Conf.Excluded_Files.Find_Index
                 (Item => Simple_Name(Directory_Entry => Item)) /=
               Excluded_Container.No_Index or
               not Ada.Directories.Exists
@@ -81,7 +81,7 @@ package body Monitors is
                 (Name => Full_Name(Directory_Entry => Item)) /=
               To_String(Source => Site_Directory) then
                Site_File_Name :=
-                 Yass_Config.Output_Directory &
+                 Yass_Conf.Output_Directory &
                  Slice
                    (Source =>
                       To_Unbounded_String
@@ -177,7 +177,7 @@ package body Monitors is
          --  Go recursive with directory with full path Item.
          procedure Process_Directories (Item: Directory_Entry_Type) is
          begin
-            if Yass_Config.Excluded_Files.Find_Index
+            if Yass_Conf.Excluded_Files.Find_Index
                 (Item => Simple_Name(Directory_Entry => Item)) =
               Excluded_Container.No_Index and
               Ada.Directories.Exists
@@ -206,8 +206,8 @@ package body Monitors is
                  Ada.Calendar.Formatting.Image
                    (Date => Clock, Time_Zone => UTC_Time_Offset) &
                  "] " & "Site rebuilding has been interrupted.");
-            if Yass_Config.Stop_Server_On_Error then
-               if Yass_Config.Server_Enabled then
+            if Yass_Conf.Stop_Server_On_Error then
+               if Yass_Conf.Server_Enabled then
                   Server.Shutdown_Server;
                   Show_Message(Text => "done.", Message_Type => SUCCESS);
                end if;
@@ -270,7 +270,7 @@ package body Monitors is
                end Stop;
             or
                --  Wait before next check
-               delay Yass_Config.Monitor_Interval;
+               delay Yass_Conf.Monitor_Interval;
             end select;
          end loop Monitor_Site_Loop;
       or
@@ -307,7 +307,7 @@ package body Monitors is
                end Stop;
             or
                --  Wait before next check
-               delay Yass_Config.Monitor_Config_Interval;
+               delay Yass_Conf.Monitor_Config_Interval;
             end select;
 
             -- Update configuration if needed
@@ -326,7 +326,7 @@ package body Monitors is
 
                Show_Message(Text => "done", Message_Type => Messages.SUCCESS);
 
-               if Yass_Config.Server_Enabled then
+               if Yass_Conf.Server_Enabled then
                   Server.Start_Server;
                end if;
 

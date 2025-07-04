@@ -116,11 +116,11 @@ package body Sitemaps is
       Local_Main_Node: DOM.Core.Element;
       --## rule on IMPROPER_INITIALIZATION
    begin
-      if not Yass_Config.Sitemap_Enabled then
+      if not Yass_Conf.Sitemap_Enabled then
          return;
       end if;
       Sitemap_File_Name :=
-        Yass_Config.Output_Directory &
+        Yass_Conf.Output_Directory &
         To_Unbounded_String(Source => Dir_Separator & "sitemap.xml");
       -- Load existing sitemap data
       if Exists(Name => To_String(Source => Get_Sitemap_File_Name)) then
@@ -160,11 +160,11 @@ package body Sitemaps is
       use AtomFeed;
 
       Url: constant String :=
-        To_String(Source => Yass_Config.Base_Url) & "/" &
+        To_String(Source => Yass_Conf.Base_Url) & "/" &
         Slice
           (Source => To_Unbounded_String(Source => File_Name),
            Low =>
-             Length(Source => Yass_Config.Output_Directory & Dir_Separator) +
+             Length(Source => Yass_Conf.Output_Directory & Dir_Separator) +
              1,
            High => File_Name'Length);
       Urls_List: Node_List;
@@ -177,7 +177,7 @@ package body Sitemaps is
       Local_Sitemap: constant Document := Get_Sitemap;
       Local_Main_Node: DOM.Core.Element := Main_Node;
    begin
-      if not Yass_Config.Sitemap_Enabled then
+      if not Yass_Conf.Sitemap_Enabled then
          return;
       end if;
       Urls_List :=
@@ -330,7 +330,7 @@ package body Sitemaps is
 
       Sitemap_File: File_Type;
    begin
-      if not Yass_Config.Sitemap_Enabled then
+      if not Yass_Conf.Sitemap_Enabled then
          return;
       end if;
       -- If the sitemap file not exists - create or open existing robot.txt file and append address to the sitemap
@@ -357,7 +357,7 @@ package body Sitemaps is
          Put_Line
            (File => Sitemap_File,
             Item =>
-              "Sitemap: " & To_String(Source => Yass_Config.Base_Url) &
+              "Sitemap: " & To_String(Source => Yass_Conf.Base_Url) &
               "/sitemap.xml");
          Close(File => Sitemap_File);
       end if;

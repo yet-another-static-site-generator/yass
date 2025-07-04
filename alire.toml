@@ -1,6 +1,6 @@
 name = "yass"
 description = "Static website generator"
-version = "3.1.0"
+version = "3.2.0-dev"
 
 long-description = '''
 Yass is static site generator written in Ada. It is *headless*

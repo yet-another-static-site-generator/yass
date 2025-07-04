@@ -117,11 +117,11 @@ package Config is
    -- ****
 
    --## rule off GLOBAL_REFERENCES
-   -- ****v* Config/Config.Yass_Config
+   -- ****v* Config/Config.Yass_Conf
    -- FUNCTION
    -- Settings for the program
    -- SOURCE
-   Yass_Config: Parser_Config := Default_Parser_Configuration;
+   Yass_Conf : Parser_Config := Default_Parser_Configuration;
    -- ****
 
    -- ****t* Config/Config.Tags_Container
