@@ -45,7 +45,7 @@ with Server; use Server;
 
 procedure Yass is
    Version : constant String := Yass_Config.Crate_Version;
-   Released : constant String := "2024-08-23";
+
    --## rule off GLOBAL_REFERENCES
    Work_Directory: Unbounded_String := Null_Unbounded_String;
    --## rule on GLOBAL_REFERENCES
@@ -305,7 +305,7 @@ begin
       -- Show version information
    elsif Argument(Number => 1) = "version" then
       Put_Line(Item => "Version: " & Version);
-      Put_Line(Item => "Released: " & Released);
+
       -- Show license information
    elsif Argument(Number => 1) = "license" then
       Put_Line(Item => "Copyright (C) 2022-2024 A.J. Ianozi");
