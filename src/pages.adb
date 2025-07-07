@@ -51,7 +51,7 @@ package body Pages is
       Page_File: File_Type;
       Tags: Translate_Set := Null_Set; --## rule line off GLOBAL_REFERENCES
       Output_Directory: constant Unbounded_String :=
-        Yass_Config.Output_Directory &
+        Yass_Conf.Output_Directory &
         Delete
           (Source => To_Unbounded_String(Source => Directory), From => 1,
            Through => Length(Source => Site_Directory));
@@ -125,7 +125,7 @@ package body Pages is
          Data: Unbounded_String := Null_Unbounded_String;
          Start_Index: Natural := 0;
          Start_Pos: constant Positive :=
-           Length(Source => Yass_Config.Markdown_Comment);
+           Length(Source => Yass_Conf.Markdown_Comment);
          Valid_Value: Boolean := False;
       -- Add tag to the page template tags lists (simple or composite).
       -- Name: name of the tag
@@ -195,7 +195,7 @@ package body Pages is
                goto End_Of_Loop;
             end if;
             if Unbounded_Slice(Source => Data, Low => 1, High => Start_Pos) /=
-              Yass_Config.Markdown_Comment then
+              Yass_Conf.Markdown_Comment then
                Append(Source => Content, New_Item => Data);
                Append(Source => Content, New_Item => LF);
                goto End_Of_Loop;
@@ -208,7 +208,7 @@ package body Pages is
                    (Source => Data, Low => Start_Pos + 10,
                     High => Length(Source => Data));
                Layout :=
-                 Yass_Config.Layouts_Directory & Dir_Separator & Data &
+                 Yass_Conf.Layouts_Directory & Dir_Separator & Data &
                  To_Unbounded_String(Source => ".html");
                if not Ada.Directories.Exists
                    (Name => To_String(Source => Layout)) then
@@ -297,7 +297,7 @@ package body Pages is
         (Key      => "Content",
          New_Item => CMark.Markdown_To_HTML
                        (Text         => To_String (Content),
-                        HTML_Enabled => Yass_Config.HTML_Enabled));
+                        HTML_Enabled => Yass_Conf.HTML_Enabled));
 
       -- Load the program modules with 'pre' hook
       Load_Modules
@@ -315,13 +315,13 @@ package body Pages is
               Assoc
                 (Variable => "canonicallink",
                  Value =>
-                   To_String(Source => Yass_Config.Base_Url) & "/" &
+                   To_String(Source => Yass_Conf.Base_Url) & "/" &
                    Slice
                      (Source => To_Unbounded_String(Source => New_File_Name),
                       Low =>
                         Length
                           (Source =>
-                             Yass_Config.Output_Directory & Dir_Separator) +
+                             Yass_Conf.Output_Directory & Dir_Separator) +
                         1,
                       High => New_File_Name'Length)));
       end if;
@@ -331,7 +331,7 @@ package body Pages is
             Item =>
               Assoc
                 (Variable => "author",
-                 Value => To_String(Source => Yass_Config.Author_Name)));
+                 Value => To_String(Source => Yass_Conf.Author_Name)));
       end if;
       if not Exists(Set => Tags, Variable => "description")
         and then Site_Tags.Contains(Key => "Description") then
@@ -381,7 +381,7 @@ package body Pages is
             Page_Priority => To_String(Source => Page_Priority));
       end if;
       -- Add the page to the Atom feed
-      if Yass_Config.Atom_Feed_Source =
+      if Yass_Conf.Atom_Feed_Source =
         To_Unbounded_String(Source => "tags") then
          Atom_Entries(Atom_Entries.First_Index).Content := Content;
       end if;
@@ -421,7 +421,7 @@ package body Pages is
 
    procedure Copy_File(File_Name, Directory: String) is
       Output_Directory: constant Unbounded_String :=
-        Yass_Config.Output_Directory &
+        Yass_Conf.Output_Directory &
         Delete
           (Source => To_Unbounded_String(Source => Directory), From => 1,
            Through => Length(Source => Site_Directory));
@@ -472,7 +472,7 @@ package body Pages is
    procedure Create_Empty_File (File_Name : String)
    is
       Index_File : File_Type;
-      Comment    : constant String := To_String (Yass_Config.Markdown_Comment);
+      Comment    : constant String := To_String (Yass_Conf.Markdown_Comment);
 
       procedure PL (Item : String) is
       begin
@@ -554,7 +554,7 @@ package body Pages is
       Page_File: File_Type;
       Data, Layout: Unbounded_String := Null_Unbounded_String;
       Start_Pos: constant Positive :=
-        Length(Source => Yass_Config.Markdown_Comment);
+        Length(Source => Yass_Conf.Markdown_Comment);
    begin
       Open(File => Page_File, Mode => In_File, Name => File_Name);
       Find_Layout_Name_Loop :
@@ -565,14 +565,14 @@ package body Pages is
          if Length(Source => Data) > 2
            and then
              Unbounded_Slice(Source => Data, Low => 1, High => Start_Pos) =
-             Yass_Config.Markdown_Comment
+             Yass_Conf.Markdown_Comment
            and then Index(Source => Data, Pattern => "layout:", From => 1) =
              Start_Pos + 2 then
             Data :=
               Unbounded_Slice
                 (Source => Data, Low => 12, High => Length(Source => Data));
             Layout :=
-              Yass_Config.Layouts_Directory & Dir_Separator & Data &
+              Yass_Conf.Layouts_Directory & Dir_Separator & Data &
               To_Unbounded_String(Source => ".html");
             if not Ada.Directories.Exists
                 (Name => To_String(Source => Layout)) then

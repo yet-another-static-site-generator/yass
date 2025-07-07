@@ -32,7 +32,7 @@ with AWS.Server;
 with Resources;
 
 with AtomFeed;
-with Config; use Config;
+with Config;
 with Layouts; use Layouts;
 with Messages; use Messages;
 with Modules;
@@ -42,8 +42,9 @@ with Sitemaps;
 with Server; use Server;
 
 procedure Yass is
-   Version: constant String := "3.1.0";
+   Version  : constant String := "3.2.0-dev";  --  Keep in sync with alire.toml
    Released : constant String := "2024-08-23";
+
    --## rule off GLOBAL_REFERENCES
    Work_Directory: Unbounded_String := Null_Unbounded_String;
    --## rule on GLOBAL_REFERENCES
@@ -61,6 +62,7 @@ procedure Yass is
    is
       -- ****
       use AtomFeed;
+      use Config;
       use Modules;
       use Sitemaps;
 
@@ -74,7 +76,7 @@ procedure Yass is
          -- Process file with full path Item: create html pages from markdown files or copy any other file.
          procedure Process_Files(Item: Directory_Entry_Type) is
          begin
-            if Yass_Config.Excluded_Files.Find_Index
+            if Yass_Conf.Excluded_Files.Find_Index
                 (Item => Simple_Name(Directory_Entry => Item)) /=
               Excluded_Container.No_Index or
               not Ada.Directories.Exists
@@ -98,7 +100,7 @@ procedure Yass is
          -- Go recursive with directory with full path Item.
          procedure Process_Directories(Item: Directory_Entry_Type) is
          begin
-            if Yass_Config.Excluded_Files.Find_Index
+            if Yass_Conf.Excluded_Files.Find_Index
                 (Item => Simple_Name(Directory_Entry => Item)) =
               Excluded_Container.No_Index and
               Ada.Directories.Exists
@@ -232,7 +234,9 @@ procedure Yass is
    -- Create --
    ------------
 
-   procedure Create is
+   procedure Create
+   is
+      use Config;
    begin
       if not Valid_Arguments
           (Message => "where new page will be created.", Exist => True) then
@@ -271,6 +275,7 @@ procedure Yass is
       end;
    end Create;
 
+   use Config;
 begin
    if Ada.Environment_Variables.Exists(Name => "YASSDIR") then
       Set_Directory(Directory => Value(Name => "YASSDIR"));
@@ -280,8 +285,9 @@ begin
       Show_Help;
       -- Show version information
    elsif Argument(Number => 1) in "version" | "--version" then
-      Put_Line(Item => "Version: " & Version);
-      Put_Line(Item => "Released: " & Released);
+      Put_Line ("Version: " & Version);
+      Put_Line ("Released: " & Released);
+
       -- Show license information
    elsif Argument(Number => 1) = "license" then
       Put_Line(Item => "Copyright (C) 2022-2024 A.J. Ianozi");
@@ -373,29 +379,29 @@ begin
       Load_Site_Config (Directory_Name => To_String (Work_Directory));
 
       if not Ada.Directories.Exists
-          (Name => To_String(Source => Yass_Config.Output_Directory)) then
+          (Name => To_String(Source => Yass_Conf.Output_Directory)) then
          Create_Path
            (New_Directory =>
-              To_String(Source => Yass_Config.Output_Directory));
+              To_String(Source => Yass_Conf.Output_Directory));
       end if;
       Set_Directory
-        (Directory => To_String(Source => Yass_Config.Output_Directory));
-      if Yass_Config.Server_Enabled then
+        (Directory => To_String(Source => Yass_Conf.Output_Directory));
+      if Yass_Conf.Server_Enabled then
          if not Ada.Directories.Exists
              (Name =>
-                To_String(Source => Yass_Config.Layouts_Directory) &
+                To_String(Source => Yass_Conf.Layouts_Directory) &
                 Dir_Separator & "directory.html") then
             Create_Directory_Layout(Directory_Name => "");
          end if;
          Start_Server;
-         if Yass_Config.Browser_Command /=
+         if Yass_Conf.Browser_Command /=
            To_Unbounded_String(Source => "none") then
             Start_Web_Browser_Block :
             declare
                Args: constant Argument_List_Access :=
                  Argument_String_To_List
                    (Arg_String =>
-                      To_String(Source => Yass_Config.Browser_Command));
+                      To_String(Source => Yass_Conf.Browser_Command));
             begin
                if not Ada.Directories.Exists(Name => Args(Args'First).all)
                  or else
@@ -420,7 +426,7 @@ begin
       Monitors.Monitor_Config.Start;
 
       AWS.Server.Wait(Mode => AWS.Server.Q_Key_Pressed);
-      if Yass_Config.Server_Enabled then
+      if Yass_Conf.Server_Enabled then
          Shutdown_Server;
       else
          Put(Item => "Stopping monitoring site changes...");

@@ -264,13 +264,13 @@ package body Modules is
    begin
       if not Exists
           (Name =>
-             To_String(Source => Yass_Config.Modules_Directory) &
+             To_String(Source => Yass_Conf.Modules_Directory) &
              Dir_Separator & State) then
          return;
       end if;
       Search
         (Directory =>
-           To_String(Source => Yass_Config.Modules_Directory) & Dir_Separator &
+           To_String(Source => Yass_Conf.Modules_Directory) & Dir_Separator &
            State,
          Pattern => "", Filter => (Directory => False, others => True),
          Process => Run_Module'Access);
