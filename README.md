@@ -26,7 +26,7 @@ The easiest way to build YASS is via [Alire](https://alire.ada.dev/).  If you do
  have alire already, you can get it from the main website or auto-install it via
  [Getada.dev](https://www.getada.dev/).
 
-To build and install it, simply run `alr install yass` and yass will be
+To build and install it, simply run `alr install yass` and yass will automatically be
 added to alire's binary folder (default is `$HOME/.alire/bin`).
 
 If you'd rather just download and build manually, navigate to a folder where you
@@ -36,7 +36,7 @@ If you'd rather just download and build manually, navigate to a folder where you
  3. `alr update && alr build`
  YASS will now be in the project's `./bin` directory.
 
-This should pull all of the dependencies in, ie AWS and libcmark.
+This should automatically pull all of the dependencies in, ie AWS and libcmark.
 
 ### Using gprbuild
 
