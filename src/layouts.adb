@@ -40,7 +40,7 @@ package body Layouts is
            "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
       Put_Line
         (File => Layout_File,
-         Item => "<link rel=""canonical"" href=""{%canonicallink%}"" />");
+         Item => "<link rel=""canonical"" href=""{%canonicallink%}"">");
       Put_Line(File => Layout_File, Item => "@@IF@@ {%author%} /= """"");
       Put_Line
         (File => Layout_File,
