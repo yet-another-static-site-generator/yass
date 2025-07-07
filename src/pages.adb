@@ -472,7 +472,7 @@ package body Pages is
    procedure Create_Empty_File (File_Name : String)
    is
       Index_File : File_Type;
-      Comment    : constant String := To_String (Yass_Config.Markdown_Comment);
+      Comment    : constant String := To_String (Yass_Conf.Markdown_Comment);
 
       procedure PL (Item : String) is
       begin

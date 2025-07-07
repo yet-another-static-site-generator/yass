@@ -42,7 +42,8 @@ with Sitemaps;
 with Server; use Server;
 
 procedure Yass is
-   Version : constant String := "3.2.0-dev";  --  Keep in sync with alire.toml
+   Version  : constant String := "3.2.0-dev";  --  Keep in sync with alire.toml
+   Released : constant String := "2024-08-23";
 
    --## rule off GLOBAL_REFERENCES
    Work_Directory: Unbounded_String := Null_Unbounded_String;
@@ -233,7 +234,9 @@ procedure Yass is
    -- Create --
    ------------
 
-   procedure Create is
+   procedure Create
+   is
+      use Config;
    begin
       if not Valid_Arguments
           (Message => "where new page will be created.", Exist => True) then
@@ -282,7 +285,8 @@ begin
       Show_Help;
       -- Show version information
    elsif Argument(Number => 1) in "version" | "--version" then
-      Put_Line(Item => "Version: " & Version);
+      Put_Line ("Version: " & Version);
+      Put_Line ("Released: " & Released);
 
       -- Show license information
    elsif Argument(Number => 1) = "license" then
