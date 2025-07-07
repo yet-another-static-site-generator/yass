@@ -31,8 +31,6 @@ with AWS.Server;
 
 with Resources;
 
-with Yass_Config;   --  From Alire
-
 with AtomFeed;
 with Config;
 with Layouts; use Layouts;
@@ -44,7 +42,7 @@ with Sitemaps;
 with Server; use Server;
 
 procedure Yass is
-   Version : constant String := Yass_Config.Crate_Version;
+   Version : constant String := "3.2.0-dev";  --  Keep in sync with alire.toml
 
    --## rule off GLOBAL_REFERENCES
    Work_Directory: Unbounded_String := Null_Unbounded_String;
@@ -174,18 +172,7 @@ procedure Yass is
       declare
          Path : String renames Argument (Number => 2);
       begin
-         if Path (Path'First) = '/' then
-            Work_Directory := To_Unbounded_String (Path);
-         elsif
-            Index
-              (Source  => Path,
-               Pattern => Containing_Directory (Current_Directory)) = 1
-         then
-            Work_Directory := To_Unbounded_String (Path);
-         else
-            Work_Directory :=
-              To_Unbounded_String (Current_Directory & Dir_Separator & Path);
-         end if;
+         Work_Directory := To_Unbounded_String (Full_Name (Path));
       end;
 
       -- Check if selected directory exist, if not, return False
@@ -242,56 +229,47 @@ procedure Yass is
            "createfile [name] - create new empty markdown file with ""name""");
    end Show_Help;
 
-   procedure Create
-   is
-      use Config;
+   ------------
+   -- Create --
+   ------------
+
+   procedure Create is
    begin
       if not Valid_Arguments
           (Message => "where new page will be created.", Exist => True) then
          return;
       end if;
-      Create_Directories_Block :
+
       declare
-         Paths: constant array(1 .. 6) of Unbounded_String :=
-           (1 => To_Unbounded_String(Source => "_layouts"),
-            2 => To_Unbounded_String(Source => "_output"),
-            3 =>
-              To_Unbounded_String
-                (Source => "_modules" & Dir_Separator & "start"),
-            4 =>
-              To_Unbounded_String
-                (Source => "_modules" & Dir_Separator & "pre"),
-            5 =>
-              To_Unbounded_String
-                (Source => "_modules" & Dir_Separator & "post"),
-            6 =>
-              To_Unbounded_String
-                (Source => "_modules" & Dir_Separator & "end"));
+         Path  : String renames To_String (Work_Directory);
+         Paths : constant array (1 .. 6) of Unbounded_String :=
+           (1 => To_Unbounded_String ("_layouts"),
+            2 => To_Unbounded_String ("_output"),
+            3 => To_Unbounded_String ("_modules" & Dir_Separator & "start"),
+            4 => To_Unbounded_String ("_modules" & Dir_Separator & "pre"),
+            5 => To_Unbounded_String ("_modules" & Dir_Separator & "post"),
+            6 => To_Unbounded_String ("_modules" & Dir_Separator & "end"));
       begin
          Create_Directories_Loop :
          for Directory of Paths loop
-            Create_Path
-              (New_Directory =>
-                 To_String(Source => Work_Directory) & Dir_Separator &
-                 To_String(Source => Directory));
+            Create_Path (Path & Dir_Separator & To_String (Directory));
          end loop Create_Directories_Loop;
-      end Create_Directories_Block;
 
-      if Argument(Number => 1) = "create" then
-         Interactive_Site_Config;
-      end if;
-      Create_Site_Config (Directory_Name => To_String (Work_Directory));
+         if Argument (Number => 1) = "create" then
+            Interactive_Site_Config;
+         end if;
+         Create_Site_Config (Directory_Name => To_String (Work_Directory));
 
-      Create_Layout(Directory_Name => To_String(Source => Work_Directory));
-      Create_Directory_Layout
-        (Directory_Name => To_String(Source => Work_Directory));
-      Create_Empty_File(File_Name => To_String(Source => Work_Directory));
-      Show_Message
-        (Text =>
-           "New page in directory """ & Argument(Number => 2) &
-           """ was created. Edit """ & Argument(Number => 2) & Dir_Separator &
-           "site.cfg"" file to set data for your new site.",
-         Message_Type => Messages.SUCCESS);
+         Create_Layout           (Directory_Name => Path);
+         Create_Directory_Layout (Directory_Name => Path);
+         Create_Empty_File       (File_Name      => Path);
+
+         Show_Message
+           ("New page in directory """ & Path &
+            """ was created. Edit """ & Path & Dir_Separator &
+            "site.cfg"" file to set data for your new site.",
+            Message_Type => Messages.SUCCESS);
+      end;
    end Create;
 
    use Config;
@@ -300,10 +278,10 @@ begin
       Set_Directory(Directory => Value(Name => "YASSDIR"));
    end if;
    -- No arguments or help: show available commands
-   if Argument_Count < 1 or else Argument(Number => 1) = "help" then
+   if Argument_Count < 1 or else Argument(Number => 1) in "help" | "--help" then
       Show_Help;
       -- Show version information
-   elsif Argument(Number => 1) = "version" then
+   elsif Argument(Number => 1) in "version" | "--version" then
       Put_Line(Item => "Version: " & Version);
 
       -- Show license information
