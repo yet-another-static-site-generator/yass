@@ -15,7 +15,6 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;
 with Ada.Directories; use Ada.Directories;
@@ -39,12 +38,37 @@ package body Monitors is
 
    Error_File_Name : constant String := "error.log";
 
+   -- ****f* Monitors/Monitors.Log
+   -- SOURCE
+   procedure Log (Message : String);
+   -- FUNCTION
+   -- Log message
+   -- PARAMETERS
+   -- Message - Put Message with log
+   -- ****
+
+   ---------
+   -- Log --
+   ---------
+
+   procedure Log (Message : String)
+   is
+      use Ada.Calendar;
+
+      Time_Now   : constant Time   := Clock;
+      Image_Time : constant String :=
+         Formatting.Image (Date      => Time_Now,
+                           Time_Zone => Time_Zones.UTC_Time_Offset);
+   begin
+      Put_Line ("[" & Image_Time & "] " & Message);
+   end Log;
+
    ------------------
    -- Monitor_Site --
    ------------------
 
    task body Monitor_Site is
-      use Ada.Calendar.Time_Zones;
+      use type Ada.Calendar.Time;
       use AtomFeed;
       use Modules;
       use Sitemaps;
@@ -118,13 +142,9 @@ package body Monitors is
                     (File_Name => Full_Name(Directory_Entry => Item),
                      Directory => Name);
                end if;
-               Put_Line
-                 (Item =>
-                    "[" &
-                    Ada.Calendar.Formatting.Image
-                      (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                    "] " & "File: " & To_String(Source => Site_File_Name) &
-                    " was added.");
+
+               Log ("File: " & To_String (Site_File_Name) & " was added.");
+
                Site_Rebuild := True;
             elsif Extension(Name => Simple_Name(Directory_Entry => Item)) =
               "md" then
@@ -144,13 +164,9 @@ package body Monitors is
                   Create_Page
                     (File_Name => Full_Name(Directory_Entry => Item),
                      Directory => Name);
-                  Put_Line
-                    (Item =>
-                       "[" &
-                       Ada.Calendar.Formatting.Image
-                         (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                       "] " & "File: " & To_String(Source => Site_File_Name) &
-                       " was updated.");
+
+                  Log ("File: " & To_String (Site_File_Name) & " was updated.");
+
                   Site_Rebuild := True;
                end if;
             elsif Modification_Time
@@ -163,13 +179,9 @@ package body Monitors is
                Pages.Copy_File
                  (File_Name => Full_Name(Directory_Entry => Item),
                   Directory => Name);
-               Put_Line
-                 (Item =>
-                    "[" &
-                    Ada.Calendar.Formatting.Image
-                      (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                    "] " & "File: " & To_String(Source => Site_File_Name) &
-                    " was updated.");
+
+               Log ("File: " & To_String (Site_File_Name) & " was updated.");
+
                Site_Rebuild := True;
             end if;
          end Process_Files;
@@ -200,12 +212,9 @@ package body Monitors is
             Process => Process_Directories'Access);
       exception
          when Generate_Site_Exception =>
-            Show_Message
-              (Text =>
-                 "[" &
-                 Ada.Calendar.Formatting.Image
-                   (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                 "] " & "Site rebuilding has been interrupted.");
+
+            Log ("Site rebuilding has been interrupted.");
+
             if Yass_Conf.Stop_Server_On_Error then
                if Yass_Conf.Server_Enabled then
                   Server.Shutdown_Server;
@@ -256,12 +265,8 @@ package body Monitors is
                  (State => "end", Page_Tags => Page_Tags,
                   Page_Table_Tags => Page_Table_Tags);
 
-               Put_Line
-                 (Item =>
-                    "[" &
-                    Ada.Calendar.Formatting.Image
-                      (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                    "] " & "Site was rebuild.");
+               Log ("Site was rebuild.");
+
             end if;
 
             select
@@ -288,6 +293,8 @@ package body Monitors is
    --------------------
 
    task body Monitor_Config is
+      use Ada.Calendar;
+
       Config_Last_Modified   : Time; --## rule line off IMPROPER_INITIALIZATION
       Config_Monitor_Running : Boolean := True;
    begin
@@ -349,6 +356,7 @@ package body Monitors is
    procedure Save_Exception_Info (Occurrence : Ada.Exceptions.Exception_Occurrence;
                                   Task_Name  : String)
    is
+      use Ada.Calendar;
       use Ada.Exceptions;
       use GNAT.Traceback.Symbolic;
 
@@ -364,9 +372,7 @@ package body Monitors is
                  Name => Error_File_Name);
       end if;
 
-      Put_Line
-           (Error_File,
-            Ada.Calendar.Formatting.Image (Date => Clock));
+      Put_Line (Error_File, Formatting.Image (Date => Clock));
       Put_Line (Error_File, "Excepton from" & Task_Name);
 --      Put_Line (Error_File, Version);
       Put_Line (Error_File,
