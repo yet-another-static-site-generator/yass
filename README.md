@@ -94,7 +94,17 @@ file is):
 
 ## Running the program
 
-To see all available options, type `yass help`.
+### Linux / macOS
+
+To see all available options, type `yass help`. If you want to run the program
+from other directory, you should set the environment variable `YASSDIR` to your
+current directory. Example: `export YASSDIR=$(pwd)`.
+
+### Windows
+
+To see all available options, type `yass.exe help`. If you want to run the program
+from other directory, you should set the environment variable `YASSDIR` to your
+current directory. Example: `set YASSDIR="C:\yass"`
 
 ### Running unit tests
 
