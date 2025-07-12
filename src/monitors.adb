@@ -169,7 +169,11 @@ package body Monitors is
                                    Directory => Name);
                end if;
 
-               Log ("File: " & To_String (Site_File_Name) & " was added.");
+               Log ("File: " &
+                    To_Relative
+                      (Full_Name => To_String (Site_File_Name),
+                       Base_Name => To_String (Site_Directory) & Dir_Separator) &
+                    " was added.");
 
                Site_Rebuild := True;
 
@@ -187,7 +191,11 @@ package body Monitors is
                     (File_Name => Full_Name (Item),
                      Directory => Name);
 
-                  Log ("File: " & To_String (Site_File_Name) & " was updated.");
+                  Log ("File: " &
+                       To_Relative
+                         (Full_Name => To_String (Site_File_Name),
+                          Base_Name => To_String (Site_Directory) & Dir_Separator) &
+                       " was updated.");
 
                   Site_Rebuild := True;
                end if;
@@ -202,7 +210,11 @@ package body Monitors is
                  (File_Name => Full_Name (Item),
                   Directory => Name);
 
-               Log ("File: " & To_String (Site_File_Name) & " was updated.");
+               Log ("File: " &
+                    To_Relative
+                      (Full_Name => To_String (Site_File_Name),
+                       Base_Name => To_String (Site_Directory) & Dir_Separator) &
+                    " was updated.");
 
                Site_Rebuild := True;
             end if;
