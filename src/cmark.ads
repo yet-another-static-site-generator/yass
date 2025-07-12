@@ -22,7 +22,7 @@
 package CMark is
 -- ****
 
-   -- ****f* CMark/CMark. Markdown_To_HTML
+   -- ****f* CMark/CMark.Markdown_To_HTML
    -- SOURCE
    function Markdown_To_HTML (Text         : String;
                               HTML_Enabled : Boolean)
@@ -30,10 +30,10 @@ package CMark is
    -- FUNCTION
    -- Convert markdown into HTML
    -- PARAMETERS
-   -- Text - Unicode-encoded Ada String
-   --  HTML_Enabled - True if passing existing HTML through.
-   --  RETURN
-   --  String: the markdown source now encoded as HTML
+   -- Text         - Unicode-encoded Ada String
+   -- HTML_Enabled - True if passing existing HTML through.
+   -- RESULT
+   -- String: the markdown source now encoded as HTML
    -- ****
 
 end CMark;
