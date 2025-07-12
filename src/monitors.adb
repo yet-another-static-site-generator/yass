@@ -19,6 +19,7 @@ with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -47,6 +48,20 @@ package body Monitors is
    -- Message - Put Message with log
    -- ****
 
+   -- ****f* Monitors/Monitors.To_Relative
+   -- SOURCE
+   function To_Relative (Full_Name : String;
+                         Base_Name : String)
+                         return String;
+   -- FUNCTION
+   -- Get relative path to file
+   -- PARAMETERS
+   -- Full_Name - Full name of file
+   -- Base_Name - Name to subtract from Full_Name
+   -- RETURNS
+   -- Path to file relative to Base_Name
+   -- ****
+
    ---------
    -- Log --
    ---------
@@ -62,6 +77,20 @@ package body Monitors is
    begin
       Put_Line ("[" & Image_Time & "] " & Message);
    end Log;
+
+   -----------------
+   -- To_Relative --
+   -----------------
+
+   function To_Relative (Full_Name : String;
+                         Base_Name : String)
+                         return String
+   is
+      use Ada.Strings.Fixed;
+   begin
+      pragma Assert (Head (Full_Name, Base_Name'Length) = Base_Name);
+      return Tail (Full_Name, Full_Name'Length - Base_Name'Length);
+   end To_Relative;
 
    ------------------
    -- Monitor_Site --
@@ -86,98 +115,91 @@ package body Monitors is
 
          -- Process file with full path Item: create html pages from markdown
          -- files or copy any other file if they was updated since last check.
-         procedure Process_Files (Item : Directory_Entry_Type) is
-            use Ada.Environment_Variables;
-
-            Site_File_Name: Unbounded_String :=
+         procedure Process_Files (Item : Directory_Entry_Type)
+         is
+            Site_File_Name : Unbounded_String :=
               Yass_Conf.Output_Directory & Dir_Separator &
               To_Unbounded_String
-                (Source => Simple_Name(Directory_Entry => Item));
+                (Source => Simple_Name (Item));
          begin
-            if Yass_Conf.Excluded_Files.Find_Index
-                (Item => Simple_Name(Directory_Entry => Item)) /=
+            if
+              Yass_Conf.Excluded_Files.Find_Index (Simple_Name (Item)) /=
               Excluded_Container.No_Index or
-              not Ada.Directories.Exists
-                (Name => Full_Name(Directory_Entry => Item)) then
+              not Ada.Directories.Exists (Full_Name (Item))
+            then
                return;
             end if;
-            if Containing_Directory
-                (Name => Full_Name(Directory_Entry => Item)) /=
-              To_String(Source => Site_Directory) then
+
+            if
+              Containing_Directory (Full_Name (Item)) /=
+              To_String (Site_Directory)
+            then
                Site_File_Name :=
                  Yass_Conf.Output_Directory &
                  Slice
-                   (Source =>
-                      To_Unbounded_String
-                        (Source => Full_Name(Directory_Entry => Item)),
-                    Low => Length(Source => Site_Directory) + 1,
-                    High => Full_Name(Directory_Entry => Item)'Length);
+                   (Source => To_Unbounded_String (Full_Name (Item)),
+                    Low    => Length (Site_Directory) + 1,
+                    High   => Full_Name (Item)'Length);
             end if;
-            if Extension(Name => Simple_Name(Directory_Entry => Item)) =
-              "md" then
+
+            if Extension (Simple_Name (Item)) = "md" then
                Site_File_Name :=
                  To_Unbounded_String
                    (Source =>
                       Compose
                         (Containing_Directory =>
                            Containing_Directory
-                             (Name => To_String(Source => Site_File_Name)),
+                             (Name => To_String (Site_File_Name)),
                          Name =>
                            Ada.Directories.Base_Name
-                             (Name => To_String(Source => Site_File_Name)),
+                             (Name => To_String (Site_File_Name)),
                          Extension => "html"));
             end if;
-            if not Ada.Directories.Exists
-                (Name => To_String(Source => Site_File_Name)) then
-               Set
-                 (Name => "YASSFILE",
-                  Value => Full_Name(Directory_Entry => Item));
-               if Extension(Name => Simple_Name(Directory_Entry => Item)) =
-                 "md" then
-                  Create_Page
-                    (File_Name => Full_Name(Directory_Entry => Item),
-                     Directory => Name);
+
+            if not Ada.Directories.Exists (To_String (Site_File_Name)) then
+               Ada.Environment_Variables.Set
+                 (Name  => "YASSFILE",
+                  Value => Full_Name (Item));
+
+               if Extension (Simple_Name (Item)) = "md" then
+                  Create_Page (File_Name => Full_Name (Item),
+                               Directory => Name);
                else
-                  Pages.Copy_File
-                    (File_Name => Full_Name(Directory_Entry => Item),
-                     Directory => Name);
+                  Pages.Copy_File (File_Name => Full_Name (Item),
+                                   Directory => Name);
                end if;
 
                Log ("File: " & To_String (Site_File_Name) & " was added.");
 
                Site_Rebuild := True;
-            elsif Extension(Name => Simple_Name(Directory_Entry => Item)) =
-              "md" then
-               if Modification_Time
-                   (Name => Full_Name(Directory_Entry => Item)) >
-                 Modification_Time
-                   (Name => To_String(Source => Site_File_Name)) or
-                 Modification_Time
-                     (Name =>
-                        Get_Layout_Name
-                          (File_Name => Full_Name(Directory_Entry => Item))) >
-                   Modification_Time
-                     (Name => To_String(Source => Site_File_Name)) then
-                  Set
-                    (Name => "YASSFILE",
-                     Value => Full_Name(Directory_Entry => Item));
+
+            elsif Extension (Simple_Name (Item)) = "md" then
+               if
+                 Modification_Time (Full_Name (Item)) >
+                 Modification_Time (To_String (Site_File_Name)) or
+                 Modification_Time (Get_Layout_Name (Full_Name (Item))) >
+                 Modification_Time (To_String (Site_File_Name))
+               then
+                  Ada.Environment_Variables.Set (Name  => "YASSFILE",
+                                                 Value => Full_Name (Item));
+
                   Create_Page
-                    (File_Name => Full_Name(Directory_Entry => Item),
+                    (File_Name => Full_Name (Item),
                      Directory => Name);
 
                   Log ("File: " & To_String (Site_File_Name) & " was updated.");
 
                   Site_Rebuild := True;
                end if;
-            elsif Modification_Time
-                (Name => Full_Name(Directory_Entry => Item)) >
-              Modification_Time
-                (Name => To_String(Source => Site_File_Name)) then
-               Set
-                 (Name => "YASSFILE",
-                  Value => Full_Name(Directory_Entry => Item));
+            elsif
+              Modification_Time (Full_Name (Item)) >
+              Modification_Time (To_String (Site_File_Name))
+            then
+               Ada.Environment_Variables.Set (Name  => "YASSFILE",
+                                              Value => Full_Name (Item));
+
                Pages.Copy_File
-                 (File_Name => Full_Name(Directory_Entry => Item),
+                 (File_Name => Full_Name (Item),
                   Directory => Name);
 
                Log ("File: " & To_String (Site_File_Name) & " was updated.");
@@ -189,12 +211,12 @@ package body Monitors is
          --  Go recursive with directory with full path Item.
          procedure Process_Directories (Item: Directory_Entry_Type) is
          begin
-            if Yass_Conf.Excluded_Files.Find_Index
-                (Item => Simple_Name(Directory_Entry => Item)) =
+            if
+              Yass_Conf.Excluded_Files.Find_Index (Simple_Name (Item)) =
               Excluded_Container.No_Index and
-              Ada.Directories.Exists
-                (Name => Full_Name(Directory_Entry => Item)) then
-               Monitor_Directory(Name => Full_Name(Directory_Entry => Item));
+              Ada.Directories.Exists (Full_Name (Item))
+            then
+               Monitor_Directory (Full_Name (Item));
             end if;
          exception
             when Ada.Directories.Name_Error =>
@@ -204,12 +226,13 @@ package body Monitors is
       begin
          Search
            (Directory => Name, Pattern => "",
-            Filter => (Directory => False, others => True),
-            Process => Process_Files'Access);
+            Filter    => (Directory => False, others => True),
+            Process   => Process_Files'Access);
          Search
            (Directory => Name, Pattern => "",
-            Filter => (Directory => True, others => False),
-            Process => Process_Directories'Access);
+            Filter    => (Directory => True, others => False),
+            Process   => Process_Directories'Access);
+
       exception
          when Generate_Site_Exception =>
 
