@@ -10,9 +10,6 @@ project Yass is
    type Mode_Type is ("dev", "debug", "release", "analyze");
    Mode : Mode_Type := external ("Mode", "dev");
 
-   type OS_Type is ("Windows", "Unix");
-   OS : OS_Type := external ("YASS_OS", "Unix");
-
    package Builder is
       case Mode is
          when "release" =>
