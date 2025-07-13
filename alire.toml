@@ -27,20 +27,13 @@ executables = ["yass"]
 
 
 [gpr-externals]
-YASS_OS = ["Windows", "Unix"]
 Mode = ["dev", "debug", "release", "analyze"]
 
 [gpr-set-externals]
 Mode = "release"
 
-[gpr-set-externals.'case(os)']
-  windows = { YASS_OS = "Windows" }
-  '...'   = { YASS_OS = "Unix" }
-
 [[depends-on]]
 libcmark = ">=0.0.1"
-
-[[depends-on]]
 resources = "~0.1.0"
 
 # See https://github.com/AdaCore/aws/issues/380
