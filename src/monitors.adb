@@ -15,11 +15,11 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -39,12 +39,65 @@ package body Monitors is
 
    Error_File_Name : constant String := "error.log";
 
+   -- ****f* Monitors/Monitors.Log
+   -- SOURCE
+   procedure Log (Message : String);
+   -- FUNCTION
+   -- Log message
+   -- PARAMETERS
+   -- Message - Put Message with log
+   -- ****
+
+   -- ****f* Monitors/Monitors.To_Relative
+   -- SOURCE
+   function To_Relative (Full_Name : String;
+                         Base_Name : String)
+                         return String;
+   -- FUNCTION
+   -- Get relative path to file
+   -- PARAMETERS
+   -- Full_Name - Full name of file
+   -- Base_Name - Name to subtract from Full_Name
+   -- RETURNS
+   -- Path to file relative to Base_Name
+   -- ****
+
+   ---------
+   -- Log --
+   ---------
+
+   procedure Log (Message : String)
+   is
+      use Ada.Calendar;
+
+      Time_Now   : constant Time   := Clock;
+      Image_Time : constant String :=
+         Formatting.Image (Date      => Time_Now,
+                           Time_Zone => Time_Zones.UTC_Time_Offset);
+   begin
+      Put_Line ("[" & Image_Time & "] " & Message);
+   end Log;
+
+   -----------------
+   -- To_Relative --
+   -----------------
+
+   function To_Relative (Full_Name : String;
+                         Base_Name : String)
+                         return String
+   is
+      use Ada.Strings.Fixed;
+   begin
+      pragma Assert (Head (Full_Name, Base_Name'Length) = Base_Name);
+      return Tail (Full_Name, Full_Name'Length - Base_Name'Length);
+   end To_Relative;
+
    ------------------
    -- Monitor_Site --
    ------------------
 
    task body Monitor_Site is
-      use Ada.Calendar.Time_Zones;
+      use type Ada.Calendar.Time;
       use AtomFeed;
       use Modules;
       use Sitemaps;
@@ -62,114 +115,107 @@ package body Monitors is
 
          -- Process file with full path Item: create html pages from markdown
          -- files or copy any other file if they was updated since last check.
-         procedure Process_Files (Item : Directory_Entry_Type) is
-            use Ada.Environment_Variables;
-
-            Site_File_Name: Unbounded_String :=
+         procedure Process_Files (Item : Directory_Entry_Type)
+         is
+            Site_File_Name : Unbounded_String :=
               Yass_Conf.Output_Directory & Dir_Separator &
               To_Unbounded_String
-                (Source => Simple_Name(Directory_Entry => Item));
+                (Source => Simple_Name (Item));
          begin
-            if Yass_Conf.Excluded_Files.Find_Index
-                (Item => Simple_Name(Directory_Entry => Item)) /=
+            if
+              Yass_Conf.Excluded_Files.Find_Index (Simple_Name (Item)) /=
               Excluded_Container.No_Index or
-              not Ada.Directories.Exists
-                (Name => Full_Name(Directory_Entry => Item)) then
+              not Ada.Directories.Exists (Full_Name (Item))
+            then
                return;
             end if;
-            if Containing_Directory
-                (Name => Full_Name(Directory_Entry => Item)) /=
-              To_String(Source => Site_Directory) then
+
+            if
+              Containing_Directory (Full_Name (Item)) /=
+              To_String (Site_Directory)
+            then
                Site_File_Name :=
                  Yass_Conf.Output_Directory &
                  Slice
-                   (Source =>
-                      To_Unbounded_String
-                        (Source => Full_Name(Directory_Entry => Item)),
-                    Low => Length(Source => Site_Directory) + 1,
-                    High => Full_Name(Directory_Entry => Item)'Length);
+                   (Source => To_Unbounded_String (Full_Name (Item)),
+                    Low    => Length (Site_Directory) + 1,
+                    High   => Full_Name (Item)'Length);
             end if;
-            if Extension(Name => Simple_Name(Directory_Entry => Item)) =
-              "md" then
+
+            if Extension (Simple_Name (Item)) = "md" then
                Site_File_Name :=
                  To_Unbounded_String
                    (Source =>
                       Compose
                         (Containing_Directory =>
                            Containing_Directory
-                             (Name => To_String(Source => Site_File_Name)),
+                             (Name => To_String (Site_File_Name)),
                          Name =>
                            Ada.Directories.Base_Name
-                             (Name => To_String(Source => Site_File_Name)),
+                             (Name => To_String (Site_File_Name)),
                          Extension => "html"));
             end if;
-            if not Ada.Directories.Exists
-                (Name => To_String(Source => Site_File_Name)) then
-               Set
-                 (Name => "YASSFILE",
-                  Value => Full_Name(Directory_Entry => Item));
-               if Extension(Name => Simple_Name(Directory_Entry => Item)) =
-                 "md" then
-                  Create_Page
-                    (File_Name => Full_Name(Directory_Entry => Item),
-                     Directory => Name);
+
+            if not Ada.Directories.Exists (To_String (Site_File_Name)) then
+               Ada.Environment_Variables.Set
+                 (Name  => "YASSFILE",
+                  Value => Full_Name (Item));
+
+               if Extension (Simple_Name (Item)) = "md" then
+                  Create_Page (File_Name => Full_Name (Item),
+                               Directory => Name);
                else
-                  Pages.Copy_File
-                    (File_Name => Full_Name(Directory_Entry => Item),
-                     Directory => Name);
+                  Pages.Copy_File (File_Name => Full_Name (Item),
+                                   Directory => Name);
                end if;
-               Put_Line
-                 (Item =>
-                    "[" &
-                    Ada.Calendar.Formatting.Image
-                      (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                    "] " & "File: " & To_String(Source => Site_File_Name) &
+
+               Log ("File: " &
+                    To_Relative
+                      (Full_Name => To_String (Site_File_Name),
+                       Base_Name => To_String (Site_Directory) & Dir_Separator) &
                     " was added.");
+
                Site_Rebuild := True;
-            elsif Extension(Name => Simple_Name(Directory_Entry => Item)) =
-              "md" then
-               if Modification_Time
-                   (Name => Full_Name(Directory_Entry => Item)) >
-                 Modification_Time
-                   (Name => To_String(Source => Site_File_Name)) or
-                 Modification_Time
-                     (Name =>
-                        Get_Layout_Name
-                          (File_Name => Full_Name(Directory_Entry => Item))) >
-                   Modification_Time
-                     (Name => To_String(Source => Site_File_Name)) then
-                  Set
-                    (Name => "YASSFILE",
-                     Value => Full_Name(Directory_Entry => Item));
+
+            elsif Extension (Simple_Name (Item)) = "md" then
+               if
+                 Modification_Time (Full_Name (Item)) >
+                 Modification_Time (To_String (Site_File_Name)) or
+                 Modification_Time (Get_Layout_Name (Full_Name (Item))) >
+                 Modification_Time (To_String (Site_File_Name))
+               then
+                  Ada.Environment_Variables.Set (Name  => "YASSFILE",
+                                                 Value => Full_Name (Item));
+
                   Create_Page
-                    (File_Name => Full_Name(Directory_Entry => Item),
+                    (File_Name => Full_Name (Item),
                      Directory => Name);
-                  Put_Line
-                    (Item =>
-                       "[" &
-                       Ada.Calendar.Formatting.Image
-                         (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                       "] " & "File: " & To_String(Source => Site_File_Name) &
+
+                  Log ("File: " &
+                       To_Relative
+                         (Full_Name => To_String (Site_File_Name),
+                          Base_Name => To_String (Site_Directory) & Dir_Separator) &
                        " was updated.");
+
                   Site_Rebuild := True;
                end if;
-            elsif Modification_Time
-                (Name => Full_Name(Directory_Entry => Item)) >
-              Modification_Time
-                (Name => To_String(Source => Site_File_Name)) then
-               Set
-                 (Name => "YASSFILE",
-                  Value => Full_Name(Directory_Entry => Item));
+            elsif
+              Modification_Time (Full_Name (Item)) >
+              Modification_Time (To_String (Site_File_Name))
+            then
+               Ada.Environment_Variables.Set (Name  => "YASSFILE",
+                                              Value => Full_Name (Item));
+
                Pages.Copy_File
-                 (File_Name => Full_Name(Directory_Entry => Item),
+                 (File_Name => Full_Name (Item),
                   Directory => Name);
-               Put_Line
-                 (Item =>
-                    "[" &
-                    Ada.Calendar.Formatting.Image
-                      (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                    "] " & "File: " & To_String(Source => Site_File_Name) &
+
+               Log ("File: " &
+                    To_Relative
+                      (Full_Name => To_String (Site_File_Name),
+                       Base_Name => To_String (Site_Directory) & Dir_Separator) &
                     " was updated.");
+
                Site_Rebuild := True;
             end if;
          end Process_Files;
@@ -177,12 +223,12 @@ package body Monitors is
          --  Go recursive with directory with full path Item.
          procedure Process_Directories (Item: Directory_Entry_Type) is
          begin
-            if Yass_Conf.Excluded_Files.Find_Index
-                (Item => Simple_Name(Directory_Entry => Item)) =
+            if
+              Yass_Conf.Excluded_Files.Find_Index (Simple_Name (Item)) =
               Excluded_Container.No_Index and
-              Ada.Directories.Exists
-                (Name => Full_Name(Directory_Entry => Item)) then
-               Monitor_Directory(Name => Full_Name(Directory_Entry => Item));
+              Ada.Directories.Exists (Full_Name (Item))
+            then
+               Monitor_Directory (Full_Name (Item));
             end if;
          exception
             when Ada.Directories.Name_Error =>
@@ -192,20 +238,18 @@ package body Monitors is
       begin
          Search
            (Directory => Name, Pattern => "",
-            Filter => (Directory => False, others => True),
-            Process => Process_Files'Access);
+            Filter    => (Directory => False, others => True),
+            Process   => Process_Files'Access);
          Search
            (Directory => Name, Pattern => "",
-            Filter => (Directory => True, others => False),
-            Process => Process_Directories'Access);
+            Filter    => (Directory => True, others => False),
+            Process   => Process_Directories'Access);
+
       exception
          when Generate_Site_Exception =>
-            Show_Message
-              (Text =>
-                 "[" &
-                 Ada.Calendar.Formatting.Image
-                   (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                 "] " & "Site rebuilding has been interrupted.");
+
+            Log ("Site rebuilding has been interrupted.");
+
             if Yass_Conf.Stop_Server_On_Error then
                if Yass_Conf.Server_Enabled then
                   Server.Shutdown_Server;
@@ -256,12 +300,8 @@ package body Monitors is
                  (State => "end", Page_Tags => Page_Tags,
                   Page_Table_Tags => Page_Table_Tags);
 
-               Put_Line
-                 (Item =>
-                    "[" &
-                    Ada.Calendar.Formatting.Image
-                      (Date => Clock, Time_Zone => UTC_Time_Offset) &
-                    "] " & "Site was rebuild.");
+               Log ("Site was rebuild.");
+
             end if;
 
             select
@@ -288,6 +328,8 @@ package body Monitors is
    --------------------
 
    task body Monitor_Config is
+      use Ada.Calendar;
+
       Config_Last_Modified   : Time; --## rule line off IMPROPER_INITIALIZATION
       Config_Monitor_Running : Boolean := True;
    begin
@@ -349,6 +391,7 @@ package body Monitors is
    procedure Save_Exception_Info (Occurrence : Ada.Exceptions.Exception_Occurrence;
                                   Task_Name  : String)
    is
+      use Ada.Calendar;
       use Ada.Exceptions;
       use GNAT.Traceback.Symbolic;
 
@@ -364,9 +407,7 @@ package body Monitors is
                  Name => Error_File_Name);
       end if;
 
-      Put_Line
-           (Error_File,
-            Ada.Calendar.Formatting.Image (Date => Clock));
+      Put_Line (Error_File, Formatting.Image (Date => Clock));
       Put_Line (Error_File, "Excepton from" & Task_Name);
 --      Put_Line (Error_File, Version);
       Put_Line (Error_File,
