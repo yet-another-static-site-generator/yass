@@ -34,7 +34,7 @@ is
    -- Task for monitor changes in the site files and regenerate them
    -- ****
 
-   -- ****a* Monitors/Monitor.Monitor_Config
+   -- ****a* Monitors/Monitors.Monitor_Config
    -- SOURCE
    task Monitor_Config is
       entry Start;
@@ -45,7 +45,7 @@ is
    -- needed
    -- ****
 
-   -- ****f* Monitors/Monitor.Save_Exception_Info
+   -- ****f* Monitors/Monitors.Save_Exception_Info
    -- SOURCE
    procedure Save_Exception_Info (Occurrence : Ada.Exceptions.Exception_Occurrence;
                                   Task_Name  : String);
