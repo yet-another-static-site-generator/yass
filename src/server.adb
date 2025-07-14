@@ -89,6 +89,7 @@ package body Server is
       Set.Server_Name    (Server_Config, "YASS static page server");
       Set.Server_Port    (Server_Config, Yass_Conf.Server_Port);
       Set.Max_Connection (Server_Config, 5);
+      Set.Reuse_Address  (Server_Config, True);
 
       AWS.Server.Start (Web_Server => Http_Server,
                         Callback   => Callback'Access,
