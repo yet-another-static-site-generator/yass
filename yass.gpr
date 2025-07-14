@@ -43,7 +43,7 @@ project Yass is
                "-ffunction-sections",
                "-fdata-sections",
                "-s",
-               "-flto"
+               "-flto=4"
               );
 
          when "analyze" =>
@@ -56,7 +56,6 @@ project Yass is
 
       end case;
    end Compiler;
-
 
    package Linker is
       Release_Switches := ("-Wl,--gc-sections",
