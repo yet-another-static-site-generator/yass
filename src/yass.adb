@@ -15,8 +15,6 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar;
-with Ada.Calendar.Formatting;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
@@ -24,23 +22,29 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.Traceback.Symbolic;
+
 with AWS.Net;
 with AWS.Server;
+
+with Resources;
+
 with AtomFeed;
-with Config; use Config;
+with Config;
 with Layouts; use Layouts;
 with Messages; use Messages;
 with Modules;
+with Monitors;
 with Pages; use Pages;
 with Sitemaps;
 with Server; use Server;
 
 procedure Yass is
-   Version: constant String := "3.1.0";
+   Version  : constant String := "3.2.0-dev";  --  Keep in sync with alire.toml
    Released : constant String := "2024-08-23";
+
    --## rule off GLOBAL_REFERENCES
    Work_Directory: Unbounded_String := Null_Unbounded_String;
    --## rule on GLOBAL_REFERENCES
@@ -58,6 +62,7 @@ procedure Yass is
    is
       -- ****
       use AtomFeed;
+      use Config;
       use Modules;
       use Sitemaps;
 
@@ -71,7 +76,7 @@ procedure Yass is
          -- Process file with full path Item: create html pages from markdown files or copy any other file.
          procedure Process_Files(Item: Directory_Entry_Type) is
          begin
-            if Yass_Config.Excluded_Files.Find_Index
+            if Yass_Conf.Excluded_Files.Find_Index
                 (Item => Simple_Name(Directory_Entry => Item)) /=
               Excluded_Container.No_Index or
               not Ada.Directories.Exists
@@ -95,7 +100,7 @@ procedure Yass is
          -- Go recursive with directory with full path Item.
          procedure Process_Directories(Item: Directory_Entry_Type) is
          begin
-            if Yass_Config.Excluded_Files.Find_Index
+            if Yass_Conf.Excluded_Files.Find_Index
                 (Item => Simple_Name(Directory_Entry => Item)) =
               Excluded_Container.No_Index and
               Ada.Directories.Exists
@@ -163,19 +168,14 @@ procedure Yass is
          Show_Message(Text => "Please specify directory name " & Message);
          return False;
       end if;
-      -- Assign Work_Directory
-      if Index
-          (Source => Argument(Number => 2),
-           Pattern => Containing_Directory(Name => Current_Directory)) =
-        1 then
-         Work_Directory :=
-           To_Unbounded_String(Source => Argument(Number => 2));
-      else
-         Work_Directory :=
-           To_Unbounded_String
-             (Source =>
-                Current_Directory & Dir_Separator & Argument(Number => 2));
-      end if;
+
+      --  Assign Work_Directory
+      declare
+         Path : String renames Argument (Number => 2);
+      begin
+         Work_Directory := To_Unbounded_String (Full_Name (Path));
+      end;
+
       -- Check if selected directory exist, if not, return False
       if Ada.Directories.Exists(Name => To_String(Source => Work_Directory)) =
         Exist then
@@ -230,67 +230,64 @@ procedure Yass is
            "createfile [name] - create new empty markdown file with ""name""");
    end Show_Help;
 
-   procedure Create is
+   ------------
+   -- Create --
+   ------------
+
+   procedure Create
+   is
+      use Config;
    begin
       if not Valid_Arguments
           (Message => "where new page will be created.", Exist => True) then
          return;
       end if;
-      Create_Directories_Block :
+
       declare
-         Paths: constant array(1 .. 6) of Unbounded_String :=
-           (1 => To_Unbounded_String(Source => "_layouts"),
-            2 => To_Unbounded_String(Source => "_output"),
-            3 =>
-              To_Unbounded_String
-                (Source => "_modules" & Dir_Separator & "start"),
-            4 =>
-              To_Unbounded_String
-                (Source => "_modules" & Dir_Separator & "pre"),
-            5 =>
-              To_Unbounded_String
-                (Source => "_modules" & Dir_Separator & "post"),
-            6 =>
-              To_Unbounded_String
-                (Source => "_modules" & Dir_Separator & "end"));
+         Path  : String renames To_String (Work_Directory);
+         Paths : constant array (1 .. 6) of Unbounded_String :=
+           (1 => To_Unbounded_String ("_layouts"),
+            2 => To_Unbounded_String ("_output"),
+            3 => To_Unbounded_String ("_modules" & Dir_Separator & "start"),
+            4 => To_Unbounded_String ("_modules" & Dir_Separator & "pre"),
+            5 => To_Unbounded_String ("_modules" & Dir_Separator & "post"),
+            6 => To_Unbounded_String ("_modules" & Dir_Separator & "end"));
       begin
          Create_Directories_Loop :
          for Directory of Paths loop
-            Create_Path
-              (New_Directory =>
-                 To_String(Source => Work_Directory) & Dir_Separator &
-                 To_String(Source => Directory));
+            Create_Path (Path & Dir_Separator & To_String (Directory));
          end loop Create_Directories_Loop;
-      end Create_Directories_Block;
-      if Argument(Number => 1) = "create" then
-         Create_Interactive_Config
-           (Directory_Name => To_String(Source => Work_Directory));
-      else
-         Create_Config(Directory_Name => To_String(Source => Work_Directory));
-      end if;
-      Create_Layout(Directory_Name => To_String(Source => Work_Directory));
-      Create_Directory_Layout
-        (Directory_Name => To_String(Source => Work_Directory));
-      Create_Empty_File(File_Name => To_String(Source => Work_Directory));
-      Show_Message
-        (Text =>
-           "New page in directory """ & Argument(Number => 2) &
-           """ was created. Edit """ & Argument(Number => 2) & Dir_Separator &
-           "site.cfg"" file to set data for your new site.",
-         Message_Type => Messages.SUCCESS);
+
+         if Argument (Number => 1) = "create" then
+            Interactive_Site_Config;
+         end if;
+         Create_Site_Config (Directory_Name => To_String (Work_Directory));
+
+         Create_Layout           (Directory_Name => Path);
+         Create_Directory_Layout (Directory_Name => Path);
+         Create_Empty_File       (File_Name      => Path);
+
+         Show_Message
+           ("New page in directory """ & Path &
+            """ was created. Edit """ & Path & Dir_Separator &
+            "site.cfg"" file to set data for your new site.",
+            Message_Type => Messages.SUCCESS);
+      end;
    end Create;
 
+   use Config;
 begin
    if Ada.Environment_Variables.Exists(Name => "YASSDIR") then
       Set_Directory(Directory => Value(Name => "YASSDIR"));
    end if;
    -- No arguments or help: show available commands
-   if Argument_Count < 1 or else Argument(Number => 1) = "help" then
+   if Argument_Count < 1 or else Argument(Number => 1) in "help" | "--help" then
       Show_Help;
       -- Show version information
-   elsif Argument(Number => 1) = "version" then
-      Put_Line(Item => "Version: " & Version);
-      Put_Line(Item => "Released: " & Released);
+   elsif Argument(Number => 1) in "version" | "--version" then
+      Put_Line ("Version: " & Version);
+      Put_Line ("Released: " & Released);
+
       -- Show license information
    elsif Argument(Number => 1) = "license" then
       Put_Line(Item => "Copyright (C) 2022-2024 A.J. Ianozi");
@@ -326,26 +323,35 @@ begin
            "along with this program.  If not, see <https://www.gnu.org/licenses/>.");
       -- Show README.md file
    elsif Argument(Number => 1) = "readme" then
+
       Show_Readme_Block :
       declare
+         package Yass_Resources
+           is new Resources (Crate_Name => "yass");
+
          Readme_Name: constant String :=
-           (if Ada.Environment_Variables.Exists(Name => "APPDIR") then
-              Value(Name => "APPDIR") & "/usr/share/doc/yass/README.md"
-            else Containing_Directory(Name => Command_Name) & Dir_Separator &
-              "README.md");
+           Yass_Resources.Resource_Path & Dir_Separator & "README.md";
+
          Readme_File: File_Type;
       begin
-         if not Ada.Directories.Exists(Name => Readme_Name) then
-            Show_Message(Text => "Can't find file " & Readme_Name);
+         if not Ada.Directories.Exists (Name => Readme_Name) then
+            Show_Message (Text => "Can't find file " & Readme_Name);
             return;
          end if;
-         Open(File => Readme_File, Mode => In_File, Name => Readme_Name);
+
+         Open (File => Readme_File,
+               Mode => In_File,
+               Name => Readme_Name);
+
          Show_Readme_Loop :
-         while not End_Of_File(File => Readme_File) loop
-            Put_Line(Item => Get_Line(File => Readme_File));
+         while not End_Of_File (Readme_File) loop
+            Put_Line (Item => Get_Line (Readme_File));
          end loop Show_Readme_Loop;
-         Close(File => Readme_File);
+
+         Close (Readme_File);
+
       end Show_Readme_Block;
+
       -- Create new, selected site project directory
    elsif Argument(Number => 1) in "createnow" | "create" then
       Create;
@@ -354,7 +360,9 @@ begin
           (Message => "from where page will be created.", Exist => False) then
          return;
       end if;
-      Parse_Config(Directory_Name => To_String(Source => Work_Directory));
+
+      Load_Site_Config (Directory_Name => To_String (Work_Directory));
+
       if Build_Site(Directory_Name => To_String(Source => Work_Directory)) then
          Show_Message
            (Text => "Site was build.", Message_Type => Messages.SUCCESS);
@@ -367,31 +375,33 @@ begin
           (Message => "from where site will be served.", Exist => False) then
          return;
       end if;
-      Parse_Config(Directory_Name => To_String(Source => Work_Directory));
+
+      Load_Site_Config (Directory_Name => To_String (Work_Directory));
+
       if not Ada.Directories.Exists
-          (Name => To_String(Source => Yass_Config.Output_Directory)) then
+          (Name => To_String(Source => Yass_Conf.Output_Directory)) then
          Create_Path
            (New_Directory =>
-              To_String(Source => Yass_Config.Output_Directory));
+              To_String(Source => Yass_Conf.Output_Directory));
       end if;
       Set_Directory
-        (Directory => To_String(Source => Yass_Config.Output_Directory));
-      if Yass_Config.Server_Enabled then
+        (Directory => To_String(Source => Yass_Conf.Output_Directory));
+      if Yass_Conf.Server_Enabled then
          if not Ada.Directories.Exists
              (Name =>
-                To_String(Source => Yass_Config.Layouts_Directory) &
+                To_String(Source => Yass_Conf.Layouts_Directory) &
                 Dir_Separator & "directory.html") then
             Create_Directory_Layout(Directory_Name => "");
          end if;
          Start_Server;
-         if Yass_Config.Browser_Command /=
+         if Yass_Conf.Browser_Command /=
            To_Unbounded_String(Source => "none") then
             Start_Web_Browser_Block :
             declare
                Args: constant Argument_List_Access :=
                  Argument_String_To_List
                    (Arg_String =>
-                      To_String(Source => Yass_Config.Browser_Command));
+                      To_String(Source => Yass_Conf.Browser_Command));
             begin
                if not Ada.Directories.Exists(Name => Args(Args'First).all)
                  or else
@@ -411,16 +421,20 @@ begin
          Put_Line
            (Item => "Started monitoring site changes. Press ""Q"" for quit.");
       end if;
-      Monitor_Site.Start;
-      Monitor_Config.Start;
+
+      Monitors.Monitor_Site.Start;
+      Monitors.Monitor_Config.Start;
+
       AWS.Server.Wait(Mode => AWS.Server.Q_Key_Pressed);
-      if Yass_Config.Server_Enabled then
+      if Yass_Conf.Server_Enabled then
          Shutdown_Server;
       else
          Put(Item => "Stopping monitoring site changes...");
       end if;
-      abort Monitor_Site;
-      abort Monitor_Config;
+
+      Monitors.Monitor_Site.Stop;
+      Monitors.Monitor_Config.Stop;
+
       Show_Message(Text => "done.", Message_Type => Messages.SUCCESS);
       -- Create new empty markdown file with selected name
    elsif Argument(Number => 1) = "createfile" then
@@ -476,48 +490,8 @@ exception
       Show_Message
         (Text =>
            "Can't start program in server mode. Probably another program is using this same port, or you have still connected old instance of the program in your browser. Please close whole browser and try run the program again. If problem will persist, try to change port for the server in the site configuration.");
-   when An_Exception : others =>
-      Save_Exception_Info_Block :
-      declare
-         use Ada.Calendar;
-         use GNAT.Traceback.Symbolic;
 
-         Error_File: File_Type;
-      begin
-         if Ada.Directories.Exists(Name => "error.log") then
-            Open(File => Error_File, Mode => Append_File, Name => "error.log");
-         else
-            Create
-              (File => Error_File, Mode => Append_File, Name => "error.log");
-         end if;
-         Put_Line
-           (File => Error_File,
-            Item => Ada.Calendar.Formatting.Image(Date => Clock));
-         Put_Line(File => Error_File, Item => Version);
-         Put_Line
-           (File => Error_File,
-            Item => "Exception: " & Exception_Name(X => An_Exception));
-         Put_Line
-           (File => Error_File,
-            Item => "Message: " & Exception_Message(X => An_Exception));
-         Put_Line
-           (File => Error_File,
-            Item => "-------------------------------------------------");
-         if Directory_Separator = '/' then
-            Put_Line
-              (File => Error_File,
-               Item => Symbolic_Traceback(E => An_Exception));
-         else
-            Put_Line
-              (File => Error_File,
-               Item => Exception_Information(X => An_Exception));
-         end if;
-         Put_Line
-           (File => Error_File,
-            Item => "-------------------------------------------------");
-         Close(File => Error_File);
-         Put_Line
-           (Item =>
-              "Oops, something bad happen and program crashed. Please, remember what you done before crash and report this problem at https://github.com/yet-another-static-site-generator/yass and attach (if possible) file 'error.log' (should be in this same directory).");
-      end Save_Exception_Info_Block;
+   when Occurrence : others =>
+      Monitors.Save_Exception_Info (Occurrence, "Environment_Task");
+
 end Yass;

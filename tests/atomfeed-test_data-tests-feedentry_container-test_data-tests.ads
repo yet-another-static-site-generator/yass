@@ -6,8 +6,8 @@ with Gnattest_Generated;
 
 package AtomFeed.Test_Data.Tests.FeedEntry_Container.Test_Data.Tests is
 
-   type Test is new GNATtest_Generated.GNATtest_Standard.AtomFeed.Test_Data
-     .Tests
+   type Test is
+   new GNATtest_Generated.GNATtest_Standard.AtomFeed.Test_Data.Tests
      .FeedEntry_Container
      .Test_Data
      .New_Test with

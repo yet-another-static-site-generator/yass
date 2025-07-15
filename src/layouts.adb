@@ -40,7 +40,7 @@ package body Layouts is
            "<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">");
       Put_Line
         (File => Layout_File,
-         Item => "<link rel=""canonical"" href=""{%canonicallink%}"" />");
+         Item => "<link rel=""canonical"" href=""{%canonicallink%}"">");
       Put_Line(File => Layout_File, Item => "@@IF@@ {%author%} /= """"");
       Put_Line
         (File => Layout_File,
@@ -73,7 +73,7 @@ package body Layouts is
         (File => Layout_File, Mode => Append_File,
          Name =>
            Directory_Name & Dir_Separator &
-           To_String(Source => Yass_Config.Layouts_Directory) & Dir_Separator &
+           To_String(Source => Yass_Conf.Layouts_Directory) & Dir_Separator &
            "directory.html");
       Put_Line(File => Layout_File, Item => "<!DOCTYPE html>");
       Put_Line(File => Layout_File, Item => "<html>");

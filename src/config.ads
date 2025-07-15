@@ -103,6 +103,9 @@ package Config is
       Author_Email: Unbounded_String :=
         To_Unbounded_String(Source => "johndoe@example.com");
       Language: Unbounded_String := To_Unbounded_String(Source => "en");
+      Start_Tag_Separator : Unbounded_String := To_Unbounded_String ("{%");
+      End_Tag_Separator   : Unbounded_String := To_Unbounded_String ("%}");
+      Description         : Unbounded_String := To_Unbounded_String ("My new site");
    end record;
    -- ****
 
@@ -114,11 +117,11 @@ package Config is
    -- ****
 
    --## rule off GLOBAL_REFERENCES
-   -- ****v* Config/Config.Yass_Config
+   -- ****v* Config/Config.Yass_Conf
    -- FUNCTION
    -- Settings for the program
    -- SOURCE
-   Yass_Config: Parser_Config := Default_Parser_Configuration;
+   Yass_Conf : Parser_Config := Default_Parser_Configuration;
    -- ****
 
    -- ****t* Config/Config.Tags_Container
@@ -168,41 +171,38 @@ package Config is
    Invalid_Config_Data: exception;
    -- ****
 
-   -- ****f* Config/Config.Create_Config
+   -- ****f* Config/Config.Create_Site_Config
    -- FUNCTION
    -- Create default config in directory with full path Directory_Name
    -- PARAMETERS
    -- Directory_Name - Full path to the directory where config file will be
    --                  created
    -- SOURCE
-   procedure Create_Config(Directory_Name: String) with
+   procedure Create_Site_Config (Directory_Name : String)
+   with
       Pre => Directory_Name'Length > 0,
-      Test_Case => (Name => "Test_Create_Config", Mode => Nominal);
+      Test_Case => (Name => "Test_Create_Site_Config", Mode => Nominal);
    -- ****
 
-   -- ****f* Config/Config.Parse_Config
+   -- ****f* Config/Config.Load_Site_Config
+   -- SOURCE
+   procedure Load_Site_Config (Directory_Name : String)
+   with
+      Pre => Directory_Name'Length > 0,
+      Test_Case => (Name => "Test_Load_Site_Config", Mode => Nominal);
    -- FUNCTION
    -- Parse config file and set all settings and tags for site in directory
    -- with full path Directory_Name
    -- PARAMETERS
    -- Directory_Name - Full path to the directory from which config file will
    --                  be parsed
-   -- SOURCE
-   procedure Parse_Config(Directory_Name: String) with
-      Pre => Directory_Name'Length > 0,
-      Test_Case => (Name => "Test_Parse_Config", Mode => Nominal);
    -- ****
 
-   -- ****f* Config/Config.Create_Interactive_Config
-   -- FUNCTION
-   -- Create configuration file based on the user answers to the program
-   -- questions
-   -- PARAMETERS
-   -- Directory_Name - Full path to the directory where config file will be
-   --                  created
+   -- ****f* Config/Config.Interactive_Site_Config
    -- SOURCE
-   procedure Create_Interactive_Config(Directory_Name: String) with
-      Pre => Directory_Name'Length > 0;
+   procedure Interactive_Site_Config;
+   -- FUNCTION
+   -- Ask user for configuration.
    -- ****
 
 end Config;

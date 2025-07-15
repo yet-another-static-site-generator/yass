@@ -11,7 +11,7 @@ options:
   --multidoc
   --index
   --internal
-  --documenttitle "YASS 3.0 code documentation"
+  --documenttitle "YASS 3.2.0 code documentation"
   --syntaxcolors
   --css others/robodoc.css
   --sections

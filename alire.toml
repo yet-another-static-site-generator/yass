@@ -1,6 +1,20 @@
 name = "yass"
 description = "Static website generator"
-version = "3.1.0"
+version = "3.2.0-dev"
+
+long-description = '''
+Yass is static site generator written in Ada. It is *headless*
+application (no user interface).
+
+## Features
+* Support almost infinite amount of custom tags in HTML templates
+* Separated tags for whole site and each page
+* Fast
+* Can be extended with modules written in any script/programming language
+* Generating sitemaps
+* Generating Atom feeds
+* Auto reconfigure server when configuration file was changed
+'''
 
 authors = ["AJ Ianozi"]
 maintainers = ["AJ Ianozi <aj@ianozi.com>"]
@@ -13,20 +27,15 @@ executables = ["yass"]
 
 
 [gpr-externals]
-YASS_OS = ["Windows", "Unix"]
 Mode = ["dev", "debug", "release", "analyze"]
 
 [gpr-set-externals]
 Mode = "release"
 
-[gpr-set-externals.'case(os)']
-  windows = { YASS_OS = "Windows" }
-  '...'   = { YASS_OS = "Unix" }
-
 [[depends-on]]
 libcmark = ">=0.0.1"
+resources = "~0.1.0"
 
-[[depends-on]]
 # See https://github.com/AdaCore/aws/issues/380
 # and https://github.com/alire-project/alire/issues/1710
 [depends-on.'case(os)'.windows]

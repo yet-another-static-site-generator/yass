@@ -51,7 +51,7 @@ package body Pages is
       Page_File: File_Type;
       Tags: Translate_Set := Null_Set; --## rule line off GLOBAL_REFERENCES
       Output_Directory: constant Unbounded_String :=
-        Yass_Config.Output_Directory &
+        Yass_Conf.Output_Directory &
         Delete
           (Source => To_Unbounded_String(Source => Directory), From => 1,
            Through => Length(Source => Site_Directory));
@@ -125,7 +125,7 @@ package body Pages is
          Data: Unbounded_String := Null_Unbounded_String;
          Start_Index: Natural := 0;
          Start_Pos: constant Positive :=
-           Length(Source => Yass_Config.Markdown_Comment);
+           Length(Source => Yass_Conf.Markdown_Comment);
          Valid_Value: Boolean := False;
       -- Add tag to the page template tags lists (simple or composite).
       -- Name: name of the tag
@@ -195,7 +195,7 @@ package body Pages is
                goto End_Of_Loop;
             end if;
             if Unbounded_Slice(Source => Data, Low => 1, High => Start_Pos) /=
-              Yass_Config.Markdown_Comment then
+              Yass_Conf.Markdown_Comment then
                Append(Source => Content, New_Item => Data);
                Append(Source => Content, New_Item => LF);
                goto End_Of_Loop;
@@ -208,7 +208,7 @@ package body Pages is
                    (Source => Data, Low => Start_Pos + 10,
                     High => Length(Source => Data));
                Layout :=
-                 Yass_Config.Layouts_Directory & Dir_Separator & Data &
+                 Yass_Conf.Layouts_Directory & Dir_Separator & Data &
                  To_Unbounded_String(Source => ".html");
                if not Ada.Directories.Exists
                    (Name => To_String(Source => Layout)) then
@@ -297,7 +297,7 @@ package body Pages is
         (Key      => "Content",
          New_Item => CMark.Markdown_To_HTML
                        (Text         => To_String (Content),
-                        HTML_Enabled => Yass_Config.HTML_Enabled));
+                        HTML_Enabled => Yass_Conf.HTML_Enabled));
 
       -- Load the program modules with 'pre' hook
       Load_Modules
@@ -315,13 +315,13 @@ package body Pages is
               Assoc
                 (Variable => "canonicallink",
                  Value =>
-                   To_String(Source => Yass_Config.Base_Url) & "/" &
+                   To_String(Source => Yass_Conf.Base_Url) & "/" &
                    Slice
                      (Source => To_Unbounded_String(Source => New_File_Name),
                       Low =>
                         Length
                           (Source =>
-                             Yass_Config.Output_Directory & Dir_Separator) +
+                             Yass_Conf.Output_Directory & Dir_Separator) +
                         1,
                       High => New_File_Name'Length)));
       end if;
@@ -331,7 +331,7 @@ package body Pages is
             Item =>
               Assoc
                 (Variable => "author",
-                 Value => To_String(Source => Yass_Config.Author_Name)));
+                 Value => To_String(Source => Yass_Conf.Author_Name)));
       end if;
       if not Exists(Set => Tags, Variable => "description")
         and then Site_Tags.Contains(Key => "Description") then
@@ -381,7 +381,7 @@ package body Pages is
             Page_Priority => To_String(Source => Page_Priority));
       end if;
       -- Add the page to the Atom feed
-      if Yass_Config.Atom_Feed_Source =
+      if Yass_Conf.Atom_Feed_Source =
         To_Unbounded_String(Source => "tags") then
          Atom_Entries(Atom_Entries.First_Index).Content := Content;
       end if;
@@ -421,7 +421,7 @@ package body Pages is
 
    procedure Copy_File(File_Name, Directory: String) is
       Output_Directory: constant Unbounded_String :=
-        Yass_Config.Output_Directory &
+        Yass_Conf.Output_Directory &
         Delete
           (Source => To_Unbounded_String(Source => Directory), From => 1,
            Through => Length(Source => Site_Directory));
@@ -465,103 +465,96 @@ package body Pages is
          Page_Table_Tags => Page_Table_Tags);
    end Copy_File;
 
-   procedure Create_Empty_File(File_Name: String) is
-      Index_File: File_Type;
-      Comment_Mark: constant String :=
-        To_String(Source => Yass_Config.Markdown_Comment);
+   -----------------------
+   -- Create_Empty_File --
+   -----------------------
+
+   procedure Create_Empty_File (File_Name : String)
+   is
+      Index_File : File_Type;
+      Comment    : constant String := To_String (Yass_Conf.Markdown_Comment);
+
+      procedure PL (Item : String) is
+      begin
+         Put_Line (Index_File, Comment & " " & Item);
+      end PL;
+
    begin
-      if Extension(Name => File_Name) = "md" then
-         Create(File => Index_File, Mode => Append_File, Name => File_Name);
+      if Extension (Name => File_Name) = "md" then
+         Create (File => Index_File,
+                 Mode => Append_File,
+                 Name => File_Name);
       else
-         Create
-           (File => Index_File, Mode => Append_File,
-            Name => File_Name & Dir_Separator & "index.md");
+         Create (File => Index_File,
+                 Mode => Append_File,
+                 Name => File_Name & Dir_Separator & "index.md");
       end if;
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " All lines which starts with double minus sign are comments and ignored by program. Unless they have colon sign. Then they are tags definition.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " Ada Web Server template which will be used as HTML template for this file. Required for each file");
-      Put_Line(File => Index_File, Item => Comment_Mark & " layout: default");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " You may add as many tags as you want, and they can be in any place in file, not only at beginning. Tags can be 4 types: strings, boolean, numeric or composite.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " First 3 types of tags are in Name: Value scheme. For strings, it can be any alphanumeric value without new line sign. For boolean it must be ""true"" or ""false"", for numeric any number. Program will detect self which type of tag is and properly set it. It always falls back to string value.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " Composite tags first must be initialized with Name: [] then just add as many as you want values to it by Name: Value scheme.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " For more information about tags please check program documentation.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " If you have enabled creation of sitemap in the project config file, you can set some sitemap parameters too. They are defined in this same way like tags, with ParameterName: Value.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " priority - The priority of this URL relative to other URLs on your site, value between 0.0 and 1.0.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " changefreq - How frequently the page is likely to change, value can be always, hourly, daily, weekly, monthly, yearly or never.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " For more information how this options works, please look at the program documentation.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " Additionally, you can exclude this file from adding to sitemap by setting option insitemap: false.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " If you have enabled creating Atom feed for the site, you must specify ""title"" tag for this page. If you want to use this file as a main source of Atom feed, then you must add ""title"" tag for each section which will be used as source for Atom feed entry. If you want to set author name for Atom feed, you must add ""author"" tag or setting Author from configuration file will be used. When you want to set author email for Atom feed, you must add ""authoremail"" tag. If you want to add short entry summary, you must add tag ""summary"". Do that tag will be for whole page or for each entry depends on your Atom feed configuration.");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " You can also specify canonical link for the page. If you don't set it here, the program will generate it automatically. To set the default canonical link for the page set tag ""canonicallink"". It must be a full URL (with https://).");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " By setting ""author"" tag for the page, you can overwrite the configuration setting for meta tag author for the page.");
-      Put_Line(File => Index_File, Item => Comment_Mark & " title: New page");
-      Put_Line
-        (File => Index_File,
-         Item =>
-           Comment_Mark &
-           " You can without problem delete all this comments from this file.");
-      Close(File => Index_File);
+
+      PL ("All lines which starts with double minus sign are comments and ignored");
+      PL ("by program. Unless they have colon sign. Then they are tags definition.");
+      PL ("Ada Web Server template which will be used as HTML template for this");
+      PL ("file. Required for each file");
+      PL ("");
+      PL ("layout: default");
+      PL ("");
+      PL ("You may add as many tags as you want, and they can be in any place in");
+      PL ("file, not only at beginning. Tags can be 4 types: strings, boolean,");
+      PL ("numeric or composite.");
+      PL ("First 3 types of tags are in Name: Value scheme. For strings, it can be");
+      PL ("any alphanumeric value without new line sign. For boolean it must be");
+      PL ("""true"" or ""false"", for numeric any number. Program will detect self");
+      PL ("which type of tag is and properly set it. It always falls back to");
+      PL ("string value.");
+      PL ("Composite tags first must be initialized with Name: [] then just add");
+      PL ("as many as you want values to it by Name: Value scheme.");
+      PL ("");
+      PL ("For more information about tags please check program documentation.");
+      PL ("");
+      PL ("If you have enabled creation of sitemap in the project config file,");
+      PL ("you can set some sitemap parameters too. They are defined in this same");
+      PL ("way like tags, with ParameterName: Value.");
+      PL ("");
+      PL ("priority - The priority of this URL relative to other URLs on your site,");
+      PL ("           value between 0.0 and 1.0.");
+      PL ("changefreq - How frequently the page is likely to change, value can be");
+      PL ("             always, hourly, daily, weekly, monthly, yearly or never.");
+      PL ("");
+      PL ("For more information how this options works, please look at the program");
+      PL ("documentation.");
+      PL ("");
+      PL ("Additionally, you can exclude this file from adding to sitemap by");
+      PL ("setting option insitemap: false.");
+      PL ("");
+      PL ("If you have enabled creating Atom feed for the site, you must specify");
+      PL ("""title"" tag for this page. If you want to use this file as a main");
+      PL ("source of Atom feed, then you must add ""title"" tag for each section");
+      PL ("which will be used as source for Atom feed entry. If you want to set");
+      PL ("author name for Atom feed, you must add ""author"" tag or setting Author");
+      PL ("from configuration file will be used. When you want to set author email");
+      PL ("for Atom feed, you must add ""authoremail"" tag. If you want to add");
+      PL ("short entry summary, you must add tag ""summary"". Do that tag will be");
+      PL ("for whole page or for each entry depends on your Atom feed configuration.");
+      PL ("");
+      PL ("You can also specify canonical link for the page. If you don't set it");
+      PL ("here, the program will generate it automatically. To set the default");
+      PL ("canonical link for the page set tag ""canonicallink"". It must be a");
+      PL ("full URL (with https://).");
+      PL ("By setting ""author"" tag for the page, you can overwrite the");
+      PL ("configuration setting for meta tag author for the page.");
+      PL ("");
+      PL ("title: New page");
+      PL ("");
+      PL ("You can without problem delete all this comments from this file.");
+
+      Close (Index_File);
+
    end Create_Empty_File;
 
    function Get_Layout_Name(File_Name: String) return String is
       Page_File: File_Type;
       Data, Layout: Unbounded_String := Null_Unbounded_String;
       Start_Pos: constant Positive :=
-        Length(Source => Yass_Config.Markdown_Comment);
+        Length(Source => Yass_Conf.Markdown_Comment);
    begin
       Open(File => Page_File, Mode => In_File, Name => File_Name);
       Find_Layout_Name_Loop :
@@ -572,14 +565,14 @@ package body Pages is
          if Length(Source => Data) > 2
            and then
              Unbounded_Slice(Source => Data, Low => 1, High => Start_Pos) =
-             Yass_Config.Markdown_Comment
+             Yass_Conf.Markdown_Comment
            and then Index(Source => Data, Pattern => "layout:", From => 1) =
              Start_Pos + 2 then
             Data :=
               Unbounded_Slice
                 (Source => Data, Low => 12, High => Length(Source => Data));
             Layout :=
-              Yass_Config.Layouts_Directory & Dir_Separator & Data &
+              Yass_Conf.Layouts_Directory & Dir_Separator & Data &
               To_Unbounded_String(Source => ".html");
             if not Ada.Directories.Exists
                 (Name => To_String(Source => Layout)) then

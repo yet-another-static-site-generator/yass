@@ -10,61 +10,71 @@ project Yass is
    type Mode_Type is ("dev", "debug", "release", "analyze");
    Mode : Mode_Type := external ("Mode", "dev");
 
-   type OS_Type is ("Windows", "Unix");
-   OS : OS_Type := external ("YASS_OS", "Unix");
-
    package Builder is
       case Mode is
          when "release" =>
             for Default_Switches("ada") use ("-j0", "-gnat2012");
          when others =>
             for Default_Switches("ada") use ("-j0", "-gnat2012", "-g");
-            for Global_Configuration_Pragmas use "gnat.adc";
       end case;
    end Builder;
 
    package Compiler is
-     for Default_Switches ("Ada") use Yass_Config.Ada_Compiler_Switches;
-       case Mode is
+      for Default_Switches ("Ada") use Yass_Config.Ada_Compiler_Switches;
+
+      case Mode is
+
          when "dev" | "debug" =>
-            for Default_Switches ("ada") use ("-gnatwa",
+            for Default_Switches ("Ada") use (
+               "-gnatwa",
                "-fstack-check",
                "-gnatVa",
                "-gnatU",
                "-gnatf",
                "-gnateE",
                "-gnaty3aAbCdefhIklnOprSux",
-               "-gnatwe");
+               "-gnatwe"
+              );
+            for Local_Configuration_Pragmas use "src/yass.adc";
+
          when "release" =>
-            for Default_Switches ("ada") use ("-O2",
+            for Default_Switches ("Ada") use (
+               "-O2",
                "-ffunction-sections",
                "-fdata-sections",
                "-s",
-               "-flto");
+               "-flto=4"
+              );
+
          when "analyze" =>
-            for Default_Switches ("ada") use ("-pg",
+            for Default_Switches ("Ada") use (
+               "-pg",
                "-fprofile-arcs",
-               "-ftest-coverage");
+               "-ftest-coverage"
+              );
+            for Local_Configuration_Pragmas use "src/yass.adc";
+
       end case;
    end Compiler;
 
-
    package Linker is
-      Release_Switches := ("-Wl,--gc-sections",
-         "-s",
-         "-O2",
-         "-lcmark",
-         "-flto");
       case Mode is
          when "dev" | "release"  =>
-            for Default_Switches ("Ada") use ("-lcmark");
+            for Default_Switches ("Ada") use (
+               "-lcmark"
+               );
          when "debug" =>
-            for Default_Switches ("ada") use ("-no-pie", "-lcmark");
+            for Default_Switches ("Ada") use (
+               "-no-pie",
+               "-lcmark"
+               );
          when "analyze" =>
-            for Default_Switches ("ada") use ("-no-pie",
+            for Default_Switches ("Ada") use (
+               "-no-pie",
                "-pg",
                "-fprofile-arcs",
-               "-lcmark");
+               "-lcmark"
+               );
       end case;
    end Linker;
 
@@ -80,15 +90,17 @@ project Yass is
          "-c0");
    end Pretty_Printer;
 
-   --  Unit tests on hold until ported to alire
-   --   package GnatTest is
-   --      for Tests_Dir use "../tests";
-   --      for Harness_Dir use "../tests/driver";
-   --      for GnatTest_Switches use ("--omit-sloc",
-   --         "--test-case-only",
-   --         "--passed-tests=hide",
-   --         "--exit-status=on");
-   --   end GnatTest;
+   package GNATtest is
+      for Tests_Dir   use "../../tests/";         --  Relative to Object_Dir
+      for Harness_Dir use "../../tests/driver/";  --  Relative to Object_Dir
+      for GNATtest_Switches use (
+         "--no-subprojects",
+         "--omit-sloc",
+         "--test-case-only",
+         "--passed-tests=show",
+         "--exit-status=on"
+        );
+   end GNATtest;
 
    package Install is
       for Artifacts (".") use ("share");
