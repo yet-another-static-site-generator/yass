@@ -16,11 +16,13 @@
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories;
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with GNAT.Directory_Operations;
 
+with AWS.Config.Set;
 with AWS.Response;
 with AWS.Services.Page_Server;
 with AWS.Services.Directory;
@@ -80,18 +82,25 @@ package body Server is
    procedure Start_Server
    is
       use Ada.Text_IO;
+      use AWS.Config;
+
+      Server_Config : Object := Default_Config;
    begin
-      AWS.Server.Start
-        (Web_Server => Http_Server, Name => "YASS static page server",
-         Port => Yass_Conf.Server_Port, Callback => Callback'Access,
-         Max_Connection => 5);
-      Put_Line
-        (Item =>
-           "Server was started. Web address: http://localhost:" &
-           Positive'Image(Yass_Conf.Server_Port)
-             (Positive'Image(Yass_Conf.Server_Port)'First + 1 ..
-                  Positive'Image(Yass_Conf.Server_Port)'Length) &
-           "/index.html Press ""Q"" for quit.");
+      Set.Server_Name    (Server_Config, "YASS static page server");
+      Set.Server_Port    (Server_Config, Yass_Conf.Server_Port);
+      Set.Max_Connection (Server_Config, 5);
+      Set.Reuse_Address  (Server_Config, True);
+
+      AWS.Server.Start (Web_Server => Http_Server,
+                        Callback   => Callback'Access,
+                        Config     => Server_Config);
+
+      Put_Line ("Server was started.");
+      Put_Line ("Web address: http://localhost:" &
+                Ada.Strings.Fixed.Trim (Yass_Conf.Server_Port'Image,
+                                        Side => Ada.Strings.Left) &
+                "/index.html");
+      Put_Line ("Press ""Q"" for quit.");
    end Start_Server;
 
    ---------------------
