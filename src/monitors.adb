@@ -408,7 +408,7 @@ package body Monitors is
       end if;
 
       Put_Line (Error_File, Formatting.Image (Date => Clock));
-      Put_Line (Error_File, "Excepton from" & Task_Name);
+      Put_Line (Error_File, "Exception from: " & Task_Name);
 --      Put_Line (Error_File, Version);
       Put_Line (Error_File,
                 "Exception: " & Exception_Name (Occurrence));
