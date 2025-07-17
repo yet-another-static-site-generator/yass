@@ -178,7 +178,13 @@ package body Monitors is
                Site_Rebuild := True;
 
             elsif Extension (Simple_Name (Item)) = "md" then
-               if
+               if Get_Layout_Name (Full_Name (Item)) = "" then
+                  Log ("File: " &
+                       To_Relative
+                         (Full_Name => Full_Name (Item),
+                          Base_Name => To_String (Site_Directory) & Dir_Separator) &
+                       " has no layout");
+               elsif
                  Modification_Time (Full_Name (Item)) >
                  Modification_Time (To_String (Site_File_Name)) or
                  Modification_Time (Get_Layout_Name (Full_Name (Item))) >
@@ -408,7 +414,7 @@ package body Monitors is
       end if;
 
       Put_Line (Error_File, Formatting.Image (Date => Clock));
-      Put_Line (Error_File, "Excepton from" & Task_Name);
+      Put_Line (Error_File, "Exception from: " & Task_Name);
 --      Put_Line (Error_File, Version);
       Put_Line (Error_File,
                 "Exception: " & Exception_Name (Occurrence));

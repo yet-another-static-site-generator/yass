@@ -364,6 +364,11 @@ package body Pages is
       -- Create HTML file in Output_Directory
       Create_Path(New_Directory => To_String(Source => Output_Directory));
       Create(File => Page_File, Mode => Append_File, Name => New_File_Name);
+
+      if Layout = "" then
+         raise Layout_Not_Found with To_String (Layout);
+      end if;
+
       Put
         (File => Page_File,
          Item =>
@@ -392,12 +397,14 @@ package body Pages is
         (State => "post", Page_Tags => Page_Tags,
          Page_Table_Tags => Page_Table_Tags);
    exception
+
       when An_Exception : Layout_Not_Found =>
          Put_Line
-           (Item =>
-              "Can't parse """ & Exception_Message(X => An_Exception) &
-              """ does not exists.");
+           ("Can not parse layout. File """
+            & Exception_Message (X => An_Exception)
+            & """ does not exist.");
          raise Generate_Site_Exception;
+
       when An_Exception : Template_Error =>
          Put_Line(Item => Exception_Message(X => An_Exception));
          if Ada.Directories.Exists(Name => New_File_Name) then
