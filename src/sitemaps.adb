@@ -382,6 +382,8 @@ package body Sitemaps is
 
       Set_Sitemap (New_Sitemap => Local_Sitemap);
       Set_Main_Node (New_Main_Node => Local_Main_Node);
+
+      DOM.Core.Free (Urls_List);
    end Add_Page_To_Sitemap;
 
    ------------------
