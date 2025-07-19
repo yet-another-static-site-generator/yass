@@ -153,6 +153,9 @@ package body Sitemaps is
 
          Local_Main_Node := Item (List  => Nodes_List,
                                   Index => 0);
+
+         DOM.Core.Free (Nodes_List);
+
          Set_Attribute
            (Elem  => Local_Main_Node,
             Name  => "xmlns",
