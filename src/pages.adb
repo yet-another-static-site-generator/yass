@@ -31,9 +31,9 @@ with AWS.Templates.Utils;
 
 with AtomFeed;
 with CMark;
-with Config;   use Config;
-with Modules;  use Modules;
-with Sitemaps; use Sitemaps;
+with Config;
+with Modules;
+with Sitemaps;
 
 package body Pages is
 
@@ -58,6 +58,7 @@ package body Pages is
       use AWS.Templates;
 
       use AtomFeed;
+      use Config;
 
       Layout           : Unbounded_String;
       Content          : Unbounded_String;
@@ -389,9 +390,9 @@ package body Pages is
                         HTML_Enabled => Yass_Conf.HTML_Enabled));
 
       --  Load the program modules with 'pre' hook
-      Load_Modules (State           => "pre",
-                    Page_Tags       => Page_Tags,
-                    Page_Table_Tags => Page_Table_Tags);
+      Modules.Load_Modules (State           => "pre",
+                            Page_Tags       => Page_Tags,
+                             Page_Table_Tags => Page_Table_Tags);
 
       --  Insert tags to template
       Insert
@@ -478,7 +479,7 @@ package body Pages is
 
       --  Add the page to the sitemap
       if In_Sitemap then
-         Add_Page_To_Sitemap
+         Sitemaps.Add_Page_To_Sitemap
            (File_Name        => New_File_Name,
             Change_Frequency => To_String (Change_Frequency),
             Page_Priority    => To_String (Page_Priority));
@@ -496,9 +497,9 @@ package body Pages is
                                      Value => New_File_Name);
 
       --  Load the program modules with 'post' hook
-      Load_Modules (State           => "post",
-                    Page_Tags       => Page_Tags,
-                    Page_Table_Tags => Page_Table_Tags);
+      Modules.Load_Modules (State           => "post",
+                            Page_Tags       => Page_Tags,
+                            Page_Table_Tags => Page_Table_Tags);
 
    exception
 
@@ -543,6 +544,8 @@ package body Pages is
       use Ada.Directories;
       use Ada.Strings.Unbounded;
 
+      use Config;
+
       Output_Directory : constant Unbounded_String :=
         Yass_Conf.Output_Directory &
         Delete
@@ -555,9 +558,9 @@ package body Pages is
         TableTags_Container.Empty_Map;
    begin
       --  Load the program modules with 'pre' hook
-      Load_Modules (State           => "pre",
-                    Page_Tags       => Page_Tags,
-                    Page_Table_Tags => Page_Table_Tags);
+      Modules.Load_Modules (State           => "pre",
+                            Page_Tags       => Page_Tags,
+                            Page_Table_Tags => Page_Table_Tags);
 
       --  Copy the file to output directory
       Create_Path (New_Directory => To_String (Output_Directory));
@@ -575,7 +578,7 @@ package body Pages is
             Simple_Name (Name => File_Name));
 
          if Extension (Name => File_Name) = "html" then
-            Add_Page_To_Sitemap
+            Sitemaps.Add_Page_To_Sitemap
               (File_Name       =>
                  To_String (Output_Directory) & Dir_Separator &
                  Simple_Name (Name => File_Name),
@@ -591,9 +594,9 @@ package body Pages is
       end if;
 
       --  Load the program modules with 'post' hook
-      Load_Modules (State           => "post",
-                    Page_Tags       => Page_Tags,
-                    Page_Table_Tags => Page_Table_Tags);
+      Modules.Load_Modules (State           => "post",
+                            Page_Tags       => Page_Tags,
+                            Page_Table_Tags => Page_Table_Tags);
    end Copy_File;
 
    -----------------------
@@ -604,6 +607,8 @@ package body Pages is
    is
       use Ada.Text_IO;
       use Ada.Strings.Unbounded;
+
+      use Config;
 
       Index_File : File_Type;
       Comment    : constant String := To_String (Yass_Conf.Markdown_Comment);
@@ -693,6 +698,8 @@ package body Pages is
       use Ada.Strings.Unbounded;
       use Ada.Strings.UTF_Encoding.Strings;
       use Ada.Text_IO;
+
+      use Config;
 
       Page_File : File_Type;
 
