@@ -401,7 +401,11 @@ package body Monitors is
       use Ada.Exceptions;
       use GNAT.Traceback.Symbolic;
 
-      Error_File: File_Type;
+      Time_Now   : constant Time   := Clock;
+      Image_Time : constant String :=
+         Formatting.Image (Date      => Time_Now,
+                           Time_Zone => Time_Zones.UTC_Time_Offset);
+      Error_File : File_Type;
    begin
       if Ada.Directories.Exists (Error_File_Name) then
          Open (File => Error_File,
@@ -413,7 +417,7 @@ package body Monitors is
                  Name => Error_File_Name);
       end if;
 
-      Put_Line (Error_File, Formatting.Image (Date => Clock));
+      Put_Line (Error_File, Image_Time);
       Put_Line (Error_File, "Exception from: " & Task_Name);
 --      Put_Line (Error_File, Version);
       Put_Line (Error_File,
