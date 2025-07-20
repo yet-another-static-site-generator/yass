@@ -18,16 +18,15 @@
 with Ada.Calendar;
 with Ada.Characters.Handling;
 with Ada.Characters.Latin_1;
-with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
 with Ada.Exceptions;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Strings.UTF_Encoding.Strings; use Ada.Strings.UTF_Encoding.Strings;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Environment_Variables;
+with Ada.Strings.Unbounded;
+with Ada.Strings.UTF_Encoding.Strings;
+with Ada.Text_IO;
 
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 
-with AWS.Templates;
 with AWS.Templates.Utils;
 
 with AtomFeed;
@@ -38,12 +37,20 @@ with Sitemaps; use Sitemaps;
 
 package body Pages is
 
-   Layout_Not_Found: exception;
+   Layout_Not_Found : exception;
+
+   Dir_Separator : Character renames Gnat.Directory_Operations.Dir_Separator;
 
    procedure Create_Page(File_Name, Directory: String) is
+      use Ada.Strings.UTF_Encoding.Strings;
       use Ada.Characters.Handling;
       use Ada.Exceptions;
+      use Ada.Directories;
+      use Ada.Strings.Unbounded;
+      use Ada.Text_IO;
+
       use AWS.Templates;
+
       use AtomFeed;
 
       Layout, Content, Change_Frequency, Page_Priority: Unbounded_String :=
@@ -391,7 +398,8 @@ package body Pages is
          Atom_Entries(Atom_Entries.First_Index).Content := Content;
       end if;
       Add_Page_To_Feed(File_Name => New_File_Name, Entries => Atom_Entries);
-      Set(Name => "YASSFILE", Value => New_File_Name);
+      Ada.Environment_Variables.Set (Name  => "YASSFILE",
+                                     Value => New_File_Name);
       -- Load the program modules with 'post' hook
       Load_Modules
         (State => "post", Page_Tags => Page_Tags,
@@ -427,6 +435,9 @@ package body Pages is
    end Create_Page;
 
    procedure Copy_File(File_Name, Directory: String) is
+      use Ada.Directories;
+      use Ada.Strings.Unbounded;
+
       Output_Directory: constant Unbounded_String :=
         Yass_Conf.Output_Directory &
         Delete
@@ -460,11 +471,12 @@ package body Pages is
                Simple_Name(Name => File_Name),
                Change_Frequency => "", Page_Priority => "");
          end if;
-         Set
-         (Name => "YASSFILE",
+
+         Ada.Environment_Variables.Set
+           (Name  => "YASSFILE",
             Value =>
-            To_String(Source => Output_Directory) & Dir_Separator &
-            Simple_Name(Name => File_Name));
+              To_String (Output_Directory) & Dir_Separator &
+              Simple_Name (File_Name));
       end if;
       -- Load the program modules with 'post' hook
       Load_Modules
@@ -478,6 +490,9 @@ package body Pages is
 
    procedure Create_Empty_File (File_Name : String)
    is
+      use Ada.Text_IO;
+      use Ada.Strings.Unbounded;
+
       Index_File : File_Type;
       Comment    : constant String := To_String (Yass_Conf.Markdown_Comment);
 
@@ -487,7 +502,7 @@ package body Pages is
       end PL;
 
    begin
-      if Extension (Name => File_Name) = "md" then
+      if Ada.Directories.Extension (Name => File_Name) = "md" then
          Create (File => Index_File,
                  Mode => Append_File,
                  Name => File_Name);
@@ -558,6 +573,10 @@ package body Pages is
    end Create_Empty_File;
 
    function Get_Layout_Name(File_Name: String) return String is
+      use Ada.Strings.Unbounded;
+      use Ada.Strings.UTF_Encoding.Strings;
+      use Ada.Text_IO;
+
       Page_File: File_Type;
       Data, Layout: Unbounded_String := Null_Unbounded_String;
       Start_Pos: constant Positive :=
