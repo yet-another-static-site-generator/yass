@@ -41,7 +41,13 @@ package body Pages is
 
    Dir_Separator : Character renames Gnat.Directory_Operations.Dir_Separator;
 
-   procedure Create_Page(File_Name, Directory: String) is
+   -----------------
+   -- Create_Page --
+   -----------------
+
+   procedure Create_Page (File_Name : String;
+                          Directory : String)
+   is
       use Ada.Strings.UTF_Encoding.Strings;
       use Ada.Characters.Handling;
       use Ada.Exceptions;
@@ -85,8 +91,12 @@ package body Pages is
       --## rule on GLOBAL_REFERENCES
       Sitemap_Invalid_Value, Invalid_Value: exception;
 
+      -----------------
+      -- Insert_Tags --
+      -----------------
+
       -- Insert selected list of tags Tags_List to templates
-      procedure Insert_Tags(Tags_List: Tags_Container.Map) is
+      procedure Insert_Tags (Tags_List : Tags_Container.Map) is
          use AWS.Templates.Utils;
       begin
          Insert_Tags_Loop :
@@ -124,6 +134,7 @@ package body Pages is
             end if;
          end loop Insert_Tags_Loop;
       end Insert_Tags;
+
    begin
       Read_Page_File_Block :
       declare
@@ -134,10 +145,17 @@ package body Pages is
          Start_Pos: constant Positive :=
            Length(Source => Yass_Conf.Markdown_Comment);
          Valid_Value: Boolean := False;
-      -- Add tag to the page template tags lists (simple or composite).
-      -- Name: name of the tag
-      -- Value: value of the tag
-         procedure Add_Tag(Name, Value: String) is
+
+         -------------
+         -- Add_Tag --
+         -------------
+
+         -- Add tag to the page template tags lists (simple or composite).
+         -- Name: name of the tag
+         -- Value: value of the tag
+         procedure Add_Tag (Name  : String;
+                            Value : String)
+         is
             use Ada.Calendar;
          begin
          -- Create new composite template tag
@@ -188,6 +206,7 @@ package body Pages is
                raise Invalid_Value
                  with """" & Name & """ value """ & Value & """";
          end Add_Tag;
+
       begin
          -- Read selected markdown file
          Open(File => Page_File, Mode => In_File, Name => File_Name);
@@ -434,7 +453,13 @@ package body Pages is
          raise Generate_Site_Exception;
    end Create_Page;
 
-   procedure Copy_File(File_Name, Directory: String) is
+   ---------------
+   -- Copy_File --
+   ---------------
+
+   procedure Copy_File (File_Name : String;
+                        Directory : String)
+   is
       use Ada.Directories;
       use Ada.Strings.Unbounded;
 
@@ -572,7 +597,12 @@ package body Pages is
 
    end Create_Empty_File;
 
-   function Get_Layout_Name(File_Name: String) return String is
+   ---------------------
+   -- Get_Layout_Name --
+   ---------------------
+
+   function Get_Layout_Name (File_Name : String) return String
+   is
       use Ada.Strings.Unbounded;
       use Ada.Strings.UTF_Encoding.Strings;
       use Ada.Text_IO;
