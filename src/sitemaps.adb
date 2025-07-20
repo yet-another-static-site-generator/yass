@@ -108,11 +108,8 @@ package body Sitemaps is
    -- Start_Sitemap --
    -------------------
 
-   procedure Start_Sitemap is
-      use DOM.Core.Documents;
-      use DOM.Core.Elements;
-      use DOM.Core.Nodes;
-
+   procedure Start_Sitemap
+   is
       Sitemap_File : Input_Sources.File.File_Input;
       --## rule off IMPROPER_INITIALIZATION
       Reader       : DOM.Readers.Tree_Reader;
@@ -151,12 +148,12 @@ package body Sitemaps is
              (Doc      => Local_Sitemap,
               Tag_Name => "urlset");
 
-         Local_Main_Node := Item (List  => Nodes_List,
-                                  Index => 0);
+         Local_Main_Node := DOM.Core.Nodes.Item (List  => Nodes_List,
+                                                 Index => 0);
 
          DOM.Core.Free (Nodes_List);
 
-         Set_Attribute
+         DOM.Core.Elements.Set_Attribute
            (Elem  => Local_Main_Node,
             Name  => "xmlns",
             Value => "http://www.sitemaps.org/schemas/sitemap/0.9");
@@ -165,16 +162,17 @@ package body Sitemaps is
       else
          Local_Sitemap := DOM.Core.Create_Document (Implementation => New_Sitemap);
          Local_Main_Node :=
-           Create_Element (Doc      => Local_Sitemap,
-                           Tag_Name => "urlset");
-         Set_Attribute
+           DOM.Core.Documents.Create_Element (Doc      => Local_Sitemap,
+                                              Tag_Name => "urlset");
+
+         DOM.Core.Elements.Set_Attribute
            (Elem  => Local_Main_Node,
             Name  => "xmlns",
             Value => "http://www.sitemaps.org/schemas/sitemap/0.9");
 
          Local_Main_Node :=
-           Append_Child (N         => Local_Sitemap,
-                         New_Child => Local_Main_Node);
+           DOM.Core.Nodes.Append_Child (N         => Local_Sitemap,
+                                        New_Child => Local_Main_Node);
       end if;
       Set_Sitemap (New_Sitemap => Local_Sitemap);
       Set_Main_Node (New_Main_Node => Local_Main_Node);
