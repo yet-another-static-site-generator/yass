@@ -42,7 +42,7 @@ package body Server is
    -- ****
    --## rule on GLOBAL_REFERENCES
 
-   -- ****f** Server/Server.Callback
+   -- ****if* Server/Server.Callback
    -- FUNCTION
    -- Handle callbacks from HTTP server.
    -- SOURCE
