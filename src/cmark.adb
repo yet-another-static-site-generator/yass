@@ -50,14 +50,16 @@ package body CMark is
 
       C_Text   :          Strings.chars_ptr := Strings.New_String (Text);
       C_Len    : constant size_t            := size_t (Text'Length);
-      C_Result : constant Strings.chars_ptr :=
+      C_Result :          Strings.chars_ptr :=
          C_CMark_Markdown_To_HTML (Text    => C_Text,
                                    Len     => C_Len,
                                    Options => C_Options);
+      Result   : constant String := Strings.Value (C_Result);
    begin
       Strings.Free (C_Text);
+      Strings.Free (C_Result);
 
-      return Strings.Value (C_Result);
+      return Result;
    end Markdown_To_HTML;
 
 end CMark;
