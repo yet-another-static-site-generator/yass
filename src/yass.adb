@@ -24,7 +24,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.OS_Lib;
 
 with AWS.Net;
 with AWS.Server;
@@ -396,26 +396,31 @@ begin
          Start_Server;
          if Yass_Conf.Browser_Command /=
            To_Unbounded_String(Source => "none") then
+
             Start_Web_Browser_Block :
             declare
-               Args: constant Argument_List_Access :=
+               use GNAT.OS_Lib;
+
+               Args : Argument_List_Access :=
                  Argument_String_To_List
-                   (Arg_String =>
-                      To_String(Source => Yass_Conf.Browser_Command));
+                   (Arg_String => To_String (Yass_Conf.Browser_Command));
             begin
-               if not Ada.Directories.Exists(Name => Args(Args'First).all)
+               if not Ada.Directories.Exists (Name => Args (Args'First).all)
                  or else
                    Non_Blocking_Spawn
-                     (Program_Name => Args(Args'First).all,
-                      Args => Args(Args'First + 1 .. Args'Last)) =
-                   Invalid_Pid then
+                     (Program_Name => Args (Args'First).all,
+                      Args         => Args (Args'First + 1 .. Args'Last)) =
+                   Invalid_Pid
+               then
                   Put_Line
                     (Item =>
                        "Can't start web browser. Please check your site configuration did it have proper value for ""BrowserCommand"" setting.");
                   Shutdown_Server;
                   return;
                end if;
+               Free (Args);
             end Start_Web_Browser_Block;
+
          end if;
       else
          Put_Line

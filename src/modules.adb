@@ -41,9 +41,10 @@ package body Modules is
          use AWS.Templates;
          use Messages;
 
-         Module: Process_Descriptor; --## rule line off GLOBAL_REFERENCES
-         Finished: Boolean := False;
-         Result: Expect_Match := 0;
+         Module   : Process_Descriptor; --## rule line off GLOBAL_REFERENCES
+         Args     : Argument_List_Access := Argument_String_To_List (Arg_String => "");
+         Finished : Boolean      := False;
+         Result   : Expect_Match := 0;
          --## rule off GLOBAL_REFERENCES
          Text, Tag_Name: Unbounded_String := Null_Unbounded_String;
          --## rule off GLOBAL_REFERENCES
@@ -169,11 +170,13 @@ package body Modules is
              (Name => Full_Name(Directory_Entry => Item)) then
             return;
          end if;
+
          -- Spawn selected module
          Non_Blocking_Spawn
            (Descriptor => Module,
-            Command => Full_Name(Directory_Entry => Item),
-            Args => Argument_String_To_List(Arg_String => "").all);
+            Command    => Full_Name (Directory_Entry => Item),
+            Args       => Args.all);
+
          Read_Response_Loop :
          while not Finished loop
             -- Wait for the response from the module
@@ -251,7 +254,10 @@ package body Modules is
             end if;
             <<End_Of_Loop>>
          end loop Read_Response_Loop;
-         Close(Descriptor => Module);
+
+         Close (Descriptor => Module);
+         Free (Args);
+
       exception
          when Invalid_Process =>
             Show_Message
