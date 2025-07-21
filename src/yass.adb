@@ -33,13 +33,13 @@ with Resources;
 
 with AtomFeed;
 with Config;
-with Layouts; use Layouts;
-with Messages; use Messages;
+with Layouts;
+with Messages;
 with Modules;
 with Monitors;
-with Pages; use Pages;
+with Pages;
 with Sitemaps;
-with Server; use Server;
+with Server;
 
 procedure Yass
 is
@@ -120,11 +120,11 @@ is
 
             if Extension (Name => Simple_Name (Directory_Entry => Item)) = "md"
             then
-               Create_Page
+               Pages.Create_Page
                  (File_Name => Full_Name (Directory_Entry => Item),
                   Directory => Name);
             else
-               Copy_File
+               Pages.Copy_File
                  (File_Name => Full_Name (Directory_Entry => Item),
                   Directory => Name);
             end if;
@@ -194,7 +194,7 @@ is
       return True;
 
    exception
-      when Generate_Site_Exception =>
+      when Pages.Generate_Site_Exception =>
          return False;
    end Build_Site;
 
@@ -224,6 +224,7 @@ is
    is
       use Ada.Command_Line;
       use Ada.Directories;
+      use Messages;
    begin
       -- User does not entered name of the site project directory
       if Argument_Count < 2 then
@@ -339,11 +340,11 @@ is
          end if;
          Create_Site_Config (Directory_Name => To_String (Work_Directory));
 
-         Create_Layout           (Directory_Name => Path);
-         Create_Directory_Layout (Directory_Name => Path);
-         Create_Empty_File       (File_Name      => Path);
+         Layouts.Create_Layout           (Directory_Name => Path);
+         Layouts.Create_Directory_Layout (Directory_Name => Path);
+         Pages.Create_Empty_File         (File_Name      => Path);
 
-         Show_Message
+         Messages.Show_Message
            ("New page in directory """ & Path &
             """ was created. Edit """ & Path & Dir_Separator &
             "site.cfg"" file to set data for your new site.",
@@ -418,7 +419,7 @@ begin
          Readme_File : File_Type;
       begin
          if not Ada.Directories.Exists (Name => Readme_Name) then
-            Show_Message (Text => "Can't find file " & Readme_Name);
+            Messages.Show_Message (Text => "Can't find file " & Readme_Name);
             return;
          end if;
 
@@ -449,10 +450,10 @@ begin
       Load_Site_Config (Directory_Name => To_String (Work_Directory));
 
       if Build_Site (Directory_Name => To_String (Work_Directory)) then
-         Show_Message (Text         => "Site was build.",
-                       Message_Type => Messages.SUCCESS);
+         Messages.Show_Message (Text         => "Site was build.",
+                                Message_Type => Messages.SUCCESS);
       else
-         Show_Message (Text => "Site building has been interrupted.");
+         Messages.Show_Message (Text => "Site building has been interrupted.");
       end if;
 
    --  Start server to monitor changes in selected site project
@@ -480,10 +481,10 @@ begin
                 To_String (Yass_Conf.Layouts_Directory) &
                 Dir_Separator & "directory.html")
          then
-            Create_Directory_Layout (Directory_Name => "");
+            Layouts.Create_Directory_Layout (Directory_Name => "");
          end if;
 
-         Start_Server;
+         Server.Start_Server;
 
          if Yass_Conf.Browser_Command /= To_Unbounded_String ("none") then
 
@@ -508,7 +509,7 @@ begin
                        & "configuration did it have proper value for "
                        & """BrowserCommand"" setting.");
 
-                  Shutdown_Server;
+                  Server.Shutdown_Server;
                   return;
 
                end if;
@@ -528,7 +529,7 @@ begin
 
       AWS.Server.Wait (Mode => AWS.Server.Q_Key_Pressed);
       if Yass_Conf.Server_Enabled then
-         Shutdown_Server;
+         Server.Shutdown_Server;
       else
          Put (Item => "Stopping monitoring site changes...");
       end if;
@@ -536,12 +537,13 @@ begin
       Monitors.Monitor_Site.Stop;
       Monitors.Monitor_Config.Stop;
 
-      Show_Message (Text => "done.", Message_Type => Messages.SUCCESS);
+      Messages.Show_Message (Text         => "done.",
+                             Message_Type => Messages.SUCCESS);
 
    --  Create new empty markdown file with selected name
    elsif Argument (Number => 1) = "createfile" then
       if Argument_Count < 2 then
-         Show_Message (Text => "Please specify name of file to create.");
+         Messages.Show_Message (Text => "Please specify name of file to create.");
          return;
       end if;
 
@@ -571,9 +573,9 @@ begin
       Create_Path
         (New_Directory =>
            Containing_Directory (Name => To_String (Work_Directory)));
-      Create_Empty_File (File_Name => To_String (Work_Directory));
+      Pages.Create_Empty_File (File_Name => To_String (Work_Directory));
 
-      Show_Message
+      Messages.Show_Message
         (Text =>
            "Empty file """ & To_String (Work_Directory) &
            """ was created.",
@@ -581,19 +583,20 @@ begin
 
    --  Unknown command entered
    else
-      Show_Message (Text => "Unknown command '" & Argument (Number => 1) & "'");
+      Messages.Show_Message (Text => "Unknown command '"
+                                     & Argument (Number => 1) & "'");
       Show_Help;
    end if;
 
 exception
    when An_Exception : Invalid_Config_Data =>
-      Show_Message
+      Messages.Show_Message
         (Text =>
            "Invalid data in site config file ""site.cfg"". Invalid line:""" &
             Ada.Exceptions.Exception_Message (X => An_Exception) & """");
 
    when AWS.Net.Socket_Error =>
-      Show_Message
+      Messages.Show_Message
         (Text =>
            "Can't start program in server mode. Probably another program is "
            & "using this same port, or you have still connected old instance of "
