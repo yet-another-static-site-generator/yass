@@ -102,19 +102,34 @@ package body Monitors is
       use Modules;
       use Sitemaps;
 
-      Site_Rebuild: Boolean := False; --## rule line off GLOBAL_REFERENCES
-      Page_Tags: Tags_Container.Map := Tags_Container.Empty_Map;
-      Page_Table_Tags: TableTags_Container.Map :=
+      Site_Rebuild    : Boolean := False; --## rule line off GLOBAL_REFERENCES
+      Page_Tags       : Tags_Container.Map := Tags_Container.Empty_Map;
+      Page_Table_Tags : TableTags_Container.Map :=
         TableTags_Container.Empty_Map;
 
+      procedure Monitor_Directory (Name : String);
       --  Monitor directory with full path Name for changes and update the site
       --  if needed
+
+      -----------------------
+      -- Monitor_Directory --
+      -----------------------
+
       procedure Monitor_Directory (Name : String) is
          use GNAT.OS_Lib;
          use Pages;
 
-         -- Process file with full path Item: create html pages from markdown
-         -- files or copy any other file if they was updated since last check.
+         procedure Process_Files (Item : Directory_Entry_Type);
+         --  Process file with full path Item: create html pages from markdown
+         --  files or copy any other file if they was updated since last check.
+
+         procedure Process_Directories (Item : Directory_Entry_Type);
+         --  Go recursive with directory with full path Item.
+
+         -------------------
+         -- Process_Files --
+         -------------------
+
          procedure Process_Files (Item : Directory_Entry_Type)
          is
             Site_File_Name : Unbounded_String :=
@@ -226,8 +241,11 @@ package body Monitors is
             end if;
          end Process_Files;
 
-         --  Go recursive with directory with full path Item.
-         procedure Process_Directories (Item: Directory_Entry_Type) is
+         -------------------------
+         -- Process_Directories --
+         -------------------------
+
+         procedure Process_Directories (Item : Directory_Entry_Type) is
          begin
             if
               Yass_Conf.Excluded_Files.Find_Index (Simple_Name (Item)) =
@@ -259,12 +277,12 @@ package body Monitors is
             if Yass_Conf.Stop_Server_On_Error then
                if Yass_Conf.Server_Enabled then
                   Server.Shutdown_Server;
-                  Show_Message(Text => "done.", Message_Type => SUCCESS);
+                  Show_Message (Text => "done.", Message_Type => SUCCESS);
                end if;
                Show_Message
                  (Text => "Stopping monitoring site changes...done.",
                   Message_Type => SUCCESS);
-               OS_Exit(Status => 0);
+               OS_Exit (Status => 0);
             end if;
       end Monitor_Directory;
 
@@ -290,7 +308,7 @@ package body Monitors is
             Site_Rebuild := False;
 
             -- Monitor the site project directory for changes
-            Monitor_Directory (Name => To_String(Source => Site_Directory));
+            Monitor_Directory (Name => To_String (Site_Directory));
 
             if Site_Rebuild then
 
@@ -347,7 +365,7 @@ package body Monitors is
             Config_Last_Modified :=
               Modification_Time
                 (Name =>
-                   To_String(Source => Site_Directory) & Dir_Separator &
+                   To_String (Site_Directory) & Dir_Separator &
                    "site.cfg");
             select
                accept Stop do
@@ -362,8 +380,9 @@ package body Monitors is
             if Config_Last_Modified /=
               Modification_Time
                 (Name =>
-                   To_String(Source => Site_Directory) & Dir_Separator &
-                   "site.cfg") then
+                   To_String (Site_Directory) & Dir_Separator &
+                   "site.cfg")
+            then
                Put_Line
                  (Item =>
                     "Site configuration was changed, reconfiguring the project.");
@@ -372,7 +391,7 @@ package body Monitors is
 
                Server.Shutdown_Server;
 
-               Show_Message(Text => "done", Message_Type => Messages.SUCCESS);
+               Show_Message (Text => "done", Message_Type => Messages.SUCCESS);
 
                if Yass_Conf.Server_Enabled then
                   Server.Start_Server;
