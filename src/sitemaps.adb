@@ -16,12 +16,11 @@
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Calendar;
-with Ada.Directories; use Ada.Directories;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO;
+with Ada.Directories;
+with Ada.Strings.Unbounded;
 with Ada.Text_IO.Text_Streams;
 
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 
 with DOM.Core.Documents;
 with DOM.Core.Elements;
@@ -30,9 +29,12 @@ with DOM.Readers;
 with Input_Sources.File;
 
 with AtomFeed;
-with Config; use Config;
+with Config;
 
 package body Sitemaps is
+   use Ada.Strings.Unbounded;
+
+   Dir_Separator : Character renames GNAT.Directory_Operations.Dir_Separator;
 
    -- ****iv* Sitemaps/Sitemaps.Sitemap
    -- FUNCTION
@@ -47,11 +49,8 @@ package body Sitemaps is
    -- RESULT
    -- The Document with sitemap of the current project
    -- SOURCE
-   function Get_Sitemap return DOM.Core.Document is
-      -- ****
-   begin
-      return Sitemap;
-   end Get_Sitemap;
+   function Get_Sitemap return DOM.Core.Document;
+   -- ****
 
    -- ****if* Sitemaps/Sitemaps.Set_Sitemap
    -- FUNCTION
@@ -59,8 +58,23 @@ package body Sitemaps is
    -- PARAMETERS
    -- New_Sitemap - The sitemap which will be used as the project sitemap
    -- SOURCE
+   procedure Set_Sitemap (New_Sitemap : DOM.Core.Document);
+   -- ****
+
+   -----------------
+   -- Get_Sitemap --
+   -----------------
+
+   function Get_Sitemap return DOM.Core.Document is
+   begin
+      return Sitemap;
+   end Get_Sitemap;
+
+   -----------------
+   -- Set_Sitemap --
+   -----------------
+
    procedure Set_Sitemap (New_Sitemap : DOM.Core.Document) is
-      -- ****
    begin
       Sitemap := New_Sitemap;
    end Set_Sitemap;
@@ -79,8 +93,14 @@ package body Sitemaps is
    -- New_Main_Node - The XML node which will be set as the new main sitemap
    -- node
    -- SOURCE
+   procedure Set_Main_Node (New_Main_Node : DOM.Core.Element);
+   -- ****
+
+   -------------------
+   -- Set_Main_Node --
+   -------------------
+
    procedure Set_Main_Node (New_Main_Node : DOM.Core.Element) is
-      -- ****
    begin
       Main_Node := New_Main_Node;
    end Set_Main_Node;
@@ -98,8 +118,14 @@ package body Sitemaps is
    -- RESULT
    -- Unbounded_String with the name of sitemap file
    -- SOURCE
+   function Get_Sitemap_File_Name return Unbounded_String;
+   -- ****
+
+   ---------------------------
+   -- Get_Sitemap_File_Name --
+   ---------------------------
+
    function Get_Sitemap_File_Name return Unbounded_String is
-      -- ****
    begin
       return Sitemap_File_Name;
    end Get_Sitemap_File_Name;
@@ -110,6 +136,9 @@ package body Sitemaps is
 
    procedure Start_Sitemap
    is
+      use Ada.Directories;
+      use Config;
+
       Sitemap_File : Input_Sources.File.File_Input;
       --## rule off IMPROPER_INITIALIZATION
       Reader       : DOM.Readers.Tree_Reader;
@@ -190,6 +219,8 @@ package body Sitemaps is
       use DOM.Core.Nodes;
       use type DOM.Core.Node;
 
+      use Config;
+
       Url : constant String :=
         To_String (Yass_Conf.Base_Url) & "/" &
         Slice
@@ -204,15 +235,15 @@ package body Sitemaps is
       Frequency_Updated : Boolean := False;
       Priority_Updated  : Boolean := False;
 
-      Url_Node        : DOM.Core.Element;
-      Url_Data        : DOM.Core.Element;
-      Old_Main_Node   : DOM.Core.Element;
-      Remove_Frequency: DOM.Core.Element;
-      Remove_Priority : DOM.Core.Element;
-      Url_Text        : DOM.Core.Text;
+      Url_Node         : DOM.Core.Element;
+      Url_Data         : DOM.Core.Element;
+      Old_Main_Node    : DOM.Core.Element;
+      Remove_Frequency : DOM.Core.Element;
+      Remove_Priority  : DOM.Core.Element;
+      Url_Text         : DOM.Core.Text;
 
       Last_Modified   : constant String :=
-         Atomfeed.To_Http_Date (Date => Ada.Calendar.Clock);
+         AtomFeed.To_HTTP_Date (Date => Ada.Calendar.Clock);
 
       Local_Sitemap   : constant DOM.Core.Document := Get_Sitemap;
       Local_Main_Node : DOM.Core.Element := Main_Node;
@@ -227,11 +258,11 @@ package body Sitemaps is
            Tag_Name => "loc");
 
       Load_Existing_Urls_Loop :
-      for I in 0 .. Length(List => Urls_List) - 1 loop
+      for I in 0 .. Length (List => Urls_List) - 1 loop
 
-         if Node_Value
-             (N => First_Child (N => Item (List => Urls_List, Index => I))) /=
-           Url then
+         if Node_Value (N => First_Child (N => Item (List  => Urls_List,
+                                                     Index => I))) /= Url
+         then
             goto End_Of_Loop;
          end if;
 
@@ -251,11 +282,12 @@ package body Sitemaps is
                  First_Child (N => Item (List => Children_List, Index => J));
                Set_Node_Value (N => Url_Text, Value => Last_Modified);
 
-            elsif Node_Name (N => Item(List => Children_List, Index => J)) =
-              "changefreq" then
+            elsif Node_Name (N => Item (List => Children_List, Index => J)) =
+              "changefreq"
+            then
                if Change_Frequency'Length > 0 then
                   Url_Text :=
-                    First_Child (N => Item(List => Children_List, Index => J));
+                    First_Child (N => Item (List => Children_List, Index => J));
                   Set_Node_Value (N => Url_Text, Value => Change_Frequency);
                else
                   Remove_Frequency := Item (List => Children_List, Index => J);
@@ -263,7 +295,8 @@ package body Sitemaps is
                Frequency_Updated := True;
 
             elsif Node_Name (N => Item (List => Children_List, Index => J)) =
-              "priority" then
+              "priority"
+            then
                if Page_Priority'Length > 0 then
                   Url_Text :=
                     First_Child (N => Item (List => Children_List, Index => J));
@@ -392,41 +425,48 @@ package body Sitemaps is
    ------------------
 
    procedure Save_Sitemap is
+      use Ada.Directories;
       use Ada.Text_IO;
-      use Ada.Text_IO.Text_Streams;
+
+      use Config;
 
       Sitemap_File : File_Type;
    begin
       if not Yass_Conf.Sitemap_Enabled then
          return;
       end if;
-      -- If the sitemap file not exists - create or open existing robot.txt file and append address to the sitemap
-      if not Exists(Name => To_String(Source => Get_Sitemap_File_Name)) then
+
+      --  If the sitemap file not exists - create or open existing robot.txt
+      --  file and append address to the sitemap
+      if not Exists (Name => To_String (Get_Sitemap_File_Name)) then
          if Exists
              (Name =>
                 Containing_Directory
-                  (Name => To_String(Source => Get_Sitemap_File_Name)) &
-                Dir_Separator & "robots.txt") then
+                  (Name => To_String (Get_Sitemap_File_Name)) &
+                Dir_Separator & "robots.txt")
+         then
             Open
-              (File => Sitemap_File, Mode => Append_File,
+              (File => Sitemap_File,
+               Mode => Append_File,
                Name =>
                  Containing_Directory
-                   (Name => To_String(Source => Get_Sitemap_File_Name)) &
-                 Dir_Separator & "robots.txt");
+                   (Name => To_String (Get_Sitemap_File_Name)) &
+                    Dir_Separator & "robots.txt");
          else
             Create
-              (File => Sitemap_File, Mode => Append_File,
+              (File => Sitemap_File,
+               Mode => Append_File,
                Name =>
                  Containing_Directory
-                   (Name => To_String(Source => Get_Sitemap_File_Name)) &
-                 Dir_Separator & "robots.txt");
+                   (Name => To_String (Get_Sitemap_File_Name)) &
+                    Dir_Separator & "robots.txt");
          end if;
          Put_Line
            (File => Sitemap_File,
             Item =>
-              "Sitemap: " & To_String(Source => Yass_Conf.Base_Url) &
+              "Sitemap: " & To_String (Yass_Conf.Base_Url) &
               "/sitemap.xml");
-         Close(File => Sitemap_File);
+         Close (Sitemap_File);
       end if;
 
       -- Save the sitemap to the file
@@ -435,7 +475,7 @@ package body Sitemaps is
               Name => To_String (Get_Sitemap_File_Name));
 
       DOM.Core.Nodes.Write
-        (Stream       => Stream (File => Sitemap_File),
+        (Stream       => Text_Streams.Stream (File => Sitemap_File),
          N            => Get_Sitemap,
          Pretty_Print => True);
 
