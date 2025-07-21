@@ -16,16 +16,15 @@
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Calendar.Formatting;
-with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
 with Ada.Strings.Fixed;
 with Ada.Text_IO.Text_Streams;
 
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 
-with DOM.Core; use DOM.Core;
-with DOM.Core.Documents; use DOM.Core.Documents;
+with DOM.Core.Documents;
 with DOM.Core.Elements;
-with DOM.Core.Nodes; use DOM.Core.Nodes;
+with DOM.Core.Nodes;
 with DOM.Readers;
 with Input_Sources.File;
 
@@ -75,6 +74,8 @@ package body AtomFeed is
    -- SOURCE
    procedure Set_Entries_List (New_List : FeedEntry_Container.Vector);
    -- ****
+
+   Dir_Separator : Character renames GNAT.Directory_Operations.Dir_Separator;
 
    ------------------------
    -- Get_Feed_File_Name --
@@ -138,7 +139,9 @@ package body AtomFeed is
    -- Start_Atom_Feed --
    ---------------------
 
-   procedure Start_Atom_Feed is
+   procedure Start_Atom_Feed
+   is
+      use DOM.Core.Nodes;
       use DOM.Readers;
       use Input_Sources.File;
 
@@ -146,12 +149,12 @@ package body AtomFeed is
 
       --## rule off IMPROPER_INITIALIZATION
       Reader         : Tree_Reader;
-      Nodes_List     : Node_List;
-      Children_Nodes : Node_List;
-      Author_Nodes   : Node_List;
+      Nodes_List     : DOM.Core.Node_List;
+      Children_Nodes : DOM.Core.Node_List;
+      Author_Nodes   : DOM.Core.Node_List;
       --## rule on IMPROPER_INITIALIZATION
 
-      Feed : Document;
+      Feed           : DOM.Core.Document;
 
       Temp_Entry  : Feed_Entry := Empty_Feed_Entry;
       Data_Node   : DOM.Core.Element;
@@ -181,7 +184,7 @@ package body AtomFeed is
         Yass_Conf.Output_Directory &
         To_Unbounded_String (Dir_Separator & "atom.xml");
 
-      if not Exists (Get_Feed_File_Name) then
+      if not Ada.Directories.Exists (Get_Feed_File_Name) then
          return;
       end if;
 
@@ -318,7 +321,7 @@ package body AtomFeed is
          end if;
 
          if AtomEntry.Updated = Time_Of (Year => 1901, Month => 1, Day => 1) then
-            AtomEntry.Updated := Modification_Time (Name => File_Name);
+            AtomEntry.Updated := Ada.Directories.Modification_Time (Name => File_Name);
          end if;
 
          if AtomEntry.Content = Null_Unbounded_String then
@@ -359,14 +362,17 @@ package body AtomFeed is
    -- Save_Atom_Feed --
    --------------------
 
-   procedure Save_Atom_Feed is
+   procedure Save_Atom_Feed
+   is
       use Ada.Text_IO;
-      use Ada.Text_IO.Text_Streams;
+
+      use DOM.Core.Documents;
       use DOM.Core.Elements;
+      use DOM.Core.Nodes;
 
       Atom_File  : File_Type;
-      Feed       : Document; --## rule line off GLOBAL_REFERENCES
-      New_Feed   : DOM_Implementation; --## rule line off IMPROPER_INITIALIZATION
+      Feed       : DOM.Core.Document; --## rule line off GLOBAL_REFERENCES
+      New_Feed   : DOM.Core.DOM_Implementation; --## rule line off IMPROPER_INITIALIZATION
       Main_Node  : DOM.Core.Element;
       Entry_Node : DOM.Core.Element;
 
@@ -399,7 +405,9 @@ package body AtomFeed is
                           Node_Value  : String;
                           Parent_Node : DOM.Core.Element)
       is
-         Feed_Text : Text;
+         use type DOM.Core.Node;
+
+         Feed_Text : DOM.Core.Text;
          Feed_Data : DOM.Core.Element;
       begin
          Feed_Data :=
@@ -475,7 +483,7 @@ package body AtomFeed is
          return;
       end if;
 
-      Feed := Create_Document
+      Feed := DOM.Core.Create_Document
           (Implementation => New_Feed); --## rule line off IMPROPER_INITIALIZATION
 
       Main_Node := Create_Element (Doc      => Feed,
@@ -561,7 +569,7 @@ package body AtomFeed is
       Create (File => Atom_File,
               Mode => Out_File,
               Name => Get_Feed_File_Name);
-      Write (Stream       => Stream (File => Atom_File),
+      Write (Stream       => Text_Streams.Stream (File => Atom_File),
              N            => Feed,
              Pretty_Print => True);
       Close (Atom_File);
