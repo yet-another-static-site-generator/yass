@@ -16,12 +16,11 @@
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Calendar;
-with Ada.Directories; use Ada.Directories;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO;
+with Ada.Directories;
+with Ada.Strings.Unbounded;
 with Ada.Text_IO.Text_Streams;
 
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 
 with DOM.Core.Documents;
 with DOM.Core.Elements;
@@ -30,9 +29,12 @@ with DOM.Readers;
 with Input_Sources.File;
 
 with AtomFeed;
-with Config; use Config;
+with Config;
 
 package body Sitemaps is
+   use Ada.Strings.Unbounded;
+
+   Dir_Separator : Character renames GNAT.Directory_Operations.Dir_Separator;
 
    -- ****iv* Sitemaps/Sitemaps.Sitemap
    -- FUNCTION
@@ -134,6 +136,9 @@ package body Sitemaps is
 
    procedure Start_Sitemap
    is
+      use Ada.Directories;
+      use Config;
+
       Sitemap_File : Input_Sources.File.File_Input;
       --## rule off IMPROPER_INITIALIZATION
       Reader       : DOM.Readers.Tree_Reader;
@@ -213,6 +218,8 @@ package body Sitemaps is
       use DOM.Core.Documents;
       use DOM.Core.Nodes;
       use type DOM.Core.Node;
+
+      use Config;
 
       Url : constant String :=
         To_String (Yass_Conf.Base_Url) & "/" &
@@ -418,8 +425,10 @@ package body Sitemaps is
    ------------------
 
    procedure Save_Sitemap is
+      use Ada.Directories;
       use Ada.Text_IO;
-      use Ada.Text_IO.Text_Streams;
+
+      use Config;
 
       Sitemap_File : File_Type;
    begin
@@ -466,7 +475,7 @@ package body Sitemaps is
               Name => To_String (Get_Sitemap_File_Name));
 
       DOM.Core.Nodes.Write
-        (Stream       => Stream (File => Sitemap_File),
+        (Stream       => Text_Streams.Stream (File => Sitemap_File),
          N            => Get_Sitemap,
          Pretty_Print => True);
 
