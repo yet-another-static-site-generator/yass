@@ -28,8 +28,8 @@ with GNAT.OS_Lib;
 with GNAT.Traceback.Symbolic;
 
 with AtomFeed;
-with Config; use Config;
-with Messages; use Messages;
+with Config;
+with Messages;
 with Modules;
 with Pages;
 with Server;
@@ -105,6 +105,7 @@ package body Monitors is
       use Ada.Strings.Unbounded;
 
       use AtomFeed;
+      use Config;
       use Modules;
       use Sitemaps;
 
@@ -283,11 +284,12 @@ package body Monitors is
             if Yass_Conf.Stop_Server_On_Error then
                if Yass_Conf.Server_Enabled then
                   Server.Shutdown_Server;
-                  Show_Message (Text => "done.", Message_Type => SUCCESS);
+                  Messages.Show_Message (Text         => "done.",
+                                         Message_Type => Messages.SUCCESS);
                end if;
-               Show_Message
-                 (Text => "Stopping monitoring site changes...done.",
-                  Message_Type => SUCCESS);
+               Messages.Show_Message
+                 (Text         => "Stopping monitoring site changes...done.",
+                  Message_Type => Messages.SUCCESS);
                OS_Exit (Status => 0);
             end if;
       end Monitor_Directory;
@@ -363,6 +365,8 @@ package body Monitors is
       use Ada.Strings.Unbounded;
       use Ada.Text_IO;
 
+      use Config;
+
       Config_Last_Modified   : Time; --## rule line off IMPROPER_INITIALIZATION
       Config_Monitor_Running : Boolean := True;
    begin
@@ -400,7 +404,8 @@ package body Monitors is
 
                Server.Shutdown_Server;
 
-               Show_Message (Text => "done", Message_Type => Messages.SUCCESS);
+               Messages.Show_Message (Text         => "done",
+                                      Message_Type => Messages.SUCCESS);
 
                if Yass_Conf.Server_Enabled then
                   Server.Start_Server;
