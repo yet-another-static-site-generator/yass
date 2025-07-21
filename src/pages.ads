@@ -26,7 +26,7 @@ package Pages is
    -- FUNCTION
    -- Raised when generating site was interrupted
    -- SOURCE
-   Generate_Site_Exception: exception;
+   Generate_Site_Exception : exception;
    -- ****
 
    -- ****f* Pages/Pages.Create_Page
@@ -38,9 +38,12 @@ package Pages is
    -- Directory - Full path to the directory where newly create HTML file will
    --             be added
    -- SOURCE
-   procedure Create_Page(File_Name, Directory: String) with
+   procedure Create_Page (File_Name : String;
+                          Directory : String)
+   with
       Pre => File_Name'Length > 0 and Directory'Length > 0,
-      Test_Case => (Name => "Test_Create_Page", Mode => Nominal);
+      Test_Case => (Name => "Test_Create_Page",
+                    Mode => Nominal);
    -- ****
 
    -- ****f* Pages/Pages.Copy_File
@@ -51,9 +54,12 @@ package Pages is
    -- File_Name - Full path to the file which will be copied
    -- Directory - Full path to the directory where file will be added
    -- SOURCE
-   procedure Copy_File(File_Name, Directory: String) with
+   procedure Copy_File (File_Name : String;
+                        Directory : String)
+   with
       Pre => File_Name'Length > 0 and Directory'Length > 0,
-      Test_Case => (Name => "Test_Copy_File", Mode => Nominal);
+      Test_Case => (Name => "Test_Copy_File",
+                    Mode => Nominal);
    -- ****
 
    -- ****f* Pages/Pages.Create_Empty_File
@@ -62,9 +68,11 @@ package Pages is
    -- PARAMETERS
    -- File_Name - Full path to the Markdown file which will be created
    -- SOURCE
-   procedure Create_Empty_File(File_Name: String) with
+   procedure Create_Empty_File (File_Name : String)
+   with
       Pre => File_Name'Length > 0,
-      Test_Case => (Name => "Test_Create_Empty_File", Mode => Nominal);
+      Test_Case => (Name => "Test_Create_Empty_File",
+                    Mode => Nominal);
    -- ****
 
    -- ****f* Pages/Pages.Get_Layout_Name
@@ -75,9 +83,11 @@ package Pages is
    -- RESULT
    -- Name of the layout used by the file
    -- SOURCE
-   function Get_Layout_Name(File_Name: String) return String with
+   function Get_Layout_Name (File_Name : String) return String
+   with
       Pre => File_Name'Length > 0,
-      Test_Case => (Name => "Test_Get_Layout_Name", Mode => Nominal);
+      Test_Case => (Name => "Test_Get_Layout_Name",
+                    Mode => Nominal);
    -- ****
 
 end Pages;
