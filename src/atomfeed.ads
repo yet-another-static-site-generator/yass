@@ -39,13 +39,13 @@ package AtomFeed is
    -- Content      - Content of entry
    -- SOURCE
    type Feed_Entry is record
-      Id: Unbounded_String;
-      Entry_Title: Unbounded_String;
-      Updated: Time := Clock;
-      Author_Name: Unbounded_String;
-      Author_Email: Unbounded_String;
-      Summary: Unbounded_String;
-      Content: Unbounded_String;
+      Id           : Unbounded_String;
+      Entry_Title  : Unbounded_String;
+      Updated      : Time := Clock;
+      Author_Name  : Unbounded_String;
+      Author_Email : Unbounded_String;
+      Summary      : Unbounded_String;
+      Content      : Unbounded_String;
    end record;
    -- ****
 
@@ -54,7 +54,7 @@ package AtomFeed is
    -- FUNCTION
    -- Empty Atom feed entry
    -- SOURCE
-   Empty_Feed_Entry: constant Feed_Entry := (others => <>);
+   Empty_Feed_Entry : constant Feed_Entry := (others => <>);
    -- ****
    --## rule on REDUCEABLE_SCOPE
 
@@ -63,7 +63,8 @@ package AtomFeed is
    -- Used to store Atom feed entries
    -- SOURCE
    package FeedEntry_Container is new Vectors
-     (Index_Type => Positive, Element_Type => Feed_Entry);
+     (Index_Type   => Positive,
+      Element_Type => Feed_Entry);
    -- ****
 
    -- ****f* AtomFeed/AtomFeed.To_Time
@@ -74,9 +75,11 @@ package AtomFeed is
    -- RESULT
    -- Converted HTTP date to Ada Time
    -- SOURCE
-   function To_Time(Date: String) return Time with
-      Pre => Date'Length > 0,
-      Test_Case => (Name => "Test_To_Date", Mode => Nominal);
+   function To_Time (Date : String) return Time
+   with
+      Pre       => Date'Length > 0,
+      Test_Case => (Name => "Test_To_Date",
+                    Mode => Nominal);
    -- ****
 
    -- ****f* AtomFeed/AtomFeed.To_HTTP_Date
@@ -88,38 +91,48 @@ package AtomFeed is
    -- Converted Ada Time to HTTP date format
    -- SOURCE
    function To_HTTP_Date --## rule line off NAMING_CONVENTION
-     (Date: Time) return String with
-      Post => To_HTTP_Date'Result'Length > 0,
-      Test_Case => (Name => "Test_To_HTTP_Date", Mode => Nominal);
+     (Date : Time) return String
+   with
+      Post      => To_HTTP_Date'Result'Length > 0,
+      Test_Case => (Name => "Test_To_HTTP_Date",
+                    Mode => Nominal);
    -- ****
 
    -- ****f* AtomFeed/AtomFeed.Start_Atom_Feed
    -- FUNCTION
    -- Load existing Atom feed for the site
    -- SOURCE
-   procedure Start_Atom_Feed with
-      Test_Case => (Name => "Test_Start_Atom_Feed", Mode => Robustness);
+   procedure Start_Atom_Feed
+   with
+      Test_Case => (Name => "Test_Start_Atom_Feed",
+                    Mode => Robustness);
    -- ****
 
    -- ****f* AtomFeed/AtomFeed.Add_Page_To_Feed
    -- FUNCTION
-   -- Add page with full path File_Name and it extracted Atom entries Entries to the site Atom feed
+   -- Add page with full path File_Name and it extracted Atom entries Entries
+   -- to the site Atom feed
    -- PARAMETERS
    -- File_Name - File name of the page to add
    -- Entries   - List of Atom feed entries
    -- SOURCE
    procedure Add_Page_To_Feed
-     (File_Name: String; Entries: in out FeedEntry_Container.Vector) with
-      Pre => File_Name'Length > 0,
-      Test_Case => (Name => "Test_Add_Page_To_Feed", Mode => Nominal);
+     (File_Name : String;
+      Entries   : in out FeedEntry_Container.Vector)
+   with
+      Pre       => File_Name'Length > 0,
+      Test_Case => (Name => "Test_Add_Page_To_Feed",
+                    Mode => Nominal);
    -- ****
 
    -- ****f* AtomFeed/AtomFeed.Save_Atom_Feed
    -- FUNCTION
    -- Save Atom feed to file
    -- SOURCE
-   procedure Save_Atom_Feed with
-      Test_Case => (Name => "Test_Save_Atom_Feed", Mode => Robustness);
+   procedure Save_Atom_Feed
+   with
+      Test_Case => (Name => "Test_Save_Atom_Feed",
+                    Mode => Robustness);
    -- ****
 
 end AtomFeed;
