@@ -39,7 +39,7 @@ package body Pages is
 
    Layout_Not_Found : exception;
 
-   Dir_Separator : Character renames Gnat.Directory_Operations.Dir_Separator;
+   Dir_Separator : Character renames GNAT.Directory_Operations.Dir_Separator;
 
    -----------------
    -- Create_Page --
@@ -104,11 +104,13 @@ package body Pages is
       Sitemap_Invalid_Value : exception;
       Invalid_Value         : exception;
 
+      procedure Insert_Tags (Tags_List : Tags_Container.Map);
+      -- Insert selected list of tags Tags_List to templates
+
       -----------------
       -- Insert_Tags --
       -----------------
 
-      -- Insert selected list of tags Tags_List to templates
       procedure Insert_Tags (Tags_List : Tags_Container.Map) is
          use AWS.Templates.Utils;
       begin
@@ -123,7 +125,7 @@ package body Pages is
                       (Variable => Tags_Container.Key (Position => I),
                        Value    => True));
 
-            elsif To_Lower (Item => Tags_List(I)) = "false" then
+            elsif To_Lower (Item => Tags_List (I)) = "false" then
                Insert
                  (Set  => Tags,
                   Item =>
@@ -161,13 +163,16 @@ package body Pages is
            Length (Yass_Conf.Markdown_Comment);
          Valid_Value : Boolean := False;
 
+         procedure Add_Tag (Name  : String;
+                            Value : String);
+         -- Add tag to the page template tags lists (simple or composite).
+         -- Name: name of the tag
+         -- Value: value of the tag
+
          -------------
          -- Add_Tag --
          -------------
 
-         -- Add tag to the page template tags lists (simple or composite).
-         -- Name: name of the tag
-         -- Value: value of the tag
          procedure Add_Tag (Name  : String;
                             Value : String)
          is
@@ -291,7 +296,7 @@ package body Pages is
                Change_Frequency := Unbounded_Slice
                                     (Source => Data,
                                      Low    => Start_Pos + 14,
-                                     High   => Length(Source => Data));
+                                     High   => Length (Data));
 
                Validate_Frequency_Loop :
                for Value of Frequency_Values loop
@@ -433,7 +438,7 @@ package body Pages is
             Item =>
               Assoc
                 (Variable => "description",
-                 Value    => Site_Tags("Description")));
+                 Value    => Site_Tags ("Description")));
       end if;
 
       Add_Table_Tags_Loop :
@@ -613,6 +618,8 @@ package body Pages is
       Index_File : File_Type;
       Comment    : constant String := To_String (Yass_Conf.Markdown_Comment);
 
+      procedure PL (Item : String);
+
       procedure PL (Item : String) is
       begin
          Put_Line (Index_File, Comment & " " & Item);
@@ -739,14 +746,14 @@ package body Pages is
 
             if not Ada.Directories.Exists
                 (Name => To_String (Layout))
-             then
+            then
                Close (Page_File);
                raise Layout_Not_Found
                  with File_Name & """. Selected layout file """ &
-                      To_String(Source => Layout);
+                      To_String (Layout);
             end if;
-            Close(File => Page_File);
-            return To_String(Source => Layout);
+            Close (Page_File);
+            return To_String (Layout);
          end if;
       end loop Find_Layout_Name_Loop;
 
