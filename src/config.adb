@@ -41,19 +41,32 @@ package body Config is
       Image_Author_Name         : constant String := To_String (Yass_Conf.Author_Name);
       Image_Author_Email        : constant String := To_String (Yass_Conf.Author_Email);
       Image_Base_URL            : constant String := To_String (Yass_Conf.Base_Url);
-      Image_Atom_Feed_Source    : constant String := To_String (Yass_Conf.Atom_Feed_Source);
+      Image_Atom_Feed_Source    : constant String :=
+         To_String (Yass_Conf.Atom_Feed_Source);
       Image_Atom_Feed_Amount    : constant String := Yass_Conf.Atom_Feed_Amount'Image;
-      Image_Sitemap_Enabled     : constant String := To_Lower (Yass_Conf.Sitemap_Enabled'Image);
-      Image_HTML_Enabled        : constant String := To_Lower (Yass_Conf.HTML_Enabled'Image);
-      Image_Server_Enabled      : constant String := To_Lower (Yass_Conf.Server_Enabled'Image);
+      Image_Sitemap_Enabled     : constant String :=
+         To_Lower (Yass_Conf.Sitemap_Enabled'Image);
+      Image_HTML_Enabled        : constant String :=
+         To_Lower (Yass_Conf.HTML_Enabled'Image);
+      Image_Server_Enabled      : constant String :=
+         To_Lower (Yass_Conf.Server_Enabled'Image);
       Image_Server_Port         : constant String := Yass_Conf.Server_Port'Image;
-      Image_Stop_Server_On_Error: constant String := To_Lower (Yass_Conf.Stop_Server_On_Error'Image);
-      Image_Browser_Command     : constant String := To_String (Yass_Conf.Browser_Command);
-      Image_Monitor_Interval    : constant String := Yass_Conf.Monitor_Config_Interval'Image;
-      Image_Monitor_Config_Interval : constant String := Yass_Conf.Monitor_Config_Interval'Image;
-      Image_Start_Tag_Separator : constant String := To_String (Yass_Conf.Start_Tag_Separator);
-      Image_End_Tag_Separator   : constant String := To_String (Yass_Conf.End_Tag_Separator);
-      Image_Markdown_Comment    : constant String := To_String (Yass_Conf.Markdown_Comment);
+      Image_Stop_Server_On_Error : constant String :=
+         To_Lower (Yass_Conf.Stop_Server_On_Error'Image);
+      Image_Browser_Command     : constant String :=
+         To_String (Yass_Conf.Browser_Command);
+      Image_Monitor_Interval    : constant String :=
+         Yass_Conf.Monitor_Config_Interval'Image;
+      Image_Monitor_Config_Interval : constant String :=
+         Yass_Conf.Monitor_Config_Interval'Image;
+      Image_Start_Tag_Separator : constant String :=
+         To_String (Yass_Conf.Start_Tag_Separator);
+      Image_End_Tag_Separator   : constant String :=
+         To_String (Yass_Conf.End_Tag_Separator);
+      Image_Markdown_Comment    : constant String :=
+         To_String (Yass_Conf.Markdown_Comment);
+
+      procedure PL (Item : String);
 
       procedure PL (Item : String) is
       begin
@@ -236,11 +249,14 @@ package body Config is
 
       Equal_Index : Natural := 0;
 
+      procedure Normalize_Dir (Directory_Path : in out Unbounded_String);
+
       procedure Normalize_Dir (Directory_Path : in out Unbounded_String)
       is
       begin
          if Dir_Separator = '/'
-           and then Element (Directory_Path, Index => 1) /= '/' then
+           and then Element (Directory_Path, Index => 1) /= '/'
+         then
             Directory_Path :=
               To_Unbounded_String (Directory_Name & Dir_Separator) &
               Directory_Path;
@@ -439,12 +455,14 @@ package body Config is
          Stop_With  => To_String (Yass_Conf.End_Tag_Separator));
    exception
       when others =>
-         raise Invalid_Config_Data with To_String(Source => Raw_Data);
+         raise Invalid_Config_Data with To_String (Raw_Data);
    end Load_Site_Config;
 
    --------------
    -- Ask_User --
    --------------
+
+   function Ask_User (Default : String) return Unbounded_String;
 
    function Ask_User (Default : String) return Unbounded_String
    is
