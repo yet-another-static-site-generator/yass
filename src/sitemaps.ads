@@ -40,10 +40,13 @@ package Sitemaps is
    -- ChangeFrequency - How often selected page will change
    -- PagePriority    - Priority for the page
    -- SOURCE
-   procedure Add_Page_To_Sitemap
-     (File_Name, Change_Frequency, Page_Priority: String) with
+   procedure Add_Page_To_Sitemap (File_Name        : String;
+                                  Change_Frequency : String;
+                                  Page_Priority    : String)
+   with
       Pre => File_Name'Length > 0,
-      Test_Case => (Name => "Test_Add_Page_To_Sitemap", Mode => Robustness);
+      Test_Case => (Name => "Test_Add_Page_To_Sitemap",
+                    Mode => Robustness);
    -- ****
 
    -- ****f* Sitemaps/Sitemaps.SaveSitemap
