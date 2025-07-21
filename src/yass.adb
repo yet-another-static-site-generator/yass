@@ -15,15 +15,15 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Directories; use Ada.Directories;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Command_Line;
+with Ada.Directories;
+with Ada.Environment_Variables;
+with Ada.Exceptions;
+with Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
 
 with AWS.Net;
@@ -41,9 +41,14 @@ with Pages; use Pages;
 with Sitemaps;
 with Server; use Server;
 
-procedure Yass is
+procedure Yass
+is
+   use Ada.Strings.Unbounded;
+
    Version  : constant String := "3.2.0-dev";  --  Keep in sync with alire.toml
    Released : constant String := "2024-08-23";
+
+   Dir_Separator : Character renames GNAT.Directory_Operations.Dir_Separator;
 
    --## rule off GLOBAL_REFERENCES
    Work_Directory : Unbounded_String := Null_Unbounded_String;
@@ -68,6 +73,8 @@ procedure Yass is
 
    function Build_Site (Directory_Name : String) return Boolean
    is
+      use Ada.Directories;
+
       use AtomFeed;
       use Config;
       use Modules;
@@ -107,7 +114,7 @@ procedure Yass is
                return;
             end if;
 
-            Set
+            Ada.Environment_Variables.Set
               (Name  => "YASSFILE",
                Value => Full_Name (Directory_Entry => Item));
 
@@ -215,6 +222,8 @@ procedure Yass is
    function Valid_Arguments (Message : String;
                              Exist   : Boolean) return Boolean
    is
+      use Ada.Command_Line;
+      use Ada.Directories;
    begin
       -- User does not entered name of the site project directory
       if Argument_Count < 2 then
@@ -270,6 +279,7 @@ procedure Yass is
    ---------------
 
    procedure Show_Help is
+      use Ada.Text_IO;
    begin
       Put_Line (Item => "Possible actions:");
       Put_Line (Item => "help - show this screen and exit");
@@ -299,6 +309,8 @@ procedure Yass is
 
    procedure Create
    is
+      use Ada.Command_Line;
+      use Ada.Directories;
       use Config;
    begin
       if not Valid_Arguments
@@ -339,10 +351,14 @@ procedure Yass is
       end;
    end Create;
 
+   use Ada.Command_Line;
+   use Ada.Directories;
+   use Ada.Text_IO;
    use Config;
 begin
    if Ada.Environment_Variables.Exists (Name => "YASSDIR") then
-      Set_Directory (Directory => Value (Name => "YASSDIR"));
+      Set_Directory
+         (Directory => Ada.Environment_Variables.Value (Name => "YASSDIR"));
    end if;
 
    --  No arguments or help: show available commands
@@ -529,7 +545,7 @@ begin
          return;
       end if;
 
-      if Index
+      if Ada.Strings.Fixed.Index
           (Source  => Argument (Number => 2),
            Pattern => Containing_Directory (Name => Current_Directory)) = 1
       then
@@ -574,7 +590,7 @@ exception
       Show_Message
         (Text =>
            "Invalid data in site config file ""site.cfg"". Invalid line:""" &
-           Exception_Message (X => An_Exception) & """");
+            Ada.Exceptions.Exception_Message (X => An_Exception) & """");
 
    when AWS.Net.Socket_Error =>
       Show_Message
