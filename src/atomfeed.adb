@@ -28,7 +28,7 @@ with DOM.Core.Nodes;
 with DOM.Readers;
 with Input_Sources.File;
 
-with Config; use Config;
+with Config;
 
 package body AtomFeed is
 
@@ -144,6 +144,8 @@ package body AtomFeed is
       use DOM.Core.Nodes;
       use DOM.Readers;
       use Input_Sources.File;
+
+      use Config;
 
       Atom_File : File_Input;
 
@@ -279,6 +281,7 @@ package body AtomFeed is
       Entries   : in out FeedEntry_Container.Vector)
    is
       use Ada.Strings.Fixed;
+      use Config;
 
       Url : constant String :=
         To_String (Yass_Conf.Base_Url) & "/" &
@@ -369,6 +372,8 @@ package body AtomFeed is
       use DOM.Core.Documents;
       use DOM.Core.Elements;
       use DOM.Core.Nodes;
+
+      use Config;
 
       Atom_File  : File_Type;
       Feed       : DOM.Core.Document; --## rule line off GLOBAL_REFERENCES
