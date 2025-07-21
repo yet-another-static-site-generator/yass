@@ -15,15 +15,18 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;
 with Ada.Strings.UTF_Encoding.Strings;
 with Ada.Characters.Handling;
 with Ada.Directories;
 with Ada.Strings.Fixed;
+
 with GNAT.String_Split;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 
 package body Config is
+
+   Dir_Separator : Character renames GNAT.Directory_Operations.Dir_Separator;
 
    ------------------------
    -- Create_Site_Config --
@@ -32,6 +35,7 @@ package body Config is
    procedure Create_Site_Config (Directory_Name : String)
    is
       use Ada.Characters.Handling;
+      use Ada.Text_IO;
 
       Config_File : File_Type;
 
@@ -240,6 +244,7 @@ package body Config is
       use Ada.Characters.Handling;
       use Ada.Directories;
       use Ada.Strings.Fixed;
+      use Ada.Text_IO;
 
       Config_File : File_Type;
 
@@ -466,6 +471,8 @@ package body Config is
 
    function Ask_User (Default : String) return Unbounded_String
    is
+      use Ada.Text_IO;
+
       Answer : Unbounded_String;
    begin
       Put ("(Default - " & Default & ")");
@@ -483,6 +490,8 @@ package body Config is
 
    procedure Interactive_Site_Config
    is
+      use Ada.Text_IO;
+
       Answer_1, Answer_2, Answer_3 : Unbounded_String;
       Answer_4, Answer_5, Answer_6 : Unbounded_String;
    begin
