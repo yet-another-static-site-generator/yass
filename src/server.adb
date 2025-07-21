@@ -38,9 +38,17 @@ package body Server is
    -- FUNCTION
    -- Instance of Http server which will be serving the project's files
    -- SOURCE
-   Http_Server: AWS.Server.HTTP;
+   Http_Server : AWS.Server.HTTP;
    -- ****
    --## rule on GLOBAL_REFERENCES
+
+   -- ****f** Server/Server.Callback
+   -- FUNCTION
+   -- Handle callbacks from HTTP server.
+   -- SOURCE
+   function Callback (Request : AWS.Status.Data)
+                      return AWS.Response.Data;
+   -- ****
 
    --------------
    -- Callback --
@@ -53,26 +61,27 @@ package body Server is
       use GNAT.Directory_Operations;
       use AWS.Services.Directory;
 
-      Uri: constant String := AWS.Status.URI(D => Request);
+      Uri : constant String := AWS.Status.URI (D => Request);
    begin
       -- Show directory listing if requested
       if Kind
-          (Name => To_String(Source => Yass_Conf.Output_Directory) & Uri) =
-        Directory then
+          (Name => To_String (Yass_Conf.Output_Directory) & Uri) =
+        Directory
+      then
          return
            AWS.Response.Build
              (Content_Type => "text/html",
               Message_Body =>
                 Browse
                   (Directory_Name =>
-                     To_String(Source => Yass_Conf.Output_Directory) & Uri,
+                     To_String (Yass_Conf.Output_Directory) & Uri,
                    Template_Filename =>
-                     To_String(Source => Yass_Conf.Layouts_Directory) &
+                     To_String (Yass_Conf.Layouts_Directory) &
                      Dir_Separator & "directory.html",
                    Request => Request));
       end if;
       -- Show selected page if requested
-      return AWS.Services.Page_Server.Callback(Request => Request);
+      return AWS.Services.Page_Server.Callback (Request => Request);
    end Callback;
 
    ------------------
@@ -113,7 +122,7 @@ package body Server is
    begin
       Put ("Shutting down server...");
       --## rule off DIRECTLY_ACCESSED_GLOBALS
-      AWS.Server.Shutdown(Web_Server => Http_Server);
+      AWS.Server.Shutdown (Web_Server => Http_Server);
       --## rule on DIRECTLY_ACCESSED_GLOBALS
    end Shutdown_Server;
 
