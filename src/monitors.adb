@@ -126,18 +126,18 @@ package body Monitors is
          use GNAT.OS_Lib;
          use Pages;
 
-         procedure Process_Files (Item : Directory_Entry_Type);
+         procedure Process_File (Item : Directory_Entry_Type);
          --  Process file with full path Item: create html pages from markdown
          --  files or copy any other file if they was updated since last check.
 
-         procedure Process_Directories (Item : Directory_Entry_Type);
+         procedure Process_Directory (Item : Directory_Entry_Type);
          --  Go recursive with directory with full path Item.
 
-         -------------------
-         -- Process_Files --
-         -------------------
+         ------------------
+         -- Process_File --
+         ------------------
 
-         procedure Process_Files (Item : Directory_Entry_Type)
+         procedure Process_File (Item : Directory_Entry_Type)
          is
             Site_File_Name : Unbounded_String :=
               Yass_Conf.Output_Directory & Dir_Separator &
@@ -246,13 +246,13 @@ package body Monitors is
 
                Site_Rebuild := True;
             end if;
-         end Process_Files;
+         end Process_File;
 
-         -------------------------
-         -- Process_Directories --
-         -------------------------
+         -----------------------
+         -- Process_Directory --
+         -----------------------
 
-         procedure Process_Directories (Item : Directory_Entry_Type) is
+         procedure Process_Directory (Item : Directory_Entry_Type) is
          begin
             if
               Yass_Conf.Excluded_Files.Find_Index (Simple_Name (Item)) =
@@ -264,17 +264,19 @@ package body Monitors is
          exception
             when Ada.Directories.Name_Error =>
                null;
-         end Process_Directories;
+         end Process_Directory;
 
       begin
          Search
-           (Directory => Name, Pattern => "",
+           (Directory => Name,
+            Pattern   => "",
             Filter    => (Directory => False, others => True),
-            Process   => Process_Files'Access);
+            Process   => Process_File'Access);
          Search
-           (Directory => Name, Pattern => "",
+           (Directory => Name,
+            Pattern   => "",
             Filter    => (Directory => True, others => False),
-            Process   => Process_Directories'Access);
+            Process   => Process_Directory'Access);
 
       exception
          when Generate_Site_Exception =>
