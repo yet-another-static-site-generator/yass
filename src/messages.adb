@@ -18,24 +18,32 @@ with Ada.Text_IO;
 
 package body Messages is
 
+   ------------------
+   -- Show_Message --
+   ------------------
+
    procedure Show_Message
-     (Text: String; Message_Type: Messages_Types := Default_Message_Type) is
+     (Text         : String;
+      Message_Type : Messages_Types := Default_Message_Type)
+   is
       use Ada.Characters.Latin_1;
       use Ada.Text_IO;
    begin
-      -- Change text color in terminal if needed
+      --  Change text color in terminal if needed
       case Message_Type is
          when ERROR =>
-            Put(Item => ESC & "[31m");
+            Put (Item => ESC & "[31m");
          when SUCCESS =>
-            Put(Item => ESC & "[32m");
+            Put (Item => ESC & "[32m");
          when NORMAL =>
             null;
       end case;
-      Put(Item => Text);
-      -- Reset text color in terminal if needed
+
+      Put (Item => Text);
+
+      --  Reset text color in terminal if needed
       if Message_Type /= NORMAL then
-         Put(Item => ESC & "[0m");
+         Put (Item => ESC & "[0m");
       end if;
       New_Line;
    end Show_Message;
