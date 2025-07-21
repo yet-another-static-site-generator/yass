@@ -29,7 +29,7 @@ with AWS.Services.Directory;
 with AWS.Server;
 with AWS.Status;
 
-with Config; use Config;
+with Config;
 
 package body Server is
 
@@ -60,6 +60,7 @@ package body Server is
       use Ada.Strings.Unbounded;
       use GNAT.Directory_Operations;
       use AWS.Services.Directory;
+      use Config;
 
       Uri : constant String := AWS.Status.URI (D => Request);
    begin
@@ -92,6 +93,7 @@ package body Server is
    is
       use Ada.Text_IO;
       use AWS.Config;
+      use Config;
 
       Server_Config : Object := Default_Config;
    begin
