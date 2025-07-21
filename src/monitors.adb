@@ -17,13 +17,13 @@
 
 with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;
-with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
 with GNAT.Traceback.Symbolic;
 
@@ -38,6 +38,8 @@ with Sitemaps;
 package body Monitors is
 
    Error_File_Name : constant String := "error.log";
+
+   Dir_Separator : Character renames GNAT.Directory_Operations.Dir_Separator;
 
    -- ****f* Monitors/Monitors.Log
    -- SOURCE
@@ -69,6 +71,7 @@ package body Monitors is
    procedure Log (Message : String)
    is
       use Ada.Calendar;
+      use Ada.Text_IO;
 
       Time_Now   : constant Time   := Clock;
       Image_Time : constant String :=
@@ -97,7 +100,10 @@ package body Monitors is
    ------------------
 
    task body Monitor_Site is
+      use Ada.Directories;
       use type Ada.Calendar.Time;
+      use Ada.Strings.Unbounded;
+
       use AtomFeed;
       use Modules;
       use Sitemaps;
@@ -353,6 +359,9 @@ package body Monitors is
 
    task body Monitor_Config is
       use Ada.Calendar;
+      use Ada.Directories;
+      use Ada.Strings.Unbounded;
+      use Ada.Text_IO;
 
       Config_Last_Modified   : Time; --## rule line off IMPROPER_INITIALIZATION
       Config_Monitor_Running : Boolean := True;
@@ -418,6 +427,7 @@ package body Monitors is
    is
       use Ada.Calendar;
       use Ada.Exceptions;
+      use Ada.Text_IO;
       use GNAT.Traceback.Symbolic;
 
       Time_Now   : constant Time   := Clock;
