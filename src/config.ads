@@ -74,35 +74,26 @@ package Config is
    -- Language                - ISO code of the language of the site
    -- SOURCE
    type Parser_Config is record
-      Output_Directory: Unbounded_String :=
-        To_Unbounded_String(Source => "_output");
-      Layouts_Directory: Unbounded_String :=
-        To_Unbounded_String(Source => "_layouts");
-      Modules_Directory: Unbounded_String :=
-        To_Unbounded_String(Source => "_modules");
-      Excluded_Files: Excluded_Container.Vector;
-      Server_Enabled: Boolean := True;
-      Server_Port: Positive := 8_888;
-      Monitor_Interval: Duration := 5.0;
-      Base_Url: Unbounded_String :=
-        To_Unbounded_String(Source => "http://localhost:8888");
-      Sitemap_Enabled: Boolean := True;
-      HTML_Enabled: Boolean := True;
-      Atom_Feed_Source: Unbounded_String :=
-        To_Unbounded_String(Source => "none");
-      Site_Name: Unbounded_String := To_Unbounded_String(Source => "New Site");
-      Atom_Feed_Amount: Positive := 25;
-      Markdown_Comment: Unbounded_String :=
-        To_Unbounded_String(Source => "--");
-      Stop_Server_On_Error: Boolean := False;
-      Browser_Command: Unbounded_String :=
-        To_Unbounded_String(Source => "none");
-      Monitor_Config_Interval: Duration := 60.0;
-      Author_Name: Unbounded_String :=
-        To_Unbounded_String(Source => "John Doe");
-      Author_Email: Unbounded_String :=
-        To_Unbounded_String(Source => "johndoe@example.com");
-      Language: Unbounded_String := To_Unbounded_String(Source => "en");
+      Output_Directory  : Unbounded_String := To_Unbounded_String ("_output");
+      Layouts_Directory : Unbounded_String := To_Unbounded_String ("_layouts");
+      Modules_Directory : Unbounded_String := To_Unbounded_String ("_modules");
+      Excluded_Files    : Excluded_Container.Vector;
+      Server_Enabled    : Boolean  := True;
+      Server_Port       : Positive := 8_888;
+      Monitor_Interval  : Duration := 5.0;
+      Base_Url : Unbounded_String  := To_Unbounded_String ("http://localhost:8888");
+      Sitemap_Enabled  : Boolean          := True;
+      HTML_Enabled     : Boolean          := True;
+      Atom_Feed_Source : Unbounded_String := To_Unbounded_String ("none");
+      Site_Name        : Unbounded_String := To_Unbounded_String ("New Site");
+      Atom_Feed_Amount : Positive         := 25;
+      Markdown_Comment : Unbounded_String := To_Unbounded_String ("--");
+      Stop_Server_On_Error : Boolean      := False;
+      Browser_Command  : Unbounded_String := To_Unbounded_String ("none");
+      Monitor_Config_Interval : Duration  := 60.0;
+      Author_Name  : Unbounded_String := To_Unbounded_String ("John Doe");
+      Author_Email : Unbounded_String := To_Unbounded_String ("johndoe@example.com");
+      Language     : Unbounded_String := To_Unbounded_String ("en");
       Start_Tag_Separator : Unbounded_String := To_Unbounded_String ("{%");
       End_Tag_Separator   : Unbounded_String := To_Unbounded_String ("%}");
       Description         : Unbounded_String := To_Unbounded_String ("My new site");
@@ -113,7 +104,7 @@ package Config is
    -- FUNCTION
    -- Default parser configuration values
    -- SOURCE
-   Default_Parser_Configuration: constant Parser_Config := (others => <>);
+   Default_Parser_Configuration : constant Parser_Config := (others => <>);
    -- ****
 
    --## rule off GLOBAL_REFERENCES
@@ -129,7 +120,9 @@ package Config is
    -- Used to store AWS template tags
    -- SOURCE
    package Tags_Container is new Ada.Containers.Indefinite_Hashed_Maps
-     (Key_Type => String, Element_Type => String, Hash => Ada.Strings.Hash,
+     (Key_Type        => String,
+      Element_Type    => String,
+      Hash            => Ada.Strings.Hash,
       Equivalent_Keys => "=");
    -- ****
 
@@ -137,14 +130,14 @@ package Config is
    -- FUNCTION
    -- Site tags (like title, author, etc)
    -- SOURCE
-   Site_Tags: Tags_Container.Map;
+   Site_Tags : Tags_Container.Map;
    -- ****
 
    -- ****v* Config/Config.Site_Directory
    -- FUNCTION
    -- Directory where site files are
    -- SOURCE
-   Site_Directory: Unbounded_String;
+   Site_Directory : Unbounded_String;
    -- ****
 
    -- ****t* Config/Config.TableTags_Container
@@ -152,7 +145,9 @@ package Config is
    -- Used to store AWS template table tags
    -- SOURCE
    package TableTags_Container is new Ada.Containers.Indefinite_Hashed_Maps
-     (Key_Type => String, Element_Type => Vector_Tag, Hash => Ada.Strings.Hash,
+     (Key_Type        => String,
+      Element_Type    => Vector_Tag,
+      Hash            => Ada.Strings.Hash,
       Equivalent_Keys => "=");
    -- ****
 
@@ -160,7 +155,7 @@ package Config is
    -- FUNCTION
    -- Global table tags, used in @@TABLE@@ statement
    -- SOURCE
-   Global_Table_Tags: TableTags_Container.Map;
+   Global_Table_Tags : TableTags_Container.Map;
    -- ****
    --## rule on GLOBAL_REFERENCES
 
@@ -168,7 +163,7 @@ package Config is
    -- FUNCTION
    -- Raised when invalid data found in site config file
    -- SOURCE
-   Invalid_Config_Data: exception;
+   Invalid_Config_Data : exception;
    -- ****
 
    -- ****f* Config/Config.Create_Site_Config
@@ -181,7 +176,8 @@ package Config is
    procedure Create_Site_Config (Directory_Name : String)
    with
       Pre => Directory_Name'Length > 0,
-      Test_Case => (Name => "Test_Create_Site_Config", Mode => Nominal);
+      Test_Case => (Name => "Test_Create_Site_Config",
+                    Mode => Nominal);
    -- ****
 
    -- ****f* Config/Config.Load_Site_Config
@@ -189,7 +185,8 @@ package Config is
    procedure Load_Site_Config (Directory_Name : String)
    with
       Pre => Directory_Name'Length > 0,
-      Test_Case => (Name => "Test_Load_Site_Config", Mode => Nominal);
+      Test_Case => (Name => "Test_Load_Site_Config",
+                    Mode => Nominal);
    -- FUNCTION
    -- Parse config file and set all settings and tags for site in directory
    -- with full path Directory_Name

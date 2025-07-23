@@ -15,15 +15,18 @@
 --    You should have received a copy of the GNU General Public License
 --    along with YASS.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;
 with Ada.Strings.UTF_Encoding.Strings;
 with Ada.Characters.Handling;
 with Ada.Directories;
 with Ada.Strings.Fixed;
+
 with GNAT.String_Split;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 
 package body Config is
+
+   Dir_Separator : Character renames GNAT.Directory_Operations.Dir_Separator;
 
    ------------------------
    -- Create_Site_Config --
@@ -32,6 +35,7 @@ package body Config is
    procedure Create_Site_Config (Directory_Name : String)
    is
       use Ada.Characters.Handling;
+      use Ada.Text_IO;
 
       Config_File : File_Type;
 
@@ -41,19 +45,32 @@ package body Config is
       Image_Author_Name         : constant String := To_String (Yass_Conf.Author_Name);
       Image_Author_Email        : constant String := To_String (Yass_Conf.Author_Email);
       Image_Base_URL            : constant String := To_String (Yass_Conf.Base_Url);
-      Image_Atom_Feed_Source    : constant String := To_String (Yass_Conf.Atom_Feed_Source);
+      Image_Atom_Feed_Source    : constant String :=
+         To_String (Yass_Conf.Atom_Feed_Source);
       Image_Atom_Feed_Amount    : constant String := Yass_Conf.Atom_Feed_Amount'Image;
-      Image_Sitemap_Enabled     : constant String := To_Lower (Yass_Conf.Sitemap_Enabled'Image);
-      Image_HTML_Enabled        : constant String := To_Lower (Yass_Conf.HTML_Enabled'Image);
-      Image_Server_Enabled      : constant String := To_Lower (Yass_Conf.Server_Enabled'Image);
+      Image_Sitemap_Enabled     : constant String :=
+         To_Lower (Yass_Conf.Sitemap_Enabled'Image);
+      Image_HTML_Enabled        : constant String :=
+         To_Lower (Yass_Conf.HTML_Enabled'Image);
+      Image_Server_Enabled      : constant String :=
+         To_Lower (Yass_Conf.Server_Enabled'Image);
       Image_Server_Port         : constant String := Yass_Conf.Server_Port'Image;
-      Image_Stop_Server_On_Error: constant String := To_Lower (Yass_Conf.Stop_Server_On_Error'Image);
-      Image_Browser_Command     : constant String := To_String (Yass_Conf.Browser_Command);
-      Image_Monitor_Interval    : constant String := Yass_Conf.Monitor_Config_Interval'Image;
-      Image_Monitor_Config_Interval : constant String := Yass_Conf.Monitor_Config_Interval'Image;
-      Image_Start_Tag_Separator : constant String := To_String (Yass_Conf.Start_Tag_Separator);
-      Image_End_Tag_Separator   : constant String := To_String (Yass_Conf.End_Tag_Separator);
-      Image_Markdown_Comment    : constant String := To_String (Yass_Conf.Markdown_Comment);
+      Image_Stop_Server_On_Error : constant String :=
+         To_Lower (Yass_Conf.Stop_Server_On_Error'Image);
+      Image_Browser_Command     : constant String :=
+         To_String (Yass_Conf.Browser_Command);
+      Image_Monitor_Interval    : constant String :=
+         Yass_Conf.Monitor_Config_Interval'Image;
+      Image_Monitor_Config_Interval : constant String :=
+         Yass_Conf.Monitor_Config_Interval'Image;
+      Image_Start_Tag_Separator : constant String :=
+         To_String (Yass_Conf.Start_Tag_Separator);
+      Image_End_Tag_Separator   : constant String :=
+         To_String (Yass_Conf.End_Tag_Separator);
+      Image_Markdown_Comment    : constant String :=
+         To_String (Yass_Conf.Markdown_Comment);
+
+      procedure PL (Item : String);
 
       procedure PL (Item : String) is
       begin
@@ -227,6 +244,7 @@ package body Config is
       use Ada.Characters.Handling;
       use Ada.Directories;
       use Ada.Strings.Fixed;
+      use Ada.Text_IO;
 
       Config_File : File_Type;
 
@@ -236,11 +254,14 @@ package body Config is
 
       Equal_Index : Natural := 0;
 
+      procedure Normalize_Dir (Directory_Path : in out Unbounded_String);
+
       procedure Normalize_Dir (Directory_Path : in out Unbounded_String)
       is
       begin
          if Dir_Separator = '/'
-           and then Element (Directory_Path, Index => 1) /= '/' then
+           and then Element (Directory_Path, Index => 1) /= '/'
+         then
             Directory_Path :=
               To_Unbounded_String (Directory_Name & Dir_Separator) &
               Directory_Path;
@@ -439,15 +460,19 @@ package body Config is
          Stop_With  => To_String (Yass_Conf.End_Tag_Separator));
    exception
       when others =>
-         raise Invalid_Config_Data with To_String(Source => Raw_Data);
+         raise Invalid_Config_Data with To_String (Raw_Data);
    end Load_Site_Config;
 
    --------------
    -- Ask_User --
    --------------
 
+   function Ask_User (Default : String) return Unbounded_String;
+
    function Ask_User (Default : String) return Unbounded_String
    is
+      use Ada.Text_IO;
+
       Answer : Unbounded_String;
    begin
       Put ("(Default - " & Default & ")");
@@ -465,6 +490,8 @@ package body Config is
 
    procedure Interactive_Site_Config
    is
+      use Ada.Text_IO;
+
       Answer_1, Answer_2, Answer_3 : Unbounded_String;
       Answer_4, Answer_5, Answer_6 : Unbounded_String;
    begin
