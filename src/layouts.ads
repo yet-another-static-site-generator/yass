@@ -29,9 +29,11 @@ package Layouts is
    -- Directory_Name - Full path to the directory where default layout will be
    --                 created
    -- SOURCE
-   procedure Create_Layout(Directory_Name: String) with
+   procedure Create_Layout (Directory_Name : String)
+   with
       Pre => Directory_Name'Length > 0,
-      Test_Case => (Name => "Test_Create_Layout", Mode => Nominal);
+      Test_Case => (Name => "Test_Create_Layout",
+                    Mode => Nominal);
    -- ****
 
    -- ****f* Layouts/Layouts.Create_Directory_Layout
@@ -41,9 +43,10 @@ package Layouts is
    -- PARAMETERS
    -- Directory_Name - Full path to the directory where layout will be created
    -- SOURCE
-   procedure Create_Directory_Layout(Directory_Name: String) with
+   procedure Create_Directory_Layout (Directory_Name : String)
+   with
       Test_Case => (Name => "Test_Create_Directory_Layout",
-       Mode => Robustness);
+                    Mode => Robustness);
    -- ****
 
 end Layouts;
