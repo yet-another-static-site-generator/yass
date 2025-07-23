@@ -32,7 +32,7 @@ project Yass is
                "-gnatU",
                "-gnatf",
                "-gnateE",
-               "-gnaty3aAbCdefhIklnOprSux",
+               "-gnatyyACIOSuxM90",
                "-gnatwe"
               );
             for Local_Configuration_Pragmas use "src/yass.adc";
