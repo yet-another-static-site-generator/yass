@@ -24,15 +24,15 @@ package Messages is
    -- FUNCTION
    -- Types of messages: NORMAL, ERROR or SUCCESS
    -- SOURCE
-   type Messages_Types is (NORMAL, ERROR, SUCCESS) with
-      Default_Value => ERROR;
+   type Messages_Types is (NORMAL, ERROR, SUCCESS)
+   with Default_Value => ERROR;
       -- ****
 
       -- ****d* Messages/Messages.Default_Message_Type
       -- FUNCTION
       -- Default value for the type of messages
       -- SOURCE
-   Default_Message_Type: constant Messages_Types := ERROR;
+   Default_Message_Type : constant Messages_Types := ERROR;
    -- ****
 
    -- ****f* Messages/Messages.Show_Message
@@ -43,9 +43,12 @@ package Messages is
    -- Message_Type - Type of message. Default is Error
    -- SOURCE
    procedure Show_Message
-     (Text: String; Message_Type: Messages_Types := Default_Message_Type) with
+     (Text         : String;
+      Message_Type : Messages_Types := Default_Message_Type)
+   with
       Pre => Text'Length > 0,
-      Test_Case => (Name => "Test_Show_Message", Mode => Nominal);
+      Test_Case => (Name => "Test_Show_Message",
+                    Mode => Nominal);
    -- ****
 
 end Messages;
