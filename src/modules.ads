@@ -35,10 +35,13 @@ package Modules is
    -- Page_Table_Tags - All current processed page table tags with their contents
    -- SOURCE
    procedure Load_Modules
-     (State: String; Page_Tags: in out Tags_Container.Map;
-      Page_Table_Tags: in out TableTags_Container.Map) with
+     (State           : String;
+      Page_Tags       : in out Tags_Container.Map;
+      Page_Table_Tags : in out TableTags_Container.Map)
+   with
       Pre => State'Length > 0,
-      Test_Case => (Name => "Test_Load_Modules", Mode => Nominal);
+      Test_Case => (Name => "Test_Load_Modules",
+                    Mode => Nominal);
    -- ****
 
 end Modules;
